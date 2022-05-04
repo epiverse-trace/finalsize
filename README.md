@@ -1,6 +1,6 @@
 # finalsize
 
-`R` package to calculate final size for SIR epidemic in a heterogenous population.
+`R` package to calculate final size for SIR epidemic in a heterogenous population. Eventually it will include a range of model structures and options for inclusion of heterogeneity.
 
 ## Installation
 
@@ -16,11 +16,10 @@ library(finalsize)
 
 ## Quick start
 
-Use `final_size` to calculate the final size of an epidemic using social contact data from the `socialmixr` package. In the below example, we consider three age groups: 0-19, 20-39 and 40+, with R0 = 2. We also assume that under 20 age group is fully susceptible, whereas only 50% of individuals age 20+ are.
+We can use `final_size()` to calculate the final size of an epidemic using social contact data from the `socialmixr` package. In the below example, we consider three age groups: 0-19, 20-39 and 40+, with R0 = 2. We also assume that under 20 age group is fully susceptible, whereas only 50% of individuals age 20+ are.
 
 ```r
 # Load socialmixr package
-
 # install.packages("socialmixr")
 library(socialmixr)
 
