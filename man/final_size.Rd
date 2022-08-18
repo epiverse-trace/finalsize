@@ -7,19 +7,27 @@
 final_size(r0 = 2, contact_matrix, demography_vector, prop_suscep = NULL)
 }
 \arguments{
-\item{r0}{Basic reproduction number. Default is 2}
+\item{r0}{Basic reproduction number. Default is 2.}
 
-\item{contact_matrix}{Social contact matrix. Entry mm_ij gives average number of contacts in group i reported by participants in group j}
+\item{contact_matrix}{Social contact matrix. Entry mm_ij gives average
+number of contacts in group i reported by participants in group j.}
 
-\item{demography_vector}{Demography vector. Entry pp_i gives proportion of total population in group i (model will normalise if needed)}
+\item{demography_vector}{Demography vector. Entry pp_i gives proportion of
+total population in group i (model will normalise if needed)}
 
-\item{prop_suscep}{Proportion of each group susceptible. Null assumption is fully susceptible}
+\item{prop_suscep}{Proportion of each group susceptible. Null assumption is
+fully susceptible.}
 }
 \description{
-This function calculates final epidemic size using SIR model for heterogeneously mixing population
+This function calculates final epidemic size using SIR model for
+heterogeneously mixing population
 }
 \examples{
+# basic usage of finalsize
+\dontrun{
 final_size()
+}
+
 }
 \keyword{epidemic}
 \keyword{model}
