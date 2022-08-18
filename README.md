@@ -1,5 +1,9 @@
 # finalsize
 
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/pratikunterwegs/finalsize/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/pratikunterwegs/finalsize/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 `R` package to calculate final size for SIR epidemic in a heterogenous population. Eventually it will include a range of model structures and options for inclusion of heterogeneity.
 
 ## Installation
