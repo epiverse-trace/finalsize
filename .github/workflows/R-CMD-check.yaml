@@ -28,6 +28,19 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
 
+    - name: Install system dependencies
+        if: runner.os == 'Linux'
+        run: |
+          while read -r cmd
+          do
+            eval sudo $cmd
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
+      
+      - name: Install GSL and Boost dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt install libxml-dev
+
     steps:
       - uses: actions/checkout@v2
 
