@@ -11,7 +11,7 @@
 #' fully susceptible.
 #' @keywords epidemic model
 #' @export
-#' 
+#'
 #' @examples
 #' # basic usage of finalsize
 #' \dontrun{
