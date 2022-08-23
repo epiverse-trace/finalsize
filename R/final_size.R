@@ -25,7 +25,7 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
   if (is.null(prop_suscep)) {
     prop_suscep <- demography_vector * 0 + 1
   } # Assume fully susceptible if no entry
-  if (length(contact_matrix[1, ]) != length(demography_vector)) {
+  if (nrow(contact_matrix) != length(demography_vector)) {
     stop("demography vector needs to be same size as contact matrix")
   }
   if (length(demography_vector) != length(prop_suscep)) {
@@ -42,15 +42,7 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
   beta2 <- t(t(beta1) * pp0)
 
   # Newton method for solving final size equation: A(1-x) = -log(x)
-
-  # Define functions f and f'
   vsize <- length(pp0)
-  f1 <- function(beta2, x) {
-    beta2 %*% (1 - x) + log(x)
-  }
-  f2 <- function(beta2, x, size) {
-    -beta2 + diag(size) / x
-  }
 
   # Set storage vector and precision
   iterations <- 30
