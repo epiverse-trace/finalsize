@@ -40,8 +40,9 @@ final_size_cpp <- function(r0 = 2, contact_matrix, demography,
   tryCatch(
     expr = solve_final_size_internal(
       contact_matrix = contact_matrix,
-      demography = demography, p_susceptibility = susceptibility,
-      susceptibility = as.matrix(1)
+      demography = demography, 
+      p_susceptibility = as.matrix(susceptibility),
+      susceptibility = as.matrix(susceptibility)
     ),
     error = function(e) {
       print(e)
