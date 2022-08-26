@@ -1,48 +1,37 @@
 #' Calculate final epidemic size
 #'
-#' This function calculates final epidemic size using SIR model for
-#' heterogeneously mixing population
-#' @param r0  Basic reproduction number. Default is 2.
-#' @param contact_matrix  Social contact matrix. Entry mm_ij gives average
-#' number of contacts in group i reported by participants in group j.
-#' @param demography  Demography vector. Entry pp_i gives proportion of
-#' total population in group i (model will normalise if needed)
-#' @param susceptibility  Proportion of each group susceptible. Null assumption is
-#' fully susceptible.
-#' @keywords epidemic model
+#' @param contact_matrix 
+#' @param demography 
+#' @param susceptibility 
+#' @param p_susceptibility 
+#' @param solver_adapt_step 
+#' @param solver_tolerance 
+#' @return A matrix of final proportions of age and susceptibility classes
+#' infected. WIP.
+#' 
 #' @export
-#'
-#' @examples
-#' # basic usage of finalsize
-#' \dontrun{
-#' final_size()
-#' }
-#'
-final_size_cpp <- function(r0 = 2, contact_matrix, demography,
-                           susceptibility = NULL) {
+#' 
+final_size_cpp <- function(contact_matrix, demography,
+                           susceptibility, p_susceptibility,
+                           solver_adapt_step = TRUE,
+                           solver_tolerance = 1e-6) {
+  # need checks on arguments here
+  # scale demography proportions to 1
+  demography = demography / sum(demography)
   
-  # Check inputs
-  if (is.null(susceptibility)) {
-    susceptibility <- demography * 0 + 1
-  } # Assume fully susceptible if no entry
-  if (nrow(contact_matrix) != length(demography)) {
-    stop("demography vector needs to be same size as contact matrix")
-  }
-  if (length(demography) != length(susceptibility)) {
-    stop("demography vector needs to be same size as susceptibility vector")
-  }
-  pp0 <- as.numeric(demography / sum(demography))
+  contact_matrix <- t(contact_matrix$matrix)
+  # scale contact matrix cols by prop of dem
+  # for(i in seq(ncol(contact_matrix))) contact_matrix[, i] = contact_matrix[, i] / demography[i]
   
-  # Scale next generation matrix so max eigenvalue=r0
-  mm0 <- as.matrix(contact_matrix)
-  mm0 <- r0 * mm0 / max(Re(eigen(mm0)$values))
+  # scale contact matrix by largest real eigenvalue of the matrix
+  contact_matrix = contact_matrix / (max(Re(eigen(contact_matrix)$values)))
   
   tryCatch(
     expr = solve_final_size_internal(
       contact_matrix = contact_matrix,
-      demography = demography, 
-      p_susceptibility = as.matrix(susceptibility),
-      susceptibility = as.matrix(susceptibility)
+      demography = demography,
+      p_susceptibility = p_susceptibility,
+      susceptibility = susceptibility
     ),
     error = function(e) {
       print(e)
