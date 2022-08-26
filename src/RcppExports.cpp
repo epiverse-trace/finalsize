@@ -12,7 +12,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // solve_final_size_internal
-inline Eigen::VectorXd solve_final_size_internal(const Eigen::MatrixXd& contact_matrix, const Eigen::VectorXd& demography, const Eigen::MatrixXd& p_susceptibility, const Eigen::MatrixXd& susceptibility, const bool adapt_step, const double tolerance);
+Eigen::MatrixXd solve_final_size_internal(const Eigen::MatrixXd& contact_matrix, const Eigen::VectorXd& demography, const Eigen::MatrixXd& p_susceptibility, const Eigen::MatrixXd& susceptibility, const bool adapt_step, const double tolerance);
 RcppExport SEXP _finalsize_solve_final_size_internal(SEXP contact_matrixSEXP, SEXP demographySEXP, SEXP p_susceptibilitySEXP, SEXP susceptibilitySEXP, SEXP adapt_stepSEXP, SEXP toleranceSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
@@ -29,6 +29,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_finalsize_square_rcppeigen_internal", (DL_FUNC) &_finalsize_square_rcppeigen_internal, 1},
     {"_finalsize_solve_final_size_internal", (DL_FUNC) &_finalsize_solve_final_size_internal, 6},
     {NULL, NULL, 0}
 };
