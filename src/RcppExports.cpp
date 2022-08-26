@@ -29,7 +29,6 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_finalsize_square_rcppeigen_internal", (DL_FUNC) &_finalsize_square_rcppeigen_internal, 1},
     {"_finalsize_solve_final_size_internal", (DL_FUNC) &_finalsize_solve_final_size_internal, 6},
     {NULL, NULL, 0}
 };
