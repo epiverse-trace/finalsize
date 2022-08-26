@@ -8,17 +8,6 @@
 //
 // [[Rcpp::depends(RcppEigen)]]
 
-//' Calculate squares.
-//'
-//' @param x A vector of numbers to square.
-//' @return Square of x.
-//'
-// [[Rcpp::export]]
-Eigen::VectorXd square_rcppeigen_internal(Eigen::VectorXd x) {
-  Eigen::VectorXd y = x.array().square();
-  return(y);
-}
-
 struct spreaded_t {
   Eigen::MatrixXd p_susc;
   Eigen::MatrixXd susc;
