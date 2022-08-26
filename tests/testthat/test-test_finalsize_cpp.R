@@ -1,23 +1,24 @@
 test_that("Check basic final size calculation works", {
+  # checking epi spread function from finalsize
   polymod <- socialmixr::polymod
-  contact_data <- socialmixr::contact_matrix(
+  contact_matrix <- socialmixr::contact_matrix(
     polymod,
     countries = "United Kingdom",
     age.limits = c(0, 20, 40)
   )
-  c_matrix <- t(contact_data$matrix)
-  d_vector <- contact_data$participants$proportion
-  p_suscep <- c(1, 1, 1)
+  demography <- contact_matrix$participants$proportion
+  p_susceptibility <- matrix(1, 3, 3)
+  susceptibility = matrix(1, 3, 3)
 
-  epi_final_size <- final_size_cpp(
-    r0 = 2,
-    contact_matrix = c_matrix,
-    demography = d_vector,
-    susceptibility = p_suscep
+  epi_outcome = final_size_cpp(
+    contact_matrix = contact_matrix,
+    demography = demography,
+    p_susceptibility = p_susceptibility,
+    susceptibility = susceptibility
   )
 
-  # Run final size model
-  testthat::expect_identical(
-    length(p_suscep), length(epi_final_size)
+  testthat::expect_type(
+    epi_outcome, "double"
   )
+
 })
