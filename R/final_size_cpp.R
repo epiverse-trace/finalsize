@@ -19,7 +19,7 @@ final_size_cpp <- function(contact_matrix, demography,
   # scale demography proportions to 1
   demography <- demography / sum(demography)
 
-  contact_matrix <- t(contact_matrix$matrix)
+  contact_matrix <- t(contact_matrix)
   # scale contact matrix cols by prop of dem
   # for(i in seq(ncol(contact_matrix))) contact_matrix[, i] = contact_matrix[, i] / demography[i]
 
