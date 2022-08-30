@@ -8,9 +8,9 @@ test_that("Check basic final size calculation works", {
   )
   demography <- contact_matrix$participants$proportion
   p_susceptibility <- matrix(1, 3, 3)
-  susceptibility = matrix(1, 3, 3)
+  susceptibility <- matrix(1, 3, 3)
 
-  epi_outcome = final_size_cpp(
+  epi_outcome <- final_size_cpp(
     contact_matrix = contact_matrix,
     demography = demography,
     p_susceptibility = p_susceptibility,
@@ -20,5 +20,4 @@ test_that("Check basic final size calculation works", {
   testthat::expect_type(
     epi_outcome, "double"
   )
-
 })

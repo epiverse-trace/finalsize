@@ -7,7 +7,7 @@
 #' number of contacts in group i reported by participants in group j.
 #' @param demography  Demography vector. Entry pp_i gives proportion of
 #' total population in group i (model will normalise if needed)
-#' @param susceptibility  Proportion of each group susceptible. 
+#' @param susceptibility  Proportion of each group susceptible.
 #' Null assumption is fully susceptible.
 #' @keywords epidemic model
 #' @export
@@ -15,7 +15,7 @@
 #' @examples
 #' # basic usage of finalsize
 #' \dontrun{
-#'   final_size()
+#' final_size()
 #' }
 #'
 final_size <- function(r0 = 2, contact_matrix, demography,
@@ -48,7 +48,7 @@ final_size <- function(r0 = 2, contact_matrix, demography,
     beta2 %*% (1 - x) + log(x)
   }
   f2 <- function(beta2, x, size) {
-      -beta2 + diag(size) / x
+    -beta2 + diag(size) / x
   }
 
   # Set storage vector and precision
