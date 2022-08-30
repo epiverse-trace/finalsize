@@ -26,6 +26,12 @@ final_size_cpp <- function(contact_matrix, demography,
   # scale contact matrix by largest real eigenvalue of the matrix
   contact_matrix <- contact_matrix / (max(Re(eigen(contact_matrix)$values)))
 
+  # check contact matrix is symmetric
+  assertthat::assert_that(
+    isSymmetric(contact_matrix),
+    msg = "contact matrix must be symmetric"
+  )
+
   tryCatch(
     expr = solve_final_size_internal(
       contact_matrix = contact_matrix,
