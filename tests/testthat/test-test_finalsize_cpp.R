@@ -23,7 +23,29 @@ test_that("Check basic final size function works", {
   )
 })
 
-test_that("Check final size calculation is correct", {
+test_that("Check final size calculation is correct in simple case", {
+  r0 = 2
+  contact_matrix = matrix(r0 / 200.0, 2, 2)
+  demography = rep(100.0, 2) |> as.matrix()
+  psusc = rep(1.0, 2) |> as.matrix()
+  susc = rep(1.0, 2) |> as.matrix()
+
+  epi_outcome = final_size_cpp(
+    contact_matrix = contact_matrix,
+    demography = demography,
+    p_susceptibility = psusc,
+    susceptibility = susc
+  )
+
+  epi_outcome_known = 1 - exp(-r0 * epi_outcome[, 1])
+
+  testthat::expect_equal(
+    epi_outcome[, 1], epi_outcome_known
+  )
+
+})
+
+test_that("Check final size calculation is correct in complex case", {
   # make a contact matrix
   contact_matrix = c(5.329620e-08, 1.321156e-08, 1.832293e-08, 7.743492e-09, 5.888440e-09,
       2.267918e-09, 1.321156e-08, 4.662496e-08, 1.574182e-08, 1.510582e-08,
@@ -66,4 +88,6 @@ test_that("Check final size calculation is correct", {
   testthat::expect_type(
     epi_outcome, "double"
   )
+
+  # TO DO: ADD CHECK FOR CORRECT ANSWER
 })
