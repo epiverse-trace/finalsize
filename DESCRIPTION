@@ -6,6 +6,7 @@ Description: This package contains function for calculating final size for an SI
 RoxygenNote: 7.2.1
 Encoding: UTF-8
 Suggests: 
+    covr,
     socialmixr,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
