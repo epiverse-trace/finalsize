@@ -58,5 +58,7 @@ final_size(r0,
 )
 
 }
+
+}
 \keyword{epidemic}
 \keyword{model}
