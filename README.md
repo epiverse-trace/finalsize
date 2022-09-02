@@ -1,4 +1,9 @@
-# finalsize
+# Calculate the final size of an epidemic outbreak
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/epiverse-trace/finalsize/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/epiverse-trace/finalsize/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/epiverse-trace/finalsize/branch/main/graph/badge.svg)](https://app.codecov.io/gh/epiverse-trace/finalsize?branch=main)
+<!-- badges: end -->
 
 `R` package to calculate final size for SIR epidemic in a heterogenous population. Eventually it will include a range of model structures and options for inclusion of heterogeneity.
 
