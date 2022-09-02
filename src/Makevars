@@ -1,0 +1,2 @@
+
+PKG_CPPFLAGS = -w -std=c++11 -I../inst/include/ -O3
