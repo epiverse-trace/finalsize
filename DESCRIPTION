@@ -5,3 +5,7 @@ Authors@R: person("Adam", "Kucharski", , "adam.kucharski@lshtm.ac.uk", role = c(
 Description: This package contains function for calculating final size for an SIR epidemic in a heterogenous population, given social contact matrix and demographic data
 License: `use_mit_license()`
 RoxygenNote: 7.1.2
+Suggests: 
+    socialmixr,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
