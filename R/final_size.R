@@ -28,7 +28,7 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
 
   # Check inputs
   if (is.null(prop_suscep)) {
-    prop_suscep <- demography_vector * 0 + 1
+    prop_suscep <- rep(1, length(demography_vector))
   } # Assume fully susceptible if no entry
   if (length(contact_matrix[1, ]) != length(demography_vector)) {
     stop("demography vector needs to be same size as contact matrix")
