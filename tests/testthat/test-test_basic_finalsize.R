@@ -8,11 +8,13 @@ test_that("Check basic final size calculation works", {
   c_matrix <- t(contact_data$matrix)
   d_vector <- contact_data$participants$proportion
   p_suscep <- c(1, 1, 1)
+  p_initial_infections = c(0.1, 0.5, 0.5)
 
   epi_final_size <- final_size(
     r0 = 2,
     contact_matrix = c_matrix,
     demography_vector = d_vector,
+    prop_initial_infected = p_initial_infections,
     prop_suscep = p_suscep
   )
 
