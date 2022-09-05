@@ -12,9 +12,16 @@
 #' @keywords epidemic model
 #' @export
 #' @examples
-#' \dontrun{
-#' final_size()
-#' }
+#' library(socialmixr)
+#' data(polymod)
+#' contact_data <- contact_matrix(polymod, countries = "United Kingdom", age.limits = c(0,20,40))
+#' 
+#' c_matrix <-t(contact_data$matrix) # Define contact matrix (entry ij is contacts in group i reported by group j)
+#' d_vector <- contact_data$participants$proportion # Define proportion in each age group
+#' p_suscep <- c(1,0.5,0.5) # Define proportion of age group that is susceptible to infection
+#' 
+#' # Run final size model
+#' final_size(r0=2,contact_matrix = c_matrix, demography_vector = d_vector, prop_suscep = p_suscep)
 #'
 final_size <- function(r0 = 2, contact_matrix, demography_vector,
                        prop_suscep = NULL) {
