@@ -2,33 +2,72 @@
 #'
 #' This function calculates final epidemic size using SIR model for
 #' heterogeneously mixing population
+#'
 #' @param r0  Basic reproduction number. Default is 2
 #' @param contact_matrix  Social contact matrix. Entry $mm_{ij}$ gives average
 #' number of contacts in group $i$ reported by participants in group j
 #' @param demography_vector  Demography vector. Entry $pp_{i}$ gives proportion
 #' of total population in group $i$ (model will normalise if needed)
+#' @param prop_initial_infected Proportion of all age groups that is initially
+#' infected. May be a single number, or a vector of proportions infected.
+#' If a vector, must be the same length as the demography vector, otherwise the
+#' vector will be recycled. Default value is 0.001 for all groups.
 #' @param prop_suscep  Proportion of each group susceptible. Null assumption is
 #' fully susceptible
 #' @keywords epidemic model
 #' @export
 #' @examples
-#' \dontrun{
-#' final_size()
-#' }
+#' library(socialmixr)
+#' data(polymod)
+#' contact_data <- contact_matrix(polymod, countries = "United Kingdom", age.limits = c(0, 20, 40))
+#' # Define contact matrix (entry ij is contacts in group i reported by group j)
+#' c_matrix <- t(contact_data$matrix)
+#' d_vector <- contact_data$participants$proportion # Define proportion in each age group
+#' p_suscep <- c(1, 0.5, 0.5) # Define proportion of age group that is susceptible to infection
+#' r0 <- 2.0
+#' p_initial_infect <- 0.002
+#'
+#' # Run final size model
+#' final_size(r0,
+#'   contact_matrix = c_matrix,
+#'   prop_initial_infected = p_initial_infect,
+#'   demography_vector = d_vector, prop_suscep = p_suscep
+#' )
 #'
 final_size <- function(r0 = 2, contact_matrix, demography_vector,
+                       prop_initial_infected = 0.001,
                        prop_suscep = NULL) {
 
   # Check inputs
   if (is.null(prop_suscep)) {
-    prop_suscep <- demography_vector * 0 + 1
+    prop_suscep <- rep(1, length(demography_vector))
   } # Assume fully susceptible if no entry
-  if (length(contact_matrix[1, ]) != length(demography_vector)) {
-    stop("demography vector needs to be same size as contact matrix")
+
+  checkmate::assert_count(r0)
+  checkmate::assert_vector(demography_vector)
+  checkmate::assert_matrix(contact_matrix)
+  checkmate::assert_atomic(prop_initial_infected)
+
+  assertthat::assert_that(
+    nrow(contact_matrix) == length(demography_vector),
+    msg = "demography vector needs to be same size as contact matrix"
+  )
+  assertthat::assert_that(
+    length(demography_vector) == length(prop_suscep),
+    msg = "demography vector needs to be same size as susceptibility vector"
+  )
+
+  if (length(prop_initial_infected) > 1) {
+    assertthat::assert_that(
+      length(prop_initial_infected) == length(demography_vector),
+      msg = "vector of initial proportions infected needs to be same size
+      as demography vector"
+    )
+    message(
+      "using different prop_initial_infected for each age group"
+    )
   }
-  if (length(demography_vector) != length(prop_suscep)) {
-    stop("demography vector needs to be same size as susceptibility vector")
-  }
+
   pp0 <- as.numeric(demography_vector / sum(demography_vector))
 
   # Scale next generation matrix so max eigenvalue=r0
@@ -53,10 +92,10 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
   # Set storage vector and precision
   iterations <- 30
   iterate_output <- matrix(NA, nrow = iterations, ncol = vsize)
-  x0 <- 0.001 * pp0 # Set starting point
+  x0 <- prop_initial_infected * pp0 # Set starting point
 
   for (ii in 1:iterations) {
-    if (ii == 1) {
+    if (ii == 1L) {
       xx <- x0
       iterate_output[ii, ] <- xx
     } else {
