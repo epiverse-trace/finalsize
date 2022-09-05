@@ -1,5 +1,5 @@
 Package: finalsize
-Title: Calculates final size for SIR epidemic in heterogenous population
+Title: Calculates Final Size for SIR Epidemic in Heterogenous Population
 Version: 0.1
 Authors@R: person("Adam", "Kucharski", , "adam.kucharski@lshtm.ac.uk", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8814-9421"))
 Description: This package contains function for calculating final size for an SIR epidemic in a heterogenous population, given social contact matrix and demographic data.
