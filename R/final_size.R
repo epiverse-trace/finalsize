@@ -20,14 +20,16 @@
 #' library(socialmixr)
 #' data(polymod)
 #' contact_data <- contact_matrix(polymod, countries = "United Kingdom", age.limits = c(0,20,40))
-#' 
-#' c_matrix <-t(contact_data$matrix) # Define contact matrix (entry ij is contacts in group i reported by group j)
+#' # Define contact matrix (entry ij is contacts in group i reported by group j)
+#' c_matrix <-t(contact_data$matrix)
 #' d_vector <- contact_data$participants$proportion # Define proportion in each age group
 #' p_suscep <- c(1,0.5,0.5) # Define proportion of age group that is susceptible to infection
+#' r0 = 2.0
+#' p_initial_infect = 0.002
 #' 
 #' # Run final size model
 #' final_size(r0, contact_matrix = c_matrix, 
-#'  prop_initial_infected,
+#'  prop_initial_infected = p_initial_infect,
 #'  demography_vector = d_vector, prop_suscep = p_suscep)
 #'
 final_size <- function(r0 = 2, contact_matrix, demography_vector,
