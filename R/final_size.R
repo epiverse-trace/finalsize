@@ -93,7 +93,7 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
   x0 <- prop_initial_infected * pp0 # Set starting point
 
   for (ii in 1:iterations) {
-    if (ii == 1) {
+    if (ii == 1L) {
       xx <- x0
       iterate_output[ii, ] <- xx
     } else {
