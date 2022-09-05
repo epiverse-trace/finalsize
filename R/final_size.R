@@ -30,11 +30,21 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
   if (is.null(prop_suscep)) {
     prop_suscep <- rep(1, length(demography_vector))
   } # Assume fully susceptible if no entry
-  if (length(contact_matrix[1, ]) != length(demography_vector)) {
-    stop("demography vector needs to be same size as contact matrix")
-  }
-  if (length(demography_vector) != length(prop_suscep)) {
-    stop("demography vector needs to be same size as susceptibility vector")
+  
+  checkmate::assert_count(r0)
+  checkmate::assert_vector(demography_vector)
+  checkmate::assert_matrix(contact_matrix)
+  checkmate::assert_atomic(prop_initial_infected)
+  
+  assertthat::assert_that(
+    nrow(contact_matrix) == length(demography_vector),
+    msg = "demography vector needs to be same size as contact matrix"
+  )
+  assertthat::assert_that(
+    length(demography_vector) == length(prop_suscep),
+    msg = "demography vector needs to be same size as susceptibility vector"
+  )
+  
   }
   pp0 <- as.numeric(demography_vector / sum(demography_vector))
 
