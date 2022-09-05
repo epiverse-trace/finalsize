@@ -19,18 +19,20 @@
 #' @examples
 #' library(socialmixr)
 #' data(polymod)
-#' contact_data <- contact_matrix(polymod, countries = "United Kingdom", age.limits = c(0,20,40))
+#' contact_data <- contact_matrix(polymod, countries = "United Kingdom", age.limits = c(0, 20, 40))
 #' # Define contact matrix (entry ij is contacts in group i reported by group j)
-#' c_matrix <-t(contact_data$matrix)
+#' c_matrix <- t(contact_data$matrix)
 #' d_vector <- contact_data$participants$proportion # Define proportion in each age group
-#' p_suscep <- c(1,0.5,0.5) # Define proportion of age group that is susceptible to infection
-#' r0 = 2.0
-#' p_initial_infect = 0.002
-#' 
+#' p_suscep <- c(1, 0.5, 0.5) # Define proportion of age group that is susceptible to infection
+#' r0 <- 2.0
+#' p_initial_infect <- 0.002
+#'
 #' # Run final size model
-#' final_size(r0, contact_matrix = c_matrix, 
-#'  prop_initial_infected = p_initial_infect,
-#'  demography_vector = d_vector, prop_suscep = p_suscep)
+#' final_size(r0,
+#'   contact_matrix = c_matrix,
+#'   prop_initial_infected = p_initial_infect,
+#'   demography_vector = d_vector, prop_suscep = p_suscep
+#' )
 #'
 final_size <- function(r0 = 2, contact_matrix, demography_vector,
                        prop_initial_infected = 0.001,
@@ -40,12 +42,12 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
   if (is.null(prop_suscep)) {
     prop_suscep <- rep(1, length(demography_vector))
   } # Assume fully susceptible if no entry
-  
+
   checkmate::assert_count(r0)
   checkmate::assert_vector(demography_vector)
   checkmate::assert_matrix(contact_matrix)
   checkmate::assert_atomic(prop_initial_infected)
-  
+
   assertthat::assert_that(
     nrow(contact_matrix) == length(demography_vector),
     msg = "demography vector needs to be same size as contact matrix"
@@ -54,7 +56,7 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
     length(demography_vector) == length(prop_suscep),
     msg = "demography vector needs to be same size as susceptibility vector"
   )
-  
+
   if (length(prop_initial_infected) > 1) {
     assertthat::assert_that(
       length(prop_initial_infected) == length(demography_vector),
@@ -65,7 +67,7 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
       "using different prop_initial_infected for each age group"
     )
   }
-  
+
   pp0 <- as.numeric(demography_vector / sum(demography_vector))
 
   # Scale next generation matrix so max eigenvalue=r0
