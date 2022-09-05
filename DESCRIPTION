@@ -43,3 +43,6 @@ Config/testthat/edition: 3
 License: MIT + file LICENSE
 Remotes:
     epiforecasts/socialmixr
+Imports: 
+    assertthat,
+    checkmate
