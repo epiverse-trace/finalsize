@@ -11,7 +11,7 @@
 #' @param prop_initial_infected Proportion of all age groups that is initially
 #' infected. May be a single number, or a vector of proportions infected.
 #' If a vector, must be the same length as the demography vector, otherwise the
-#' vector will be recycled.
+#' vector will be recycled. Default value is 0.001 for all groups.
 #' @param prop_suscep  Proportion of each group susceptible. Null assumption is
 #' fully susceptible
 #' @keywords epidemic model
@@ -26,10 +26,12 @@
 #' p_suscep <- c(1,0.5,0.5) # Define proportion of age group that is susceptible to infection
 #' 
 #' # Run final size model
-#' final_size(r0, contact_matrix = c_matrix, demography_vector = d_vector, prop_suscep = p_suscep)
+#' final_size(r0, contact_matrix = c_matrix, 
+#'  prop_initial_infected,
+#'  demography_vector = d_vector, prop_suscep = p_suscep)
 #'
 final_size <- function(r0 = 2, contact_matrix, demography_vector,
-                       prop_initial_infected,
+                       prop_initial_infected = 0.001,
                        prop_suscep = NULL) {
 
   # Check inputs
