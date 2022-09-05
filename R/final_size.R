@@ -2,11 +2,16 @@
 #'
 #' This function calculates final epidemic size using SIR model for
 #' heterogeneously mixing population
+#'
 #' @param r0  Basic reproduction number. Default is 2
 #' @param contact_matrix  Social contact matrix. Entry $mm_{ij}$ gives average
 #' number of contacts in group $i$ reported by participants in group j
 #' @param demography_vector  Demography vector. Entry $pp_{i}$ gives proportion
 #' of total population in group $i$ (model will normalise if needed)
+#' @param prop_initial_infected Proportion of all age groups that is initially
+#' infected. May be a single number, or a vector of proportions infected.
+#' If a vector, must be the same length as the demography vector, otherwise the
+#' vector will be recycled.
 #' @param prop_suscep  Proportion of each group susceptible. Null assumption is
 #' fully susceptible
 #' @keywords epidemic model
@@ -24,6 +29,7 @@
 #' final_size(r0, contact_matrix = c_matrix, demography_vector = d_vector, prop_suscep = p_suscep)
 #'
 final_size <- function(r0 = 2, contact_matrix, demography_vector,
+                       prop_initial_infected,
                        prop_suscep = NULL) {
 
   # Check inputs
@@ -45,7 +51,17 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
     msg = "demography vector needs to be same size as susceptibility vector"
   )
   
+  if (length(prop_initial_infected) > 1) {
+    assertthat::assert_that(
+      length(prop_initial_infected) == length(demography_vector),
+      msg = "vector of initial proportions infected needs to be same size
+      as demography vector"
+    )
+    message(
+      "using different prop_initial_infected for each age group"
+    )
   }
+  
   pp0 <- as.numeric(demography_vector / sum(demography_vector))
 
   # Scale next generation matrix so max eigenvalue=r0
@@ -70,7 +86,7 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
   # Set storage vector and precision
   iterations <- 30
   iterate_output <- matrix(NA, nrow = iterations, ncol = vsize)
-  x0 <- 0.001 * pp0 # Set starting point
+  x0 <- prop_initial_infected * pp0 # Set starting point
 
   for (ii in 1:iterations) {
     if (ii == 1) {
