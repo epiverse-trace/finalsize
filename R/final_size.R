@@ -21,7 +21,7 @@
 #' p_suscep <- c(1,0.5,0.5) # Define proportion of age group that is susceptible to infection
 #' 
 #' # Run final size model
-#' final_size(r0=2,contact_matrix = c_matrix, demography_vector = d_vector, prop_suscep = p_suscep)
+#' final_size(r0, contact_matrix = c_matrix, demography_vector = d_vector, prop_suscep = p_suscep)
 #'
 final_size <- function(r0 = 2, contact_matrix, demography_vector,
                        prop_suscep = NULL) {
