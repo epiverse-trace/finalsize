@@ -12,4 +12,4 @@ Suggests:
 Config/testthat/edition: 3
 License: MIT + file LICENSE
 Remotes:
-    epiforecasts/socialmixr@b7afd50
+    epiforecasts/socialmixr
