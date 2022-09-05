@@ -2,7 +2,7 @@ Package: finalsize
 Title: Calculates final size for SIR epidemic in heterogenous population
 Version: 0.1
 Authors@R: person("Adam", "Kucharski", , "adam.kucharski@lshtm.ac.uk", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8814-9421"))
-Description: This package contains function for calculating final size for an SIR epidemic in a heterogenous population, given social contact matrix and demographic data
+Description: This package contains function for calculating final size for an SIR epidemic in a heterogenous population, given social contact matrix and demographic data.
 RoxygenNote: 7.2.1
 Encoding: UTF-8
 Suggests: 
@@ -11,3 +11,5 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 License: MIT + file LICENSE
+Remotes:
+    epiforecasts/socialmixr@b7afd50
