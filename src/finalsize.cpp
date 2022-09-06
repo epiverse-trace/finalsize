@@ -8,6 +8,16 @@
 //
 // [[Rcpp::depends(RcppEigen)]]
 
+inline Eigen::MatrixXd f1 (Eigen::MatrixXd &beta2, const Eigen::VectorXd &x) {
+    
+    Eigen::VectorXd x_ = ((Eigen::VectorXd::Ones(x.size()) - x)) + 
+        ((x.array().log()).matrix());
+    
+    for (size_t i = 0; i < beta2.rows(); i++)
+        beta2.row(i) = beta2.row(i) * x_[i];
+    
+    return beta2;
+}
 //' C++ backend to calculate final epidemic size.
 //'
 // [[Rcpp::export]]
