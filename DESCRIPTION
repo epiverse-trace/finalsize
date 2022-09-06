@@ -45,4 +45,8 @@ Remotes:
     epiforecasts/socialmixr
 Imports: 
     assertthat,
-    checkmate
+    checkmate,
+    Rcpp
+LinkingTo: 
+    Rcpp,
+    RcppEigen
