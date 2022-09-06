@@ -43,10 +43,10 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
     prop_suscep <- rep(1, length(demography_vector))
   } # Assume fully susceptible if no entry
 
-  checkmate::assert_number(r0, positive = TRUE)
+  checkmate::assert_number(r0, lower = 0.0, finite = TRUE)
   checkmate::assert_vector(demography_vector)
   checkmate::assert_matrix(contact_matrix)
-  checkmate::assert_number(prop_initial_infected)
+  checkmate::assert_numeric(prop_initial_infected)
 
   assertthat::assert_that(
     nrow(contact_matrix) == length(demography_vector),
