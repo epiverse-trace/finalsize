@@ -4,22 +4,59 @@
 \alias{final_size}
 \title{Calculate final epidemic size}
 \usage{
-final_size(r0 = 2, contact_matrix, demography_vector, prop_suscep = NULL)
+final_size(
+  r0 = 2,
+  contact_matrix,
+  demography_vector,
+  prop_initial_infected = 0.001,
+  prop_suscep = NULL
+)
 }
 \arguments{
 \item{r0}{Basic reproduction number. Default is 2}
 
-\item{contact_matrix}{Social contact matrix. Entry mm_ij gives average number of contacts in group i reported by participants in group j}
+\item{contact_matrix}{Social contact matrix. Entry $mm_{ij}$ gives average
+number of contacts in group $i$ reported by participants in group j}
 
-\item{demography_vector}{Demography vector. Entry pp_i gives proportion of total population in group i (model will normalise if needed)}
+\item{demography_vector}{Demography vector. Entry $pp_{i}$ gives proportion
+of total population in group $i$ (model will normalise if needed)}
 
-\item{prop_suscep}{Proportion of each group susceptible. Null assumption is fully susceptible}
+\item{prop_initial_infected}{Proportion of all age groups that is initially
+infected. May be a single number, or a vector of proportions infected.
+If a vector, must be the same length as the demography vector, otherwise the
+vector will be recycled. Default value is 0.001 for all groups.}
+
+\item{prop_suscep}{Proportion of each group susceptible. Null assumption is
+fully susceptible}
 }
 \description{
-This function calculates final epidemic size using SIR model for heterogeneously mixing population
+This function calculates final epidemic size using SIR model for
+heterogeneously mixing population
 }
 \examples{
-final_size()
+library(socialmixr)
+data(polymod)
+contact_data <- contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 20, 40)
+)
+# Define contact matrix (entry ij is contacts in group i reported by group j)
+c_matrix <- t(contact_data$matrix)
+# Define proportion in each age group
+d_vector <- contact_data$participants$proportion
+# Define proportion of age group that is susceptible to infection
+p_suscep <- c(1, 0.5, 0.5)
+r0 <- 2.0
+p_initial_infect <- 0.002
+
+# Run final size model
+final_size(r0,
+  contact_matrix = c_matrix,
+  prop_initial_infected = p_initial_infect,
+  demography_vector = d_vector, prop_suscep = p_suscep
+)
+
 }
 \keyword{epidemic}
 \keyword{model}
