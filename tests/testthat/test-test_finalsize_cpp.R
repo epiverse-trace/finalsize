@@ -4,12 +4,21 @@ test_that("Check basic final size function works", {
   contact_data <- socialmixr::contact_matrix(
     polymod,
     countries = "United Kingdom",
-    age.limits = c(0, 20, 40)
+    age.limits = c(0, 20, 40),
+    symmetric = T
   )
-  contact_matrix = contact_data$matrix
-  demography <- contact_data$participants$proportion
-  p_susceptibility <- matrix(1, 3, 3)
-  susceptibility <- matrix(1, 3, 3)
+
+  demography <- contact_data$demography$proportion
+
+  # Scale contact matrix to demography
+  contact_matrix <- apply(contact_data$matrix, 1, function(r) r/demography)
+  # This is needed to pass isSymmetric. Maybe isSymmetric does not work
+  # properly with named matrices?
+  # TODO: fix the function so that this is not needed any more
+  contact_matrix <- matrix(contact_matrix, ncol = 3)
+  testthat::expect_true(isSymmetric(contact_matrix))
+  p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
+  susceptibility <- matrix(1, ncol = 1, 3)
 
   epi_outcome <- final_size_cpp(
     contact_matrix = contact_matrix,
