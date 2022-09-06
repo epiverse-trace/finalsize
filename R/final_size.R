@@ -66,7 +66,7 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
   if (length(prop_initial_infected) > 1) {
     assertthat::assert_that(
       length(prop_initial_infected) == length(demography_vector),
-      msg = "vector of initial proportions infected needs to be same size
+      msg = "vector of prop_initial_infected needs to be same size
       as demography vector"
     )
     message(
