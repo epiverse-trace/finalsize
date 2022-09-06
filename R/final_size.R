@@ -46,7 +46,7 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
   checkmate::assert_number(r0, positive = TRUE)
   checkmate::assert_vector(demography_vector)
   checkmate::assert_matrix(contact_matrix)
-  checkmate::assert_atomic(prop_initial_infected)
+  checkmate::assert_number(prop_initial_infected)
 
   assertthat::assert_that(
     nrow(contact_matrix) == length(demography_vector),
