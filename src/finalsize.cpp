@@ -8,6 +8,7 @@
 //
 // [[Rcpp::depends(RcppEigen)]]
 
+/// function f1 defined in final_size.R
 inline Eigen::MatrixXd f1 (Eigen::MatrixXd &beta2, const Eigen::VectorXd &x) {
     
     Eigen::VectorXd x_ = ((Eigen::VectorXd::Ones(x.size()) - x)) + 
@@ -18,6 +19,23 @@ inline Eigen::MatrixXd f1 (Eigen::MatrixXd &beta2, const Eigen::VectorXd &x) {
     
     return beta2;
 }
+
+// f2 <- function(beta2, x, size) {
+//     -beta2 + diag(size) / x
+// inline Eigen::MatrixXd f2 (Eigen::MatrixXd &beta2, const Eigen::VectorXd &x,
+//     const Eigen::MatrixXd &size
+// ) {
+//     beta2 = beta2 * -1.0;
+
+//     Eigen::VectorXd x_ = ((Eigen::VectorXd::Ones(x.size()) - x)) + 
+//         ((x.array().log()).matrix());
+    
+//     for (size_t i = 0; i < beta2.rows(); i++)
+//         beta2.row(i) = beta2.row(i) * x_[i];
+    
+//     return beta2;
+// }
+
 //' C++ backend to calculate final epidemic size.
 //'
 // [[Rcpp::export]]
