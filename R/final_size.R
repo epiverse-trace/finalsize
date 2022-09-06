@@ -43,7 +43,7 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
     prop_suscep <- rep(1, length(demography_vector))
   } # Assume fully susceptible if no entry
 
-  checkmate::assert_count(r0)
+  checkmate::assert_number(r0, positive = TRUE)
   checkmate::assert_vector(demography_vector)
   checkmate::assert_matrix(contact_matrix)
   checkmate::assert_atomic(prop_initial_infected)
