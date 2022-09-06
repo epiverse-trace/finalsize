@@ -20,21 +20,27 @@ inline Eigen::MatrixXd f1 (Eigen::MatrixXd &beta2, const Eigen::VectorXd &x) {
     return beta2;
 }
 
+/// function f2 defined in final_size.R
 // f2 <- function(beta2, x, size) {
 //     -beta2 + diag(size) / x
-// inline Eigen::MatrixXd f2 (Eigen::MatrixXd &beta2, const Eigen::VectorXd &x,
-//     const Eigen::MatrixXd &size
-// ) {
-//     beta2 = beta2 * -1.0;
+inline Eigen::MatrixXd f2 (Eigen::MatrixXd &beta2, const Eigen::VectorXd &x,
+    const size_t &size
+) {
+    // make diagonal matrix of dims [size, size]
+    // size should be the number of age groups
+    Eigen::VectorXd v = Eigen::VectorXd::Ones(size);
+    Eigen::MatrixXd diag_size;
+    diag_size.resize(size, size);
+    diag_size.fill(0.0);
+    diag_size.diagonal() = v;
 
-//     Eigen::VectorXd x_ = ((Eigen::VectorXd::Ones(x.size()) - x)) + 
-//         ((x.array().log()).matrix());
+    // divide diagonal matrix of 1s by x
+    // x is the current proportion infected per age group
+    for (size_t i = 0; i < diag_size.rows(); i++)
+        diag_size.row(i) = diag_size.row(i) / x[i];
     
-//     for (size_t i = 0; i < beta2.rows(); i++)
-//         beta2.row(i) = beta2.row(i) * x_[i];
-    
-//     return beta2;
-// }
+    return -diag_size;
+}
 
 //' C++ backend to calculate final epidemic size.
 //'
