@@ -39,7 +39,7 @@ inline Eigen::MatrixXd f2 (Eigen::MatrixXd &beta2, const Eigen::VectorXd &x,
     for (size_t i = 0; i < diag_size.rows(); i++)
         diag_size.row(i) = diag_size.row(i) / x[i];
     
-    return -diag_size;
+    return -beta2 + diag_size;
 }
 
 //' C++ backend to calculate final epidemic size.
