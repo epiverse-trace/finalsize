@@ -3,6 +3,7 @@
 #include <Rcpp.h>
 #include <RcppEigen.h>
 
+// [[Rcpp::plugins(cpp11)]]
 // via the depends attribute we tell Rcpp to create hooks for
 // RcppEigen so that the build process will know what to do
 //
