@@ -47,7 +47,17 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
   # Check inputs
   if (is.null(prop_suscep)) {
     prop_suscep <- rep(1, length(demography_vector))
-  } # Assume fully susceptible if no entry
+  } else {
+    checkmate::assert_numeric(
+      prop_suscep,
+      lower = 0.0, upper = 1.0, finite = TRUE
+    )
+    if (length(prop_suscep) == 1L) {
+      prop_suscep <- rep(prop_suscep, length(demography_vector))
+    } else if (length(unique(prop_suscep)) > 1L) {
+      message("using different susceptibilities for each age group")
+    }
+  }
 
   checkmate::assert_number(r0, lower = 0.0, finite = TRUE)
   checkmate::assert_vector(demography_vector)
