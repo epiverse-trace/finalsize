@@ -2,6 +2,7 @@
 
 #include <Rcpp.h>
 #include <RcppEigen.h>
+#include <iostream>
 
 // [[Rcpp::plugins(cpp11)]]
 // via the depends attribute we tell Rcpp to create hooks for
