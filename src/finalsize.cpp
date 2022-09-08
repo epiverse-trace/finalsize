@@ -42,13 +42,33 @@ inline Eigen::MatrixXd f2 (Eigen::MatrixXd &beta2, const Eigen::VectorXd &x,
     return -beta2 + diag_size;
 }
 
-//' C++ backend to calculate final epidemic size.
+//' @title Calculate final epidemic size with RcppEigen backend
 //'
+//' @description This function calculates final epidemic size using SIR model 
+//' for a heterogeneously mixing population.
+//' 
+//' @param r0  Basic reproduction number.
+//' @param contact_matrix  Social contact matrix. Entry $mm_{ij}$ gives average
+//' number of contacts in group $i$ reported by participants in group j
+//' @param demography_vector  Demography vector. Entry $pp_{i}$ gives proportion
+//' of total population in group $i$ (model will normalise if needed)
+//' @param prop_initial_infected Proportion of all age groups that is initially
+//' infected. May be a single number, or a vector of proportions infected.
+//' If a vector, must be the same length as the demography vector, otherwise the
+//' vector will be recycled. Default value is 0.001 for all groups.
+//' @param prop_suscep  Proportion of each group susceptible. Null assumption is
+//' fully susceptible
+//' @param iterations Number of solver iterations
+//'
+//' @keywords epidemic model
+//' @export
 // [[Rcpp::export]]
-Rcpp::List final_size_cpp (const double &r0,
+Eigen::VectorXd final_size_cpp (const double &r0,
     const Eigen::MatrixXd &contact_matrix,
     const Eigen::VectorXd &demography_vector,
-    const double &prop_suscep
+    const Eigen::VectorXd &prop_initial_infected,
+    const double &prop_suscep,
+    const int iterations = 30
 ) {
     // scale demography vector
     Eigen::VectorXd pp0 = demography_vector / (demography_vector.sum());
@@ -79,15 +99,46 @@ Rcpp::List final_size_cpp (const double &r0,
     // get number of age groups
     const size_t v_size = pp0.size();
 
-    // define functions f1 and f2
+    // prepare timesteps as iterations matrix
+    // fill with -1.0
+    Eigen::MatrixXd iterate_output;
+    iterate_output.resize(static_cast<size_t>(iterations), v_size);
+    iterate_output.fill(-1.0);
+
+    // prepare initial infections vector
+    Eigen::VectorXd x0;
+    if(prop_initial_infected.size() == 1) {
+        x0 = prop_initial_infected[0] * pp0;
+    } else {
+        if(prop_initial_infected.size() != pp0.size()) {
+            Rcpp::stop("Error: prop_initial_infection must be same size as demography vector\n");
+        }
+        Rcpp::Rcout << "multiple prop_initial_infected\n";
+
+        x0 = prop_initial_infected.array() * pp0.array();
+    }
+
+    // iterate over timesteps
+    iterate_output.row(0) = x0; // initial proportion infected
+
+    // holding vector for dx, the change in infection proportions
+    Eigen::MatrixXd dx;
+    // update the size of the current outbreak
+    // take the 1st (0) column of dx, as all cols per row are same
+    // iterate_output.row(i) = iterate_output.row(i - 1) + dx.col(0).array();
+    // starting at second row
+    for (size_t i = 1; i < static_cast<size_t>(iterations); i++)
+    {
+        Eigen::MatrixXd f2_m = f2(beta2, iterate_output.row(i - 1), v_size);
+        Eigen::MatrixXd f1_m = -f1(beta2, iterate_output.row(i - 1));
+        dx = f2_m.partialPivLu().solve(f1_m);
+        // crude iteration-and-column wise addition
+        for (size_t j = 0; j < iterate_output.cols(); j++)
+        {
+            iterate_output(i, j) = iterate_output(i - 1, j) + dx.col(0)[j];
+        }
+    }
     
-    return Rcpp::List::create(
-        pp0,
-        mm0,
-        prop_suscep,
-        beta1,
-        beta2,
-        v_size,
-        f1 (beta2, pp0)
-    );
+    // return 1 - (vector of final proportions of each age group infected)
+    return (1.0 - (iterate_output.row(iterate_output.rows() - 1)).array());
 }
