@@ -1,3 +1,17 @@
+# Calculates the upper limit of final size given the r0
+# The upper limit is given by a well mixed population
+upper_limit <- function(r0) {
+  f <- function(par) {
+    abs(1 - exp(-r0 * par[1]) - par[1])
+  }
+  opt <- optim(
+    par = c(0.5), fn = f,
+    lower = c(0), upper = c(1),
+    method = "Brent"
+  )
+  opt
+}
+
 test_that("Final size calculations are correct", {
   polymod <- socialmixr::polymod
   contact_data <- socialmixr::contact_matrix(
