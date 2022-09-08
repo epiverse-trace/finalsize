@@ -9,7 +9,10 @@
 // [[Rcpp::depends(RcppEigen)]]
 
 /// function f1 defined in final_size.R
-inline Eigen::MatrixXd f1 (Eigen::MatrixXd &beta2, const Eigen::VectorXd &x) {
+// f1 <- function(beta2, x) {
+//     beta2 %*% (1 - x) + log(x)
+//   }
+inline Eigen::MatrixXd f1 (Eigen::MatrixXd beta2, const Eigen::VectorXd x) {
     
     Eigen::VectorXd x_ = ((Eigen::VectorXd::Ones(x.size()) - x)) + 
         ((x.array().log()).matrix());
@@ -23,7 +26,8 @@ inline Eigen::MatrixXd f1 (Eigen::MatrixXd &beta2, const Eigen::VectorXd &x) {
 /// function f2 defined in final_size.R
 // f2 <- function(beta2, x, size) {
 //     -beta2 + diag(size) / x
-inline Eigen::MatrixXd f2 (Eigen::MatrixXd &beta2, const Eigen::VectorXd &x,
+//   }
+inline Eigen::MatrixXd f2 (Eigen::MatrixXd beta2, const Eigen::VectorXd x,
     const size_t &size
 ) {
     // make diagonal matrix of dims [size, size]
