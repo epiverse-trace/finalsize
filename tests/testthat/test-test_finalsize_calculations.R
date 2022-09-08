@@ -102,3 +102,36 @@ test_that("Check basic final size calculation works", {
   testthat::expect_true(all(epi_final_size_low < epi_final_size))
   testthat::expect_true(all(epi_final_size_low >= 0))
 })
+
+test_that("Check final size when one age group is not susceptible", {
+  polymod <- socialmixr::polymod
+  contact_data <- socialmixr::contact_matrix(
+    polymod,
+    countries = "United Kingdom",
+    age.limits = c(0, 20, 40)
+  )
+
+  c_matrix <- t(contact_data$matrix)
+  d_vector <- contact_data$participants$proportion
+  p_suscep <- c(1, 1, 0)
+  r0_value <- 2.9
+
+  epi_final_size <- final_size(
+    r0 = r0_value,
+    contact_matrix = c_matrix,
+    demography = d_vector,
+    prop_suscep = p_suscep
+  )
+
+  testthat::expect_identical(
+    length(p_suscep), length(epi_final_size)
+  )
+
+  testthat::expect_true(all(epi_final_size[p_suscep != 0] > 0))
+  testthat::expect_true(epi_final_size[p_suscep == 0] == 0)
+
+  pi <- sum(epi_final_size * d_vector) / sum(d_vector)
+  max_pi <- upper_limit(r0_value)
+  testthat::expect_equal(max_pi$convergence, 0)
+  testthat::expect_lte(pi, max_pi$par)
+})
