@@ -124,16 +124,16 @@ Eigen::VectorXd final_size_cpp (const double &r0,
     // iterate over timesteps
     iterate_output.row(0) = x0; // initial proportion infected
 
-    // holding vector for dx, the change in infection proportions
-    Eigen::MatrixXd dx;
+    // holding matrix (vec) for dx, the change in infection proportions
+    Eigen::MatrixXd f1_m, f2_m, dx;
     // update the size of the current outbreak
     // take the 1st (0) column of dx, as all cols per row are same
     // iterate_output.row(i) = iterate_output.row(i - 1) + dx.col(0).array();
     // starting at second row
     for (size_t i = 1; i < static_cast<size_t>(iterations); i++)
     {
-        Eigen::MatrixXd f2_m = f2(beta2, iterate_output.row(i - 1), v_size);
-        Eigen::MatrixXd f1_m = -f1(beta2, iterate_output.row(i - 1));
+        f2_m = f2(beta2, iterate_output.row(i - 1), v_size);
+        f1_m = -f1(beta2, iterate_output.row(i - 1));
         dx = f2_m.partialPivLu().solve(f1_m);
         // crude iteration-and-column wise addition
         for (size_t j = 0; j < iterate_output.cols(); j++)
