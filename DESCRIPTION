@@ -38,7 +38,8 @@ Encoding: UTF-8
 Suggests: 
     covr,
     socialmixr,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    xml2
 Config/testthat/edition: 3
 License: MIT + file LICENSE
 Remotes:
@@ -50,4 +51,5 @@ Imports:
     RcppEigen
 LinkingTo: 
     Rcpp,
-    RcppEigen
+    RcppEigen,
+    testthat
