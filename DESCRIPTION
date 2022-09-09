@@ -46,7 +46,8 @@ Remotes:
 Imports: 
     assertthat,
     checkmate,
-    Rcpp
+    Rcpp,
+    RcppEigen
 LinkingTo: 
     Rcpp,
     RcppEigen
