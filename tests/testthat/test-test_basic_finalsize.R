@@ -76,7 +76,7 @@ test_that("Check failure for unequal contact matrix and demography", {
   )
   c_matrix <- t(contact_data$matrix)
   d_vector <- c(0.5, 0.5) # manually created
-  p_suscep <- c(1, 1, 1)
+  p_suscep <- 1.0
   p_initial_infections <- c(0.1, 0.5, 0.5)
 
   testthat::expect_error(
