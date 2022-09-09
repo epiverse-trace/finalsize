@@ -3,6 +3,7 @@
 #include <Rcpp.h>
 #include <RcppEigen.h>
 #include <iostream>
+#include "finalsize.hpp"
 
 // [[Rcpp::plugins(cpp11)]]
 // via the depends attribute we tell Rcpp to create hooks for
