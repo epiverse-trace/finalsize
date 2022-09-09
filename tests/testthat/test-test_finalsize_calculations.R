@@ -135,3 +135,26 @@ test_that("Check final size when one age group is not susceptible", {
   testthat::expect_equal(max_pi$convergence, 0)
   testthat::expect_lte(pi, max_pi$par)
 })
+
+test_that("Check that isolated age groups are not infected", {
+  c_matrix <- matrix(0.2, 3, 3)
+
+  isolated_grp <- 3L
+  c_matrix[, isolated_grp] <- 0.0
+  c_matrix[isolated_grp, ] <- 0.0
+
+  d_vector <- c(0.2, 0.5, 0.2)
+  p_suscep <- 1.0
+  r0_value <- 3.0
+
+  epi_final_size <- final_size(
+    r0 = r0_value,
+    contact_matrix = c_matrix,
+    demography_vector = d_vector,
+    prop_suscep = p_suscep
+  )
+
+  testthat::expect_identical(
+    epi_final_size[isolated_grp], 0.0
+  )
+})
