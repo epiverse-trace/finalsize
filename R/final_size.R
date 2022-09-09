@@ -44,23 +44,33 @@ final_size <- function(r0 = 2, contact_matrix, demography_vector,
                        prop_initial_infected = 0.001,
                        prop_suscep = NULL) {
 
-  # Check inputs
+  # Check prop_suscep length
   if (is.null(prop_suscep)) {
-    prop_suscep <- rep(1, length(demography_vector))
-  } # Assume fully susceptible if no entry
+    prop_suscep <- 1.0
+  } else {
+    checkmate::assert_numeric(
+      prop_suscep,
+      lower = 0.0, upper = 1.0, finite = TRUE
+    )
+    if (length(prop_suscep) > 1L) {
+      assertthat::assert_that(
+        length(demography_vector) == length(prop_suscep),
+        msg = "demography vector needs to be same size as susceptibility vector"
+      )
 
-  checkmate::assert_number(r0, lower = 0.0, finite = TRUE)
-  checkmate::assert_vector(demography_vector)
+      if (length(unique(prop_suscep)) > 1L) {
+        message("using different susceptibilities for each age group")
+      }
+    }
+  }
+  checkmate::assert_number(r0, lower = 1.0, finite = TRUE)
+  checkmate::assert_numeric(demography_vector, lower = 0.0)
   checkmate::assert_matrix(contact_matrix)
-  checkmate::assert_numeric(prop_initial_infected)
+  checkmate::assert_numeric(prop_initial_infected, lower = 0.0, upper = 1.0)
 
   assertthat::assert_that(
     nrow(contact_matrix) == length(demography_vector),
     msg = "demography vector needs to be same size as contact matrix"
-  )
-  assertthat::assert_that(
-    length(demography_vector) == length(prop_suscep),
-    msg = "demography vector needs to be same size as susceptibility vector"
   )
 
   if (length(prop_initial_infected) > 1) {
