@@ -25,8 +25,9 @@
 //' infected. May be a single number, or a vector of proportions infected.
 //' If a vector, must be the same length as the demography vector, otherwise the
 //' vector will be recycled. Default value is 0.001 for all groups.
-//' @param prop_suscep  Proportion of each group susceptible. Null assumption is
-//' fully susceptible
+//' @param prop_suscep  Proportion of each group susceptible. May be a single
+//' numeric value or a numeric vector of the same length as the demography
+//' vector.
 //' @param iterations Number of solver iterations
 //'
 //' @keywords epidemic model
@@ -36,9 +37,16 @@ Eigen::VectorXd final_size_cpp (const double &r0,
     const Eigen::MatrixXd &contact_matrix,
     const Eigen::VectorXd &demography_vector,
     const Eigen::VectorXd &prop_initial_infected,
-    const double &prop_suscep,
+    Eigen::VectorXd &prop_suscep,
     const int iterations = 30
 ) {
+    if (prop_suscep.size() == 1) {
+        prop_suscep.resize(demography_vector.size());
+        prop_suscep.fill(prop_suscep[0]);
+    } else if (prop_suscep.size() != demography_vector.size()) {
+        Rcpp::stop("Error: prop_suscep must be same size as demography vector");
+    }
+
     // scale demography vector
     Eigen::VectorXd pp0 = demography_vector / (demography_vector.sum());
 
@@ -50,12 +58,12 @@ Eigen::VectorXd final_size_cpp (const double &r0,
     Eigen::MatrixXd mm0 = r0 * (contact_matrix / eig_val_max);
     
     // define transmission matrix A = mm_{ij} * pp_{j} / pp_{i}
-    Eigen::MatrixXd beta1 = (mm0 * prop_suscep).array();
+    Eigen::MatrixXd beta1 = mm0.array();
     // rowwise division by age group proportion
     // this is vectorised in final_size.R
     // with demography vector recycled over columns; i.e., age 1 * row 1 etc.
     for (size_t i = 0; i < beta1.rows(); i++)
-        beta1.row(i) = beta1.row(i) / pp0[i];
+        beta1.row(i) = beta1.row(i) * prop_suscep[i] / pp0[i];
 
     Eigen::MatrixXd beta2 = beta1.transpose();
     // rowwise multiplication with corresponding age group proportion
