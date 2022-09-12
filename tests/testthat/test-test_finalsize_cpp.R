@@ -43,7 +43,7 @@ test_that("Check final_size_cpp with Polymod data", {
   p_suscep <- c(1, 1, 1)
   p_initial_infections <- 0.0015
 
-  epi_final_size <- final_size(
+  epi_final_size <- final_size_cpp(
     r0 = 2,
     contact_matrix = c_matrix,
     demography_vector = d_vector,
