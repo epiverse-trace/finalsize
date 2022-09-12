@@ -41,8 +41,10 @@ Eigen::VectorXd final_size_cpp (const double &r0,
     const int iterations = 30
 ) {
     if (prop_suscep.size() == 1) {
-        prop_suscep.resize(demography_vector.size());
-        prop_suscep.fill(prop_suscep[0]);
+        const double prop_suscep_ = prop_suscep[0];
+        prop_suscep.resize(demography_vector.size(), 1);
+        prop_suscep.fill(prop_suscep_);
+        Rcpp::Rcout << "prop_suscep = " << prop_suscep << "\n";
     } else if (prop_suscep.size() != demography_vector.size()) {
         Rcpp::stop("Error: prop_suscep must be same size as demography vector");
     }
