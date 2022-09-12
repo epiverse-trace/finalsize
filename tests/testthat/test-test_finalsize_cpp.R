@@ -109,6 +109,9 @@ test_that("Check final_size_cpp calculation works", {
   p_suscep <- c(1.0, 1.0, 1.0)
   p_initial_infections <- c(0.0015)
 
+  p_initial_infections_wrong <- c(0.01, 0.01, 0.01)
+  p_suscep_correct <- 0.01
+
   # basic tests for output
   testthat::expect_error(
     final_size_cpp(
@@ -119,5 +122,17 @@ test_that("Check final_size_cpp calculation works", {
       prop_suscep = p_suscep
     ),
     regexp = "Error: prop_suscep must be same size as demography vector"
+  )
+
+  # basic tests for output
+  testthat::expect_error(
+    final_size_cpp(
+      r0 = 1.3,
+      contact_matrix = c_matrix,
+      demography_vector = d_vector,
+      prop_initial_infected = p_initial_infections_wrong,
+      prop_suscep = p_suscep_correct
+    ),
+    regexp = "Error: prop_initial_infection must be same size as demography"
   )
 })
