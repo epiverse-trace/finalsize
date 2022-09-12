@@ -15,8 +15,9 @@
 #' infected. May be a single number, or a vector of proportions infected.
 #' If a vector, must be the same length as the demography vector, otherwise the
 #' vector will be recycled. Default value is 0.001 for all groups.
-#' @param prop_suscep  Proportion of each group susceptible. Null assumption is
-#' fully susceptible
+#' @param prop_suscep  Proportion of each group susceptible. May be a single
+#' numeric value or a numeric vector of the same length as the demography
+#' vector.
 #' @param iterations Number of solver iterations
 #'
 #' @keywords epidemic model
