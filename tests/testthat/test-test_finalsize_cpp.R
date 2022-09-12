@@ -80,11 +80,11 @@ test_that("Check final_size_cpp r0 values increase final size", {
   p_suscep <- c(1.0, 1.0)
   p_initial_infections <- c(0.0015)
 
-  r0_high = 3.0
-  r0_low = 1.1
-  
+  r0_high <- 3.0
+  r0_low <- 1.1
+
   # basic tests for output
-  final_sizes = lapply(
+  final_sizes <- lapply(
     list(r0_high, r0_low),
     function(r0_) {
       final_size_cpp(
