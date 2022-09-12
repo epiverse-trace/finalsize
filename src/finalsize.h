@@ -1,5 +1,7 @@
 #pragma once
 
+// [[Rcpp::depends(RcppEigen)]]
+
 /// function f1 defined in final_size.R
 // f1 <- function(beta2, x) {
 //     beta2 %*% (1 - x) + log(x)
