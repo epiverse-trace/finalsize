@@ -1,2 +1,2 @@
-
-PKG_CPPFLAGS = -w -std=c++11 -I../inst/include/ -O3
+PKG_CXXFLAGS = -w -I../inst/include
+USE_CXX1X = true
