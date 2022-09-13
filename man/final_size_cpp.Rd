@@ -34,7 +34,7 @@ vector.}
 \item{iterations}{Number of solver iterations}
 }
 \description{
-This function calculates final epidemic size using SIR model 
+This function calculates final epidemic size using SIR model
 for a heterogeneously mixing population.
 }
 \keyword{epidemic}
