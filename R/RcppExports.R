@@ -3,9 +3,9 @@
 
 #' @title Calculate final epidemic size with RcppEigen backend
 #'
-#' @description This function calculates final epidemic size using SIR model 
+#' @description This function calculates final epidemic size using SIR model
 #' for a heterogeneously mixing population.
-#' 
+#'
 #' @param r0  Basic reproduction number.
 #' @param contact_matrix  Social contact matrix. Entry $mm_{ij}$ gives average
 #' number of contacts in group $i$ reported by participants in group j

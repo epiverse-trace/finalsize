@@ -16,7 +16,7 @@ Eigen::VectorXd final_size_cpp(const double& r0,
                                const Eigen::MatrixXd& contact_matrix,
                                const Eigen::VectorXd& demography_vector,
                                const Eigen::VectorXd& prop_initial_infected,
-                               Eigen::VectorXd& prop_suscep,
+                               Eigen::VectorXd prop_suscep,
                                const int iterations);
 RcppExport SEXP _finalsize_final_size_cpp(SEXP r0SEXP, SEXP contact_matrixSEXP,
                                           SEXP demography_vectorSEXP,
@@ -33,7 +33,7 @@ RcppExport SEXP _finalsize_final_size_cpp(SEXP r0SEXP, SEXP contact_matrixSEXP,
       demography_vectorSEXP);
   Rcpp::traits::input_parameter<const Eigen::VectorXd&>::type
       prop_initial_infected(prop_initial_infectedSEXP);
-  Rcpp::traits::input_parameter<Eigen::VectorXd&>::type prop_suscep(
+  Rcpp::traits::input_parameter<Eigen::VectorXd>::type prop_suscep(
       prop_suscepSEXP);
   Rcpp::traits::input_parameter<const int>::type iterations(iterationsSEXP);
   rcpp_result_gen = Rcpp::wrap(
