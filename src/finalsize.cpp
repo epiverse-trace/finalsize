@@ -1,5 +1,3 @@
-#pragma once
-
 #include "finalsize.h"
 
 #include <Rcpp.h>
