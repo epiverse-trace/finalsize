@@ -45,7 +45,6 @@ License: MIT + file LICENSE
 Remotes:
     epiforecasts/socialmixr
 Imports: 
-    assertthat,
     checkmate,
     Rcpp,
     RcppEigen
