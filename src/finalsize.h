@@ -1,4 +1,8 @@
-#pragma once
+#ifndef FINALSIZE_H
+#define FINALSIZE_H
+
+#include <Rcpp.h>
+#include <RcppEigen.h>
 
 // [[Rcpp::depends(RcppEigen)]]
 
@@ -34,3 +38,5 @@ inline Eigen::MatrixXd f2(Eigen::MatrixXd beta2, const Eigen::VectorXd x,
 
   return -beta2 + diag_size;
 }
+
+#endif
