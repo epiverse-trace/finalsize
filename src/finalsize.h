@@ -39,9 +39,21 @@ inline Eigen::MatrixXd f2(Eigen::MatrixXd beta2, const Eigen::VectorXd x,
   return -beta2 + diag_size;
 }
 
+/// function to normalise the demography vector
+inline Eigen::VectorXd normalise_demography (const Eigen::VectorXd &demography_vector) {
+  return demography_vector / (demography_vector.sum());
+}
+
+/// function to get largest real eigenvalue
+inline double get_max_real_eigenvalue (const Eigen::MatrixXd &a_matrix) {
+  Eigen::EigenSolver<Eigen::MatrixXd> es(a_matrix, false);
+  Eigen::MatrixXd eig_vals = es.eigenvalues().real();
+  return eig_vals.maxCoeff();
+}
+
 /// A function for epidemic spread with susceptibility groups
 // taken from Edwin van Leeuwen at https://gitlab.com/epidemics-r/code_snippets/feature/newton_solver/include/finalsize.hpp
-Rcpp::List epi_spread(const Eigen::MatrixXd &contact_matrix,
+inline Rcpp::List epi_spread(const Eigen::MatrixXd &contact_matrix,
                       const Eigen::VectorXd &demography_vector,
                       const Eigen::MatrixXd &p_susceptibility, // risk groups
                       const Eigen::MatrixXd &susceptibility // susc of risk grp?
