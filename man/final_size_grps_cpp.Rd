@@ -8,7 +8,10 @@ final_size_grps_cpp(
   contact_matrix,
   demography_vector,
   p_susceptibility,
-  susceptibility
+  susceptibility,
+  iterations = 1000L,
+  adapt_step = TRUE,
+  tolerance = 1e-06
 )
 }
 \arguments{
@@ -21,6 +24,12 @@ of total population in group $i$ (model will normalise if needed)}
 \item{p_susceptibility}{WIP.}
 
 \item{susceptibility}{WIP.}
+
+\item{iterations}{WIP.}
+
+\item{adapt_step}{WIP}
+
+\item{tolerance}{WIP.}
 }
 \description{
 This function calculates final epidemic size using SIR model
