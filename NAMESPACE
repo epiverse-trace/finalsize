@@ -2,7 +2,7 @@
 
 export(final_size)
 export(final_size_cpp)
-exportPattern("^[[:alpha:]]+")
+export(final_size_grps_cpp)
 import(RcppEigen)
 importFrom(Rcpp,evalCpp)
 useDynLib(finalsize)
