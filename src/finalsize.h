@@ -44,12 +44,13 @@ inline Eigen::MatrixXd f2(Eigen::MatrixXd beta2, const Eigen::VectorXd x,
 }
 
 /// function to normalise the demography vector
-inline Eigen::VectorXd normalise_demography (const Eigen::VectorXd &demography_vector) {
+inline Eigen::VectorXd normalise_demography(
+    const Eigen::VectorXd &demography_vector) {
   return demography_vector / (demography_vector.sum());
 }
 
 /// function to get largest real eigenvalue
-inline double get_max_real_eigenvalue (const Eigen::MatrixXd &a_matrix) {
+inline double get_max_real_eigenvalue(const Eigen::MatrixXd &a_matrix) {
   Eigen::EigenSolver<Eigen::MatrixXd> es(a_matrix, false);
   Eigen::MatrixXd eig_vals = es.eigenvalues().real();
   return eig_vals.maxCoeff();
