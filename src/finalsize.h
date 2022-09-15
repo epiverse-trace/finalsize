@@ -197,6 +197,31 @@ inline Eigen::ArrayXd solve_final_size_newton(
   return pi;
 }
 
+/// function to solve final size by susceptibility
+// taken from Edwin van Leeuwen at
+// // https://gitlab.com/epidemics-r/code_snippets/feature/newton_solver/include/finalsize.hpp
+inline auto solve_final_size_by_susceptibility(
+    const Eigen::MatrixXd &contact_matrix,
+    const Eigen::VectorXd &demography_vector,
+    const Eigen::MatrixXd &p_susceptibility,
+    const Eigen::MatrixXd &susceptibility) {
+  epi_spread_data s = epi_spread(contact_matrix, demography_vector,
+                                 p_susceptibility, susceptibility);
+
+  Eigen::ArrayXd pi =
+      solve_final_size_newton(s.contact_matrix, s.demography_vector,
+                              s.p_susceptibility, s.susceptibility);
+
+  Eigen::Map<Eigen::MatrixXd> pi_2(pi.data(), demography_vector.size(),
+                                   p_susceptibility.cols());
+
+  Eigen::MatrixXd psusc = p_susceptibility;
+  Eigen::Map<Eigen::MatrixXd> lps(psusc.data(), psusc.size(), 1);
+  Eigen::VectorXd v = pi_2.array() * lps.array();
+  Eigen::Map<Eigen::MatrixXd> pi_3(v.data(), demography_vector.rows(),
+                                   p_susceptibility.cols());
+
+  return pi_3;
 }
 
 #endif
