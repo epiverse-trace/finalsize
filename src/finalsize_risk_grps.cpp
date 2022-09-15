@@ -11,14 +11,12 @@
 //' @description This function calculates final epidemic size using SIR model
 //' for a heterogeneously mixing population, with risk groups
 //'
-//' @param r0  Basic reproduction number.
 //' @param contact_matrix  Social contact matrix. Entry $mm_{ij}$ gives average
 //' number of contacts in group $i$ reported by participants in group j
 //' @param demography_vector  Demography vector. Entry $pp_{i}$ gives proportion
 //' of total population in group $i$ (model will normalise if needed)
 //' @param p_susceptibility WIP.
 //' @param susceptibility WIP.
-//' @param iterations Number of solver iterations
 //'
 //' @keywords epidemic model
 //' @export
