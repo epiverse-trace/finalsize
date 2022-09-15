@@ -110,6 +110,93 @@ inline epi_spread_data epi_spread(
 
   return tmp_data;
 }
+
+/// function for Newton solver
+// taken from Edwin van Leeuwen at
+// https://gitlab.com/epidemics-r/code_snippets/feature/newton_solver/include/finalsize.hpp
+inline Eigen::ArrayXd solve_final_size_newton(
+    const Eigen::MatrixXd &contact_matrix,
+    const Eigen::VectorXd &demography_vector,
+    const Eigen::MatrixXd &p_susceptibility,
+    const Eigen::MatrixXd &susceptibility, const bool adapt_step = true,
+    const double tolerance = 1e-6) {
+  // generate epi spread object
+  epi_spread_data s = epi_spread(contact_matrix, demography_vector,
+                                 p_susceptibility, susceptibility);
+
+  size_t nDim = demography_vector.size();
+
+  Eigen::ArrayXi zeros;  // previously in the settings struct
+  zeros.resize(nDim);
+  zeros.fill(0);
+
+  Eigen::ArrayXd pi;  // prev in settings struct
+  if (pi.size() != nDim) {
+    pi.resize(nDim);
+    pi.fill(0.5);
+  }
+
+  Eigen::MatrixXd contact_matrixM = contact_matrix;
+  for (size_t i = 0; i < contact_matrix.rows(); ++i) {
+    // Check if value should be 0 for (limited) performance increase
+    if (demography_vector(i) == 0 || susceptibility(i) == 0 ||
+        contact_matrix.row(i).sum() == 0) {
+      zeros[i] = 1;
+      pi[i] = 0;
+    }
+    for (size_t j = 0; j < contact_matrix.cols(); ++j) {
+      if (zeros[j] == 1) {
+        contact_matrixM(i, j) = 0;
+      } else {
+        // Scale contacts appropriately
+        // Could add transmissibility (j)?
+        contact_matrixM(i, j) =
+            susceptibility(i) * contact_matrix(i, j) * demography_vector(j);
+      }
+    }
+  }
+
+  Eigen::VectorXd cache_v = pi;
+  auto f1 = [&contact_matrixM](const Eigen::VectorXd &x,
+                               Eigen::VectorXd &&cache) {
+    cache =
+        contact_matrixM * (1 - x.array()).matrix() + x.array().log().matrix();
+    return std::move(cache);
+  };
+
+  Eigen::MatrixXd cache_m = contact_matrixM;
+  auto f2 = [&contact_matrixM](const Eigen::VectorXd &x,
+                               Eigen::MatrixXd &&cache) {
+    cache = (1.0 / x.array()).matrix().asDiagonal();
+    cache = -contact_matrixM + std::move(cache);
+    return std::move(cache);
+  };
+
+  auto dx_f = [&f1, &f2](const Eigen::VectorXd &x, Eigen::VectorXd &&cache,
+                         Eigen::MatrixXd &&cache_m) {
+    cache_m = f2(x, std::move(cache_m));
+    cache = -f1(x, std::move(cache));
+    cache = cache_m.partialPivLu().solve(std::move(cache));
+    return std::move(cache);
+  };
+
+  Eigen::VectorXd x = (1 - pi);
+  for (auto i = 0; i < 1000; ++i) {
+    cache_v = dx_f(x, std::move(cache_v), std::move(cache_m)).array();
+
+    double error = cache_v.array().abs().sum();
+    x += std::move(cache_v);
+    if (error < tolerance) {
+      // std::cout << "Iter: " << i << " " << error << std::endl;
+      break;
+    }
+  }
+
+  pi = 1 - x.array();
+
+  return pi;
+}
+
 }
 
 #endif
