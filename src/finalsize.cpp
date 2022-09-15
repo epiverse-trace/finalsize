@@ -50,11 +50,8 @@ Eigen::VectorXd final_size_cpp(const double &r0,
   // scale demography vector
   Eigen::VectorXd pp0 = normalise_demography(demography_vector);
 
-  // largest real eigenvalue of the contact matrix
-  double eig_val_max = get_max_real_eigenvalue(contact_matrix);
-  
   // scale the next generation matrix for max eigenvalue = r0
-  Eigen::MatrixXd mm0 = r0 * (contact_matrix / eig_val_max);
+  Eigen::MatrixXd mm0 = scale_nextgen_matrix(r0, contact_matrix);
 
   // define transmission matrix A = mm_{ij} * pp_{j} / pp_{i}
   Eigen::MatrixXd beta1 = mm0.array();
