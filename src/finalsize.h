@@ -56,6 +56,11 @@ inline double get_max_real_eigenvalue(const Eigen::MatrixXd &a_matrix) {
   return eig_vals.maxCoeff();
 }
 
+inline Eigen::MatrixXd scale_nextgen_matrix(
+    const double &r0, const Eigen::MatrixXd &contact_matrix) {
+  const double max_real_eigv = get_max_real_eigenvalue(contact_matrix);
+  return r0 * (contact_matrix / max_real_eigv);
+}
 /// A function for epidemic spread with susceptibility groups
 // taken from Edwin van Leeuwen at https://gitlab.com/epidemics-r/code_snippets/feature/newton_solver/include/finalsize.hpp
 inline Rcpp::List epi_spread(const Eigen::MatrixXd &contact_matrix,
