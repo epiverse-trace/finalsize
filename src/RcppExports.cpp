@@ -42,11 +42,38 @@ RcppExport SEXP _finalsize_final_size_cpp(SEXP r0SEXP, SEXP contact_matrixSEXP,
   return rcpp_result_gen;
   END_RCPP
 }
+// final_size_grps_cpp
+Eigen::ArrayXd final_size_grps_cpp(const Eigen::MatrixXd& contact_matrix,
+                                   const Eigen::VectorXd& demography_vector,
+                                   const Eigen::MatrixXd& p_susceptibility,
+                                   const Eigen::MatrixXd& susceptibility);
+RcppExport SEXP _finalsize_final_size_grps_cpp(SEXP contact_matrixSEXP,
+                                               SEXP demography_vectorSEXP,
+                                               SEXP p_susceptibilitySEXP,
+                                               SEXP susceptibilitySEXP) {
+  BEGIN_RCPP
+  Rcpp::RObject rcpp_result_gen;
+  Rcpp::RNGScope rcpp_rngScope_gen;
+  Rcpp::traits::input_parameter<const Eigen::MatrixXd&>::type contact_matrix(
+      contact_matrixSEXP);
+  Rcpp::traits::input_parameter<const Eigen::VectorXd&>::type demography_vector(
+      demography_vectorSEXP);
+  Rcpp::traits::input_parameter<const Eigen::MatrixXd&>::type p_susceptibility(
+      p_susceptibilitySEXP);
+  Rcpp::traits::input_parameter<const Eigen::MatrixXd&>::type susceptibility(
+      susceptibilitySEXP);
+  rcpp_result_gen = Rcpp::wrap(final_size_grps_cpp(
+      contact_matrix, demography_vector, p_susceptibility, susceptibility));
+  return rcpp_result_gen;
+  END_RCPP
+}
 
 RcppExport SEXP run_testthat_tests(SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_finalsize_final_size_cpp", (DL_FUNC)&_finalsize_final_size_cpp, 6},
+    {"_finalsize_final_size_grps_cpp", (DL_FUNC)&_finalsize_final_size_grps_cpp,
+     4},
     {"run_testthat_tests", (DL_FUNC)&run_testthat_tests, 1},
     {NULL, NULL, 0}};
 
