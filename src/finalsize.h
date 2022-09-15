@@ -56,11 +56,13 @@ inline double get_max_real_eigenvalue(const Eigen::MatrixXd &a_matrix) {
   return eig_vals.maxCoeff();
 }
 
+/// function to scale next generation matrix
 inline Eigen::MatrixXd scale_nextgen_matrix(
     const double &r0, const Eigen::MatrixXd &contact_matrix) {
   const double max_real_eigv = get_max_real_eigenvalue(contact_matrix);
   return r0 * (contact_matrix / max_real_eigv);
 }
+
 /// a struct to hold intermediate outputs
 struct epi_spread_data {
   Eigen::MatrixXd contact_matrix;
