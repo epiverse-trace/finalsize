@@ -4,6 +4,8 @@
 #include <Rcpp.h>
 #include <RcppEigen.h>
 
+#include "helper_funs.h"
+
 // [[Rcpp::plugins(cpp11)]]
 // via the depends attribute we tell Rcpp to create hooks for
 // RcppEigen so that the build process will know what to do
@@ -11,6 +13,8 @@
 // [[Rcpp::depends(RcppEigen)]]
 
 /// a struct to hold intermediate outputs
+// taken from Edwin van Leeuwen at
+// https://gitlab.com/epidemics-r/code_snippets/feature/newton_solver/include/finalsize.hpp
 struct epi_spread_data {
   Eigen::MatrixXd contact_matrix;
   Eigen::VectorXd demography_vector;
@@ -42,10 +46,8 @@ inline epi_spread_data epi_spread(
     const Eigen::MatrixXd &p_susceptibility,  // risk groups
     const Eigen::MatrixXd &susceptibility     // susc of risk grp?
 ) {
-  // WIP check dimensions
-
   // count number of risk groups
-  auto n_susc_groups = p_susceptibility.cols();
+  const int n_susc_groups = p_susceptibility.cols();
   Eigen::MatrixXd p_susceptibility_ =
       Eigen::MatrixXd::Ones(p_susceptibility.size(), 1);
 
@@ -82,8 +84,9 @@ inline Eigen::ArrayXd solve_final_size_newton(
     const Eigen::MatrixXd &contact_matrix,
     const Eigen::VectorXd &demography_vector,
     const Eigen::MatrixXd &p_susceptibility,
-    const Eigen::MatrixXd &susceptibility, const bool adapt_step = true,
-    const double tolerance = 1e-6) {
+    const Eigen::MatrixXd &susceptibility, 
+    const int iterations = 1000,
+    const bool adapt_step = true, const double tolerance = 1e-6) {
   // generate epi spread object
   epi_spread_data s = epi_spread(contact_matrix, demography_vector,
                                  p_susceptibility, susceptibility);
@@ -145,7 +148,7 @@ inline Eigen::ArrayXd solve_final_size_newton(
   };
 
   Eigen::VectorXd x = (1 - pi);
-  for (auto i = 0; i < 1000; ++i) {
+  for (auto i = 0; i < iterations; ++i) {
     cache_v = dx_f(x, std::move(cache_v), std::move(cache_m)).array();
 
     double error = cache_v.array().abs().sum();
@@ -163,12 +166,14 @@ inline Eigen::ArrayXd solve_final_size_newton(
 
 /// function to solve final size by susceptibility
 // taken from Edwin van Leeuwen at
-// // https://gitlab.com/epidemics-r/code_snippets/feature/newton_solver/include/finalsize.hpp
-inline auto solve_final_size_by_susceptibility(
+// https://gitlab.com/epidemics-r/code_snippets/feature/newton_solver/include/finalsize.hpp
+inline Eigen::MatrixXd solve_final_size_by_susceptibility(
     const Eigen::MatrixXd &contact_matrix,
     const Eigen::VectorXd &demography_vector,
     const Eigen::MatrixXd &p_susceptibility,
-    const Eigen::MatrixXd &susceptibility) {
+    const Eigen::MatrixXd &susceptibility, 
+    const int iterations = 1000,
+    const bool adapt_step = true, const double tolerance = 1e-6) {
   epi_spread_data s = epi_spread(contact_matrix, demography_vector,
                                  p_susceptibility, susceptibility);
 
