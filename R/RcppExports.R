@@ -37,10 +37,13 @@ final_size_cpp <- function(r0, contact_matrix, demography_vector, prop_initial_i
 #' of total population in group $i$ (model will normalise if needed)
 #' @param p_susceptibility WIP.
 #' @param susceptibility WIP.
+#' @param iterations WIP.
+#' @param adapt_step WIP
+#' @param tolerance WIP.
 #'
 #' @keywords epidemic model
 #' @export
-final_size_grps_cpp <- function(contact_matrix, demography_vector, p_susceptibility, susceptibility) {
-    .Call('_finalsize_final_size_grps_cpp', PACKAGE = 'finalsize', contact_matrix, demography_vector, p_susceptibility, susceptibility)
+final_size_grps_cpp <- function(contact_matrix, demography_vector, p_susceptibility, susceptibility, iterations = 1000L, adapt_step = TRUE, tolerance = 1e-6) {
+    .Call('_finalsize_final_size_grps_cpp', PACKAGE = 'finalsize', contact_matrix, demography_vector, p_susceptibility, susceptibility, iterations, adapt_step, tolerance)
 }
 
