@@ -67,8 +67,7 @@ inline Eigen::ArrayXd solve_final_size_newton(
     const Eigen::MatrixXd &contact_matrix,
     const Eigen::VectorXd &demography_vector,
     const Eigen::MatrixXd &p_susceptibility,
-    const Eigen::MatrixXd &susceptibility, const bool adapt_step = true,
-    const double tolerance = 1e-6) {
+    const int iterations = 1000,
   // generate epi spread object
   epi_spread_data s = epi_spread(contact_matrix, demography_vector,
                                  p_susceptibility, susceptibility);
@@ -130,7 +129,7 @@ inline Eigen::ArrayXd solve_final_size_newton(
   };
 
   Eigen::VectorXd x = (1 - pi);
-  for (auto i = 0; i < 1000; ++i) {
+  for (auto i = 0; i < iterations; ++i) {
     cache_v = dx_f(x, std::move(cache_v), std::move(cache_m)).array();
 
     double error = cache_v.array().abs().sum();
