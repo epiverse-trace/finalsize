@@ -24,7 +24,29 @@
 Eigen::ArrayXd final_size_grps_cpp(const Eigen::MatrixXd &contact_matrix,
                                    const Eigen::VectorXd &demography_vector,
                                    const Eigen::MatrixXd &p_susceptibility,
-                                   const Eigen::MatrixXd &susceptibility) {
+                                   const Eigen::MatrixXd &susceptibility,
+                                   const int iterations = 1000,
+                                   const bool adapt_step = true,
+                                   const double tolerance = 1e-6) {
+  if (contact_matrix.rows() != demography_vector.size()) {
+    Rcpp::stop(
+        "Error: contact matrix must have as many rows as demography groups\n");
+  }
+  if (p_susceptibility.rows() != demography_vector.size()) {
+    Rcpp::stop(
+        "Error: p_susceptibility must have as many rows as demography "
+        "groups\n");
+  }
+  if (susceptibility.rows() != demography_vector.size()) {
+    Rcpp::stop(
+        "Error: susceptibility must have as many rows as demography groups\n");
+  }
+  if (p_susceptibility.size() != susceptibility.size()) {
+    Rcpp::stop(
+        "Error: p_susceptibility and susceptibility must be matrices of the "
+        "same dims\n");
+  }
+
   return solve_final_size_by_susceptibility(contact_matrix, demography_vector,
                                             p_susceptibility, susceptibility);
 }
