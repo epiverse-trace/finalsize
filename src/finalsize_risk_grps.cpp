@@ -17,6 +17,9 @@
 //' of total population in group $i$ (model will normalise if needed)
 //' @param p_susceptibility WIP.
 //' @param susceptibility WIP.
+//' @param iterations WIP.
+//' @param adapt_step WIP
+//' @param tolerance WIP.
 //'
 //' @keywords epidemic model
 //' @export
