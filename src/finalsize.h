@@ -56,7 +56,7 @@ inline epi_spread_data epi_spread(
   epi_spread_data tmp_data;
   tmp_data.contact_matrix = contact_matrix_;
   tmp_data.demography_vector = demography_vector_;
-  tmp_data.p_susceptibility = p_susceptibility;
+  tmp_data.p_susceptibility = p_susceptibility_;
   tmp_data.susceptibility = rm;
 
   return tmp_data;
