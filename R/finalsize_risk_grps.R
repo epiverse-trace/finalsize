@@ -62,7 +62,7 @@ solve_final_size_newton <- function(contact_matrix,
                                     demography_vector,
                                     p_susceptibility,
                                     susceptibility,
-                                    iterations = 1000
+                                    iterations = 1000,
                                     tolerance = 1e-6) {
   # count demography groups
   n_dim <- length(demography_vector)
