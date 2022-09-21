@@ -1,4 +1,4 @@
-test_that("Check basic final size function works", {
+test_that("Check basic final size function works with polymod data", {
   # checking epi spread function from finalsize
   polymod <- socialmixr::polymod
   contact_data <- socialmixr::contact_matrix(
@@ -29,9 +29,16 @@ test_that("Check basic final size function works", {
     p_susceptibility = p_susceptibility,
     susceptibility = susceptibility
   )
-
+  
+  # check that values are numeric, not NaN, and not infinite
   testthat::expect_type(
     epi_outcome, "double"
+  )
+  testthat::expect_false(
+    any(is.nan(epi_outcome))
+  )
+  testthat::expect_false(
+    any(is.infinite(epi_outcome))
   )
 })
 
