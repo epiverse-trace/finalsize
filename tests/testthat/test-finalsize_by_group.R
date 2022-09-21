@@ -111,22 +111,47 @@ test_that("Check final size calculation is correct in complex case", {
   susc[, 3] <- 0.4
   susc[, 4] <- 0.1
 
+  # scale contact matrix correctly
+  contact_matrix = apply(
+    contact_matrix, 1, function(r) r / demography_vector
+  )
+
   epi_outcome <- final_size_grps_cpp(
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susc,
     susceptibility = susc
   )
-
+  # check that values are numeric, not NaN, and not infinite
   testthat::expect_type(
     epi_outcome, "double"
+  )
+  testthat::expect_false(
+    any(is.nan(epi_outcome))
+  )
+  testthat::expect_false(
+    any(is.infinite(epi_outcome))
   )
 
   testthat::expect_equal(
     length(epi_outcome), length(demography_vector)
   )
 
-  # TO DO: ADD CHECK FOR CORRECT ANSWER
+  # check that group with lower susc and p_susc has smaller final size
+  testthat::expect_lte(
+    epi_outcome[length(epi_outcome)], epi_outcome[1]
+  )
+
+  # check that between 30 and 45% of the population is infected
+  # TO DO - is that what is being checked?
+  ratio = sum(epi_outcome * demography_vector) / sum(demography_vector)
+
+  testthat::expect_gt(
+    ratio, 0.3
+  )
+  testthat::expect_lt(
+    ratio, 0.45
+  )
 })
 
 # check for errors and messages
