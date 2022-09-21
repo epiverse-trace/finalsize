@@ -72,10 +72,8 @@ inline Eigen::ArrayXd solve_final_size_newton(
     const Eigen::MatrixXd &susceptibility, 
     const int iterations = 1000,
     const bool adapt_step = true, const double tolerance = 1e-6) {
-  // generate epi spread object
-  epi_spread_data s = epi_spread(contact_matrix, demography_vector,
-                                 p_susceptibility, susceptibility);
-
+  
+  // count number of demography groups
   size_t nDim = demography_vector.size();
 
   Eigen::ArrayXi zeros;  // previously in the settings struct
@@ -109,6 +107,7 @@ inline Eigen::ArrayXd solve_final_size_newton(
   }
 
   Eigen::VectorXd cache_v = pi;
+  // a function f1 which corresponds to the helper fun f1 in helper_funs.h
   auto f1 = [&contact_matrixM](const Eigen::VectorXd &x,
                                Eigen::VectorXd &&cache) {
     cache =
@@ -117,6 +116,7 @@ inline Eigen::ArrayXd solve_final_size_newton(
   };
 
   Eigen::MatrixXd cache_m = contact_matrixM;
+  // a function f2 which corresponds to the helper fun f2 in helper_funs.h
   auto f2 = [&contact_matrixM](const Eigen::VectorXd &x,
                                Eigen::MatrixXd &&cache) {
     cache = (1.0 / x.array()).matrix().asDiagonal();
@@ -124,6 +124,7 @@ inline Eigen::ArrayXd solve_final_size_newton(
     return std::move(cache);
   };
 
+  // a function dx_f that wraps f1, f2, and performs a matrix solve
   auto dx_f = [&f1, &f2](const Eigen::VectorXd &x, Eigen::VectorXd &&cache,
                          Eigen::MatrixXd &&cache_m) {
     cache_m = f2(x, std::move(cache_m));
@@ -132,6 +133,7 @@ inline Eigen::ArrayXd solve_final_size_newton(
     return std::move(cache);
   };
 
+  // iterate over n-iterations (1000) or until the solver tolerance is met
   Eigen::VectorXd x = (1 - pi);
   for (auto i = 0; i < iterations; ++i) {
     cache_v = dx_f(x, std::move(cache_v), std::move(cache_m)).array();
@@ -159,19 +161,27 @@ inline Eigen::MatrixXd solve_final_size_by_susceptibility(
     const Eigen::MatrixXd &susceptibility, 
     const int iterations = 1000,
     const bool adapt_step = true, const double tolerance = 1e-6) {
+
+  // prepare epidemiological spread data
   epi_spread_data s = epi_spread(contact_matrix, demography_vector,
                                  p_susceptibility, susceptibility);
 
+  // solve for final sizes
   Eigen::ArrayXd pi =
       solve_final_size_newton(s.contact_matrix, s.demography_vector,
                               s.p_susceptibility, s.susceptibility);
 
+  // prepare final sizes as matrix with n-demography rows, n-risk-grps cols
   Eigen::Map<Eigen::MatrixXd> pi_2(pi.data(), demography_vector.size(),
                                    p_susceptibility.cols());
 
   Eigen::MatrixXd psusc = p_susceptibility;
   Eigen::Map<Eigen::MatrixXd> lps(psusc.data(), psusc.size(), 1);
+
+  // multiply final sizes from pi_2 with proportions of risk groups -- I think
   Eigen::VectorXd v = pi_2.array() * lps.array();
+
+  // cast data to n-demography rows, n-risk-grps cols dimensions for return
   Eigen::Map<Eigen::MatrixXd> pi_3(v.data(), demography_vector.rows(),
                                    p_susceptibility.cols());
 
