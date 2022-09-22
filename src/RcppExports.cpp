@@ -43,12 +43,12 @@ RcppExport SEXP _finalsize_final_size_cpp(SEXP r0SEXP, SEXP contact_matrixSEXP,
   END_RCPP
 }
 // final_size_grps_cpp
-Eigen::ArrayXd final_size_grps_cpp(const Eigen::MatrixXd& contact_matrix,
-                                   const Eigen::VectorXd& demography_vector,
-                                   const Eigen::MatrixXd& p_susceptibility,
-                                   const Eigen::MatrixXd& susceptibility,
-                                   const int iterations, const bool adapt_step,
-                                   const double tolerance);
+Eigen::VectorXd final_size_grps_cpp(const Eigen::MatrixXd& contact_matrix,
+                                    const Eigen::VectorXd& demography_vector,
+                                    const Eigen::MatrixXd& p_susceptibility,
+                                    const Eigen::MatrixXd& susceptibility,
+                                    const int iterations, const bool adapt_step,
+                                    const double tolerance);
 RcppExport SEXP _finalsize_final_size_grps_cpp(
     SEXP contact_matrixSEXP, SEXP demography_vectorSEXP,
     SEXP p_susceptibilitySEXP, SEXP susceptibilitySEXP, SEXP iterationsSEXP,
