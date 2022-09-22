@@ -24,7 +24,7 @@
 //' @keywords epidemic model
 //' @export
 // [[Rcpp::export]]
-Eigen::ArrayXd final_size_grps_cpp(const Eigen::MatrixXd &contact_matrix,
+Eigen::VectorXd final_size_grps_cpp(const Eigen::MatrixXd &contact_matrix,
                                    const Eigen::VectorXd &demography_vector,
                                    const Eigen::MatrixXd &p_susceptibility,
                                    const Eigen::MatrixXd &susceptibility,
@@ -50,6 +50,6 @@ Eigen::ArrayXd final_size_grps_cpp(const Eigen::MatrixXd &contact_matrix,
         "same dims\n");
   }
 
-  return solve_final_size_by_susceptibility(contact_matrix, demography_vector,
-                                            p_susceptibility, susceptibility);
+  return (solve_final_size_by_susceptibility(contact_matrix, demography_vector,
+                                            p_susceptibility, susceptibility).rowwise().sum());
 }
