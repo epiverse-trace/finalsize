@@ -31,14 +31,17 @@ test_that("Check basic final size function works with polymod data", {
   )
   
   # check that values are numeric, not NaN, and not infinite
-  testthat::expect_type(
-    epi_outcome, "double"
+  testthat::expect_vector(
+    epi_outcome, ptype = numeric()
   )
   testthat::expect_false(
     any(is.nan(epi_outcome))
   )
   testthat::expect_false(
     any(is.infinite(epi_outcome))
+  )
+  testthat::expect_true(
+    all(epi_outcome > 0.0)
   )
 })
 
@@ -59,12 +62,18 @@ test_that("Check final size calculation is correct in simple case", {
     p_susceptibility = psusc,
     susceptibility = susc
   )
-
+  
+  testthat::expect_vector(
+    epi_outcome, ptype = numeric()
+  )
   testthat::expect_false(
     any(is.nan(epi_outcome))
   )
   testthat::expect_false(
     any(is.infinite(epi_outcome))
+  )
+  testthat::expect_true(
+    all(epi_outcome > 0.0)
   )
 
   epi_outcome_known <- 1 - exp(-r0 * epi_outcome)
@@ -123,8 +132,8 @@ test_that("Check final size calculation is correct in complex case", {
     susceptibility = susc
   )
   # check that values are numeric, not NaN, and not infinite
-  testthat::expect_type(
-    epi_outcome, "double"
+  testthat::expect_vector(
+    epi_outcome, ptype = numeric()
   )
   testthat::expect_false(
     any(is.nan(epi_outcome))
@@ -132,13 +141,15 @@ test_that("Check final size calculation is correct in complex case", {
   testthat::expect_false(
     any(is.infinite(epi_outcome))
   )
-
+  testthat::expect_true(
+    all(epi_outcome > 0.0)
+  )
   testthat::expect_equal(
     length(epi_outcome), length(demography_vector)
   )
 
   # check that group with lower susc and p_susc has smaller final size
-  testthat::expect_lte(
+  testthat::expect_lt(
     epi_outcome[length(epi_outcome)], epi_outcome[1]
   )
 
