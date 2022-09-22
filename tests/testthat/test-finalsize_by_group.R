@@ -1,50 +1,3 @@
-test_that("Check basic final size function works with polymod data", {
-  # checking epi spread function from finalsize
-  polymod <- socialmixr::polymod
-  contact_data <- socialmixr::contact_matrix(
-    polymod,
-    countries = "United Kingdom",
-    age.limits = c(0, 20, 40),
-    symmetric = TRUE
-  )
-
-  demography_vector <- contact_data$demography$proportion
-
-  # Scale contact matrix to demography
-  contact_matrix <- apply(
-    contact_data$matrix, 1, function(r) r / demography_vector
-  )
-  # This is needed to pass isSymmetric. Maybe isSymmetric does not work
-  # properly with named matrices?
-  # TODO: fix the function so that this is not needed any more
-  contact_matrix <- matrix(contact_matrix, ncol = 3)
-  testthat::expect_true(isSymmetric(contact_matrix))
-
-  p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
-  susceptibility <- matrix(1, ncol = 1, 3)
-
-  epi_outcome <- final_size_grps_cpp(
-    contact_matrix = contact_matrix,
-    demography_vector = demography_vector,
-    p_susceptibility = p_susceptibility,
-    susceptibility = susceptibility
-  )
-  
-  # check that values are numeric, not NaN, and not infinite
-  testthat::expect_vector(
-    epi_outcome, ptype = numeric()
-  )
-  testthat::expect_false(
-    any(is.nan(epi_outcome))
-  )
-  testthat::expect_false(
-    any(is.infinite(epi_outcome))
-  )
-  testthat::expect_true(
-    all(epi_outcome > 0.0)
-  )
-})
-
 test_that("Check final size calculation is correct in simple case", {
   r0 <- 2
   contact_matrix <- matrix(r0 / 200.0, 2, 2)
@@ -83,7 +36,59 @@ test_that("Check final size calculation is correct in simple case", {
   )
 })
 
-test_that("Check final size calculation is correct in complex case", {
+test_that("Check final size by groups works with multiple risk groups", {
+  contact_matrix = matrix(c(1, 0.5, 0.5, 1), 2, 2)
+  demography_vector = rep(1, 2)
+  p_susceptibility = matrix(c(0.25, 0.75, 0.25, 0.75), 2, 2)
+  susceptibility = matrix(1, 2, 2)
+  
+  epi_outcome <- final_size_grps_cpp(
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
+    p_susceptibility = p_susceptibility,
+    susceptibility = susceptibility
+  )
+  testthat::expect_vector(
+    epi_outcome, ptype = numeric()
+  )
+  testthat::expect_false(
+    any(is.nan(epi_outcome))
+  )
+  testthat::expect_false(
+    any(is.infinite(epi_outcome))
+  )
+  testthat::expect_true(
+    all(epi_outcome > 0.0)
+  )
+})
+
+test_that("Check final size by groups works with identical risk groups", {
+  contact_matrix = matrix(c(1, 0.5, 0.5, 1), 2, 2)
+  demography_vector = rep(1, 2)
+  p_susceptibility = matrix(1, 2, 2)
+  susceptibility = matrix(1, 2, 2)
+  
+  epi_outcome <- final_size_grps_cpp(
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
+    p_susceptibility = p_susceptibility,
+    susceptibility = susceptibility
+  )
+  testthat::expect_vector(
+    epi_outcome, ptype = numeric()
+  )
+  testthat::expect_false(
+    any(is.nan(epi_outcome))
+  )
+  testthat::expect_false(
+    any(is.infinite(epi_outcome))
+  )
+  testthat::expect_true(
+    all(epi_outcome > 0.0)
+  )
+})
+
+test_that("Check final size by groups is correct in complex case", {
   # make a contact matrix
   contact_matrix <- c(
     5.329620e-08, 1.321156e-08, 1.832293e-08, 7.743492e-09, 5.888440e-09,
@@ -101,7 +106,7 @@ test_that("Check final size calculation is correct in complex case", {
     10831795, 11612456, 13511496,
     11499398, 8167102, 4587765
   )
-
+  
   # get an example r0
   r0 <- 2.0
 
@@ -162,6 +167,53 @@ test_that("Check final size calculation is correct in complex case", {
   )
   testthat::expect_lt(
     ratio, 0.45
+  )
+})
+
+test_that("Check basic final size function works with polymod data", {
+  # checking epi spread function from finalsize
+  polymod <- socialmixr::polymod
+  contact_data <- socialmixr::contact_matrix(
+    polymod,
+    countries = "United Kingdom",
+    age.limits = c(0, 20, 40),
+    symmetric = TRUE
+  )
+  
+  demography_vector <- contact_data$demography$proportion
+  
+  # Scale contact matrix to demography
+  contact_matrix <- apply(
+    contact_data$matrix, 1, function(r) r / demography_vector
+  )
+  # This is needed to pass isSymmetric. Maybe isSymmetric does not work
+  # properly with named matrices?
+  # TODO: fix the function so that this is not needed any more
+  contact_matrix <- matrix(contact_matrix, ncol = 3)
+  testthat::expect_true(isSymmetric(contact_matrix))
+  
+  p_susceptibility <- matrix(0.5, ncol = 3, nrow = 3)
+  susceptibility <- matrix(1, ncol = 3, 3)
+  
+  epi_outcome <- final_size_grps_cpp(
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
+    p_susceptibility = p_susceptibility,
+    susceptibility = susceptibility
+  )
+  
+  # check that values are numeric, not NaN, and not infinite
+  testthat::expect_vector(
+    epi_outcome, ptype = numeric()
+  )
+  testthat::expect_false(
+    any(is.nan(epi_outcome))
+  )
+  testthat::expect_false(
+    any(is.infinite(epi_outcome))
+  )
+  testthat::expect_true(
+    all(epi_outcome > 0.0)
   )
 })
 
