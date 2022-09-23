@@ -285,4 +285,17 @@ test_that("Check for errors and messages", {
     ),
     regexp = "Error: p_susceptibility and susceptibility must be matrices of the same dims"
   )
+  p_susceptibility <- matrix(1, ncol = 2, nrow = 3)
+  susceptibility <- matrix(1, ncol = 2, nrow = 3)
+
+  # expect error on p_susceptibility and susceptibility
+  testthat::expect_error(
+    final_size_grps_cpp(
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      p_susceptibility = p_susceptibility,
+      susceptibility = susceptibility
+    ),
+    regexp = "Error: p_susceptibility matrix rows must sum to 1.0"
+  )
 })
