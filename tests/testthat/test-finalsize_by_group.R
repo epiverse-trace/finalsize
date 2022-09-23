@@ -35,33 +35,10 @@ test_that("Check final size calculation is correct in simple case", {
 test_that("Check final size by groups works with multiple risk groups", {
   contact_matrix = matrix(c(1, 0.5, 0.5, 1), 2, 2)
   demography_vector = rep(1, 2)
-  p_susceptibility = matrix(c(0.25, 0.75, 0.25, 0.75), 2, 2)
-  susceptibility = matrix(1, 2, 2)
-  
-  epi_outcome <- final_size_grps_cpp(
-    contact_matrix = contact_matrix,
-    demography_vector = demography_vector,
-    p_susceptibility = p_susceptibility,
-    susceptibility = susceptibility
-  )
-  testthat::expect_vector(
-    epi_outcome, ptype = numeric()
-  )
-  testthat::expect_false(
-    any(is.nan(epi_outcome))
-  )
-  testthat::expect_false(
-    any(is.infinite(epi_outcome))
-  )
-  testthat::expect_true(
-    all(epi_outcome > 0.0)
-  )
-})
-
-test_that("Check final size by groups works with identical risk groups", {
-  contact_matrix = matrix(c(1, 0.5, 0.5, 1), 2, 2)
-  demography_vector = rep(1, 2)
-  p_susceptibility = matrix(1, 2, 2)
+  p_susceptibility = rbind(
+    c(0.25, 0.75),
+    c(0.25, 0.75)
+)
   susceptibility = matrix(1, 2, 2)
   
   epi_outcome <- final_size_grps_cpp(
@@ -189,6 +166,11 @@ test_that("Check basic final size function works with polymod data", {
   testthat::expect_true(isSymmetric(contact_matrix))
   
   p_susceptibility <- matrix(0.5, ncol = 3, nrow = 3)
+  
+  p_susceptibility = apply(p_susceptibility, 1, function(x) {
+    x / sum(x)
+  })
+  
   susceptibility <- matrix(1, ncol = 3, 3)
   
   epi_outcome <- final_size_grps_cpp(
