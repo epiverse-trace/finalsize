@@ -130,6 +130,7 @@ test_that("Check final size by groups is correct in complex case", {
     10831795, 11612456, 13511496,
     11499398, 8167102, 4587765
   )
+  demography_vector = demography_vector / sum(demography_vector)
   
   # get an example r0
   r0 <- 2.0
@@ -155,7 +156,7 @@ test_that("Check final size by groups is correct in complex case", {
   )
 
   epi_outcome <- final_size_grps_cpp(
-    contact_matrix = contact_matrix,
+    contact_matrix = r0 * contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susc,
     susceptibility = susc
@@ -195,6 +196,9 @@ test_that("Check final size by groups is correct in complex case", {
 })
 
 test_that("Check basic final size function works with polymod data", {
+  
+  r0 = 2.0
+  
   # checking epi spread function from finalsize
   polymod <- socialmixr::polymod
   contact_data <- socialmixr::contact_matrix(
@@ -216,8 +220,7 @@ test_that("Check basic final size function works with polymod data", {
   contact_matrix <- matrix(contact_matrix, ncol = 3)
   testthat::expect_true(isSymmetric(contact_matrix))
   
-  p_susceptibility <- matrix(0.5, ncol = 3, nrow = 3)
-  
+  p_susceptibility <- matrix(1, ncol = 3, nrow = 3)
   p_susceptibility = apply(p_susceptibility, 1, function(x) {
     x / sum(x)
   })
@@ -225,7 +228,7 @@ test_that("Check basic final size function works with polymod data", {
   susceptibility <- matrix(1, ncol = 3, 3)
   
   epi_outcome <- final_size_grps_cpp(
-    contact_matrix = contact_matrix,
+    contact_matrix = r0 * contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susceptibility,
     susceptibility = susceptibility
