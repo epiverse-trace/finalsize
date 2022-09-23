@@ -49,6 +49,15 @@ Eigen::ArrayXd final_size_grps_cpp(const Eigen::MatrixXd &contact_matrix,
         "Error: p_susceptibility and susceptibility must be matrices of the "
         "same dims\n");
   }
+  // check that p_susceptibility rowwise sums are approx 1.0 - ideally sum to 1
+  for (size_t i = 0; i < p_susceptibility.rows(); i++)
+  {
+    if(std::abs(p_susceptibility.row(i).sum() - 1.0) > 1e-6 ) {
+      Rcpp::stop(
+        "Error: p_susceptibility matrix rows must sum to 1.0"
+      );
+    }
+  }  
 
   return solve_final_size_by_susceptibility(contact_matrix, demography_vector,
                                             p_susceptibility, susceptibility);
