@@ -33,6 +33,7 @@ test_that("Check final size calculation is correct in simple case", {
 })
 
 test_that("Check final size by groups works with multiple risk groups", {
+  r0 = 2.0
   contact_matrix = matrix(c(1, 0.5, 0.5, 1), 2, 2)
   demography_vector = rep(1, 2)
   p_susceptibility = rbind(
@@ -41,8 +42,11 @@ test_that("Check final size by groups works with multiple risk groups", {
 )
   susceptibility = matrix(1, 2, 2)
   
+  # scale contact matrix and demography vector
+  demography_vector = demography_vector / sum(demography_vector)
+  
   epi_outcome <- final_size_grps_cpp(
-    contact_matrix = contact_matrix,
+    contact_matrix = r0 * contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susceptibility,
     susceptibility = susceptibility
@@ -58,6 +62,53 @@ test_that("Check final size by groups works with multiple risk groups", {
   )
   testthat::expect_true(
     all(epi_outcome > 0.0)
+  )
+  testthat::expect_true(
+    all(epi_outcome <= 1.0)
+  )
+})
+
+test_that("Check demo groups with higher suscept. have higher final size", {
+  r0 = 2.0
+  contact_matrix = matrix(c(1, 0.5, 0.5, 1), 2, 2)
+  demography_vector = rep(1, 2)
+  p_susceptibility = rbind(
+    c(0.25, 0.75),
+    c(0.25, 0.75)
+  )
+  susceptibility = rbind(
+    c(0.25, 0.5), # lower susceptibility overall
+    c(0.5, 1.0) # higher susceptibility overall
+  )
+  
+  # scale contact matrix and demography vector
+  demography_vector = demography_vector / sum(demography_vector)
+  
+  epi_outcome <- final_size_grps_cpp(
+    contact_matrix = r0 * contact_matrix,
+    demography_vector = demography_vector,
+    p_susceptibility = p_susceptibility,
+    susceptibility = susceptibility
+  )
+  testthat::expect_vector(
+    epi_outcome, ptype = numeric()
+  )
+  testthat::expect_false(
+    any(is.nan(epi_outcome))
+  )
+  testthat::expect_false(
+    any(is.infinite(epi_outcome))
+  )
+  testthat::expect_true(
+    all(epi_outcome > 0.0)
+  )
+  testthat::expect_true(
+    all(epi_outcome <= 1.0)
+  )
+  
+  # check that epi_outcome of the second group is higher
+  testthat::expect_gt(
+    epi_outcome[2], epi_outcome[1]
   )
 })
 
