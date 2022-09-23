@@ -5,10 +5,6 @@ test_that("Check final size calculation is correct in simple case", {
   psusc <- rep(1.0, 2) |> as.matrix()
   susc <- rep(1.0, 2) |> as.matrix()
 
-  contact_matrix = apply(
-    contact_matrix, 1, function(r) r / demography_vector
-  )
-
   epi_outcome <- final_size_grps_cpp(
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
