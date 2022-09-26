@@ -65,6 +65,31 @@ context("Correct solution to final size") {
   }
 }
 
+/// solving by risk groups works with R0 = 2
+context("Correct solution to final size with r0 = 2") {
+  const double r0 = 2.0;
+  Eigen::MatrixXd contact_matrix(2, 2);
+  contact_matrix.fill(r0 / 200.0);
+  Eigen::ArrayXd demography_vector(2);
+  demography_vector.fill(100.0);
+
+  Eigen::ArrayXd p_susceptibility(2);
+  p_susceptibility.fill(1);
+
+  Eigen::ArrayXd susceptibility(2);
+  susceptibility.fill(1);
+
+  Eigen::MatrixXd pi = solve_final_size_by_susceptibility(
+      contact_matrix, demography_vector, p_susceptibility, susceptibility);
+
+  Eigen::ArrayXd pi_2 = pi.rowwise().sum();
+  test_that("Correct solutions to final size simple case with higher r0") {
+    CATCH_CHECK(pi_2(0) > 0.0);
+    CATCH_CHECK(pi_2(0) == pi_2(1));
+    CATCH_CHECK(Approx(pi_2(0)) == 1 - exp(-r0 * pi_2(0)));
+  }
+}
+
 /// check that final size by groups cpp for polymod matrix
 context("Correct solutions for Polymod matrix") {
   double r0 = 1.3;
@@ -81,6 +106,34 @@ context("Correct solutions for Polymod matrix") {
       solve_final_size_by_susceptibility(r0 * lambda, demography, psusc, susc);
 
   test_that("Correct solutions for Polymod matrix") {
+    for (size_t i = 0; i < pi.size(); i++) {
+      CATCH_CHECK(pi(i) > 0.0);
+    }
+
+    CATCH_CHECK(pi(5) < pi(0));
+
+    double ratio = (pi.array() * demography).sum() / demography.sum();
+    CATCH_CHECK(ratio > 0.3);
+    CATCH_CHECK(ratio < 0.45);
+  }
+}
+
+/// check that final size by groups cpp for polymod matrix
+context("Correct solutions for Polymod matrix with r0 = 2") {
+  double r0 = 2.0;
+  auto lambda = example_contact_matrix();
+  auto demography = example_demography();
+
+  Eigen::ArrayXd psusc(lambda.rows());
+  psusc.fill(1);
+
+  Eigen::ArrayXd susc(lambda.rows());
+  susc.fill(1);
+
+  Eigen::VectorXd pi =
+      solve_final_size_by_susceptibility(r0 * lambda, demography, psusc, susc);
+
+  test_that("Correct solutions for Polymod matrix with r0 = 2") {
     for (size_t i = 0; i < pi.size(); i++) {
       CATCH_CHECK(pi(i) > 0.0);
     }
