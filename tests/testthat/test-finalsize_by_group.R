@@ -33,21 +33,23 @@ test_that("Check final size calculation is correct in simple case", {
   )
 })
 
+test_that("Check final size calculation simple case r0 = 2", {
   r0 <- 2
-  contact_matrix <- matrix(r0 / 200.0, 2, 2)
-  demography_vector <- rep(100.0, 2) |> as.matrix()
-  psusc <- rep(1.0, 2) |> as.matrix()
-  susc <- rep(1.0, 2) |> as.matrix()
+  contact_matrix <- matrix(r0 / 200, 2, 2)
+  demography_vector <- c(100, 100)
+  p_susceptibility <- matrix(1, 2, 1)
+  susceptibility <- p_susceptibility
 
   epi_outcome <- final_size_grps_cpp(
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
-    p_susceptibility = psusc,
-    susceptibility = susc
+    p_susceptibility = p_susceptibility,
+    susceptibility = susceptibility
   )
-  
+
   testthat::expect_vector(
-    epi_outcome, ptype = numeric()
+    epi_outcome,
+    ptype = numeric()
   )
   testthat::expect_false(
     any(is.nan(epi_outcome))
