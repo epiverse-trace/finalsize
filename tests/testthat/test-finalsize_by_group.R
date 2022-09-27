@@ -1,19 +1,55 @@
 test_that("Check final size calculation is correct in simple case", {
-  r0 <- 2
-  contact_matrix <- matrix(r0 / 200.0, 2, 2)
-  demography_vector <- rep(100.0, 2) |> as.matrix()
-  psusc <- rep(1.0, 2) |> as.matrix()
-  susc <- rep(1.0, 2) |> as.matrix()
+  r0 <- 1.3
+  contact_matrix <- matrix(r0 / 200, 2, 2)
+  demography_vector <- c(100, 100)
+  p_susceptibility <- matrix(1, 2, 1)
+  susceptibility <- p_susceptibility
 
   epi_outcome <- final_size_grps_cpp(
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
-    p_susceptibility = psusc,
-    susceptibility = susc
+    p_susceptibility = p_susceptibility,
+    susceptibility = susceptibility
   )
-  
+
   testthat::expect_vector(
-    epi_outcome, ptype = numeric()
+    epi_outcome,
+    ptype = numeric()
+  )
+  testthat::expect_false(
+    any(is.nan(epi_outcome))
+  )
+  testthat::expect_false(
+    any(is.infinite(epi_outcome))
+  )
+  testthat::expect_true(
+    all(epi_outcome > 0.0)
+  )
+
+  epi_outcome_known <- 1 - exp(-r0 * epi_outcome)
+
+  testthat::expect_equal(
+    epi_outcome, epi_outcome_known
+  )
+})
+
+test_that("Check final size calculation simple case r0 = 2", {
+  r0 <- 2
+  contact_matrix <- matrix(r0 / 200, 2, 2)
+  demography_vector <- c(100, 100)
+  p_susceptibility <- matrix(1, 2, 1)
+  susceptibility <- p_susceptibility
+
+  epi_outcome <- final_size_grps_cpp(
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
+    p_susceptibility = p_susceptibility,
+    susceptibility = susceptibility
+  )
+
+  testthat::expect_vector(
+    epi_outcome,
+    ptype = numeric()
   )
   testthat::expect_false(
     any(is.nan(epi_outcome))
@@ -33,18 +69,18 @@ test_that("Check final size calculation is correct in simple case", {
 })
 
 test_that("Check final size by groups works with multiple risk groups", {
-  r0 = 2.0
-  contact_matrix = matrix(c(1, 0.5, 0.5, 1), 2, 2)
-  demography_vector = rep(1, 2)
-  p_susceptibility = rbind(
+  r0 <- 2.0
+  contact_matrix <- matrix(c(1, 0.5, 0.5, 1), 2, 2)
+  demography_vector <- rep(1, 2)
+  p_susceptibility <- rbind(
     c(0.25, 0.75),
     c(0.25, 0.75)
-)
-  susceptibility = matrix(1, 2, 2)
-  
+  )
+  susceptibility <- matrix(1, 2, 2)
+
   # scale contact matrix and demography vector
-  demography_vector = demography_vector / sum(demography_vector)
-  
+  demography_vector <- demography_vector / sum(demography_vector)
+
   epi_outcome <- final_size_grps_cpp(
     contact_matrix = r0 * contact_matrix,
     demography_vector = demography_vector,
@@ -52,7 +88,8 @@ test_that("Check final size by groups works with multiple risk groups", {
     susceptibility = susceptibility
   )
   testthat::expect_vector(
-    epi_outcome, ptype = numeric()
+    epi_outcome,
+    ptype = numeric()
   )
   testthat::expect_false(
     any(is.nan(epi_outcome))
@@ -69,29 +106,27 @@ test_that("Check final size by groups works with multiple risk groups", {
 })
 
 test_that("Check demo groups with higher suscept. have higher final size", {
-  r0 = 2.0
-  contact_matrix = matrix(c(1, 0.5, 0.5, 1), 2, 2)
-  demography_vector = rep(1, 2)
-  p_susceptibility = rbind(
+  r0 <- 2.0
+  contact_matrix <- matrix(r0 / 200, 2, 2)
+  demography_vector <- rep(100, 2)
+  p_susceptibility <- rbind(
     c(0.25, 0.75),
     c(0.25, 0.75)
   )
-  susceptibility = rbind(
+  susceptibility <- rbind(
     c(0.25, 0.5), # lower susceptibility overall
     c(0.5, 1.0) # higher susceptibility overall
   )
-  
-  # scale contact matrix and demography vector
-  demography_vector = demography_vector / sum(demography_vector)
-  
+
   epi_outcome <- final_size_grps_cpp(
-    contact_matrix = r0 * contact_matrix,
+    contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susceptibility,
     susceptibility = susceptibility
   )
   testthat::expect_vector(
-    epi_outcome, ptype = numeric()
+    epi_outcome,
+    ptype = numeric()
   )
   testthat::expect_false(
     any(is.nan(epi_outcome))
@@ -105,14 +140,16 @@ test_that("Check demo groups with higher suscept. have higher final size", {
   testthat::expect_true(
     all(epi_outcome <= 1.0)
   )
-  
+
   # check that epi_outcome of the second group is higher
   testthat::expect_gt(
     epi_outcome[2], epi_outcome[1]
   )
 })
 
-test_that("Check final size by groups is correct in complex case", {
+# test taken from https://gitlab.com/epidemics-r/code_snippets/-/blob/feature/newton_solver/tests/catch_final_size.cpp#L54
+# same as test in src/test-finalsize_grps.cpp L69
+test_that("Check final size by groups correct in complex case, 01 risk group", {
   # make a contact matrix
   contact_matrix <- c(
     5.329620e-08, 1.321156e-08, 1.832293e-08, 7.743492e-09, 5.888440e-09,
@@ -123,47 +160,36 @@ test_that("Check final size by groups is correct in complex case", {
     7.943038e-09, 1.146566e-08, 1.221124e-08, 1.545822e-08, 8.106812e-09,
     2.267918e-09, 3.324235e-09, 5.993247e-09, 9.049331e-09, 8.106812e-09,
     1.572736e-08
-  ) |> matrix(6, 6)
+  )
+  contact_matrix <- matrix(
+    contact_matrix,
+    nrow = 6, ncol = 6
+  )
 
   # make a demography vector
   demography_vector <- c(
     10831795, 11612456, 13511496,
     11499398, 8167102, 4587765
   )
-  demography_vector = demography_vector / sum(demography_vector)
-  
+
   # get an example r0
-  r0 <- 2.0
+  r0 <- 2
 
-  # a p_susceptibility matrix
-  p_susc <- matrix(0, nrow(contact_matrix), 4) # four susceptibiliy groups
-  # fill p_susceptibility columns manually
-  p_susc[, 1] <- 0.7
-  p_susc[, 2] <- 0.1
-  p_susc[, 3] <- 0.1
-  p_susc[, 4] <- 0.1
-
-  # a susceptibility matrix
-  susc <- matrix(0, nrow(contact_matrix), 4)
-  susc[, 1] <- 1.0
-  susc[, 2] <- 0.7
-  susc[, 3] <- 0.4
-  susc[, 4] <- 0.1
-
-  # scale contact matrix correctly
-  contact_matrix = apply(
-    contact_matrix, 1, function(r) r / demography_vector
-  )
+  # a p_susceptibility matrix and susceptibility matrix
+  # single risk group
+  p_susc <- matrix(1, nrow = nrow(contact_matrix), ncol = 1)
+  susc <- p_susc
 
   epi_outcome <- final_size_grps_cpp(
     contact_matrix = r0 * contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susc,
-    susceptibility = susc
+    susceptibility = susc, tolerance = 1e-12
   )
   # check that values are numeric, not NaN, and not infinite
   testthat::expect_vector(
-    epi_outcome, ptype = numeric()
+    epi_outcome,
+    ptype = numeric()
   )
   testthat::expect_false(
     any(is.nan(epi_outcome))
@@ -185,7 +211,7 @@ test_that("Check final size by groups is correct in complex case", {
 
   # check that between 30 and 45% of the population is infected
   # TO DO - is that what is being checked?
-  ratio = sum(epi_outcome * demography_vector) / sum(demography_vector)
+  ratio <- sum(epi_outcome * demography_vector) / sum(demography_vector)
 
   testthat::expect_gt(
     ratio, 0.3
@@ -196,9 +222,8 @@ test_that("Check final size by groups is correct in complex case", {
 })
 
 test_that("Check basic final size function works with polymod data", {
-  
-  r0 = 2.0
-  
+  r0 <- 2.0
+
   # checking epi spread function from finalsize
   polymod <- socialmixr::polymod
   contact_data <- socialmixr::contact_matrix(
@@ -207,9 +232,9 @@ test_that("Check basic final size function works with polymod data", {
     age.limits = c(0, 20, 40),
     symmetric = TRUE
   )
-  
+
   demography_vector <- contact_data$demography$proportion
-  
+
   # Scale contact matrix to demography
   contact_matrix <- apply(
     contact_data$matrix, 1, function(r) r / demography_vector
@@ -219,24 +244,25 @@ test_that("Check basic final size function works with polymod data", {
   # TODO: fix the function so that this is not needed any more
   contact_matrix <- matrix(contact_matrix, ncol = 3)
   testthat::expect_true(isSymmetric(contact_matrix))
-  
+
   p_susceptibility <- matrix(1, ncol = 3, nrow = 3)
-  p_susceptibility = apply(p_susceptibility, 1, function(x) {
+  p_susceptibility <- apply(p_susceptibility, 1, function(x) {
     x / sum(x)
   })
-  
+
   susceptibility <- matrix(1, ncol = 3, 3)
-  
+
   epi_outcome <- final_size_grps_cpp(
     contact_matrix = r0 * contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susceptibility,
     susceptibility = susceptibility
   )
-  
+
   # check that values are numeric, not NaN, and not infinite
   testthat::expect_vector(
-    epi_outcome, ptype = numeric()
+    epi_outcome,
+    ptype = numeric()
   )
   testthat::expect_false(
     any(is.nan(epi_outcome))
@@ -251,6 +277,7 @@ test_that("Check basic final size function works with polymod data", {
 
 # check for errors and messages
 test_that("Check for errors and messages", {
+  r0 <- 2.0
   # checking epi spread function from finalsize
   polymod <- socialmixr::polymod
   contact_data <- socialmixr::contact_matrix(
