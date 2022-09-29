@@ -47,7 +47,7 @@ epi_spread <- function(contact_matrix,
   list(
     contact_matrix = contact_matrix_,
     demography_vector = demography_vector_spread,
-    p_susceptibility_ = p_susceptibility_,
+    p_susceptibility = p_susceptibility_,
     susceptibility = susceptibility_
   )
 }

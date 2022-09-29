@@ -18,7 +18,6 @@ test_that("Iterative solver works with r0 = 2", {
   r0 <- 2
   contact_matrix <- matrix(r0 / 200.0, 2, 2)
   demography_vector <- rep(100.0, 2)
-  # demography_vector <- demography_vector / sum(demography_vector)
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
@@ -33,7 +32,7 @@ test_that("Iterative solver works with r0 = 2", {
   epi_outcome <- solve_final_size_iterative(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
-    p_susceptibility = epi_spread_data[["p_susceptibility_"]],
+    p_susceptibility = epi_spread_data[["p_susceptibility"]],
     susceptibility = epi_spread_data[["susceptibility"]]
   )
 
@@ -74,7 +73,6 @@ test_that("Iterative solver works with r0 = 4", {
   r0 <- 4
   contact_matrix <- matrix(r0 / 200.0, 2, 2)
   demography_vector <- rep(100.0, 2)
-  # demography_vector <- demography_vector / sum(demography_vector)
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
@@ -89,7 +87,7 @@ test_that("Iterative solver works with r0 = 4", {
   epi_outcome <- solve_final_size_iterative(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
-    p_susceptibility = epi_spread_data[["p_susceptibility_"]],
+    p_susceptibility = epi_spread_data[["p_susceptibility"]],
     susceptibility = epi_spread_data[["susceptibility"]]
   )
 
@@ -138,7 +136,6 @@ test_that("Iterative solver works with r0 = 12", {
   r0 <- 12
   contact_matrix <- matrix(r0 / 200.0, 2, 2)
   demography_vector <- rep(100.0, 2)
-  # demography_vector <- demography_vector / sum(demography_vector)
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
@@ -194,7 +191,6 @@ test_that("Iterative solver works with r0 = 4", {
   r0 <- 4
   contact_matrix <- matrix(r0 / 200.0, 2, 2)
   demography_vector <- rep(100.0, 2)
-  # demography_vector <- demography_vector / sum(demography_vector)
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
@@ -209,7 +205,7 @@ test_that("Iterative solver works with r0 = 4", {
   epi_outcome <- solve_final_size_iterative(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
-    p_susceptibility = epi_spread_data[["p_susceptibility_"]],
+    p_susceptibility = epi_spread_data[["p_susceptibility"]],
     susceptibility = epi_spread_data[["susceptibility"]],
     adapt_step = FALSE
   )

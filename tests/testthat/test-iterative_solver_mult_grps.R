@@ -4,7 +4,6 @@ test_that("Iterative solver works with multiple risk groups", {
   # prepare some data for the solver
   contact_matrix <- matrix(r0 / 200.0, 2, 2)
   demography_vector <- rep(100.0, 2)
-  # demography_vector <- demography_vector / sum(demography_vector)
 
   # p_susceptibility and susceptibility
   n_risk_grps <- 3
@@ -23,7 +22,7 @@ test_that("Iterative solver works with multiple risk groups", {
   epi_outcome <- solve_final_size_iterative(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
-    p_susceptibility = epi_spread_data[["p_susceptibility_"]],
+    p_susceptibility = epi_spread_data[["p_susceptibility"]],
     susceptibility = epi_spread_data[["susceptibility"]]
   )
 
@@ -65,7 +64,6 @@ test_that("Iterative solver works with multiple risk and age groups", {
   demo_grps <- 5
   contact_matrix <- matrix(r0 / 200.0, nrow = demo_grps, ncol = demo_grps)
   demography_vector <- rep(100.0, demo_grps)
-  # demography_vector <- demography_vector / sum(demography_vector)
 
   # p_susceptibility and susceptibility
   n_risk_grps <- 3
@@ -84,7 +82,7 @@ test_that("Iterative solver works with multiple risk and age groups", {
   epi_outcome <- solve_final_size_iterative(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
-    p_susceptibility = epi_spread_data[["p_susceptibility_"]],
+    p_susceptibility = epi_spread_data[["p_susceptibility"]],
     susceptibility = epi_spread_data[["susceptibility"]]
   )
 

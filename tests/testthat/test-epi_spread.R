@@ -21,7 +21,7 @@ test_that("Epi spread function works", {
 
   # check names in epi_spread_data
   expected_names <- c(
-    "contact_matrix", "demography_vector", "p_susceptibility_",
+    "contact_matrix", "demography_vector", "p_susceptibility",
     "susceptibility"
   )
   expect_equal(
@@ -39,14 +39,14 @@ test_that("Epi spread function works", {
     ptype = numeric()
   )
   expect_true(
-    is.matrix(epi_spread_data[["p_susceptibility_"]])
+    is.matrix(epi_spread_data[["p_susceptibility"]])
   )
   expect_equal(
-    ncol(epi_spread_data[["p_susceptibility_"]]),
+    ncol(epi_spread_data[["p_susceptibility"]]),
     1
   )
   expect_equal(
-    nrow(epi_spread_data[["p_susceptibility_"]]),
+    nrow(epi_spread_data[["p_susceptibility"]]),
     prod(dim(psusc))
   )
   expect_equal(

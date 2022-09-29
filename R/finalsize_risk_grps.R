@@ -97,7 +97,7 @@ final_size_grps <- function(contact_matrix,
   pi <- solve_final_size_iterative(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
-    p_susceptibility = epi_spread_data[["p_susceptibility_"]],
+    p_susceptibility = epi_spread_data[["p_susceptibility"]],
     susceptibility = epi_spread_data[["susceptibility"]],
     iterations = iterations,
     tolerance = tolerance
