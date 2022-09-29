@@ -19,7 +19,7 @@ test_that("Check basic final size calculation works", {
   )
 
   # Run final size model
-  testthat::expect_identical(
+  expect_identical(
     length(p_suscep), length(epi_final_size)
   )
 })
@@ -31,7 +31,7 @@ test_that("Check final size r0 inputs", {
   p_initial_infections <- 0.0015
 
   # expect error for negative r0
-  testthat::expect_error(
+  expect_error(
     final_size(
       r0 = -1.0,
       contact_matrix = c_matrix,
@@ -43,7 +43,7 @@ test_that("Check final size r0 inputs", {
   )
 
   # expect error for r0 < 1
-  testthat::expect_error(
+  expect_error(
     final_size(
       r0 = 0.99,
       contact_matrix = c_matrix,
@@ -55,7 +55,7 @@ test_that("Check final size r0 inputs", {
   )
 
   # expect error for infinite r0
-  testthat::expect_error(
+  expect_error(
     final_size(
       r0 = Inf,
       contact_matrix = c_matrix,
@@ -79,7 +79,7 @@ test_that("Check failure for unequal contact matrix and demography", {
   p_suscep <- 1.0
   p_initial_infections <- c(0.1, 0.5, 0.5)
 
-  testthat::expect_error(
+  expect_error(
     final_size(
       r0 = 2,
       contact_matrix = c_matrix,
@@ -103,7 +103,7 @@ test_that("Check failure for unequal demography and susceptibility vectors", {
   p_suscep <- c(1, 1, 1, 1) # one extra susceptibility value
   p_initial_infections <- c(0.0015)
 
-  testthat::expect_error(
+  expect_error(
     final_size(
       r0 = 2,
       contact_matrix = c_matrix,
@@ -127,7 +127,7 @@ test_that("Check message for multiple initial infection proportions", {
   p_suscep <- c(1, 1, 1)
   p_initial_infections <- c(0.1, 0.5, 0.5)
 
-  testthat::expect_message(
+  expect_message(
     final_size(
       r0 = 2,
       contact_matrix = c_matrix,
@@ -151,7 +151,7 @@ test_that("Check error for unequal proportions initial infections", {
   p_suscep <- c(1, 1, 1)
   p_initial_infections <- c(0.1, 0.5, 0.5, 0.1)
 
-  testthat::expect_error(
+  expect_error(
     final_size(
       r0 = 2,
       contact_matrix = c_matrix,
