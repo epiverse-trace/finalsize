@@ -1,65 +1,130 @@
-test_that("Check finalsize by groups R works", {
-  # checking epi spread function from finalsize
+test_that("Check finalsize by groups works for Polymod data", {
+  r0 <- 2.0
   polymod <- socialmixr::polymod
   contact_data <- socialmixr::contact_matrix(
     polymod,
     countries = "United Kingdom",
-    age.limits = c(0, 20, 40),
-    symmetric = TRUE
+    age.limits = c(0, 20, 40)
   )
-
-  demography_vector <- contact_data$demography$proportion
+  c_matrix <- t(contact_data$matrix)
+  d_vector <- contact_data$participants$proportion
 
   # Scale contact matrix to demography
-  contact_matrix <- apply(
-    contact_data$matrix, 1, function(r) r / demography_vector
+  c_matrix <- apply(
+    c_matrix, 1, function(r) r / d_vector
   )
-  # This is needed to pass isSymmetric. Maybe isSymmetric does not work
-  # properly with named matrices?
-  # TODO: fix the function so that this is not needed any more
-  contact_matrix <- matrix(contact_matrix, ncol = 3)
-  testthat::expect_true(isSymmetric(contact_matrix))
 
-  p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
-  susceptibility <- matrix(1, ncol = 1, 3)
+  n_demo_grps <- length(d_vector)
+  n_risk_grps <- 4
+
+  # prepare p_susceptibility and susceptibility
+  psusc <- matrix(
+    data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+  )
+  psusc <- t(apply(psusc, 1, \(x) x / sum(x)))
+  susc <- matrix(
+    data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+  )
 
   epi_outcome <- final_size_grps(
-    contact_matrix = contact_matrix,
-    demography_vector = demography_vector,
-    p_susceptibility = p_susceptibility,
-    susceptibility = susceptibility
-  )
-
-  testthat::expect_type(
-    epi_outcome, "double"
-  )
-  # check that values are not NaN
-  testthat::expect_true(
-    all(!is.nan(epi_outcome))
-  )
-})
-
-test_that("Check final size calculation is correct in simple case", {
-  r0 <- 2
-  contact_matrix <- matrix(r0 / 200.0, 2, 2)
-  demography_vector <- rep(100.0, 2) |> as.matrix()
-  psusc <- rep(1.0, 2) |> as.matrix()
-  susc <- rep(1.0, 2) |> as.matrix()
-
-  epi_outcome <- final_size_grps(
-    contact_matrix = contact_matrix,
-    demography_vector = demography_vector,
+    contact_matrix = r0 * c_matrix,
+    demography_vector = d_vector,
     p_susceptibility = psusc,
     susceptibility = susc
   )
 
-  epi_outcome_known <- 1 - exp(-r0 * epi_outcome)
-
-  testthat::expect_equal(
-    epi_outcome, epi_outcome_known
+  expect_type(
+    epi_outcome, "double"
+  )
+  # check that values are not NaN
+  expect_true(
+    all(!is.nan(epi_outcome))
+  )
+  # check that solver returns no nas
+  expect_false(
+    any(is.na(epi_outcome))
+  )
+  # check that solver returns no inf
+  expect_false(
+    any(is.infinite(epi_outcome))
+  )
+  # check that solver returns values within range
+  expect_true(
+    all(epi_outcome > 0)
+  )
+  expect_true(
+    all(epi_outcome < 1)
+  )
+  # check for size of the vector
+  expect_equal(
+    n_demo_grps,
+    length(epi_outcome)
   )
 })
 
+test_that("Check that more susceptible demo-grps have higher final size", {
+  r0 <- 1.3
+  polymod <- socialmixr::polymod
+  contact_data <- socialmixr::contact_matrix(
+    polymod,
+    countries = "United Kingdom",
+    age.limits = c(0, 20, 40)
+  )
+  c_matrix <- t(contact_data$matrix)
+  d_vector <- contact_data$participants$proportion
+
+  # Scale contact matrix to demography
+  c_matrix <- apply(
+    c_matrix, 1, function(r) r / d_vector
+  )
+
+  n_demo_grps <- length(d_vector)
+  n_risk_grps <- 4
+
+  # prepare p_susceptibility and susceptibility
+  # age group 1 has all individuals in high risk group
+  psusc <- rbind(
+    c(1, rep(0, n_risk_grps - 1)),
+    rep(1 / n_risk_grps, n_risk_grps),
+    rep(1 / n_risk_grps, n_risk_grps)
+  )
+  susc <- rbind(
+    rep(1, n_risk_grps),
+    rep(0.6, n_risk_grps),
+    rep(0.6, n_risk_grps)
+  )
+
+  epi_outcome <- final_size_grps(
+    contact_matrix = r0 * c_matrix,
+    demography_vector = d_vector,
+    p_susceptibility = psusc,
+    susceptibility = susc
+  )
+
+  expect_vector(
+    epi_outcome,
+    ptype = numeric()
+  )
+  # check that solver returns values within range
+  expect_true(
+    all(epi_outcome > 0)
+  )
+  expect_true(
+    all(epi_outcome < 1)
+  )
+  # check for size of the vector
+  expect_equal(
+    n_demo_grps,
+    length(epi_outcome)
+  )
+  # check that first group has higher final size
+  expect_gt(
+    epi_outcome[1], epi_outcome[n_demo_grps]
+  )
+})
+
+# simple case is tested under test-iterative_solver.R
+# check for correct final size calculation in complex data case
 test_that("Check final size calculation is correct in complex case", {
   # make a contact matrix
   contact_matrix <- c(
@@ -80,7 +145,7 @@ test_that("Check final size calculation is correct in complex case", {
   )
 
   # get an example r0
-  r0 <- 2.0
+  r0 <- 2
 
   # a p_susceptibility matrix
   p_susc <- matrix(0, nrow(contact_matrix), 4) # four susceptibiliy groups
@@ -98,21 +163,36 @@ test_that("Check final size calculation is correct in complex case", {
   susc[, 4] <- 0.1
 
   epi_outcome <- final_size_grps(
-    contact_matrix = contact_matrix,
+    contact_matrix = r0 * contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susc,
     susceptibility = susc
   )
 
-  testthat::expect_type(
-    epi_outcome, "double"
+  expect_vector(
+    epi_outcome,
+    ptype = numeric()
+  )
+  # check that solver returns values within range
+  expect_true(
+    all(epi_outcome > 0)
+  )
+  expect_true(
+    all(epi_outcome < 1)
+  )
+  # check for size of the vector
+  expect_equal(
+    length(demography_vector),
+    length(epi_outcome)
   )
 
-  testthat::expect_equal(
-    length(epi_outcome), length(demography_vector)
+  # test that final size differs by susceptibility group
+  expect_lt(
+    epi_outcome[5], epi_outcome[1]
   )
-
-  # TO DO: ADD CHECK FOR CORRECT ANSWER
+  ratio <- sum(epi_outcome * demography_vector) / sum(demography_vector)
+  expect_gt(ratio, 0.3)
+  expect_lt(ratio, 0.45)
 })
 
 # check for errors and messages
@@ -136,7 +216,7 @@ test_that("Check for errors and messages", {
   contact_matrix <- matrix(contact_data$matrix, ncol = 3)
 
   # expect error on demography vector and contact matrix
-  testthat::expect_error(
+  expect_error(
     final_size_grps(
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
@@ -150,7 +230,7 @@ test_that("Check for errors and messages", {
   p_susceptibility <- matrix(1, ncol = 1, nrow = 4)
 
   # expect error on demography vector and p_susceptibility
-  testthat::expect_error(
+  expect_error(
     final_size_grps(
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
@@ -164,7 +244,7 @@ test_that("Check for errors and messages", {
   susceptibility <- matrix(1, ncol = 1, nrow = 4)
 
   # expect error on demography vector and susceptibility
-  testthat::expect_error(
+  expect_error(
     final_size_grps(
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
@@ -178,13 +258,28 @@ test_that("Check for errors and messages", {
   susceptibility <- matrix(1, ncol = 2, nrow = 3)
 
   # expect error on p_susceptibility and susceptibility
-  testthat::expect_error(
+  expect_error(
     final_size_grps(
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
       susceptibility = susceptibility
     ),
-    regexp = "Error: susceptibility must have same dimensions as p_susceptibility"
+    regexp =
+      "Error: susceptibility must have same dimensions as p_susceptibility"
+  )
+
+  # expect error when p_susceptibility sum > 1
+  p_susceptibility <- matrix(1, ncol = 2, nrow = 3)
+  susceptibility <- matrix(1, ncol = 2, nrow = 3)
+  expect_error(
+    final_size_grps(
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      p_susceptibility = p_susceptibility,
+      susceptibility = susceptibility
+    ),
+    regexp =
+      "Error: p_susceptibility rows must sum to 1.0"
   )
 })
