@@ -57,4 +57,9 @@ test_that("Epi spread function works", {
     nrow(epi_spread_data[["susceptibility"]]),
     prod(dim(susc))
   )
+  # expect that replicated demography is always lower than input
+  # when there are multiple risk groups
+  expect_true(
+    all(epi_spread_data[["demography_vector"]] < demography_vector)
+  )
 })
