@@ -82,16 +82,15 @@ test_that("Check that more susceptible demo-grps have higher final size", {
   n_risk_grps <- 4
 
   # prepare p_susceptibility and susceptibility
-  # age group 1 has all individuals in high risk group
-  psusc <- rbind(
-    c(1, rep(0, n_risk_grps - 1)),
-    rep(1 / n_risk_grps, n_risk_grps),
-    rep(1 / n_risk_grps, n_risk_grps)
+  # susceptibility of demography group i = 1 is 10x i = 2, 3
+  psusc <- matrix(
+    data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
+  psusc <- t(apply(psusc, 1, \(x) x / sum(x)))
   susc <- rbind(
     rep(1, n_risk_grps),
-    rep(0.6, n_risk_grps),
-    rep(0.6, n_risk_grps)
+    rep(0.1, n_risk_grps),
+    rep(0.1, n_risk_grps)
   )
 
   epi_outcome <- final_size_grps(
