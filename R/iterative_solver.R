@@ -37,24 +37,23 @@ solve_final_size_iterative <- function(contact_matrix,
 
   # replicate contact matrix
   contact_matrix_ <- contact_matrix
-  # set some values to zero if there are no contacts among
+  # set contact_matrix values to zero if there are no contacts among
   # demography groups, or if demography groups are empty
-  for (i in seq(nrow(contact_matrix_))) {
-    if (demography_vector[i] == 0 || susceptibility[[i]] == 0 ||
-      sum(contact_matrix[i, ]) == 0) {
-      zeros[i] <- 1.0
-      pi[i] <- 0.0
-    }
+  i_here <- demography_vector == 0 | susceptibility == 0 |
+    rowSums(contact_matrix) == 0
+  zeros[i_here] <- 1.0
+  pi[i_here] <- 0.0
 
-    for (j in seq(ncol(contact_matrix))) {
-      if (zeros[j] == 1) {
-        contact_matrix_[i, j] <- 0.0
-      } else {
-        contact_matrix_[i, j] <- susceptibility[i] *
-          contact_matrix_[i, j] * demography_vector[j]
-      }
-    }
-  }
+  # matrix filled by columns
+  contact_matrix_ <- matrix(
+    as.vector(contact_matrix_) *
+      (susceptibility %x% demography_vector), # note Kronecker product
+    nrow = nrow(contact_matrix_),
+    ncol = ncol(contact_matrix_)
+  )
+
+  contact_matrix_[i_here, zeros == 1] <- 0.0
+
   # make a vector to hold final size, empty numeric of size n_dim
   pi_return <- numeric(n_dim)
 
