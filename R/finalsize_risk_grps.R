@@ -85,7 +85,7 @@ final_size_grps <- function(contact_matrix,
   )
 
   # solve for final size
-  pi <- solve_final_size_iterative(
+  epi_final_size <- solve_final_size_iterative(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
     p_susceptibility = epi_spread_data[["p_susceptibility"]],
@@ -100,14 +100,14 @@ final_size_grps <- function(contact_matrix,
   lps <- as.vector(p_susceptibility)
 
   # multiply demo-risk specific final sizes by corresponding pop proportions
-  pi <- pi * lps
+  epi_final_size <- epi_final_size * lps
 
   # final sizes mapped to matrix with dims (n_demo_grp, n_risk_grps)
-  pi <- matrix(
-    data = pi,
+  epi_final_size <- matrix(
+    data = epi_final_size,
     nrow = length(demography_vector),
     ncol = ncol(p_susceptibility)
   )
   # return row-wise sum, i.e., the demo-grp wise sum
-  rowSums(pi)
+  rowSums(epi_final_size)
 }

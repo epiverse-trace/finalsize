@@ -33,7 +33,7 @@ solve_final_size_iterative <- function(contact_matrix,
   # make vector of zeros
   zeros <- rep(0.0, n_dim)
   # make vector of initial final size guesses = 0.5
-  pi <- rep(0.5, n_dim)
+  epi_final_size <- rep(0.5, n_dim)
 
   # replicate contact matrix
   contact_matrix_ <- contact_matrix
@@ -42,7 +42,7 @@ solve_final_size_iterative <- function(contact_matrix,
   i_here <- demography_vector == 0 | susceptibility == 0 |
     rowSums(contact_matrix) == 0
   zeros[i_here] <- 1.0
-  pi[i_here] <- 0.0
+  epi_final_size[i_here] <- 0.0
 
   # matrix filled by columns
   contact_matrix_ <- matrix(
@@ -55,41 +55,42 @@ solve_final_size_iterative <- function(contact_matrix,
   contact_matrix_[i_here, zeros == 1] <- 0.0
 
   # make a vector to hold final size, empty numeric of size n_dim
-  pi_return <- numeric(n_dim)
+  epi_final_size_return <- numeric(n_dim)
 
   # define functions to minimise error in final size estimate
-  fn_f <- function(pi_, pi_return_) {
+  fn_f <- function(epi_final_size_, epi_final_size_return_) {
     # contact_matrix_ captured from environment
-    s <- as.vector(contact_matrix_ %*% (-pi_))
+    s <- as.vector(contact_matrix_ %*% (-epi_final_size_))
 
-    pi_return_ <- ifelse(zeros == 1.0, 0.0, 1.0)
-    pi_return_ <- pi_return_ - (p_susceptibility *
+    epi_final_size_return_ <- ifelse(zeros == 1.0, 0.0, 1.0)
+    epi_final_size_return_ <- epi_final_size_return_ - (p_susceptibility *
       exp(susceptibility * s))
 
-    pi_return_
+    epi_final_size_return_
   }
   # define initial current error
   current_error <- step_rate * n_dim
-  # run over fn_f over pi (intial guess) and pi_return (current estimate?)
+  # run over fn_f over epi_final_size (intial guess)
+  # and epi_final_size_return (current estimate?)
   for (i in seq(iterations)) {
-    pi_return <- fn_f(pi, pi_return)
+    epi_final_size_return <- fn_f(epi_final_size, epi_final_size_return)
     # get current error
-    dpi <- pi - pi_return
+    dpi <- epi_final_size - epi_final_size_return
     error <- sum(abs(dpi))
     # break loop if error below tolerance
     if (error < tolerance) {
-      pi <- pi - dpi
+      epi_final_size <- epi_final_size - dpi
       break
     }
     # adapt the step size based on the change in error
     change <- current_error - error
     if (change > 0.0) {
-      pi <- pi - step_rate * dpi
+      epi_final_size <- epi_final_size - step_rate * dpi
       if (adapt_step) {
         step_rate <- step_rate * 1.1
       }
     } else {
-      pi <- pi - dpi
+      epi_final_size <- epi_final_size - dpi
       if (adapt_step) {
         step_rate <- max(0.9 * step_rate, 1.0)
       }
@@ -98,8 +99,9 @@ solve_final_size_iterative <- function(contact_matrix,
   }
 
   # adjust numerical errors
-  pi <- ifelse(zeros, 0.0, pi) # relies on TRUE equivalent to 1
+  # relies on TRUE equivalent to 1
+  epi_final_size <- ifelse(zeros, 0.0, epi_final_size)
 
   # return what
-  pi
+  epi_final_size
 }

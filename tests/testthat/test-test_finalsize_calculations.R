@@ -82,10 +82,10 @@ test_that("Check basic final size calculation works", {
   expect_true(all(epi_final_size >= p_initial_infections))
 
   # Calculate the final size in the population
-  pi <- sum(epi_final_size * d_vector) / sum(d_vector)
+  epi_final_size <- sum(epi_final_size * d_vector) / sum(d_vector)
   max_pi <- upper_limit(r0_value)
   expect_equal(max_pi$convergence, 0)
-  expect_lte(pi, max_pi$par)
+  expect_lte(epi_final_size, max_pi$par)
 
   # Lower realistic limit given an r0 of 2
   expect_true(all(epi_final_size > 0.7))
@@ -130,10 +130,10 @@ test_that("Check final size when one age group is not susceptible", {
   expect_true(all(epi_final_size[p_suscep != 0] > 0))
   expect_true(epi_final_size[p_suscep == 0] == 0)
 
-  pi <- sum(epi_final_size * d_vector) / sum(d_vector)
+  epi_final_size <- sum(epi_final_size * d_vector) / sum(d_vector)
   max_pi <- upper_limit(r0_value)
   expect_equal(max_pi$convergence, 0)
-  expect_lte(pi, max_pi$par)
+  expect_lte(epi_final_size, max_pi$par)
 })
 
 test_that("Check that isolated age groups are not infected", {

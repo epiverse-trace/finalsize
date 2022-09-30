@@ -1,4 +1,4 @@
-# basic test that solver returns numerics within range
+# basic test that epi_spread returns list with correct object types and dims
 test_that("Epi spread function works", {
   # prepare some data for the solver
   r0 <- 1.3 # not necessary
