@@ -91,7 +91,9 @@ final_size_grps <- function(contact_matrix,
     p_susceptibility = epi_spread_data[["p_susceptibility"]],
     susceptibility = epi_spread_data[["susceptibility"]],
     iterations = iterations,
-    tolerance = tolerance
+    tolerance = tolerance,
+    step_rate = step_rate,
+    adapt_step = adapt_step
   )
 
   # unroll p_susceptibility data
