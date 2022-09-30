@@ -63,22 +63,13 @@ final_size_grps <- function(contact_matrix,
   # check arguments input
   stopifnot(
     "Error: contact matrix must have as many rows as demography groups" =
-      (nrow(contact_matrix) == length(demography_vector))
-  )
-  stopifnot(
+      (nrow(contact_matrix) == length(demography_vector)),
     "Error: p_susceptibility must have as many rows as demography groups" =
-      (nrow(p_susceptibility) == length(demography_vector))
-  )
-  stopifnot(
+      (nrow(p_susceptibility) == length(demography_vector)),
     "Error: susceptibility must have as many rows as demography groups" =
-      (nrow(susceptibility) == length(demography_vector))
-  )
-  stopifnot(
+      (nrow(susceptibility) == length(demography_vector)),
     "Error: susceptibility must have same dimensions as p_susceptibility" =
-      (all(dim(p_susceptibility) == dim(susceptibility)))
-  )
-  # p_susceptibility must have rowwise sums of 1.0 or nearly 1.0
-  stopifnot(
+      (all(dim(p_susceptibility) == dim(susceptibility))),
     "Error: p_susceptibility rows must sum to 1.0" =
       (
         all(abs(rowSums(p_susceptibility) - 1) < 1e-6)
