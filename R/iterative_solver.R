@@ -59,19 +59,13 @@ solve_final_size_iterative <- function(contact_matrix,
 
   # define functions to minimise error in final size estimate
   fn_f <- function(pi_, pi_return_) {
-    s <- contact_matrix_ %*% (-pi_) # contact_matrix_ captured from environment
-    for (i in seq(nrow(contact_matrix_))) {
-      if (zeros[i] == 1.0) {
-        pi_return_[i] <- 0
-        next
-      }
-      pi_return_[i] <- 1
+    # contact_matrix_ captured from environment
+    s <- as.vector(contact_matrix_ %*% (-pi_))
 
-      for (k in seq(ncol(p_susceptibility))) {
-        pi_return_[i] <- pi_return_[i] - (p_susceptibility[i, k]) *
-          exp(susceptibility[i, k] * s[i])
-      }
-    }
+    pi_return_ <- ifelse(zeros == 1.0, 0.0, 1.0)
+    pi_return_ <- pi_return_ - (p_susceptibility *
+      exp(susceptibility * s))
+
     pi_return_
   }
   # define initial current error
@@ -104,11 +98,7 @@ solve_final_size_iterative <- function(contact_matrix,
   }
 
   # adjust numerical errors
-  for (i in seq(length(pi))) {
-    if (zeros[i]) {
-      pi[i] <- 0
-    } # relies on FALSE equivalent to 0
-  }
+  pi <- ifelse(zeros, 0.0, pi) # relies on TRUE equivalent to 1
 
   # return what
   pi
