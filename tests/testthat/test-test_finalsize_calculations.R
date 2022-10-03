@@ -39,11 +39,11 @@ test_that("Final size calculations are correct", {
           prop_suscep = p_suscep
         )
 
-        testthat::expect_true(
+        expect_true(
           all(fs >= p_initial_infections)
         )
 
-        testthat::expect_true(
+        expect_true(
           all(fs <= 1.0)
         )
       }
@@ -73,22 +73,22 @@ test_that("Check basic final size calculation works", {
   )
 
   # Run final size model
-  testthat::expect_identical(
+  expect_identical(
     length(p_suscep), length(epi_final_size)
   )
 
   # This should be valid for all values of r0
-  testthat::expect_true(all(epi_final_size <= 1.0))
-  testthat::expect_true(all(epi_final_size >= p_initial_infections))
+  expect_true(all(epi_final_size <= 1.0))
+  expect_true(all(epi_final_size >= p_initial_infections))
 
   # Calculate the final size in the population
-  pi <- sum(epi_final_size * d_vector) / sum(d_vector)
+  epi_final_size <- sum(epi_final_size * d_vector) / sum(d_vector)
   max_pi <- upper_limit(r0_value)
-  testthat::expect_equal(max_pi$convergence, 0)
-  testthat::expect_lte(pi, max_pi$par)
+  expect_equal(max_pi$convergence, 0)
+  expect_lte(epi_final_size, max_pi$par)
 
   # Lower realistic limit given an r0 of 2
-  testthat::expect_true(all(epi_final_size > 0.7))
+  expect_true(all(epi_final_size > 0.7))
 
   # Check that lower r0 values result in lower final size values
   r0_value_low <- 1.5
@@ -99,8 +99,8 @@ test_that("Check basic final size calculation works", {
     demography = d_vector,
     prop_suscep = p_suscep
   )
-  testthat::expect_true(all(epi_final_size_low < epi_final_size))
-  testthat::expect_true(all(epi_final_size_low >= 0))
+  expect_true(all(epi_final_size_low < epi_final_size))
+  expect_true(all(epi_final_size_low >= 0))
 })
 
 test_that("Check final size when one age group is not susceptible", {
@@ -123,17 +123,17 @@ test_that("Check final size when one age group is not susceptible", {
     prop_suscep = p_suscep
   )
 
-  testthat::expect_identical(
+  expect_identical(
     length(p_suscep), length(epi_final_size)
   )
 
-  testthat::expect_true(all(epi_final_size[p_suscep != 0] > 0))
-  testthat::expect_true(epi_final_size[p_suscep == 0] == 0)
+  expect_true(all(epi_final_size[p_suscep != 0] > 0))
+  expect_true(epi_final_size[p_suscep == 0] == 0)
 
-  pi <- sum(epi_final_size * d_vector) / sum(d_vector)
+  epi_final_size <- sum(epi_final_size * d_vector) / sum(d_vector)
   max_pi <- upper_limit(r0_value)
-  testthat::expect_equal(max_pi$convergence, 0)
-  testthat::expect_lte(pi, max_pi$par)
+  expect_equal(max_pi$convergence, 0)
+  expect_lte(epi_final_size, max_pi$par)
 })
 
 test_that("Check that isolated age groups are not infected", {
@@ -154,7 +154,7 @@ test_that("Check that isolated age groups are not infected", {
     prop_suscep = p_suscep
   )
 
-  testthat::expect_identical(
+  expect_identical(
     epi_final_size[isolated_grp], 0.0
   )
 })
