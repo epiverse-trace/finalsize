@@ -30,7 +30,8 @@ test_that("Check finalsize by groups works for Polymod data", {
     contact_matrix = r0 * c_matrix,
     demography_vector = d_vector,
     p_susceptibility = psusc,
-    susceptibility = susc
+    susceptibility = susc,
+    solver = "iterative"
   )
 
   expect_type(
@@ -97,7 +98,8 @@ test_that("Check that more susceptible demo-grps have higher final size", {
     contact_matrix = r0 * c_matrix,
     demography_vector = d_vector,
     p_susceptibility = psusc,
-    susceptibility = susc
+    susceptibility = susc,
+    solver = "iterative"
   )
 
   expect_vector(
@@ -165,7 +167,8 @@ test_that("Check final size calculation is correct in complex case", {
     contact_matrix = r0 * contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susc,
-    susceptibility = susc
+    susceptibility = susc,
+    solver = "iterative"
   )
 
   expect_vector(
@@ -220,7 +223,8 @@ test_that("Check for errors and messages", {
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
-      susceptibility = susceptibility
+      susceptibility = susceptibility,
+      solver = "iterative"
     ),
     regexp = "Error: contact matrix must have as many rows as demography groups"
   )
@@ -234,7 +238,8 @@ test_that("Check for errors and messages", {
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
-      susceptibility = susceptibility
+      susceptibility = susceptibility,
+      solver = "iterative"
     ),
     regexp = "Error: p_susceptibility must have as many rows as demography"
   )
@@ -248,7 +253,8 @@ test_that("Check for errors and messages", {
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
-      susceptibility = susceptibility
+      susceptibility = susceptibility,
+      solver = "iterative"
     ),
     regexp = "Error: susceptibility must have as many rows as demography groups"
   )
@@ -262,7 +268,8 @@ test_that("Check for errors and messages", {
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
-      susceptibility = susceptibility
+      susceptibility = susceptibility,
+      solver = "iterative"
     ),
     regexp =
       "Error: susceptibility must have same dimensions as p_susceptibility"
@@ -276,7 +283,8 @@ test_that("Check for errors and messages", {
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
-      susceptibility = susceptibility
+      susceptibility = susceptibility,
+      solver = "iterative"
     ),
     regexp =
       "Error: p_susceptibility rows must sum to 1.0"
