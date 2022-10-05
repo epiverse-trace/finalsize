@@ -9,6 +9,7 @@ final_size_grps(
   demography_vector,
   p_susceptibility,
   susceptibility,
+  solver = c("iterative", "newton"),
   iterations = 1000,
   tolerance = 1e-06,
   step_rate = 1.9,
@@ -30,15 +31,19 @@ group $i$ across risk groups, and each row *must sum to 1.0*.}
 \item{susceptibility}{A matrix giving the susceptibility of individuals in
 demographic group $i$ and risk group $j$.}
 
+\item{solver}{Which solver to use. Options are "iterative" or "newton", for
+the iterative solver, or the Newton solver, respectively. Special conditions
+apply when using the Newton solver.}
+
 \item{iterations}{Number of solver iterations. Defaults to 1,000.}
 
 \item{tolerance}{Solver error tolerance.}
 
-\item{step_rate}{The solver step rate. Defaults to 1.9 as a value found to
-work well.}
+\item{step_rate}{The solver step rate for the iterative solver. Defaults to
+1.9 as a value found to work well.}
 
-\item{adapt_step}{Boolean, whether the solver step rate should be changed
-based on the solver error. Defaults to TRUE.}
+\item{adapt_step}{Boolean, whether the iterative solver step rate should be
+changed based on the solver error. Defaults to TRUE.}
 }
 \value{
 A vector of final sizes by demography group.
@@ -53,14 +58,11 @@ r0 <- 2.0
 contact_data <- contact_matrix(
   polymod,
   countries = "United Kingdom",
-  age.limits = c(0, 20, 40)
+  age.limits = c(0, 20, 40),
+  split = TRUE # scaling by demography
 )
 c_matrix <- t(contact_data$matrix)
 d_vector <- contact_data$participants$proportion
-# Scale contact matrix to demography
-c_matrix <- apply(
-  c_matrix, 1, function(r) r / d_vector
-)
 n_demo_grps <- length(d_vector)
 n_risk_grps <- 3
 # prepare p_susceptibility and susceptibility
@@ -75,7 +77,8 @@ final_size_grps(
   contact_matrix = r0 * c_matrix,
   demography_vector = d_vector,
   p_susceptibility = psusc,
-  susceptibility = susc
+  susceptibility = susc,
+  solver = "newton"
 )
 
 }
