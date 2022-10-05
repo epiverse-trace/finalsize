@@ -45,12 +45,7 @@ solve_final_size_iterative <- function(contact_matrix,
   epi_final_size[i_here] <- 0.0
 
   # matrix filled by columns
-  contact_matrix_ <- matrix(
-    as.vector(contact_matrix_) *
-      (susceptibility %x% demography_vector), # note Kronecker product
-    nrow = nrow(contact_matrix_),
-    ncol = ncol(contact_matrix_)
-  )
+  contact_matrix_ <- contact_matrix * demography_vector %o% susceptibility
 
   contact_matrix_[i_here, zeros == 1] <- 0.0
 
