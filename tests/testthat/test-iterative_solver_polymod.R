@@ -4,7 +4,8 @@ test_that("Iterative solver works with polymod data", {
   contact_data <- socialmixr::contact_matrix(
     polymod,
     countries = "United Kingdom",
-    age.limits = c(0, 20, 40)
+    age.limits = c(0, 20, 40),
+    split = TRUE
   )
   c_matrix <- t(contact_data$matrix)
   d_vector <- contact_data$participants$proportion
