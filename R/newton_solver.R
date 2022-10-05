@@ -74,8 +74,8 @@ solve_final_size_newton <- function(contact_matrix,
     solve(cache_m_pivlu, cache)
   }
 
-  # prepare inverse of the guessed final size
-  x_ <- 1.0 - epi_final_size
+  # prepare an initial value from where to
+  x_ <- rep(1e-6, n_dim)
 
   for (i in seq(iterations)) {
     cache_v <- as.vector(dx_f(x_, cache_v, contact_matrix_))
