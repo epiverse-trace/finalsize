@@ -55,7 +55,7 @@ solve_final_size_iterative <- function(contact_matrix,
     # contact_matrix_ captured from environment
     s <- as.vector(contact_matrix_ %*% (-epi_final_size_))
 
-    epi_final_size_return_ <- ifelse(zeros == 1.0, 0.0, 1.0)
+    epi_final_size_return_ <- 1 - zeros
     epi_final_size_return_ <- epi_final_size_return_ - (p_susceptibility *
       exp(susceptibility * s))
 
@@ -93,7 +93,7 @@ solve_final_size_iterative <- function(contact_matrix,
 
   # adjust numerical errors
   # relies on TRUE equivalent to 1
-  epi_final_size <- ifelse(zeros, 0.0, epi_final_size)
+  epi_final_size <- epi_final_size * zeros
 
   # return what
   epi_final_size
