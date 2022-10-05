@@ -51,7 +51,7 @@ solve_final_size_iterative <- function(contact_matrix,
   epi_final_size_return <- numeric(n_dim)
 
   # define functions to minimise error in final size estimate
-  fn_f <- function(epi_final_size_, epi_final_size_return_) {
+  fn_f <- function(epi_final_size_) {
     # contact_matrix_ captured from environment
     s <- as.vector(contact_matrix_ %*% (-epi_final_size_))
 
@@ -66,7 +66,7 @@ solve_final_size_iterative <- function(contact_matrix,
   # run over fn_f over epi_final_size (intial guess)
   # and epi_final_size_return (current estimate?)
   for (i in seq(iterations)) {
-    epi_final_size_return <- fn_f(epi_final_size, epi_final_size_return)
+    epi_final_size_return <- fn_f(epi_final_size)
     # get current error
     dpi <- epi_final_size - epi_final_size_return
     error <- sum(abs(dpi))
