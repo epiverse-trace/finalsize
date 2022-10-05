@@ -26,3 +26,24 @@ final_size_cpp <- function(r0, contact_matrix, demography_vector, prop_initial_i
     .Call('_finalsize_final_size_cpp', PACKAGE = 'finalsize', r0, contact_matrix, demography_vector, prop_initial_infected, prop_suscep, iterations)
 }
 
+#' @title Calculate final epidemic size with risk groups using Eigen backend
+#'
+#' @description This function calculates final epidemic size using SIR model
+#' for a heterogeneously mixing population, using an Eigen backend
+#'
+#' @param contact_matrix  Social contact matrix. Entry $mm_{ij}$ gives average
+#' number of contacts in group $i$ reported by participants in group j
+#' @param demography_vector  Demography vector. Entry $pp_{i}$ gives proportion
+#' of total population in group $i$ (model will normalise if needed)
+#' @param p_susceptibility WIP.
+#' @param susceptibility WIP.
+#' @param iterations WIP.
+#' @param adapt_step WIP
+#' @param tolerance WIP.
+#'
+#' @keywords epidemic model
+#' @export
+final_size_grps_cpp <- function(contact_matrix, demography_vector, p_susceptibility, susceptibility, iterations = 1000L, tolerance = 1e-6, adapt_step = TRUE) {
+    .Call('_finalsize_final_size_grps_cpp', PACKAGE = 'finalsize', contact_matrix, demography_vector, p_susceptibility, susceptibility, iterations, tolerance, adapt_step)
+}
+
