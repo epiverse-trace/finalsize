@@ -93,7 +93,7 @@ solve_final_size_iterative <- function(contact_matrix,
 
   # adjust numerical errors
   # relies on TRUE equivalent to 1
-  epi_final_size <- epi_final_size * zeros
+  epi_final_size <- epi_final_size * (1 - zeros)
 
   # return what
   epi_final_size
