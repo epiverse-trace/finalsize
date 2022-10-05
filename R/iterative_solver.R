@@ -35,8 +35,6 @@ solve_final_size_iterative <- function(contact_matrix,
   # make vector of initial final size guesses = 0.5
   epi_final_size <- rep(0.5, n_dim)
 
-  # replicate contact matrix
-  contact_matrix_ <- contact_matrix
   # set contact_matrix values to zero if there are no contacts among
   # demography groups, or if demography groups are empty
   i_here <- demography_vector == 0 | susceptibility == 0 |
