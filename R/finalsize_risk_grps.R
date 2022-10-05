@@ -30,14 +30,11 @@
 #' contact_data <- contact_matrix(
 #'   polymod,
 #'   countries = "United Kingdom",
-#'   age.limits = c(0, 20, 40)
+#'   age.limits = c(0, 20, 40),
+#'   split = TRUE # scaling by demography
 #' )
 #' c_matrix <- t(contact_data$matrix)
 #' d_vector <- contact_data$participants$proportion
-#' # Scale contact matrix to demography
-#' c_matrix <- apply(
-#'   c_matrix, 1, function(r) r / d_vector
-#' )
 #' n_demo_grps <- length(d_vector)
 #' n_risk_grps <- 3
 #' # prepare p_susceptibility and susceptibility
@@ -52,7 +49,8 @@
 #'   contact_matrix = r0 * c_matrix,
 #'   demography_vector = d_vector,
 #'   p_susceptibility = psusc,
-#'   susceptibility = susc
+#'   susceptibility = susc,
+#'   solver = "newton"
 #' )
 #'
 final_size_grps <- function(contact_matrix,
@@ -79,13 +77,6 @@ final_size_grps <- function(contact_matrix,
         all(abs(rowSums(p_susceptibility) - 1) < 1e-6)
       )
   )
-  # check for matrix singularity if using Newton solver
-  if (solver == "newton") {
-    stopifnot(
-      "Error: Newton solver needs a non-singular matrix" =
-        (det(contact_matrix) != 0)
-    )
-  }
 
   # prepare epi spread object
   epi_spread_data <- epi_spread(
@@ -118,7 +109,7 @@ final_size_grps <- function(contact_matrix,
       tolerance = tolerance
     )
   } else {
-    simpleError(message = "Error: solver must be one of 'iterative' or 'newton'")
+    stop("Error: solver must be 'iterative' or 'newton'")
   }
 
   # unroll p_susceptibility data
