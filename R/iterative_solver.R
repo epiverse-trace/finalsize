@@ -45,7 +45,7 @@ solve_final_size_iterative <- function(contact_matrix,
   # matrix filled by columns
   contact_matrix_ <- contact_matrix * demography_vector %o% susceptibility
 
-  contact_matrix_[i_here, zeros == 1] <- 0.0
+  contact_matrix_[i_here, i_here] <- 0.0
 
   # make a vector to hold final size, empty numeric of size n_dim
   epi_final_size_return <- numeric(n_dim)
