@@ -128,7 +128,6 @@ test_that("Check that more susceptible demo-grps have higher final size", {
   )
 })
 
-# simple case is tested under test-iterative_solver.R
 # check for correct final size calculation in complex data case
 # using iterative solver
 test_that("Check final size calculation is correct in complex case", {
@@ -151,22 +150,11 @@ test_that("Check final size calculation is correct in complex case", {
   )
 
   # get an example r0
-  r0 <- 2
+  r0 <- 1.3
 
   # a p_susceptibility matrix
-  p_susc <- matrix(0, nrow(contact_matrix), 4) # four susceptibiliy groups
-  # fill p_susceptibility columns manually
-  p_susc[, 1] <- 0.7
-  p_susc[, 2] <- 0.1
-  p_susc[, 3] <- 0.1
-  p_susc[, 4] <- 0.1
-
-  # a susceptibility matrix
-  susc <- matrix(0, nrow(contact_matrix), 4)
-  susc[, 1] <- 1.0
-  susc[, 2] <- 0.7
-  susc[, 3] <- 0.4
-  susc[, 4] <- 0.1
+  p_susc <- matrix(1, nrow(contact_matrix), 1)
+  susc <- p_susc
 
   epi_outcome <- final_size_grps(
     contact_matrix = r0 * contact_matrix,

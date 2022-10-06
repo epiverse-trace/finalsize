@@ -1,6 +1,6 @@
 # basic test that solver returns numerics within range, for multiple risk groups
 test_that("Newton solver works with polymod data", {
-  r0 = 1.3
+  r0 <- 1.3
   polymod <- socialmixr::polymod
   contact_data <- socialmixr::contact_matrix(
     polymod,
