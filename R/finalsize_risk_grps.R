@@ -103,7 +103,6 @@ final_size_grps <- function(contact_matrix,
     epi_final_size <- solve_final_size_newton(
       contact_matrix = epi_spread_data[["contact_matrix"]],
       demography_vector = epi_spread_data[["demography_vector"]],
-      p_susceptibility = epi_spread_data[["p_susceptibility"]],
       susceptibility = epi_spread_data[["susceptibility"]],
       iterations = iterations,
       tolerance = tolerance
@@ -111,7 +110,6 @@ final_size_grps <- function(contact_matrix,
   } else {
     stop("Error: solver must be 'iterative' or 'newton'")
   }
-
   # unroll p_susceptibility data
   lps <- as.vector(p_susceptibility)
 
@@ -126,4 +124,5 @@ final_size_grps <- function(contact_matrix,
   )
   # return row-wise sum, i.e., the demo-grp wise sum
   rowSums(epi_final_size)
+  epi_final_size
 }

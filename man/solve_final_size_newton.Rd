@@ -7,7 +7,6 @@
 solve_final_size_newton(
   contact_matrix,
   demography_vector,
-  p_susceptibility,
   susceptibility,
   iterations = 1000,
   tolerance = 1e-06
@@ -19,11 +18,6 @@ number of contacts in group $i$ reported by participants in group j}
 
 \item{demography_vector}{Demography vector. Entry $pp_{i}$ gives proportion
 of total population in group $i$ (model will normalise if needed)}
-
-\item{p_susceptibility}{A matrix giving the probability that an individual
-in demography group $i$ is in risk (or susceptibility) group $j$.
-Each row represents the overall distribution of individuals in demographic
-group $i$ across risk groups, and each row *must sum to 1.0*.}
 
 \item{susceptibility}{A matrix giving the susceptibility of individuals in
 demographic group $i$ and risk group $j$.}
