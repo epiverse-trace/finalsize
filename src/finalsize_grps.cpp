@@ -5,6 +5,7 @@
 
 #include "epi_spread.h"
 #include "iterative_solver.h"
+#include "newton_solver.h"
 
 // [[Rcpp::plugins(cpp11)]]
 // via the depends attribute we tell Rcpp to create hooks for
@@ -45,8 +46,10 @@ Eigen::ArrayXd final_size_grps_cpp(const Eigen::MatrixXd &contact_matrix,
                                    const Eigen::VectorXd &demography_vector,
                                    const Eigen::MatrixXd &p_susceptibility,
                                    const Eigen::MatrixXd &susceptibility,
+                                   const Rcpp::String solver,
                                    const int iterations = 1000,
                                    const double tolerance = 1e-6,
+                                   double step_rate = 1.9,
                                    const bool adapt_step = true) {
   if (contact_matrix.rows() != demography_vector.size()) {
     Rcpp::stop(
@@ -72,15 +75,27 @@ Eigen::ArrayXd final_size_grps_cpp(const Eigen::MatrixXd &contact_matrix,
       Rcpp::stop("Error: p_susceptibility matrix rows must sum to 1.0");
     }
   }
+  // check that solver options are correct
+  if ((solver != Rcpp::String("iterative")) &&
+      (solver != Rcpp::String("newton"))) {
+    Rcpp::stop("Error: solver must be one of 'iterative' or 'newton'");
+  }
 
   // prepare epidemiological spread data
   epi_spread_data s = epi_spread(contact_matrix, demography_vector,
                                  p_susceptibility, susceptibility);
 
   // solve for final sizes (epi_final_size, abbrv to efs_tmp)
-  Eigen::ArrayXd efs_tmp =
-      solve_final_size_iterative_cpp(s.contact_matrix, s.demography_vector,
-                                     s.p_susceptibility, s.susceptibility);
+  Eigen::ArrayXd efs_tmp;
+  if (solver == Rcpp::String("iterative")) {
+    efs_tmp = solve_final_size_iterative_cpp(
+        s.contact_matrix, s.demography_vector, s.p_susceptibility,
+        s.susceptibility, iterations, tolerance, step_rate, adapt_step);
+  } else {
+    efs_tmp =
+        solve_final_size_newton_cpp(s.contact_matrix, s.demography_vector,
+                                    s.susceptibility, iterations, tolerance);
+  }
 
   // prepare final sizes as matrix with n-demography rows, n-risk-grps cols
   Eigen::Map<Eigen::MatrixXd> efs_tmp_2(
