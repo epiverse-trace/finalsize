@@ -35,8 +35,6 @@ solve_final_size_iterative <- function(contact_matrix,
   # make vector of initial final size guesses = 0.5
   epi_final_size <- rep(0.5, n_dim)
 
-  # replicate contact matrix
-  contact_matrix_ <- contact_matrix
   # set contact_matrix values to zero if there are no contacts among
   # demography groups, or if demography groups are empty
   i_here <- demography_vector == 0 | susceptibility == 0 |
@@ -45,24 +43,19 @@ solve_final_size_iterative <- function(contact_matrix,
   epi_final_size[i_here] <- 0.0
 
   # matrix filled by columns
-  contact_matrix_ <- matrix(
-    as.vector(contact_matrix_) *
-      (susceptibility %x% demography_vector), # note Kronecker product
-    nrow = nrow(contact_matrix_),
-    ncol = ncol(contact_matrix_)
-  )
+  contact_matrix_ <- contact_matrix * demography_vector %o% susceptibility
 
-  contact_matrix_[i_here, zeros == 1] <- 0.0
+  contact_matrix_[i_here, i_here] <- 0.0
 
   # make a vector to hold final size, empty numeric of size n_dim
   epi_final_size_return <- numeric(n_dim)
 
   # define functions to minimise error in final size estimate
-  fn_f <- function(epi_final_size_, epi_final_size_return_) {
+  fn_f <- function(epi_final_size_) {
     # contact_matrix_ captured from environment
     s <- as.vector(contact_matrix_ %*% (-epi_final_size_))
 
-    epi_final_size_return_ <- ifelse(zeros == 1.0, 0.0, 1.0)
+    epi_final_size_return_ <- 1 - zeros
     epi_final_size_return_ <- epi_final_size_return_ - (p_susceptibility *
       exp(susceptibility * s))
 
@@ -73,7 +66,7 @@ solve_final_size_iterative <- function(contact_matrix,
   # run over fn_f over epi_final_size (intial guess)
   # and epi_final_size_return (current estimate?)
   for (i in seq(iterations)) {
-    epi_final_size_return <- fn_f(epi_final_size, epi_final_size_return)
+    epi_final_size_return <- fn_f(epi_final_size)
     # get current error
     dpi <- epi_final_size - epi_final_size_return
     error <- sum(abs(dpi))
@@ -100,7 +93,7 @@ solve_final_size_iterative <- function(contact_matrix,
 
   # adjust numerical errors
   # relies on TRUE equivalent to 1
-  epi_final_size <- ifelse(zeros, 0.0, epi_final_size)
+  epi_final_size <- epi_final_size * (1 - zeros)
 
   # return what
   epi_final_size
