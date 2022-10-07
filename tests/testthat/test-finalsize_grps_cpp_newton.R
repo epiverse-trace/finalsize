@@ -1,11 +1,12 @@
-# Tests for user-facing function final_size_grps_cpp
-test_that("Check finalsize by groups Cpp works for Polymod data", {
+# Check final_size_grps_cpp works with Newton solver
+test_that("Check finalsize by groups works for Polymod, newton solver", {
   r0 <- 2.0
   polymod <- socialmixr::polymod
   contact_data <- socialmixr::contact_matrix(
     polymod,
     countries = "United Kingdom",
-    age.limits = c(0, 20, 40)
+    age.limits = c(0, 20, 40),
+    split = TRUE
   )
   c_matrix <- t(contact_data$matrix)
   d_vector <- contact_data$participants$proportion
@@ -31,7 +32,8 @@ test_that("Check finalsize by groups Cpp works for Polymod data", {
     contact_matrix = r0 * c_matrix,
     demography_vector = d_vector,
     p_susceptibility = psusc,
-    susceptibility = susc
+    susceptibility = susc,
+    solver = "newton"
   )
 
   expect_type(
@@ -63,14 +65,15 @@ test_that("Check finalsize by groups Cpp works for Polymod data", {
   )
 })
 
-# Test that final_size_grps_cpp responds to susceptibility of groups
+# Check sensitivity to susceptibility using newton solver
 test_that("Check that more susceptible demo-grps have higher final size", {
   r0 <- 1.3
   polymod <- socialmixr::polymod
   contact_data <- socialmixr::contact_matrix(
     polymod,
     countries = "United Kingdom",
-    age.limits = c(0, 20, 40)
+    age.limits = c(0, 20, 40),
+    split = TRUE
   )
   c_matrix <- t(contact_data$matrix)
   d_vector <- contact_data$participants$proportion
@@ -99,7 +102,8 @@ test_that("Check that more susceptible demo-grps have higher final size", {
     contact_matrix = r0 * c_matrix,
     demography_vector = d_vector,
     p_susceptibility = psusc,
-    susceptibility = susc
+    susceptibility = susc,
+    solver = "newton"
   )
 
   expect_vector(
@@ -124,8 +128,8 @@ test_that("Check that more susceptible demo-grps have higher final size", {
   )
 })
 
-# simple case is tested under test-iterative_solver.R
-# Check for correct final size calculation in complex data case with grps_cpp
+# check for correct final size calculation in complex data case
+# using newton solver
 test_that("Check final size calculation is correct in complex case", {
   # make a contact matrix
   contact_matrix <- c(
@@ -146,28 +150,18 @@ test_that("Check final size calculation is correct in complex case", {
   )
 
   # get an example r0
-  r0 <- 2
+  r0 <- 1.3
 
   # a p_susceptibility matrix
-  p_susc <- matrix(0, nrow(contact_matrix), 4) # four susceptibiliy groups
-  # fill p_susceptibility columns manually
-  p_susc[, 1] <- 0.7
-  p_susc[, 2] <- 0.1
-  p_susc[, 3] <- 0.1
-  p_susc[, 4] <- 0.1
-
-  # a susceptibility matrix
-  susc <- matrix(0, nrow(contact_matrix), 4)
-  susc[, 1] <- 1.0
-  susc[, 2] <- 0.7
-  susc[, 3] <- 0.4
-  susc[, 4] <- 0.1
+  p_susc <- matrix(1, nrow(contact_matrix), 1)
+  susc <- p_susc
 
   epi_outcome <- final_size_grps_cpp(
     contact_matrix = r0 * contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susc,
-    susceptibility = susc
+    susceptibility = susc,
+    solver = "newton"
   )
 
   expect_vector(
@@ -195,97 +189,3 @@ test_that("Check final size calculation is correct in complex case", {
   expect_gt(ratio, 0.3)
   expect_lt(ratio, 0.45)
 })
-
-# check for errors and messages
-# test_that("Check for errors and messages", {
-#   # checking epi spread function from finalsize
-#   polymod <- socialmixr::polymod
-#   contact_data <- socialmixr::contact_matrix(
-#     polymod,
-#     countries = "United Kingdom",
-#     age.limits = c(0, 20, 40),
-#     symmetric = TRUE
-#   )
-#   p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
-#   susceptibility <- matrix(1, ncol = 1, 3)
-
-#   demography_vector <- contact_data$demography$proportion
-
-#   # 'wrong' demography vector
-#   demography_vector <- c(demography_vector, 100)
-
-#   contact_matrix <- matrix(contact_data$matrix, ncol = 3)
-
-#   # expect error on demography vector and contact matrix
-#   expect_error(
-#     final_size_grps(
-#       contact_matrix = contact_matrix,
-#       demography_vector = demography_vector,
-#       p_susceptibility = p_susceptibility,
-#       susceptibility = susceptibility,
-#       solver = "iterative"
-#     ),
-#     regexp = "Error: contact matrix must have as many rows as demography groups"
-#   )
-
-#   demography_vector <- demography_vector[-length(demography_vector)]
-#   p_susceptibility <- matrix(1, ncol = 1, nrow = 4)
-
-#   # expect error on demography vector and p_susceptibility
-#   expect_error(
-#     final_size_grps(
-#       contact_matrix = contact_matrix,
-#       demography_vector = demography_vector,
-#       p_susceptibility = p_susceptibility,
-#       susceptibility = susceptibility,
-#       solver = "iterative"
-#     ),
-#     regexp = "Error: p_susceptibility must have as many rows as demography"
-#   )
-
-#   p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
-#   susceptibility <- matrix(1, ncol = 1, nrow = 4)
-
-#   # expect error on demography vector and susceptibility
-#   expect_error(
-#     final_size_grps(
-#       contact_matrix = contact_matrix,
-#       demography_vector = demography_vector,
-#       p_susceptibility = p_susceptibility,
-#       susceptibility = susceptibility,
-#       solver = "iterative"
-#     ),
-#     regexp = "Error: susceptibility must have as many rows as demography groups"
-#   )
-
-#   p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
-#   susceptibility <- matrix(1, ncol = 2, nrow = 3)
-
-#   # expect error on p_susceptibility and susceptibility
-#   expect_error(
-#     final_size_grps(
-#       contact_matrix = contact_matrix,
-#       demography_vector = demography_vector,
-#       p_susceptibility = p_susceptibility,
-#       susceptibility = susceptibility,
-#       solver = "iterative"
-#     ),
-#     regexp =
-#       "Error: susceptibility must have same dimensions as p_susceptibility"
-#   )
-
-#   # expect error when p_susceptibility sum > 1
-#   p_susceptibility <- matrix(1, ncol = 2, nrow = 3)
-#   susceptibility <- matrix(1, ncol = 2, nrow = 3)
-#   expect_error(
-#     final_size_grps(
-#       contact_matrix = contact_matrix,
-#       demography_vector = demography_vector,
-#       p_susceptibility = p_susceptibility,
-#       susceptibility = susceptibility,
-#       solver = "iterative"
-#     ),
-#     regexp =
-#       "Error: p_susceptibility rows must sum to 1.0"
-#   )
-# })
