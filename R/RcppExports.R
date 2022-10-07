@@ -31,19 +31,29 @@ final_size_cpp <- function(r0, contact_matrix, demography_vector, prop_initial_i
 #' @description This function calculates final epidemic size using SIR model
 #' for a heterogeneously mixing population, using an Eigen backend
 #'
-#' @param contact_matrix  Social contact matrix. Entry $mm_{ij}$ gives average
+#' @param contact_matrix Social contact matrix. Entry $mm_{ij}$ gives average
 #' number of contacts in group $i$ reported by participants in group j
-#' @param demography_vector  Demography vector. Entry $pp_{i}$ gives proportion
+#' @param demography_vector Demography vector. Entry $pp_{i}$ gives proportion
 #' of total population in group $i$ (model will normalise if needed)
-#' @param p_susceptibility WIP.
-#' @param susceptibility WIP.
-#' @param iterations WIP.
-#' @param adapt_step WIP
-#' @param tolerance WIP.
+#' @param p_susceptibility A matrix giving the probability that an individual
+#' in demography group $i$ is in risk (or susceptibility) group $j$.
+#' Each row represents the overall distribution of individuals in demographic
+#' group $i$ across risk groups, and each row *must sum to 1.0*.
+#' @param susceptibility A matrix giving the susceptibility of individuals in
+#' demographic group $i$ and risk group $j$.
+#' @param solver Which solver to use. Options are "iterative" or "newton", for
+#' the iterative solver, or the Newton solver, respectively. Special conditions
+#' apply when using the Newton solver.
+#' @param iterations Number of solver iterations. Defaults to 1,000.
+#' @param tolerance Solver error tolerance.
+#' @param step_rate The solver step rate for the iterative solver. Defaults to
+#' 1.9 as a value found to work well.
+#' @param adapt_step Boolean, whether the iterative solver step rate should be
+#' changed based on the solver error. Defaults to TRUE.
 #'
 #' @keywords epidemic model
 #' @export
-final_size_grps_cpp <- function(contact_matrix, demography_vector, p_susceptibility, susceptibility, iterations = 1000L, tolerance = 1e-6, adapt_step = TRUE) {
-    .Call('_finalsize_final_size_grps_cpp', PACKAGE = 'finalsize', contact_matrix, demography_vector, p_susceptibility, susceptibility, iterations, tolerance, adapt_step)
+final_size_grps_cpp <- function(contact_matrix, demography_vector, p_susceptibility, susceptibility, solver, iterations = 1000L, tolerance = 1e-6, step_rate = 1.9, adapt_step = TRUE) {
+    .Call('_finalsize_final_size_grps_cpp', PACKAGE = 'finalsize', contact_matrix, demography_vector, p_susceptibility, susceptibility, solver, iterations, tolerance, step_rate, adapt_step)
 }
 

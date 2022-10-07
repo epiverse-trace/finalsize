@@ -47,12 +47,14 @@ Eigen::ArrayXd final_size_grps_cpp(const Eigen::MatrixXd& contact_matrix,
                                    const Eigen::VectorXd& demography_vector,
                                    const Eigen::MatrixXd& p_susceptibility,
                                    const Eigen::MatrixXd& susceptibility,
+                                   const Rcpp::String solver,
                                    const int iterations, const double tolerance,
-                                   const bool adapt_step);
+                                   double step_rate, const bool adapt_step);
 RcppExport SEXP _finalsize_final_size_grps_cpp(
     SEXP contact_matrixSEXP, SEXP demography_vectorSEXP,
-    SEXP p_susceptibilitySEXP, SEXP susceptibilitySEXP, SEXP iterationsSEXP,
-    SEXP toleranceSEXP, SEXP adapt_stepSEXP) {
+    SEXP p_susceptibilitySEXP, SEXP susceptibilitySEXP, SEXP solverSEXP,
+    SEXP iterationsSEXP, SEXP toleranceSEXP, SEXP step_rateSEXP,
+    SEXP adapt_stepSEXP) {
   BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;
   Rcpp::RNGScope rcpp_rngScope_gen;
@@ -64,12 +66,14 @@ RcppExport SEXP _finalsize_final_size_grps_cpp(
       p_susceptibilitySEXP);
   Rcpp::traits::input_parameter<const Eigen::MatrixXd&>::type susceptibility(
       susceptibilitySEXP);
+  Rcpp::traits::input_parameter<const Rcpp::String>::type solver(solverSEXP);
   Rcpp::traits::input_parameter<const int>::type iterations(iterationsSEXP);
   Rcpp::traits::input_parameter<const double>::type tolerance(toleranceSEXP);
+  Rcpp::traits::input_parameter<double>::type step_rate(step_rateSEXP);
   Rcpp::traits::input_parameter<const bool>::type adapt_step(adapt_stepSEXP);
-  rcpp_result_gen = Rcpp::wrap(
-      final_size_grps_cpp(contact_matrix, demography_vector, p_susceptibility,
-                          susceptibility, iterations, tolerance, adapt_step));
+  rcpp_result_gen = Rcpp::wrap(final_size_grps_cpp(
+      contact_matrix, demography_vector, p_susceptibility, susceptibility,
+      solver, iterations, tolerance, step_rate, adapt_step));
   return rcpp_result_gen;
   END_RCPP
 }
@@ -79,7 +83,7 @@ RcppExport SEXP run_testthat_tests(SEXP);
 static const R_CallMethodDef CallEntries[] = {
     {"_finalsize_final_size_cpp", (DL_FUNC)&_finalsize_final_size_cpp, 6},
     {"_finalsize_final_size_grps_cpp", (DL_FUNC)&_finalsize_final_size_grps_cpp,
-     7},
+     9},
     {"run_testthat_tests", (DL_FUNC)&run_testthat_tests, 1},
     {NULL, NULL, 0}};
 
