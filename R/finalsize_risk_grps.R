@@ -124,5 +124,4 @@ final_size_grps <- function(contact_matrix,
   )
   # return row-wise sum, i.e., the demo-grp wise sum
   rowSums(epi_final_size)
-  epi_final_size
 }
