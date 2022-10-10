@@ -21,8 +21,6 @@ epi_spread <- function(contact_matrix,
                        susceptibility) {
   # count risk groups
   n_susc_groups <- ncol(p_susceptibility)
-  # make p_susceptibility matrix of ones
-  p_susceptibility_ <- rep(1.0, length(p_susceptibility))
   # make lps, a 1 col matrix of all p_susc values
   lps <- as.vector(p_susceptibility)
   # replicate the demography vector and multiply by p_susceptibility
@@ -41,7 +39,6 @@ epi_spread <- function(contact_matrix,
   list(
     contact_matrix = contact_matrix_spread,
     demography_vector = demography_vector_spread,
-    p_susceptibility = p_susceptibility_,
     susceptibility = susceptibility_
   )
 }

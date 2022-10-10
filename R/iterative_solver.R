@@ -4,10 +4,6 @@
 #' number of contacts in group $i$ reported by participants in group j
 #' @param demography_vector Demography vector. Entry $pp_{i}$ gives proportion
 #' of total population in group $i$ (model will normalise if needed)
-#' @param p_susceptibility A matrix giving the probability that an individual
-#' in demography group $i$ is in risk (or susceptibility) group $j$.
-#' Each row represents the overall distribution of individuals in demographic
-#' group $i$ across risk groups, and each row *must sum to 1.0*.
 #' @param susceptibility A matrix giving the susceptibility of individuals in
 #' demographic group $i$ and risk group $j$.
 #' @param iterations Number of solver iterations. Defaults to 1,000.
@@ -21,7 +17,6 @@
 #' N risk groups).
 solve_final_size_iterative <- function(contact_matrix,
                                        demography_vector,
-                                       p_susceptibility,
                                        susceptibility,
                                        iterations = 1000,
                                        tolerance = 1e-6,
@@ -56,8 +51,7 @@ solve_final_size_iterative <- function(contact_matrix,
     s <- as.vector(contact_matrix_ %*% (-epi_final_size_))
 
     epi_final_size_return_ <- 1 - zeros
-    epi_final_size_return_ <- epi_final_size_return_ - (p_susceptibility *
-      exp(susceptibility * s))
+    epi_final_size_return_ <- epi_final_size_return_ - (exp(susceptibility * s))
 
     epi_final_size_return_
   }
