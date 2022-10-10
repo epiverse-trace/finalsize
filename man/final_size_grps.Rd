@@ -10,10 +10,7 @@ final_size_grps(
   p_susceptibility,
   susceptibility,
   solver = c("iterative", "newton"),
-  iterations = 1000,
-  tolerance = 1e-06,
-  step_rate = 1.9,
-  adapt_step = TRUE
+  control = list()
 )
 }
 \arguments{
@@ -33,23 +30,35 @@ demographic group $i$ and risk group $j$.}
 
 \item{solver}{Which solver to use. Options are "iterative" or "newton", for
 the iterative solver, or the Newton solver, respectively. Special conditions
-apply when using the Newton solver.}
+apply when using the Newton solver, see the `control` argument.}
 
-\item{iterations}{Number of solver iterations. Defaults to 1,000.}
-
-\item{tolerance}{Solver error tolerance.}
-
-\item{step_rate}{The solver step rate for the iterative solver. Defaults to
-1.9 as a value found to work well.}
-
-\item{adapt_step}{Boolean, whether the iterative solver step rate should be
-changed based on the solver error. Defaults to TRUE.}
+\item{control}{A list of named solver options, see *Details*.}
 }
 \value{
 A vector of final sizes by demography group.
 }
 \description{
-Final size of epidemic by susceptibility groups
+`final_size_grps` allows the calculation of epidemic final sizes
+in a population with heterogeneous mixing, and with heterogeneous
+susceptibility to infection.
+
+# Solver options
+
+The `control` argument accepts a list of solver options, with the iterative
+solver taking two extra arguments than the Newton solver.
+
+## Common options
+
+1. `iterations`: The number of iterations over which to solve for the final
+size, unless the error is below the solver tolerance.
+2. `tolerance`: The solver tolerance, set to `1e-6` by default; solving for
+final size ends when the error drops below this tolerance.
+
+## Iterative solver options
+1. `step_rate`: The solver step rate. Defaults to 1.9 as a value found to
+work well.
+2. `adapt_step`: Boolean, whether the solver step rate should be changed
+based on the solver error. Defaults to TRUE.
 }
 \examples{
 library(socialmixr)
