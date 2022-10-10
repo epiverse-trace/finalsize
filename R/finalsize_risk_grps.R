@@ -1,4 +1,26 @@
-#' Final size of epidemic by susceptibility groups
+#' @title Final size of epidemic by susceptibility groups
+#'
+#' @description `final_size_grps` allows the calculation of epidemic final sizes
+#' in a population with heterogeneous mixing, and with heterogeneous
+#' susceptibility to infection.
+#'
+#' # Solver options
+#'
+#' The `control` argument accepts a list of solver options, with the iterative
+#' solver taking two extra arguments than the Newton solver.
+#'
+#' ## Common options
+#'
+#' 1. `iterations`: The number of iterations over which to solve for the final
+#' size, unless the error is below the solver tolerance.
+#' 2. `tolerance`: The solver tolerance, set to `1e-6` by default; solving for
+#' final size ends when the error drops below this tolerance.
+#'
+#' ## Iterative solver options
+#' 1. `step_rate`: The solver step rate. Defaults to 1.9 as a value found to
+#' work well.
+#' 2. `adapt_step`: Boolean, whether the solver step rate should be changed
+#' based on the solver error. Defaults to TRUE.
 #'
 #' @param contact_matrix Social contact matrix. Entry $mm_{ij}$ gives average
 #' number of contacts in group $i$ reported by participants in group j
@@ -12,13 +34,8 @@
 #' demographic group $i$ and risk group $j$.
 #' @param solver Which solver to use. Options are "iterative" or "newton", for
 #' the iterative solver, or the Newton solver, respectively. Special conditions
-#' apply when using the Newton solver.
-#' @param iterations Number of solver iterations. Defaults to 1,000.
-#' @param tolerance Solver error tolerance.
-#' @param step_rate The solver step rate for the iterative solver. Defaults to
-#' 1.9 as a value found to work well.
-#' @param adapt_step Boolean, whether the iterative solver step rate should be
-#' changed based on the solver error. Defaults to TRUE.
+#' apply when using the Newton solver, see the `control` argument.
+#' @param control A list of named solver options, see *Details*.
 #'
 #' @keywords epidemic model
 #' @return A vector of final sizes by demography group.
@@ -58,10 +75,7 @@ final_size_grps <- function(contact_matrix,
                             p_susceptibility,
                             susceptibility,
                             solver = c("iterative", "newton"),
-                            iterations = 1000,
-                            tolerance = 1e-6,
-                            step_rate = 1.9,
-                            adapt_step = TRUE) {
+                            control = list()) {
   # check arguments input
   stopifnot(
     "Error: contact matrix must have as many rows as demography groups" =
@@ -78,6 +92,31 @@ final_size_grps <- function(contact_matrix,
       )
   )
 
+  # check which solver is requested
+  solver <- match.arg(arg = solver, several.ok = FALSE)
+
+  f_solver <- switch(solver,
+    newton = solve_final_size_newton,
+    iterative = solve_final_size_iterative
+  )
+
+  # prepare default list of control params
+  con <- list(
+    iterations = 1000,
+    tolerance = 1e-6,
+    step_rate = 1.9,
+    adapt_step = TRUE
+  )
+  # assign user specified values
+  con[(names(control))] <- control
+  extra_names <- names(control)[!names(control) %in% names(con)]
+  if (length(extra_names)) {
+    warning("Unknown names in control: ", paste(extra_names, collapse = ", "))
+  }
+
+  # prune control list if using newton solver
+  if (solver == "newton") con <- con[c("iterations", "tolerance")]
+
   # prepare epi spread object
   epi_spread_data <- epi_spread(
     contact_matrix = contact_matrix,
@@ -87,29 +126,19 @@ final_size_grps <- function(contact_matrix,
   )
 
   epi_final_size <- numeric()
-  # solve for final size using iterative solver
-  if (solver == "iterative") {
-    epi_final_size <- solve_final_size_iterative(
-      contact_matrix = epi_spread_data[["contact_matrix"]],
-      demography_vector = epi_spread_data[["demography_vector"]],
-      p_susceptibility = epi_spread_data[["p_susceptibility"]],
-      susceptibility = epi_spread_data[["susceptibility"]],
-      iterations = iterations,
-      tolerance = tolerance,
-      step_rate = step_rate,
-      adapt_step = adapt_step
+  # solve for final size using solver control options
+  epi_final_size <- do.call(
+    f_solver,
+    c(
+      list(
+        contact_matrix = epi_spread_data[["contact_matrix"]],
+        demography_vector = epi_spread_data[["demography_vector"]],
+        susceptibility = epi_spread_data[["susceptibility"]]
+      ),
+      con
     )
-  } else if (solver == "newton") {
-    epi_final_size <- solve_final_size_newton(
-      contact_matrix = epi_spread_data[["contact_matrix"]],
-      demography_vector = epi_spread_data[["demography_vector"]],
-      susceptibility = epi_spread_data[["susceptibility"]],
-      iterations = iterations,
-      tolerance = tolerance
-    )
-  } else {
-    stop("Error: solver must be 'iterative' or 'newton'")
-  }
+  )
+
   # unroll p_susceptibility data
   lps <- as.vector(p_susceptibility)
 
