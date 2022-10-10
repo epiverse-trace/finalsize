@@ -24,8 +24,6 @@ solve_final_size_newton <- function(contact_matrix,
   # make vector of initial final size guesses = 0.5
   epi_final_size <- rep(0.5, n_dim)
 
-  # replicate contact matrix
-  contact_matrix_ <- contact_matrix
   # set contact_matrix values to zero if there are no contacts among
   # demography groups, or if demography groups are empty
   i_here <- demography_vector == 0 | susceptibility == 0 |
@@ -53,7 +51,7 @@ solve_final_size_newton <- function(contact_matrix,
   }
 
   # cache_m is the contact matrix. must not be modified!
-  dx_f <- function(x, cache, cache_m) {
+  dx_f <- function(x) {
     cache_m <- f2(x)
     cache <- -f1(x)
     # partial pivoting LU decomposition
@@ -68,7 +66,7 @@ solve_final_size_newton <- function(contact_matrix,
   x_ <- rep(1e-6, n_dim)
 
   for (i in seq(iterations)) {
-    cache_v <- as.vector(dx_f(x_, cache_v, contact_matrix_))
+    cache_v <- as.vector(dx_f(x_))
     error_ <- sum(abs(cache_v))
     x_ <- x_ + cache_v
 
