@@ -12,7 +12,6 @@
 struct epi_spread_data {
   Eigen::MatrixXd contact_matrix;
   Eigen::VectorXd demography_vector;
-  Eigen::MatrixXd p_susceptibility;
   Eigen::MatrixXd susceptibility;
 };
 
@@ -27,8 +26,6 @@ inline epi_spread_data epi_spread(
 ) {
   // count number of risk groups
   const int n_susc_groups = p_susceptibility.cols();
-  Eigen::MatrixXd p_susceptibility_ =
-      Eigen::MatrixXd::Ones(p_susceptibility.size(), 1);
 
   // make single column matrix from prop_suscep data,
   // prop_suscep is the prob(suscep) per demography group
@@ -50,7 +47,6 @@ inline epi_spread_data epi_spread(
   epi_spread_data tmp_data;
   tmp_data.contact_matrix = contact_matrix_;
   tmp_data.demography_vector = demography_vector_;
-  tmp_data.p_susceptibility = p_susceptibility_;
   tmp_data.susceptibility = rm;
 
   return tmp_data;

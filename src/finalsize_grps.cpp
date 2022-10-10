@@ -89,8 +89,8 @@ Eigen::ArrayXd final_size_grps_cpp(const Eigen::MatrixXd &contact_matrix,
   Eigen::ArrayXd efs_tmp;
   if (solver == Rcpp::String("iterative")) {
     efs_tmp = solve_final_size_iterative_cpp(
-        s.contact_matrix, s.demography_vector, s.p_susceptibility,
-        s.susceptibility, iterations, tolerance, step_rate, adapt_step);
+        s.contact_matrix, s.demography_vector, s.susceptibility, iterations,
+        tolerance, step_rate, adapt_step);
   } else {
     efs_tmp =
         solve_final_size_newton_cpp(s.contact_matrix, s.demography_vector,
