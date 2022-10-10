@@ -82,6 +82,14 @@ psusc <- t(apply(psusc, 1, \(x) x / sum(x)))
 susc <- matrix(
   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 )
+
+control <- list(
+  iterations = 1000,
+  tolerance = 1e-6,
+  step_rate = 1.9,
+  adapt_step = TRUE
+)
+
 final_size_grps(
   contact_matrix = r0 * c_matrix,
   demography_vector = d_vector,
