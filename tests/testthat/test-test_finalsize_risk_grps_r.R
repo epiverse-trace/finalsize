@@ -28,12 +28,21 @@ test_that("Check finalsize by groups (iterative) works for Polymod data", {
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
 
+  # prepare control
+  control <- list(
+    iterations = 1000,
+    tolerance = 1e-6,
+    step_rate = 1.9,
+    adapt_step = TRUE
+  )
+
   epi_outcome <- final_size_grps(
     contact_matrix = r0 * c_matrix,
     demography_vector = d_vector,
     p_susceptibility = psusc,
     susceptibility = susc,
-    solver = "iterative"
+    solver = "iterative",
+    control = control
   )
 
   expect_type(
@@ -297,6 +306,6 @@ test_that("Check for errors and messages", {
       solver = "some wrong solver option"
     ),
     regexp =
-      "Error: solver must be 'iterative' or 'newton'"
+      "(Error)*(should be one of)*(iterative)*(newton)"
   )
 })

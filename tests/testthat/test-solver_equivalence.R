@@ -32,8 +32,8 @@ test_that("Check solver equivalence in final_size_grps_cpp", {
   epi_outcome_iterative <- final_size_grps(
     contact_matrix = r0 * c_matrix,
     demography_vector = d_vector,
-    p_susceptibility = psusc,
     susceptibility = susc,
+    p_susceptibility = psusc,
     solver = "iterative"
   )
 
@@ -41,8 +41,8 @@ test_that("Check solver equivalence in final_size_grps_cpp", {
   epi_outcome_newton <- final_size_grps(
     contact_matrix = r0 * c_matrix,
     demography_vector = d_vector,
-    p_susceptibility = psusc,
     susceptibility = susc,
+    p_susceptibility = psusc,
     solver = "newton"
   )
 
