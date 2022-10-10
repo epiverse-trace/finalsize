@@ -95,7 +95,8 @@ final_size_grps(
   demography_vector = d_vector,
   p_susceptibility = psusc,
   susceptibility = susc,
-  solver = "newton"
+  solver = "newton",
+  control = control
 )
 
 }

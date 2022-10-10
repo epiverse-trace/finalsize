@@ -75,7 +75,8 @@
 #'   demography_vector = d_vector,
 #'   p_susceptibility = psusc,
 #'   susceptibility = susc,
-#'   solver = "newton"
+#'   solver = "newton",
+#'   control = control
 #' )
 #'
 final_size_grps <- function(contact_matrix,
