@@ -148,7 +148,8 @@ test_that("Iterative solver works with r0 = 12", {
   epi_outcome <- solve_final_size_iterative(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
+    susceptibility = epi_spread_data[["susceptibility"]],
+    tolerance = 1e-4
   )
 
   # check that solver returns correct types
@@ -191,7 +192,7 @@ test_that("Iterative solver works with r0 = 12", {
 })
 
 # check solver works for locked adaptive step size
-test_that("Iterative solver works with r0 = 4", {
+test_that("Iterative solver works with r0 = 4, locked step size", {
   # prepare some data for the solver
   r0 <- 4
   contact_matrix <- matrix(r0 / 200.0, 2, 2)

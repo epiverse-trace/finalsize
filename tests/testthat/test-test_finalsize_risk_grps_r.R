@@ -30,7 +30,7 @@ test_that("Check finalsize by groups (iterative) works for Polymod data", {
 
   # prepare control
   control <- list(
-    iterations = 1000,
+    iterations = 10000,
     tolerance = 1e-6,
     step_rate = 1.9,
     adapt_step = TRUE
@@ -307,5 +307,38 @@ test_that("Check for errors and messages", {
     ),
     regexp =
       "(Error)*(should be one of)*(iterative)*(newton)"
+  )
+
+  # check for warning when error is much larger than tolerance, iterative
+  expect_warning(
+    final_size_grps(
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      p_susceptibility = p_susceptibility,
+      susceptibility = susceptibility,
+      control = list(
+        iterations = 2,
+        tolerance = 1e-12
+      )
+    ),
+    regexp =
+      "Solver error > 100x solver tolerance, try increasing iterations"
+  )
+
+  # check for warning when error is much larger than tolerance, newton
+  expect_warning(
+    final_size_grps(
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      p_susceptibility = p_susceptibility,
+      susceptibility = susceptibility,
+      solver = "newton",
+      control = list(
+        iterations = 2,
+        tolerance = 1e-12
+      )
+    ),
+    regexp =
+      "Solver error > 100x solver tolerance, try increasing iterations"
   )
 })
