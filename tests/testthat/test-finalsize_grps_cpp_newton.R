@@ -28,12 +28,21 @@ test_that("Check finalsize by groups works for Polymod, newton solver", {
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
 
+  # prepare control
+  control <- list(
+    iterations = 10000,
+    tolerance = 1e-6,
+    step_rate = 1.9,
+    adapt_step = TRUE
+  )
+
   epi_outcome <- final_size_grps_cpp(
     contact_matrix = r0 * c_matrix,
     demography_vector = d_vector,
     p_susceptibility = psusc,
     susceptibility = susc,
-    solver = "newton"
+    solver = "newton",
+    control = control
   )
 
   expect_type(
@@ -98,12 +107,21 @@ test_that("Check that more susceptible demo-grps have higher final size", {
     rep(0.1, n_risk_grps)
   )
 
+  # prepare control
+  control <- list(
+    iterations = 10000,
+    tolerance = 1e-6,
+    step_rate = 1.9,
+    adapt_step = TRUE
+  )
+
   epi_outcome <- final_size_grps_cpp(
     contact_matrix = r0 * c_matrix,
     demography_vector = d_vector,
     p_susceptibility = psusc,
     susceptibility = susc,
-    solver = "newton"
+    solver = "newton",
+    control = control
   )
 
   expect_vector(
@@ -156,12 +174,21 @@ test_that("Check final size calculation is correct in complex case", {
   p_susc <- matrix(1, nrow(contact_matrix), 1)
   susc <- p_susc
 
+  # prepare control
+  control <- list(
+    iterations = 10000,
+    tolerance = 1e-6,
+    step_rate = 1.9,
+    adapt_step = TRUE
+  )
+
   epi_outcome <- final_size_grps_cpp(
     contact_matrix = r0 * contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susc,
     susceptibility = susc,
-    solver = "newton"
+    solver = "newton",
+    control = control
   )
 
   expect_vector(
