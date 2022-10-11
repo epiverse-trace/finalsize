@@ -108,8 +108,10 @@ test_that("Check language result equivalence", {
 
   # a p_susceptibility matrix
   p_susceptibility <- matrix(0.25, nrow(contact_matrix), 4)
-  susceptibility <- matrix(c(0.1, 0.7, 0.3, 0.2), nrow(contact_matrix), 4, 
-  byrow = T)
+  susceptibility <- matrix(
+    c(0.1, 0.7, 0.3, 0.2), nrow(contact_matrix), 4,
+    byrow = TRUE
+  )
 
   finalsize_iterative_r <- final_size_grps(
     contact_matrix = contact_matrix,
