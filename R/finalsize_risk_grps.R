@@ -63,11 +63,36 @@
 #'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 #' )
 #'
+#' # using default solver settings
+#' final_size_grps(
+#'   contact_matrix = r0 * c_matrix,
+#'   demography_vector = d_vector,
+#'   p_susceptibility = psusc,
+#'   susceptibility = susc,
+#'   solver = "iterative"
+#' )
+#'
+#' # using manually specified solver settings
 #' control <- list(
 #'   iterations = 1000,
 #'   tolerance = 1e-6,
 #'   step_rate = 1.9,
 #'   adapt_step = TRUE
+#' )
+#'
+#' final_size_grps(
+#'   contact_matrix = r0 * c_matrix,
+#'   demography_vector = d_vector,
+#'   p_susceptibility = psusc,
+#'   susceptibility = susc,
+#'   solver = "iterative",
+#'   control = control
+#' )
+#'
+#' # manual settings for the newton solver
+#' control <- list(
+#'   iterations = 50000,
+#'   tolerance = 1e-12
 #' )
 #'
 #' final_size_grps(
@@ -109,23 +134,6 @@ final_size_grps <- function(contact_matrix,
     iterative = solve_final_size_iterative
   )
 
-  # prepare default list of control params
-  con <- list(
-    iterations = 1000,
-    tolerance = 1e-6,
-    step_rate = 1.9,
-    adapt_step = TRUE
-  )
-  # assign user specified values
-  con[(names(control))] <- control
-  extra_names <- names(control)[!names(control) %in% names(con)]
-  if (length(extra_names)) {
-    warning("Unknown names in control: ", paste(extra_names, collapse = ", "))
-  }
-
-  # prune control list if using newton solver
-  if (solver == "newton") con <- con[c("iterations", "tolerance")]
-
   # prepare epi spread object
   epi_spread_data <- epi_spread(
     contact_matrix = contact_matrix,
@@ -144,7 +152,7 @@ final_size_grps <- function(contact_matrix,
         demography_vector = epi_spread_data[["demography_vector"]],
         susceptibility = epi_spread_data[["susceptibility"]]
       ),
-      con
+      control
     )
   )
 
