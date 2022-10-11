@@ -18,7 +18,7 @@
 solve_final_size_iterative <- function(contact_matrix,
                                        demography_vector,
                                        susceptibility,
-                                       iterations = 1000,
+                                       iterations = 10000,
                                        tolerance = 1e-6,
                                        step_rate = 1.9,
                                        adapt_step = TRUE) {
@@ -83,6 +83,9 @@ solve_final_size_iterative <- function(contact_matrix,
       }
     }
     current_error <- error
+  }
+  if ((current_error / tolerance) > 100) {
+    warning("Solver error > 100x solver tolerance, try increasing iterations")
   }
 
   # adjust numerical errors

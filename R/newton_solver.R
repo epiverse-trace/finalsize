@@ -14,7 +14,7 @@
 solve_final_size_newton <- function(contact_matrix,
                                     demography_vector,
                                     susceptibility,
-                                    iterations = 1000,
+                                    iterations = 10000,
                                     tolerance = 1e-6) {
   # count demography groups
   n_dim <- length(demography_vector)
@@ -65,6 +65,7 @@ solve_final_size_newton <- function(contact_matrix,
   # prepare an initial value from where to
   x_ <- rep(1e-6, n_dim)
 
+  error_ <- numeric()
   for (i in seq(iterations)) {
     cache_v <- as.vector(dx_f(x_))
     error_ <- sum(abs(cache_v))
@@ -73,6 +74,9 @@ solve_final_size_newton <- function(contact_matrix,
     if (error_ < tolerance) {
       break
     }
+  }
+  if ((error_ / tolerance) > 100) {
+    warning("Solver error > 100x solver tolerance, try increasing iterations")
   }
 
   epi_final_size <- 1 - x_ # returns a vector
