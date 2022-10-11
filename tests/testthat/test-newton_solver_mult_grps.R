@@ -1,5 +1,5 @@
-# basic test that solver returns numerics within range, for multiple risk groups
-test_that("Iterative solver works with multiple risk groups", {
+# basic test that Newton solver returns within range, for multiple risk groups
+test_that("Newton solver works with multiple risk groups", {
   r0 <- 1.3
   # prepare some data for the solver
   contact_matrix <- matrix(r0 / 200.0, 2, 2)
@@ -19,7 +19,7 @@ test_that("Iterative solver works with multiple risk groups", {
     susceptibility = susc
   )
 
-  epi_outcome <- solve_final_size_iterative(
+  epi_outcome <- solve_final_size_newton(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
     susceptibility = epi_spread_data[["susceptibility"]]
@@ -56,8 +56,8 @@ test_that("Iterative solver works with multiple risk groups", {
   )
 })
 
-# olver returns numerics within range, for multiple risk groups and demo groups
-test_that("Iterative solver works with multiple risk and age groups", {
+# Newton solver returns within range, for multiple risk groups and demo groups
+test_that("Newton solver works with multiple risk and age groups", {
   r0 <- 1.3
   # prepare some data for the solver
   demo_grps <- 5
@@ -78,7 +78,7 @@ test_that("Iterative solver works with multiple risk and age groups", {
     susceptibility = susc
   )
 
-  epi_outcome <- solve_final_size_iterative(
+  epi_outcome <- solve_final_size_newton(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
     susceptibility = epi_spread_data[["susceptibility"]]

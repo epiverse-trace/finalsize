@@ -20,8 +20,7 @@ test_that("Epi spread function works", {
 
   # check names in epi_spread_data
   expected_names <- c(
-    "contact_matrix", "demography_vector", "p_susceptibility",
-    "susceptibility"
+    "contact_matrix", "demography_vector", "susceptibility"
   )
   expect_equal(
     setdiff(
@@ -38,20 +37,8 @@ test_that("Epi spread function works", {
     ptype = numeric()
   )
   expect_vector(
-    epi_spread_data[["p_susceptibility"]],
-    ptype = numeric()
-  )
-  expect_vector(
     epi_spread_data[["susceptibility"]],
     ptype = numeric()
-  )
-  expect_equal(
-    length(epi_spread_data[["p_susceptibility"]]),
-    length(psusc)
-  )
-  expect_equal(
-    length(epi_spread_data[["susceptibility"]]),
-    length(susc)
   )
   # expect that replicated demography is always lower than input
   # when there are multiple risk groups

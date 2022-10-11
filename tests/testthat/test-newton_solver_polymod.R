@@ -1,25 +1,37 @@
 # basic test that solver returns numerics within range, for multiple risk groups
-test_that("Iterative solver works with multiple risk groups", {
+test_that("Newton solver works with polymod data", {
   r0 <- 1.3
-  # prepare some data for the solver
-  contact_matrix <- matrix(r0 / 200.0, 2, 2)
-  demography_vector <- rep(100.0, 2)
+  polymod <- socialmixr::polymod
+  contact_data <- socialmixr::contact_matrix(
+    polymod,
+    countries = "United Kingdom",
+    age.limits = c(0, 20, 40),
+    split = TRUE
+  )
+  c_matrix <- t(contact_data$matrix)
+  d_vector <- contact_data$participants$proportion
 
-  # p_susceptibility and susceptibility
+  n_demo_grps <- length(d_vector)
   n_risk_grps <- 3
-  psusc <- matrix(1, nrow = 2, ncol = n_risk_grps)
-  psusc <- t(apply(psusc, 1, \(x) x / sum(x))) # rows sum to 1.0
-  susc <- matrix(1, nrow = length(demography_vector), ncol = n_risk_grps)
+
+  # prepare p_susceptibility and susceptibility
+  psusc <- matrix(
+    data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+  )
+  psusc <- t(apply(psusc, 1, \(x) x / sum(x)))
+  susc <- matrix(
+    data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+  )
 
   # needed to get demography-risk combinations
   epi_spread_data <- epi_spread(
-    contact_matrix = contact_matrix,
-    demography_vector = demography_vector,
+    contact_matrix = r0 * c_matrix,
+    demography_vector = d_vector,
     p_susceptibility = psusc,
     susceptibility = susc
   )
 
-  epi_outcome <- solve_final_size_iterative(
+  epi_outcome <- solve_final_size_newton(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
     susceptibility = epi_spread_data[["susceptibility"]]
@@ -51,34 +63,45 @@ test_that("Iterative solver works with multiple risk groups", {
   )
   # check for size of the vector
   expect_equal(
-    length(demography_vector) * n_risk_grps,
+    n_demo_grps * n_risk_grps,
     length(epi_outcome)
   )
 })
 
-# olver returns numerics within range, for multiple risk groups and demo groups
-test_that("Iterative solver works with multiple risk and age groups", {
-  r0 <- 1.3
-  # prepare some data for the solver
-  demo_grps <- 5
-  contact_matrix <- matrix(r0 / 200.0, nrow = demo_grps, ncol = demo_grps)
-  demography_vector <- rep(100.0, demo_grps)
+# Newton solver works with Polymod data with r0 = 2
+test_that("Newton solver works with polymod data", {
+  r0 <- 2.0
+  polymod <- socialmixr::polymod
+  contact_data <- socialmixr::contact_matrix(
+    polymod,
+    countries = "United Kingdom",
+    age.limits = c(0, 20, 40),
+    split = TRUE
+  )
+  c_matrix <- t(contact_data$matrix)
+  d_vector <- contact_data$participants$proportion
 
-  # p_susceptibility and susceptibility
+  n_demo_grps <- length(d_vector)
   n_risk_grps <- 3
-  psusc <- matrix(1, nrow = demo_grps, ncol = n_risk_grps)
-  psusc <- t(apply(psusc, 1, \(x) x / sum(x))) # rows sum to 1.0
-  susc <- matrix(1, nrow = demo_grps, ncol = n_risk_grps)
+
+  # prepare p_susceptibility and susceptibility
+  psusc <- matrix(
+    data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+  )
+  psusc <- t(apply(psusc, 1, \(x) x / sum(x)))
+  susc <- matrix(
+    data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+  )
 
   # needed to get demography-risk combinations
   epi_spread_data <- epi_spread(
-    contact_matrix = contact_matrix,
-    demography_vector = demography_vector,
+    contact_matrix = c_matrix,
+    demography_vector = d_vector,
     p_susceptibility = psusc,
     susceptibility = susc
   )
 
-  epi_outcome <- solve_final_size_iterative(
+  epi_outcome <- solve_final_size_newton(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
     susceptibility = epi_spread_data[["susceptibility"]]
@@ -110,7 +133,7 @@ test_that("Iterative solver works with multiple risk and age groups", {
   )
   # check for size of the vector
   expect_equal(
-    demo_grps * n_risk_grps,
+    n_demo_grps * n_risk_grps,
     length(epi_outcome)
   )
 })

@@ -4,7 +4,8 @@ test_that("Iterative solver works with polymod data", {
   contact_data <- socialmixr::contact_matrix(
     polymod,
     countries = "United Kingdom",
-    age.limits = c(0, 20, 40)
+    age.limits = c(0, 20, 40),
+    split = TRUE
   )
   c_matrix <- t(contact_data$matrix)
   d_vector <- contact_data$participants$proportion
@@ -32,7 +33,6 @@ test_that("Iterative solver works with polymod data", {
   epi_outcome <- solve_final_size_iterative(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
-    p_susceptibility = epi_spread_data[["p_susceptibility"]],
     susceptibility = epi_spread_data[["susceptibility"]]
   )
 

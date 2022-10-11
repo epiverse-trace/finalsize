@@ -1,5 +1,5 @@
-# basic test that solver returns numerics within range
-test_that("Iterative solver works", {
+# basic test that Newton solver returns numerics within range
+test_that("Newton solver works", {
   # prepare some data for the solver
   r0 <- 1.3
   contact_matrix <- matrix(r0 / 200.0, 2, 2)
@@ -15,7 +15,7 @@ test_that("Iterative solver works", {
     susceptibility = susc
   )
 
-  epi_outcome <- solve_final_size_iterative(
+  epi_outcome <- solve_final_size_newton(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
     susceptibility = epi_spread_data[["susceptibility"]]
@@ -53,7 +53,7 @@ test_that("Iterative solver works", {
 })
 
 # basic test that solver returns correct answer
-test_that("Iterative solver returns correct answer", {
+test_that("Newton solver returns correct answer", {
   # prepare some data for the solver
   r0 <- 1.3
   contact_matrix <- matrix(r0 / 200.0, 2, 2)
@@ -69,7 +69,7 @@ test_that("Iterative solver returns correct answer", {
     susceptibility = susc
   )
 
-  epi_outcome <- solve_final_size_iterative(
+  epi_outcome <- solve_final_size_newton(
     contact_matrix = epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
     susceptibility = epi_spread_data[["susceptibility"]]
@@ -84,7 +84,7 @@ test_that("Iterative solver returns correct answer", {
 })
 
 # basic test that higher r0 results in higher final size
-test_that("Iterative solver returns correct answer", {
+test_that("Newton solver returns higher final size for higher r0", {
   # prepare some data for the solver
   r0_low <- 1.3
   r0_high <- 3.3
@@ -101,13 +101,13 @@ test_that("Iterative solver returns correct answer", {
     susceptibility = susc
   )
 
-  epi_outcome_low <- solve_final_size_iterative(
+  epi_outcome_low <- solve_final_size_newton(
     contact_matrix = r0_low * epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
     susceptibility = epi_spread_data[["susceptibility"]]
   )
 
-  epi_outcome_high <- solve_final_size_iterative(
+  epi_outcome_high <- solve_final_size_newton(
     contact_matrix = r0_high * epi_spread_data[["contact_matrix"]],
     demography_vector = epi_spread_data[["demography_vector"]],
     susceptibility = epi_spread_data[["susceptibility"]]

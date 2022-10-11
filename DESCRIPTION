@@ -46,6 +46,7 @@ Remotes:
     epiforecasts/socialmixr
 Imports: 
     checkmate,
+    Matrix,
     Rcpp,
     RcppEigen
 LinkingTo: 

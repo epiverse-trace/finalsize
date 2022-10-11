@@ -1,10 +1,12 @@
-test_that("Check finalsize by groups works for Polymod data", {
+# Check for final_size_grps with iterative solver
+test_that("Check finalsize by groups (iterative) works for Polymod data", {
   r0 <- 2.0
   polymod <- socialmixr::polymod
   contact_data <- socialmixr::contact_matrix(
     polymod,
     countries = "United Kingdom",
-    age.limits = c(0, 20, 40)
+    age.limits = c(0, 20, 40),
+    split = TRUE
   )
   c_matrix <- t(contact_data$matrix)
   d_vector <- contact_data$participants$proportion
@@ -26,11 +28,21 @@ test_that("Check finalsize by groups works for Polymod data", {
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
 
+  # prepare control
+  control <- list(
+    iterations = 10000,
+    tolerance = 1e-6,
+    step_rate = 1.9,
+    adapt_step = TRUE
+  )
+
   epi_outcome <- final_size_grps(
     contact_matrix = r0 * c_matrix,
     demography_vector = d_vector,
     p_susceptibility = psusc,
-    susceptibility = susc
+    susceptibility = susc,
+    solver = "iterative",
+    control = control
   )
 
   expect_type(
@@ -62,13 +74,15 @@ test_that("Check finalsize by groups works for Polymod data", {
   )
 })
 
+# Check sensitivity to susceptibility using iterative solver
 test_that("Check that more susceptible demo-grps have higher final size", {
   r0 <- 1.3
   polymod <- socialmixr::polymod
   contact_data <- socialmixr::contact_matrix(
     polymod,
     countries = "United Kingdom",
-    age.limits = c(0, 20, 40)
+    age.limits = c(0, 20, 40),
+    split = TRUE
   )
   c_matrix <- t(contact_data$matrix)
   d_vector <- contact_data$participants$proportion
@@ -97,7 +111,8 @@ test_that("Check that more susceptible demo-grps have higher final size", {
     contact_matrix = r0 * c_matrix,
     demography_vector = d_vector,
     p_susceptibility = psusc,
-    susceptibility = susc
+    susceptibility = susc,
+    solver = "iterative"
   )
 
   expect_vector(
@@ -122,8 +137,8 @@ test_that("Check that more susceptible demo-grps have higher final size", {
   )
 })
 
-# simple case is tested under test-iterative_solver.R
 # check for correct final size calculation in complex data case
+# using iterative solver
 test_that("Check final size calculation is correct in complex case", {
   # make a contact matrix
   contact_matrix <- c(
@@ -144,28 +159,18 @@ test_that("Check final size calculation is correct in complex case", {
   )
 
   # get an example r0
-  r0 <- 2
+  r0 <- 1.3
 
   # a p_susceptibility matrix
-  p_susc <- matrix(0, nrow(contact_matrix), 4) # four susceptibiliy groups
-  # fill p_susceptibility columns manually
-  p_susc[, 1] <- 0.7
-  p_susc[, 2] <- 0.1
-  p_susc[, 3] <- 0.1
-  p_susc[, 4] <- 0.1
-
-  # a susceptibility matrix
-  susc <- matrix(0, nrow(contact_matrix), 4)
-  susc[, 1] <- 1.0
-  susc[, 2] <- 0.7
-  susc[, 3] <- 0.4
-  susc[, 4] <- 0.1
+  p_susc <- matrix(1, nrow(contact_matrix), 1)
+  susc <- p_susc
 
   epi_outcome <- final_size_grps(
     contact_matrix = r0 * contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susc,
-    susceptibility = susc
+    susceptibility = susc,
+    solver = "iterative"
   )
 
   expect_vector(
@@ -220,7 +225,8 @@ test_that("Check for errors and messages", {
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
-      susceptibility = susceptibility
+      susceptibility = susceptibility,
+      solver = "iterative"
     ),
     regexp = "Error: contact matrix must have as many rows as demography groups"
   )
@@ -234,7 +240,8 @@ test_that("Check for errors and messages", {
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
-      susceptibility = susceptibility
+      susceptibility = susceptibility,
+      solver = "iterative"
     ),
     regexp = "Error: p_susceptibility must have as many rows as demography"
   )
@@ -248,7 +255,8 @@ test_that("Check for errors and messages", {
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
-      susceptibility = susceptibility
+      susceptibility = susceptibility,
+      solver = "iterative"
     ),
     regexp = "Error: susceptibility must have as many rows as demography groups"
   )
@@ -262,7 +270,8 @@ test_that("Check for errors and messages", {
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
-      susceptibility = susceptibility
+      susceptibility = susceptibility,
+      solver = "iterative"
     ),
     regexp =
       "Error: susceptibility must have same dimensions as p_susceptibility"
@@ -276,9 +285,60 @@ test_that("Check for errors and messages", {
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
-      susceptibility = susceptibility
+      susceptibility = susceptibility,
+      solver = "iterative"
     ),
     regexp =
       "Error: p_susceptibility rows must sum to 1.0"
+  )
+
+  # expect error when incorrect solver option is passed
+  p_susceptibility <- matrix(1, ncol = 2, nrow = 3)
+  p_susceptibility <- t(apply(
+    p_susceptibility, 1, \(x) x / sum(x)
+  ))
+  expect_error(
+    final_size_grps(
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      p_susceptibility = p_susceptibility,
+      susceptibility = susceptibility,
+      solver = "some wrong solver option"
+    ),
+    regexp =
+      "(Error)*(should be one of)*(iterative)*(newton)"
+  )
+
+  # check for warning when error is much larger than tolerance, iterative
+  expect_warning(
+    final_size_grps(
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      p_susceptibility = p_susceptibility,
+      susceptibility = susceptibility,
+      control = list(
+        iterations = 2,
+        tolerance = 1e-12
+      )
+    ),
+    regexp =
+      "Solver error > 100x solver tolerance, try increasing iterations"
+  )
+
+  # check for warning when error is much larger than tolerance, newton
+  expect_warning(
+    final_size_grps(
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      p_susceptibility = p_susceptibility,
+      susceptibility = susceptibility,
+      solver = "newton",
+      control = list(
+        iterations = 2,
+        tolerance = 1e-12
+      )
+    ),
+    regexp =
+      "Solver error > 100x solver tolerance, try increasing iterations"
   )
 })
