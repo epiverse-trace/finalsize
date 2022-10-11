@@ -28,9 +28,10 @@ group $i$ across risk groups, and each row *must sum to 1.0*.}
 \item{susceptibility}{A matrix giving the susceptibility of individuals in
 demographic group $i$ and risk group $j$.}
 
-\item{solver}{Which solver to use. Options are "iterative" or "newton", for
-the iterative solver, or the Newton solver, respectively. Special conditions
-apply when using the Newton solver, see the `control` argument.}
+\item{solver}{Which solver to use. Options are "iterative" (default) or
+"newton", for the iterative solver, or the Newton solver, respectively.
+Special conditions apply when using the Newton solver, see the `control`
+argument.}
 
 \item{control}{A list of named solver options, see *Details*.}
 }
@@ -83,11 +84,36 @@ susc <- matrix(
   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 )
 
+# using default solver settings
+final_size_grps(
+  contact_matrix = r0 * c_matrix,
+  demography_vector = d_vector,
+  p_susceptibility = psusc,
+  susceptibility = susc,
+  solver = "iterative"
+)
+
+# using manually specified solver settings
 control <- list(
   iterations = 1000,
   tolerance = 1e-6,
   step_rate = 1.9,
   adapt_step = TRUE
+)
+
+final_size_grps(
+  contact_matrix = r0 * c_matrix,
+  demography_vector = d_vector,
+  p_susceptibility = psusc,
+  susceptibility = susc,
+  solver = "iterative",
+  control = control
+)
+
+# manual settings for the newton solver
+control <- list(
+  iterations = 50000,
+  tolerance = 1e-12
 )
 
 final_size_grps(

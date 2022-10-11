@@ -8,7 +8,7 @@ solve_final_size_newton(
   contact_matrix,
   demography_vector,
   susceptibility,
-  iterations = 1000,
+  iterations = 10000,
   tolerance = 1e-06
 )
 }
