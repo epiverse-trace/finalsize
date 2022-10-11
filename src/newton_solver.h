@@ -12,7 +12,7 @@
 inline Eigen::ArrayXd solve_final_size_newton_cpp(
     const Eigen::MatrixXd &contact_matrix,
     const Eigen::VectorXd &demography_vector,
-    const Eigen::MatrixXd &susceptibility, const int iterations = 1000,
+    const Eigen::MatrixXd &susceptibility, const int iterations = 10000,
     const double tolerance = 1e-6) {
   // count number of demography groups
   size_t nDim = demography_vector.size();
