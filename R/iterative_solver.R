@@ -51,7 +51,7 @@ solve_final_size_iterative <- function(contact_matrix,
     s <- as.vector(contact_matrix_ %*% (-epi_final_size_))
 
     epi_final_size_return_ <- 1 - zeros
-    epi_final_size_return_ <- epi_final_size_return_ - (exp(susceptibility * s))
+    epi_final_size_return_ <- epi_final_size_return_ - exp(susceptibility * s)
 
     epi_final_size_return_
   }
