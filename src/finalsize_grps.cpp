@@ -46,11 +46,8 @@ Eigen::ArrayXd final_size_grps_cpp(const Eigen::MatrixXd &contact_matrix,
                                    const Eigen::VectorXd &demography_vector,
                                    const Eigen::MatrixXd &p_susceptibility,
                                    const Eigen::MatrixXd &susceptibility,
-                                   const Rcpp::String solver,
-                                   const int iterations = 1000,
-                                   const double tolerance = 1e-6,
-                                   double step_rate = 1.9,
-                                   const bool adapt_step = true) {
+                                   const Rcpp::String &solver,
+                                   const Rcpp::List &control) {
   if (contact_matrix.rows() != demography_vector.size()) {
     Rcpp::stop(
         "Error: contact matrix must have as many rows as demography groups\n");
@@ -75,26 +72,24 @@ Eigen::ArrayXd final_size_grps_cpp(const Eigen::MatrixXd &contact_matrix,
       Rcpp::stop("Error: p_susceptibility matrix rows must sum to 1.0");
     }
   }
-  // check that solver options are correct
-  if ((solver != Rcpp::String("iterative")) &&
-      (solver != Rcpp::String("newton"))) {
-    Rcpp::stop("Error: solver must be one of 'iterative' or 'newton'");
-  }
 
   // prepare epidemiological spread data
   epi_spread_data s = epi_spread(contact_matrix, demography_vector,
                                  p_susceptibility, susceptibility);
 
-  // solve for final sizes (epi_final_size, abbrv to efs_tmp)
+  // pointer to solver function, iterative by default
   Eigen::ArrayXd efs_tmp;
-  if (solver == Rcpp::String("iterative")) {
+  if (solver == "iterative") {
     efs_tmp = solve_final_size_iterative_cpp(
-        s.contact_matrix, s.demography_vector, s.susceptibility, iterations,
-        tolerance, step_rate, adapt_step);
+        s.contact_matrix, s.demography_vector, s.susceptibility,
+        control["iterations"], control["tolerance"], control["step_rate"],
+        control["adapt_step"]);
+  } else if (solver == "newton") {
+    efs_tmp = solve_final_size_newton_cpp(
+        s.contact_matrix, s.demography_vector, s.susceptibility,
+        control["iterations"], control["tolerance"]);
   } else {
-    efs_tmp =
-        solve_final_size_newton_cpp(s.contact_matrix, s.demography_vector,
-                                    s.susceptibility, iterations, tolerance);
+    Rcpp::stop("Error: solver must be one of 'iterative' or 'newton'");
   }
 
   // prepare final sizes as matrix with n-demography rows, n-risk-grps cols
