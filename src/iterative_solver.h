@@ -12,7 +12,7 @@
 Eigen::ArrayXd solve_final_size_iterative_cpp(
     const Eigen::MatrixXd &contact_matrix,
     const Eigen::VectorXd &demography_vector,
-    const Eigen::VectorXd &susceptibility, const int iterations = 1000,
+    const Eigen::VectorXd &susceptibility, const int iterations = 10000,
     const double tolerance = 1e-6, double step_rate = 1.9,
     const bool adapt_step = true) {
   // count number of demography groups
@@ -37,13 +37,11 @@ Eigen::ArrayXd solve_final_size_iterative_cpp(
       epi_final_size[i] = 0;
     }
     for (size_t j = 0; j < contact_matrix.cols(); ++j) {
-      if (zeros[j] == 1) {
+      if (zeros[j]) {
         contact_matrix_(i, j) = 0;
       } else {
         // Scale contacts appropriately
-        // Could add transmissibility (j)?
-        contact_matrix_(i, j) =
-            susceptibility(i) * contact_matrix(i, j) * demography_vector(j);
+        contact_matrix_(i, j) = contact_matrix(i, j) * demography_vector(j);
       }
     }
   }
@@ -68,7 +66,7 @@ Eigen::ArrayXd solve_final_size_iterative_cpp(
 
   double current_error = step_rate * nDim;
 
-  for (auto i = 0; i < 10000; ++i) {
+  for (auto i = 0; i < iterations; ++i) {
     epi_final_size_return = f(epi_final_size, std::move(epi_final_size_return));
 
     Eigen::ArrayXd dpi = epi_final_size - epi_final_size_return.array();
