@@ -88,9 +88,9 @@ inline Eigen::ArrayXd solve_final_size_newton_cpp(
       break;
     }
   }
-  if (error / tolerance > 100.0)
-  {
-    Rcpp::warning("Solver error > 100x solver tolerance, try increasing iterations");
+  if (error / tolerance > 100.0) {
+    Rcpp::warning(
+        "Solver error > 100x solver tolerance, try increasing iterations");
   }
 
   epi_final_size = 1 - x.array();

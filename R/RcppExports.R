@@ -29,7 +29,25 @@ final_size_cpp <- function(r0, contact_matrix, demography_vector, prop_initial_i
 #' @title Calculate final epidemic size with risk groups using Eigen backend
 #'
 #' @description This function calculates final epidemic size using SIR model
-#' for a heterogeneously mixing population, using an Eigen backend
+#' for a heterogeneously mixing population, using an Eigen backend.
+#'
+#' # Solver options
+#'
+#' The `control` argument accepts a list of solver options, with the iterative
+#' solver taking two extra arguments than the Newton solver.
+#'
+#' ## Common options
+#'
+#' 1. `iterations`: The number of iterations over which to solve for the final
+#' size, unless the error is below the solver tolerance.
+#' 2. `tolerance`: The solver tolerance, set to `1e-6` by default; solving for
+#' final size ends when the error drops below this tolerance.
+#'
+#' ## Iterative solver options
+#' 1. `step_rate`: The solver step rate. Defaults to 1.9 as a value found to
+#' work well.
+#' 2. `adapt_step`: Boolean, whether the solver step rate should be changed
+#' based on the solver error. Defaults to TRUE.
 #'
 #' @param contact_matrix Social contact matrix. Entry $mm_{ij}$ gives average
 #' number of contacts in group $i$ reported by participants in group j
@@ -44,16 +62,11 @@ final_size_cpp <- function(r0, contact_matrix, demography_vector, prop_initial_i
 #' @param solver Which solver to use. Options are "iterative" or "newton", for
 #' the iterative solver, or the Newton solver, respectively. Special conditions
 #' apply when using the Newton solver.
-#' @param iterations Number of solver iterations. Defaults to 1,000.
-#' @param tolerance Solver error tolerance.
-#' @param step_rate The solver step rate for the iterative solver. Defaults to
-#' 1.9 as a value found to work well.
-#' @param adapt_step Boolean, whether the iterative solver step rate should be
-#' changed based on the solver error. Defaults to TRUE.
+#' @param control A list of named solver options, see *Details*.
 #'
 #' @keywords epidemic model
 #' @export
-final_size_grps_cpp <- function(contact_matrix, demography_vector, p_susceptibility, susceptibility, solver, iterations = 1000L, tolerance = 1e-6, step_rate = 1.9, adapt_step = TRUE) {
-    .Call('_finalsize_final_size_grps_cpp', PACKAGE = 'finalsize', contact_matrix, demography_vector, p_susceptibility, susceptibility, solver, iterations, tolerance, step_rate, adapt_step)
+final_size_grps_cpp <- function(contact_matrix, demography_vector, p_susceptibility, susceptibility, solver, control) {
+    .Call('_finalsize_final_size_grps_cpp', PACKAGE = 'finalsize', contact_matrix, demography_vector, p_susceptibility, susceptibility, solver, control)
 }
 
