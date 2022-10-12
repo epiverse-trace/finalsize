@@ -30,7 +30,7 @@ test_that("Check finalsize by groups works for Polymod, iterative solver", {
 
   # prepare control
   control <- list(
-    iterations = 10000,
+    iterations = 1000,
     tolerance = 1e-6,
     step_rate = 1.9,
     adapt_step = TRUE
