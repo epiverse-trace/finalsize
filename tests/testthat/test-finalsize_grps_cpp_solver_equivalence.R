@@ -57,12 +57,5 @@ test_that("Check finalsize by groups works for Polymod, newton solver", {
   )
 
   # check for equivalence
-  invisible(
-    Map(
-      epi_outcome_iterative, epi_outcome_newton,
-      f = function(x, y) {
-        expect_equal(x, y, tolerance = 1e-5)
-      }
-    )
-  )
+  expect_equal(epi_outcome_iterative, epi_outcome_newton, tolerance = 1e-5)
 })
