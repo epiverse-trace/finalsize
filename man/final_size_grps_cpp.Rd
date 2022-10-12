@@ -33,16 +33,6 @@ the iterative solver, or the Newton solver, respectively. Special conditions
 apply when using the Newton solver.}
 
 \item{control}{A list of named solver options, see *Details*.}
-
-\item{iterations}{Number of solver iterations. Defaults to 1,000.}
-
-\item{tolerance}{Solver error tolerance.}
-
-\item{step_rate}{The solver step rate for the iterative solver. Defaults to
-1.9 as a value found to work well.}
-
-\item{adapt_step}{Boolean, whether the iterative solver step rate should be
-changed based on the solver error. Defaults to TRUE.}
 }
 \description{
 This function calculates final epidemic size using SIR model
