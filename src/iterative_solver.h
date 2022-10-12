@@ -86,6 +86,11 @@ Eigen::ArrayXd solve_final_size_iterative_cpp(
     }
     current_error = error;
   }
+  if (current_error / tolerance > 100.0)
+  {
+    Rcpp::warning("Solver error > 100x solver tolerance, try increasing iterations");
+  }
+  
 
   // Adjust numerical errors;
   for (auto i = 0; i < epi_final_size.size(); ++i) {

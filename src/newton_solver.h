@@ -74,19 +74,23 @@ inline Eigen::ArrayXd solve_final_size_newton_cpp(
     return std::move(cache);
   };
 
-  // iterate over n-iterations (1000) or until the solver tolerance is met
+  // iterate over n-iterations or until the solver tolerance is met
   Eigen::VectorXd x(nDim);
   x.fill(1e-6);
-
+  double error = 0.0;
   for (auto i = 0; i < iterations; ++i) {
     cache_v = dx_f(x, std::move(cache_v), std::move(cache_m)).array();
 
-    double error = cache_v.array().abs().sum();
+    error = cache_v.array().abs().sum();
     x += std::move(cache_v);
     if (error < tolerance) {
       // std::cout << "Iter: " << i << " " << error << std::endl;
       break;
     }
+  }
+  if (error / tolerance > 100.0)
+  {
+    Rcpp::warning("Solver error > 100x solver tolerance, try increasing iterations");
   }
 
   epi_final_size = 1 - x.array();
