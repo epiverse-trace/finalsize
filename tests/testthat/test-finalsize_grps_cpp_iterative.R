@@ -23,7 +23,7 @@ test_that("Check finalsize by groups works for Polymod, iterative solver", {
   psusc <- matrix(
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
-  psusc <- t(apply(psusc, 1, \(x) x / sum(x)))
+  psusc <- psusc / rowSums(psusc)
   susc <- matrix(
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
@@ -113,7 +113,7 @@ test_that("Check that more susceptible demo-grps have higher final size", {
   psusc <- matrix(
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
-  psusc <- t(apply(psusc, 1, \(x) x / sum(x)))
+  psusc <- psusc / rowSums(psusc)
   susc <- rbind(
     rep(1, n_risk_grps),
     rep(0.1, n_risk_grps),
@@ -163,16 +163,19 @@ test_that("Check that more susceptible demo-grps have higher final size", {
 # using newton solver
 test_that("Check final size calculation is correct in complex case", {
   # make a contact matrix
-  contact_matrix <- c(
-    5.329620e-08, 1.321156e-08, 1.832293e-08, 7.743492e-09, 5.888440e-09,
-    2.267918e-09, 1.321156e-08, 4.662496e-08, 1.574182e-08, 1.510582e-08,
-    7.943038e-09, 3.324235e-09, 1.832293e-08, 1.574182e-08, 2.331416e-08,
-    1.586565e-08, 1.146566e-08, 5.993247e-09, 7.743492e-09, 1.510582e-08,
-    1.586565e-08, 2.038011e-08, 1.221124e-08, 9.049331e-09, 5.888440e-09,
-    7.943038e-09, 1.146566e-08, 1.221124e-08, 1.545822e-08, 8.106812e-09,
-    2.267918e-09, 3.324235e-09, 5.993247e-09, 9.049331e-09, 8.106812e-09,
-    1.572736e-08
-  ) |> matrix(6, 6)
+  contact_matrix <- matrix(
+    data = c(
+      5.329620e-08, 1.321156e-08, 1.832293e-08, 7.743492e-09, 5.888440e-09,
+      2.267918e-09, 1.321156e-08, 4.662496e-08, 1.574182e-08, 1.510582e-08,
+      7.943038e-09, 3.324235e-09, 1.832293e-08, 1.574182e-08, 2.331416e-08,
+      1.586565e-08, 1.146566e-08, 5.993247e-09, 7.743492e-09, 1.510582e-08,
+      1.586565e-08, 2.038011e-08, 1.221124e-08, 9.049331e-09, 5.888440e-09,
+      7.943038e-09, 1.146566e-08, 1.221124e-08, 1.545822e-08, 8.106812e-09,
+      2.267918e-09, 3.324235e-09, 5.993247e-09, 9.049331e-09, 8.106812e-09,
+      1.572736e-08
+    ),
+    nrow = 6, ncol = 6
+  )
 
   # make a demography vector
   demography_vector <- c(

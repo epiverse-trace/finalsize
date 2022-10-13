@@ -18,7 +18,7 @@ test_that("Newton solver works with polymod data", {
   psusc <- matrix(
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
-  psusc <- t(apply(psusc, 1, \(x) x / sum(x)))
+  psusc <- psusc / rowSums(psusc)
   susc <- matrix(
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
@@ -88,7 +88,7 @@ test_that("Newton solver works with polymod data", {
   psusc <- matrix(
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
-  psusc <- t(apply(psusc, 1, \(x) x / sum(x)))
+  psusc <- psusc / rowSums(psusc)
   susc <- matrix(
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )

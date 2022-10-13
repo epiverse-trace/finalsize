@@ -8,7 +8,7 @@ test_that("Epi spread function works", {
   # p_susceptibility and susceptibility
   n_risk_grps <- 3
   psusc <- matrix(1, nrow = 2, ncol = n_risk_grps)
-  psusc <- t(apply(psusc, 1, \(x) x / sum(x))) # rows sum to 1.0
+  psusc <- psusc / rowSums(psusc) # rows sum to 1.0
   susc <- psusc
 
   epi_spread_data <- epi_spread(

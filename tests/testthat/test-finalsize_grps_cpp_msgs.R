@@ -99,9 +99,7 @@ test_that("Check for errors and messages", {
 
   # expect error when incorrect solver option is passed
   p_susceptibility <- matrix(1, ncol = 2, nrow = 3)
-  p_susceptibility <- t(apply(
-    p_susceptibility, 1, \(x) x / sum(x)
-  ))
+  p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
   expect_error(
     final_size_grps_cpp(
       contact_matrix = contact_matrix,
