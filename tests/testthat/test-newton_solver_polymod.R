@@ -8,10 +8,10 @@ test_that("Newton solver works with polymod data", {
     age.limits = c(0, 20, 40),
     split = TRUE
   )
-  c_matrix <- t(contact_data$matrix)
-  d_vector <- contact_data$participants$proportion
+  contact_matrix <- t(contact_data$matrix)
+  demography_vector <- contact_data$participants$proportion
 
-  n_demo_grps <- length(d_vector)
+  n_demo_grps <- length(demography_vector)
   n_risk_grps <- 3
 
   # prepare p_susceptibility and susceptibility
@@ -23,18 +23,12 @@ test_that("Newton solver works with polymod data", {
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
-    contact_matrix = r0 * c_matrix,
-    demography_vector = d_vector,
+  epi_outcome <- final_size(
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
+    susceptibility = susc,
     p_susceptibility = psusc,
-    susceptibility = susc
-  )
-
-  epi_outcome <- solve_final_size_newton(
-    contact_matrix = epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
+    solver = "newton"
   )
 
   # check that solver returns correct types
@@ -63,7 +57,7 @@ test_that("Newton solver works with polymod data", {
   )
   # check for size of the vector
   expect_equal(
-    n_demo_grps * n_risk_grps,
+    n_demo_grps,
     length(epi_outcome)
   )
 })
@@ -78,10 +72,10 @@ test_that("Newton solver works with polymod data", {
     age.limits = c(0, 20, 40),
     split = TRUE
   )
-  c_matrix <- t(contact_data$matrix)
-  d_vector <- contact_data$participants$proportion
+  contact_matrix <- t(contact_data$matrix)
+  demography_vector <- contact_data$participants$proportion
 
-  n_demo_grps <- length(d_vector)
+  n_demo_grps <- length(demography_vector)
   n_risk_grps <- 3
 
   # prepare p_susceptibility and susceptibility
@@ -93,18 +87,12 @@ test_that("Newton solver works with polymod data", {
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
-    contact_matrix = c_matrix,
-    demography_vector = d_vector,
+  epi_outcome <- final_size(
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
+    susceptibility = susc,
     p_susceptibility = psusc,
-    susceptibility = susc
-  )
-
-  epi_outcome <- solve_final_size_newton(
-    contact_matrix = epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
+    solver = "newton"
   )
 
   # check that solver returns correct types
@@ -133,7 +121,7 @@ test_that("Newton solver works with polymod data", {
   )
   # check for size of the vector
   expect_equal(
-    n_demo_grps * n_risk_grps,
+    n_demo_grps,
     length(epi_outcome)
   )
 })

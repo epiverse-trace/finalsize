@@ -21,18 +21,12 @@ test_that("Newton solver works with r0 = 2", {
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
+  epi_outcome <- final_size(
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
+    susceptibility = susc,
     p_susceptibility = psusc,
-    susceptibility = susc
-  )
-
-  epi_outcome <- solve_final_size_newton(
-    contact_matrix = epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
+    solver = "newton"
   )
 
   # check that solver returns correct types
@@ -75,18 +69,12 @@ test_that("Newton solver works with r0 = 4", {
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
+  epi_outcome <- final_size(
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
+    susceptibility = susc,
     p_susceptibility = psusc,
-    susceptibility = susc
-  )
-
-  epi_outcome <- solve_final_size_newton(
-    contact_matrix = epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
+    solver = "newton"
   )
 
   # check that solver returns correct types
@@ -139,18 +127,15 @@ test_that("Newton solver works with r0 = 12", {
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
+  epi_outcome <- final_size(
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
+    susceptibility = susc,
     p_susceptibility = psusc,
-    susceptibility = susc
-  )
-
-  epi_outcome <- solve_final_size_newton(
-    contact_matrix = epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
+    solver = "newton",
+    control = list(
+      tolerance = 1e-3
+    )
   )
 
   # check that solver returns correct types

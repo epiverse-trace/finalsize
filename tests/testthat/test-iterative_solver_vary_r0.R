@@ -21,18 +21,11 @@ test_that("Iterative solver works with r0 = 2", {
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
+  epi_outcome <- final_size(
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
-    p_susceptibility = psusc,
-    susceptibility = susc
-  )
-
-  epi_outcome <- solve_final_size_iterative(
-    contact_matrix = epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
+    susceptibility = susc,
+    p_susceptibility = psusc
   )
 
   # check that solver returns correct types
@@ -75,18 +68,11 @@ test_that("Iterative solver works with r0 = 4", {
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
+  epi_outcome <- final_size(
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
-    p_susceptibility = psusc,
-    susceptibility = susc
-  )
-
-  epi_outcome <- solve_final_size_iterative(
-    contact_matrix = epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
+    susceptibility = susc,
+    p_susceptibility = psusc
   )
 
   # check that solver returns correct types
@@ -140,19 +126,14 @@ test_that("Iterative solver works with r0 = 12", {
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
+  epi_outcome <- final_size(
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
+    susceptibility = susc,
     p_susceptibility = psusc,
-    susceptibility = susc
-  )
-
-  epi_outcome <- solve_final_size_iterative(
-    contact_matrix = epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]],
-    tolerance = 1e-4
+    control = list(
+      tolerance = 1e-3
+    )
   )
 
   # check that solver returns correct types
@@ -205,19 +186,14 @@ test_that("Iterative solver works with r0 = 4, locked step size", {
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
+  epi_outcome <- final_size(
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
+    susceptibility = susc,
     p_susceptibility = psusc,
-    susceptibility = susc
-  )
-
-  epi_outcome <- solve_final_size_iterative(
-    contact_matrix = epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]],
-    adapt_step = FALSE
+    control = list(
+      adapt_step = TRUE
+    )
   )
 
   # check that solver returns correct types

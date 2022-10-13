@@ -1,4 +1,4 @@
-# Check final_size_grps_cpp works with Newton solver
+# Check final_size works with Newton solver
 test_that("Check finalsize by groups works for Polymod, newton solver", {
   r0 <- 2.0
   polymod <- socialmixr::polymod
@@ -36,7 +36,7 @@ test_that("Check finalsize by groups works for Polymod, newton solver", {
     adapt_step = TRUE
   )
 
-  epi_outcome <- final_size_grps_cpp(
+  epi_outcome <- final_size(
     contact_matrix = r0 * c_matrix,
     demography_vector = d_vector,
     p_susceptibility = psusc,
@@ -115,7 +115,7 @@ test_that("Check that more susceptible demo-grps have higher final size", {
     adapt_step = TRUE
   )
 
-  epi_outcome <- final_size_grps_cpp(
+  epi_outcome <- final_size(
     contact_matrix = r0 * c_matrix,
     demography_vector = d_vector,
     p_susceptibility = psusc,
@@ -185,7 +185,7 @@ test_that("Check final size calculation is correct in complex case", {
     adapt_step = TRUE
   )
 
-  epi_outcome <- final_size_grps_cpp(
+  epi_outcome <- final_size(
     contact_matrix = r0 * contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susc,

@@ -1,4 +1,4 @@
-# Check final_size_grps_cpp works with Newton solver
+# Check final_size works with Newton solver
 # check for errors and messages
 test_that("Check for errors and messages", {
   # checking epi spread function from finalsize
@@ -21,7 +21,7 @@ test_that("Check for errors and messages", {
 
   # expect error on demography vector and contact matrix
   expect_error(
-    final_size_grps_cpp(
+    final_size(
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -37,7 +37,7 @@ test_that("Check for errors and messages", {
 
   # expect error on demography vector and p_susceptibility
   expect_error(
-    final_size_grps_cpp(
+    final_size(
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -53,7 +53,7 @@ test_that("Check for errors and messages", {
 
   # expect error on demography vector and susceptibility
   expect_error(
-    final_size_grps_cpp(
+    final_size(
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -69,7 +69,7 @@ test_that("Check for errors and messages", {
 
   # expect error on p_susceptibility and susceptibility
   expect_error(
-    final_size_grps(
+    final_size(
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -85,7 +85,7 @@ test_that("Check for errors and messages", {
   p_susceptibility <- matrix(1, ncol = 2, nrow = 3)
   susceptibility <- matrix(1, ncol = 2, nrow = 3)
   expect_error(
-    final_size_grps_cpp(
+    final_size(
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -94,14 +94,14 @@ test_that("Check for errors and messages", {
       control = list()
     ),
     regexp =
-      "Error: p_susceptibility matrix rows must sum to 1.0"
+      "Error: p_susceptibility rows must sum to 1.0"
   )
 
   # expect error when incorrect solver option is passed
   p_susceptibility <- matrix(1, ncol = 2, nrow = 3)
   p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
   expect_error(
-    final_size_grps_cpp(
+    final_size(
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -115,7 +115,7 @@ test_that("Check for errors and messages", {
 
   # check for warning when error is much larger than tolerance, iterative
   expect_warning(
-    final_size_grps_cpp(
+    final_size(
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -134,7 +134,7 @@ test_that("Check for errors and messages", {
 
   # check for warning when error is much larger than tolerance, newton
   expect_warning(
-    final_size_grps(
+    final_size(
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -147,5 +147,43 @@ test_that("Check for errors and messages", {
     ),
     regexp =
       "Solver error > 100x solver tolerance, try increasing iterations"
+  )
+
+  # expect errors when wrong argument types are passed
+  expect_error(
+    final_size(
+      contact_matrix = as.vector(contact_matrix),
+      demography_vector = demography_vector,
+      p_susceptibility = p_susceptibility,
+      susceptibility = susceptibility
+    ),
+    regexp = "Error: contact matrix must be a matrix"
+  )
+  expect_error(
+    final_size(
+      contact_matrix = contact_matrix,
+      demography_vector = as.matrix(demography_vector),
+      p_susceptibility = p_susceptibility,
+      susceptibility = susceptibility
+    ),
+    regexp = "Error: demography vector must be a numeric vector"
+  )
+  expect_error(
+    final_size(
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      p_susceptibility = as.vector(p_susceptibility),
+      susceptibility = susceptibility
+    ),
+    regexp = "Error: p_susceptibility must be a matrix"
+  )
+  expect_error(
+    final_size(
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      susceptibility = as.vector(susceptibility),
+      p_susceptibility = p_susceptibility
+    ),
+    regexp = "Error: susceptibility must be a matrix"
   )
 })

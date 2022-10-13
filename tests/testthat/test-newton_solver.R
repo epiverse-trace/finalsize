@@ -1,5 +1,5 @@
-# basic test that Newton solver returns numerics within range
-test_that("Newton solver works", {
+# basic test that solver returns numerics within range
+test_that("Final size with newton solver", {
   # prepare some data for the solver
   r0 <- 1.3
   contact_matrix <- matrix(r0 / 200.0, 2, 2)
@@ -7,18 +7,12 @@ test_that("Newton solver works", {
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
+  epi_outcome <- final_size(
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
+    susceptibility = susc,
     p_susceptibility = psusc,
-    susceptibility = susc
-  )
-
-  epi_outcome <- solve_final_size_newton(
-    contact_matrix = epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
+    solver = "newton"
   )
 
   # check that solver returns correct types
@@ -52,7 +46,7 @@ test_that("Newton solver works", {
   )
 })
 
-# basic test that solver returns correct answer
+# basic test that newton solver returns correct answer
 test_that("Newton solver returns correct answer", {
   # prepare some data for the solver
   r0 <- 1.3
@@ -61,18 +55,12 @@ test_that("Newton solver returns correct answer", {
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
+  epi_outcome <- final_size(
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
+    susceptibility = susc,
     p_susceptibility = psusc,
-    susceptibility = susc
-  )
-
-  epi_outcome <- solve_final_size_newton(
-    contact_matrix = epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
+    solver = "newton"
   )
 
   epi_outcome_known <- 1 - exp(-r0 * epi_outcome)
@@ -84,7 +72,7 @@ test_that("Newton solver returns correct answer", {
 })
 
 # basic test that higher r0 results in higher final size
-test_that("Newton solver returns higher final size for higher r0", {
+test_that("Newton solver gives higher final size for large r0", {
   # prepare some data for the solver
   r0_low <- 1.3
   r0_high <- 3.3
@@ -93,24 +81,20 @@ test_that("Newton solver returns higher final size for higher r0", {
   psusc <- matrix(1, nrow = 2, ncol = 1)
   susc <- psusc
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
-    contact_matrix = contact_matrix,
+  epi_outcome_low <- final_size(
+    contact_matrix = r0_low * contact_matrix,
     demography_vector = demography_vector,
+    susceptibility = susc,
     p_susceptibility = psusc,
-    susceptibility = susc
+    solver = "newton"
   )
 
-  epi_outcome_low <- solve_final_size_newton(
-    contact_matrix = r0_low * epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
-  )
-
-  epi_outcome_high <- solve_final_size_newton(
-    contact_matrix = r0_high * epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
+  epi_outcome_high <- final_size(
+    contact_matrix = r0_high * contact_matrix,
+    demography_vector = demography_vector,
+    susceptibility = susc,
+    p_susceptibility = psusc,
+    solver = "newton"
   )
 
   expect_true(
