@@ -26,8 +26,9 @@
 #'
 #' @param contact_matrix Social contact matrix. Entry \eqn{m_{ij}} gives average
 #' number of contacts in group \eqn{i} reported by participants in group \eqn{j}
-#' @param demography_vector Demography vector. Entry \eqn{v_{i}} gives proportion
-#' of total population in group \eqn{i} (model will normalise if needed)
+#' @param demography_vector Demography vector. Entry \eqn{v_{i}} gives
+#' proportion of total population in group \eqn{i} (model will normalise
+#' if needed)
 #' @param p_susceptibility A matrix giving the probability that an individual
 #' in demography group \eqn{i} is in risk (or susceptibility) group \eqn{j}.
 #' Each row represents the overall distribution of individuals in demographic
@@ -61,7 +62,7 @@
 #' psusc <- matrix(
 #'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 #' )
-#' psusc <- t(apply(psusc, 1, \(x) x / sum(x)))
+#' psusc <- psusc / rowSums(psusc)
 #' susc <- matrix(
 #'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 #' )
