@@ -145,7 +145,7 @@ final_size <- function(contact_matrix,
   # check which solver is requested
   solver <- match.arg(arg = solver, several.ok = FALSE)
 
-  epi_final_size <- do.call(
+  do.call(
     final_size_,
     c(
       list(
@@ -158,19 +158,4 @@ final_size <- function(contact_matrix,
       control
     )
   )
-
-  # unroll p_susceptibility data
-  lps <- as.vector(p_susceptibility)
-
-  # multiply demo-risk specific final sizes by corresponding pop proportions
-  epi_final_size <- epi_final_size * lps
-
-  # final sizes mapped to matrix with dims (n_demo_grp, n_risk_grps)
-  epi_final_size <- matrix(
-    data = epi_final_size,
-    nrow = length(demography_vector),
-    ncol = ncol(p_susceptibility)
-  )
-  # return row-wise sum, i.e., the demo-grp wise sum
-  rowSums(epi_final_size)
 }
