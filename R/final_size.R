@@ -1,125 +1,175 @@
-#' Calculate final epidemic size
+#' @title Final size of an epidemic
 #'
-#' This function calculates final epidemic size using SIR model for
-#' heterogeneously mixing population
+#' @description `final_size` calculates the final size of an epidemic outbreak
+#' in a population with heterogeneous mixing, and with heterogeneous
+#' susceptibility to infection such as that conferred by an immunisation
+#' programme.
 #'
-#' @param r0  Basic reproduction number. Default is 2
-#' @param contact_matrix  Social contact matrix. Entry $mm_{ij}$ gives average
-#' number of contacts in group $i$ reported by participants in group j
-#' @param demography_vector  Demography vector. Entry $pp_{i}$ gives proportion
-#' of total population in group $i$ (model will normalise if needed)
-#' @param prop_initial_infected Proportion of all age groups that is initially
-#' infected. May be a single number, or a vector of proportions infected.
-#' If a vector, must be the same length as the demography vector, otherwise the
-#' vector will be recycled. Default value is 0.001 for all groups.
-#' @param prop_suscep  Proportion of each group susceptible. Null assumption is
-#' fully susceptible
+#' @details
+#' # Solver options
+#'
+#' The `control` argument accepts a list of solver options, with the iterative
+#' solver taking two extra arguments than the Newton solver.
+#'
+#' ## Common options
+#'
+#' 1. `iterations`: The number of iterations over which to solve for the final
+#' size, unless the error is below the solver tolerance.
+#' 2. `tolerance`: The solver tolerance, set to `1e-6` by default; solving for
+#' final size ends when the error drops below this tolerance.
+#'
+#' ## Iterative solver options
+#' 1. `step_rate`: The solver step rate. Defaults to 1.9 as a value found to
+#' work well.
+#' 2. `adapt_step`: Boolean, whether the solver step rate should be changed
+#' based on the solver error. Defaults to TRUE.
+#'
+#' @param contact_matrix Social contact matrix. Entry \eqn{m_{ij}} gives average
+#' number of contacts in group \eqn{i} reported by participants in group \eqn{j}
+#' @param demography_vector Demography vector. Entry \eqn{v_{i}} gives proportion
+#' of total population in group \eqn{i} (model will normalise if needed)
+#' @param p_susceptibility A matrix giving the probability that an individual
+#' in demography group \eqn{i} is in risk (or susceptibility) group \eqn{j}.
+#' Each row represents the overall distribution of individuals in demographic
+#' group $i$ across risk groups, and each row *must sum to 1.0*.
+#' @param susceptibility A matrix giving the susceptibility of individuals in
+#' demographic group \eqn{i} and risk group \eqn{j}.
+#' @param solver Which solver to use. Options are "iterative" (default) or
+#' "newton", for the iterative solver, or the Newton solver, respectively.
+#' Special conditions apply when using the Newton solver, see the `control`
+#' argument.
+#' @param control A list of named solver options, see *Solver options*.
+#'
 #' @keywords epidemic model
+#' @return A vector of final sizes by demography group.
 #' @export
 #' @examples
 #' library(socialmixr)
 #' data(polymod)
+#' r0 <- 2.0
 #' contact_data <- contact_matrix(
 #'   polymod,
 #'   countries = "United Kingdom",
-#'   age.limits = c(0, 20, 40)
+#'   age.limits = c(0, 20, 40),
+#'   split = TRUE # scaling by demography
 #' )
-#' # Define contact matrix (entry ij is contacts in group i reported by group j)
 #' c_matrix <- t(contact_data$matrix)
-#' # Define proportion in each age group
 #' d_vector <- contact_data$participants$proportion
-#' # Define proportion of age group that is susceptible to infection
-#' p_suscep <- c(1, 0.5, 0.5)
-#' r0 <- 2.0
-#' p_initial_infect <- 0.002
-#'
-#' # Run final size model
-#' final_size(r0,
-#'   contact_matrix = c_matrix,
-#'   prop_initial_infected = p_initial_infect,
-#'   demography_vector = d_vector, prop_suscep = p_suscep
+#' n_demo_grps <- length(d_vector)
+#' n_risk_grps <- 3
+#' # prepare p_susceptibility and susceptibility
+#' psusc <- matrix(
+#'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+#' )
+#' psusc <- t(apply(psusc, 1, \(x) x / sum(x)))
+#' susc <- matrix(
+#'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 #' )
 #'
-final_size <- function(r0 = 2, contact_matrix, demography_vector,
-                       prop_initial_infected = 0.001,
-                       prop_suscep = NULL) {
-
-  # Check prop_suscep length
-  if (is.null(prop_suscep)) {
-    prop_suscep <- 1.0
-  } else {
-    checkmate::assert_numeric(
-      prop_suscep,
-      lower = 0.0, upper = 1.0, finite = TRUE
-    )
-    if (length(prop_suscep) > 1L) {
-      stopifnot(
-        "demography vector needs to be same size as susceptibility vector" =
-          length(demography_vector) == length(prop_suscep)
-      )
-
-      if (length(unique(prop_suscep)) > 1L) {
-        message("using different susceptibilities for each age group")
-      }
-    }
-  }
-  checkmate::assert_number(r0, lower = 1.0, finite = TRUE)
-  checkmate::assert_numeric(demography_vector, lower = 0.0)
-  checkmate::assert_matrix(contact_matrix)
-  checkmate::assert_numeric(prop_initial_infected, lower = 0.0, upper = 1.0)
-
+#' # using default settings - this selects the iterative solver
+#' final_size(
+#'   contact_matrix = r0 * c_matrix,
+#'   demography_vector = d_vector,
+#'   p_susceptibility = psusc,
+#'   susceptibility = susc
+#' )
+#'
+#' # using manually specified solver settings
+#' control <- list(
+#'   iterations = 1000,
+#'   tolerance = 1e-6,
+#'   step_rate = 1.9,
+#'   adapt_step = TRUE
+#' )
+#'
+#' final_size(
+#'   contact_matrix = r0 * c_matrix,
+#'   demography_vector = d_vector,
+#'   p_susceptibility = psusc,
+#'   susceptibility = susc,
+#'   solver = "iterative",
+#'   control = control
+#' )
+#'
+#' # manual settings for the newton solver
+#' control <- list(
+#'   iterations = 50000,
+#'   tolerance = 1e-12
+#' )
+#'
+#' final_size(
+#'   contact_matrix = r0 * c_matrix,
+#'   demography_vector = d_vector,
+#'   p_susceptibility = psusc,
+#'   susceptibility = susc,
+#'   solver = "newton",
+#'   control = control
+#' )
+#'
+final_size <- function(contact_matrix,
+                       demography_vector,
+                       p_susceptibility,
+                       susceptibility,
+                       solver = c("iterative", "newton"),
+                       control = list(
+                         iterations = 10000,
+                         tolerance = 1e-6,
+                         step_rate = 1.9,
+                         adapt_step = TRUE
+                       )) {
+  # check arguments input
   stopifnot(
-    "demography vector needs to be same size as contact matrix" =
-      nrow(contact_matrix) == length(demography_vector)
+    "Error: contact matrix must be a matrix" =
+      (is.matrix(contact_matrix)),
+    "Error: demography vector must be a numeric vector" =
+      (is.vector(demography_vector) & is.numeric(demography_vector)),
+    "Error: p_susceptibility must be a matrix" =
+      (is.matrix(p_susceptibility)),
+    "Error: susceptibility must be a matrix" =
+      (is.matrix(susceptibility)),
+    "Error: contact matrix must have as many rows as demography groups" =
+      (nrow(contact_matrix) == length(demography_vector)),
+    "Error: p_susceptibility must have as many rows as demography groups" =
+      (nrow(p_susceptibility) == length(demography_vector)),
+    "Error: susceptibility must have as many rows as demography groups" =
+      (nrow(susceptibility) == length(demography_vector)),
+    "Error: susceptibility must have same dimensions as p_susceptibility" =
+      (all(dim(p_susceptibility) == dim(susceptibility))),
+    "Error: p_susceptibility rows must sum to 1.0" =
+      (
+        all(abs(rowSums(p_susceptibility) - 1) < 1e-6)
+      )
   )
 
-  if (length(prop_initial_infected) > 1) {
-    stopifnot(
-      "vector of prop_initial_infected needs to be same size
-      as demography vector" =
-        length(prop_initial_infected) == length(demography_vector)
+  # check which solver is requested
+  solver <- match.arg(arg = solver, several.ok = FALSE)
+
+  epi_final_size <- do.call(
+    final_size_,
+    c(
+      list(
+        contact_matrix,
+        demography_vector,
+        p_susceptibility,
+        susceptibility,
+        solver
+      ),
+      control
     )
-    message(
-      "using different prop_initial_infected for each age group"
-    )
-  }
+  )
 
-  pp0 <- as.numeric(demography_vector / sum(demography_vector))
+  # unroll p_susceptibility data
+  lps <- as.vector(p_susceptibility)
 
-  # Scale next generation matrix so max eigenvalue=r0
-  mm0 <- as.matrix(contact_matrix)
-  mm0 <- r0 * mm0 / max(Re(eigen(mm0)$values))
+  # multiply demo-risk specific final sizes by corresponding pop proportions
+  epi_final_size <- epi_final_size * lps
 
-  # Define transmission matrix A = mm_ij*pp_j/pp_i
-  beta1 <- (mm0 * prop_suscep) / pp0
-  beta2 <- t(t(beta1) * pp0)
-
-  # Newton method for solving final size equation: A(1-x) = -log(x)
-
-  # Define functions f and f'
-  vsize <- length(pp0)
-  f1 <- function(beta2, x) {
-    beta2 %*% (1 - x) + log(x)
-  }
-  f2 <- function(beta2, x, size) {
-    -beta2 + diag(size) / x
-  }
-
-  # Set storage vector and precision
-  iterations <- 30
-  iterate_output <- matrix(NA, nrow = iterations, ncol = vsize)
-  x0 <- prop_initial_infected * pp0 # Set starting point
-
-  for (ii in 1:iterations) {
-    if (ii == 1L) {
-      xx <- x0
-      iterate_output[ii, ] <- xx
-    } else {
-      dx <- solve(f2(beta2, xx, vsize), -f1(beta2, xx))
-      iterate_output[ii, ] <- xx + dx
-      xx <- as.numeric(xx + dx)
-    }
-  }
-
-  (1 - iterate_output[iterations, ])
+  # final sizes mapped to matrix with dims (n_demo_grp, n_risk_grps)
+  epi_final_size <- matrix(
+    data = epi_final_size,
+    nrow = length(demography_vector),
+    ncol = ncol(p_susceptibility)
+  )
+  # return row-wise sum, i.e., the demo-grp wise sum
+  rowSums(epi_final_size)
 }
