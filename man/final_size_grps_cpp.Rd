@@ -32,7 +32,7 @@ demographic group $i$ and risk group $j$.}
 the iterative solver, or the Newton solver, respectively. Special conditions
 apply when using the Newton solver.}
 
-\item{control}{A list of named solver options, see *Details*.}
+\item{control}{A list of named solver options, see *Solver options*.}
 }
 \description{
 This function calculates final epidemic size using SIR model

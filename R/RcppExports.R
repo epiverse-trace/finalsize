@@ -62,7 +62,7 @@ final_size_cpp <- function(r0, contact_matrix, demography_vector, prop_initial_i
 #' @param solver Which solver to use. Options are "iterative" or "newton", for
 #' the iterative solver, or the Newton solver, respectively. Special conditions
 #' apply when using the Newton solver.
-#' @param control A list of named solver options, see *Details*.
+#' @param control A list of named solver options, see *Solver options*.
 #'
 #' @keywords epidemic model
 #' @export
