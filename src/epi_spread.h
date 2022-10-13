@@ -12,7 +12,8 @@
 struct epi_spread_data {
   Eigen::MatrixXd contact_matrix;
   Eigen::VectorXd demography_vector;
-  Eigen::MatrixXd susceptibility;
+  Eigen::VectorXd susceptibility;
+  Eigen::VectorXd p_susceptibility;
 };
 
 /// A function for epidemic spread with susceptibility groups
@@ -30,24 +31,27 @@ inline epi_spread_data epi_spread(
   // make single column matrix from prop_suscep data,
   // prop_suscep is the prob(suscep) per demography group
   Eigen::MatrixXd psusc = p_susceptibility;
-  Eigen::Map<Eigen::MatrixXd> lps(psusc.data(), psusc.size(), 1);
+  const Eigen::VectorXd lps(
+      Eigen::Map<Eigen::VectorXd>(psusc.data(), psusc.size()));
 
   // replicate demography vector by the number of risk groups
   // and multiply it by the prop_suscep values
-  Eigen::VectorXd demography_vector_ =
+  const Eigen::VectorXd demography_vector_ =
       demography_vector.replicate(n_susc_groups, 1).array() * lps.array();
 
-  Eigen::MatrixXd contact_matrix_ =
+  const Eigen::MatrixXd contact_matrix_ =
       contact_matrix.replicate(n_susc_groups, n_susc_groups);
 
   // unroll the risk level matrix
   Eigen::MatrixXd susc = susceptibility;
-  Eigen::Map<Eigen::MatrixXd> rm(susc.data(), susc.size(), 1);
+  const Eigen::VectorXd rm(
+      Eigen::Map<Eigen::VectorXd>(susc.data(), susc.size()));
 
   epi_spread_data tmp_data;
   tmp_data.contact_matrix = contact_matrix_;
   tmp_data.demography_vector = demography_vector_;
   tmp_data.susceptibility = rm;
+  tmp_data.p_susceptibility = lps;
 
   return tmp_data;
 }
