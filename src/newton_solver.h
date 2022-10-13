@@ -9,7 +9,7 @@
 /// function for Newton solver
 // taken from Edwin van Leeuwen at
 // https://gitlab.com/epidemics-r/code_snippets/feature/newton_solver/include/finalsize.hpp
-inline Eigen::ArrayXd solve_final_size_newton_cpp(
+inline Eigen::ArrayXd solve_final_size_newton(
     const Eigen::MatrixXd &contact_matrix,
     const Eigen::VectorXd &demography_vector,
     const Eigen::MatrixXd &susceptibility, const int iterations = 10000,
