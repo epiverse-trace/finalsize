@@ -50,7 +50,7 @@
 //' @param solver Which solver to use. Options are "iterative" or "newton", for
 //' the iterative solver, or the Newton solver, respectively. Special conditions
 //' apply when using the Newton solver.
-//' @param control A list of named solver options, see *Details*.
+//' @param control A list of named solver options, see *Solver options*.
 //'
 //' @keywords epidemic model
 //' @export
@@ -105,20 +105,13 @@ Eigen::ArrayXd final_size_grps_cpp(const Eigen::MatrixXd &contact_matrix,
     Rcpp::stop("Error: solver must be one of 'iterative' or 'newton'");
   }
 
-  // prepare final sizes as matrix with n-demography rows, n-risk-grps cols
-  Eigen::Map<Eigen::MatrixXd> efs_tmp_2(
-      efs_tmp.data(), demography_vector.size(), p_susceptibility.cols());
-
-  Eigen::MatrixXd psusc = p_susceptibility;
-  Eigen::Map<Eigen::MatrixXd> lps(psusc.data(), psusc.size(), 1);
-
   // multiply final sizes from pi_2 with proportions of risk groups -- I think
-  Eigen::VectorXd v = efs_tmp_2.array() * lps.array();
+  efs_tmp = efs_tmp * s.p_susceptibility.array();
 
   // cast data to n-demography rows, n-risk-grps cols dimensions for return
-  Eigen::Map<Eigen::MatrixXd> efs_tmp_3(v.data(), demography_vector.rows(),
-                                        p_susceptibility.cols());
+  const Eigen::MatrixXd epi_final_size(Eigen::Map<Eigen::MatrixXd>(
+      efs_tmp.data(), demography_vector.rows(), p_susceptibility.cols()));
 
   // return row wise sum, one per demo group
-  return efs_tmp_3.rowwise().sum();
+  return epi_final_size.rowwise().sum();
 }
