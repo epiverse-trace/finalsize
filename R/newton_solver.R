@@ -32,7 +32,7 @@ solve_final_size_newton <- function(contact_matrix,
   epi_final_size[i_here] <- 0.0
 
   # matrix filled by columns
-  contact_matrix_ <- contact_matrix * demography_vector %o% susceptibility
+  contact_matrix_ <- t(t(contact_matrix * susceptibility) * demography_vector)
 
   contact_matrix_[i_here, i_here] <- 0.0
 
@@ -54,12 +54,7 @@ solve_final_size_newton <- function(contact_matrix,
   dx_f <- function(x) {
     cache_m <- f2(x)
     cache <- -f1(x)
-    # partial pivoting LU decomposition
-    cache_m_pivlu <- Matrix::lu(cache_m)
-    cache_m_pivlu <- Matrix::expand(cache_m_pivlu)
-    cache_m_pivlu <- cache_m_pivlu$L %*% cache_m_pivlu$U
-    # return solution
-    solve(cache_m_pivlu, cache)
+    solve(cache_m, cache)
   }
 
   # prepare an initial value from where to

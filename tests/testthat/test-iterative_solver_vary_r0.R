@@ -115,12 +115,15 @@ test_that("Iterative solver works with r0 = 4", {
   )
   # check for correct answer
   tolerance <- 1e-5
-  lapply(epi_outcome, \(x) {
-    expect_equal(
-      x, upper_limit(r0)$par,
-      tolerance = tolerance
-    )
-  })
+  expected_outcome <- rep(
+    upper_limit(r0)$par,
+    length(demography_vector)
+  )
+  expect_equal(
+    epi_outcome, expected_outcome,
+    tolerance = tolerance
+  )
+
   # check for size of the vector
   expect_equal(
     length(demography_vector) * ncol(psusc),
@@ -178,12 +181,14 @@ test_that("Iterative solver works with r0 = 12", {
   )
   # check for correct answer
   tolerance <- 1e-5
-  lapply(epi_outcome, \(x) {
-    expect_equal(
-      x, upper_limit(r0)$par,
-      tolerance = tolerance
-    )
-  })
+  expected_outcome <- rep(
+    upper_limit(r0)$par,
+    length(demography_vector)
+  )
+  expect_equal(
+    epi_outcome, expected_outcome,
+    tolerance = tolerance
+  )
   # check for size of the vector
   expect_equal(
     length(demography_vector) * ncol(psusc),

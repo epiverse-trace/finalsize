@@ -83,23 +83,25 @@ test_that("Check final_size_cpp r0 values increase final size", {
   r0_high <- 3.0
   r0_low <- 1.1
 
-  # basic tests for output
-  final_sizes <- lapply(
-    list(r0_high, r0_low),
-    function(r0_) {
-      final_size_cpp(
-        r0 = r0_,
-        contact_matrix = c_matrix,
-        demography_vector = d_vector,
-        prop_initial_infected = p_initial_infections,
-        prop_suscep = p_suscep
-      )
-    }
+  # get final epidemic sizes
+  epi_outcome_low <- final_size_cpp(
+    r0 = r0_low,
+    contact_matrix = c_matrix,
+    demography_vector = d_vector,
+    prop_initial_infected = p_initial_infections,
+    prop_suscep = p_suscep
+  )
+  epi_outcome_high <- final_size_cpp(
+    r0 = r0_high,
+    contact_matrix = c_matrix,
+    demography_vector = d_vector,
+    prop_initial_infected = p_initial_infections,
+    prop_suscep = p_suscep
   )
 
   # test that final sizes for higher r0 are higher than low r0
   expect_true(
-    all(final_sizes[[1]] > final_sizes[[2]])
+    all(epi_outcome_high > epi_outcome_low)
   )
 })
 

@@ -8,7 +8,7 @@ test_that("Newton solver works with multiple risk groups", {
   # p_susceptibility and susceptibility
   n_risk_grps <- 3
   psusc <- matrix(1, nrow = 2, ncol = n_risk_grps)
-  psusc <- t(apply(psusc, 1, \(x) x / sum(x))) # rows sum to 1.0
+  psusc <- psusc / rowSums(psusc) # rows sum to 1.0
   susc <- matrix(1, nrow = length(demography_vector), ncol = n_risk_grps)
 
   # needed to get demography-risk combinations
@@ -67,7 +67,7 @@ test_that("Newton solver works with multiple risk and age groups", {
   # p_susceptibility and susceptibility
   n_risk_grps <- 3
   psusc <- matrix(1, nrow = demo_grps, ncol = n_risk_grps)
-  psusc <- t(apply(psusc, 1, \(x) x / sum(x))) # rows sum to 1.0
+  psusc <- psusc / rowSums(psusc) # rows sum to 1.0
   susc <- matrix(1, nrow = demo_grps, ncol = n_risk_grps)
 
   # needed to get demography-risk combinations

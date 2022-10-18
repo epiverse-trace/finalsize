@@ -28,27 +28,21 @@ test_that("Final size calculations are correct", {
   vector_r0 <- seq(1.01, 3.0, 0.5)
 
   # check that final sizes > initial sizes
-  invisible(
-    lapply(
-      vector_r0, function(r0) {
-        fs <- final_size(
-          r0 = r0,
-          contact_matrix = c_matrix,
-          demography_vector = d_vector,
-          prop_initial_infected = p_initial_infections,
-          prop_suscep = p_suscep
-        )
-
-        expect_true(
-          all(fs >= p_initial_infections)
-        )
-
-        expect_true(
-          all(fs <= 1.0)
-        )
-      }
+  for (r0 in vector_r0) {
+    fs <- final_size(
+      r0 = r0,
+      contact_matrix = c_matrix,
+      demography_vector = d_vector,
+      prop_initial_infected = p_initial_infections,
+      prop_suscep = p_suscep
     )
-  )
+    expect_true(
+      all(fs >= p_initial_infections)
+    )
+    expect_true(
+      all(fs <= 1.0)
+    )
+  }
 })
 
 test_that("Check basic final size calculation works", {
