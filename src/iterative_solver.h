@@ -93,8 +93,8 @@ Eigen::ArrayXd solve_final_size_iterative(
 
   // Adjust numerical errors;
   for (auto i = 0; i < epi_final_size.size(); ++i) {
-    if (zeros[i])
-      // if (epi_final_size(i) < 0 && epi_final_size(i) > -tolerance)
+    if (zeros[i] ||
+        ((epi_final_size(i) < 0) && (epi_final_size(i) > -tolerance)))
       epi_final_size(i) = 0;
   }
   return epi_final_size;
