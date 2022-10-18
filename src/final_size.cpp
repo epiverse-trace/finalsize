@@ -20,16 +20,17 @@
 //' in a population with heterogeneous mixing, and with heterogeneous
 //' susceptibility to infection such as that conferred by an immunisation
 //' programme.
-//' 
+//'
 //' **Note**: This is a semi-internal function that is called by
 //' \link[finalsize]{final_size}. This function is somewhat faster, but lacks
 //' argument checks found in `final_size`. Use with caution.
 //'
 //' @param contact_matrix Social contact matrix. Entry \eqn{m_{ij}} gives the
-//' average number of contacts in group \eqn{i} reported by participants in 
+//' average number of contacts in group \eqn{i} reported by participants in
 //' group \eqn{j}.
-//' @param demography_vector Demography vector. Entry \eqn{v_{i}} gives proportion
-//' of total population in group \eqn{i} (model will normalise if needed)
+//' @param demography_vector Demography vector. Entry \eqn{v_{i}} gives
+//' proportion of total population in group \eqn{i} (model will normalise
+//' if needed).
 //' @param p_susceptibility A matrix giving the probability that an individual
 //' in demography group \eqn{i} is in risk (or susceptibility) group \eqn{j}.
 //' Each row represents the overall distribution of individuals in demographic
