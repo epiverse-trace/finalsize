@@ -7,18 +7,18 @@
 using namespace Rcpp;
 
 #ifdef RCPP_USE_GLOBAL_ROSTREAM
-Rcpp::Rostream<true> &Rcpp::Rcout = Rcpp::Rcpp_cout_get();
-Rcpp::Rostream<false> &Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+Rcpp::Rostream<true>& Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // final_size_
-Eigen::ArrayXd final_size_(const Eigen::MatrixXd &contact_matrix,
-                           const Eigen::VectorXd &demography_vector,
-                           const Eigen::MatrixXd &p_susceptibility,
-                           const Eigen::MatrixXd &susceptibility,
-                           const Rcpp::String &solver, const int &iterations,
-                           const double &tolerance, const double &step_rate,
-                           const bool &adapt_step);
+Eigen::ArrayXd final_size_(const Eigen::MatrixXd& contact_matrix,
+                           const Eigen::VectorXd& demography_vector,
+                           const Eigen::MatrixXd& p_susceptibility,
+                           const Eigen::MatrixXd& susceptibility,
+                           const Rcpp::String& solver, const int& iterations,
+                           const double& tolerance, const double& step_rate,
+                           const bool& adapt_step);
 RcppExport SEXP _finalsize_final_size_(SEXP contact_matrixSEXP,
                                        SEXP demography_vectorSEXP,
                                        SEXP p_susceptibilitySEXP,
@@ -29,19 +29,19 @@ RcppExport SEXP _finalsize_final_size_(SEXP contact_matrixSEXP,
   BEGIN_RCPP
   Rcpp::RObject rcpp_result_gen;
   Rcpp::RNGScope rcpp_rngScope_gen;
-  Rcpp::traits::input_parameter<const Eigen::MatrixXd &>::type contact_matrix(
+  Rcpp::traits::input_parameter<const Eigen::MatrixXd&>::type contact_matrix(
       contact_matrixSEXP);
-  Rcpp::traits::input_parameter<const Eigen::VectorXd &>::type
-      demography_vector(demography_vectorSEXP);
-  Rcpp::traits::input_parameter<const Eigen::MatrixXd &>::type p_susceptibility(
+  Rcpp::traits::input_parameter<const Eigen::VectorXd&>::type demography_vector(
+      demography_vectorSEXP);
+  Rcpp::traits::input_parameter<const Eigen::MatrixXd&>::type p_susceptibility(
       p_susceptibilitySEXP);
-  Rcpp::traits::input_parameter<const Eigen::MatrixXd &>::type susceptibility(
+  Rcpp::traits::input_parameter<const Eigen::MatrixXd&>::type susceptibility(
       susceptibilitySEXP);
-  Rcpp::traits::input_parameter<const Rcpp::String &>::type solver(solverSEXP);
-  Rcpp::traits::input_parameter<const int &>::type iterations(iterationsSEXP);
-  Rcpp::traits::input_parameter<const double &>::type tolerance(toleranceSEXP);
-  Rcpp::traits::input_parameter<const double &>::type step_rate(step_rateSEXP);
-  Rcpp::traits::input_parameter<const bool &>::type adapt_step(adapt_stepSEXP);
+  Rcpp::traits::input_parameter<const Rcpp::String&>::type solver(solverSEXP);
+  Rcpp::traits::input_parameter<const int&>::type iterations(iterationsSEXP);
+  Rcpp::traits::input_parameter<const double&>::type tolerance(toleranceSEXP);
+  Rcpp::traits::input_parameter<const double&>::type step_rate(step_rateSEXP);
+  Rcpp::traits::input_parameter<const bool&>::type adapt_step(adapt_stepSEXP);
   rcpp_result_gen = Rcpp::wrap(final_size_(
       contact_matrix, demography_vector, p_susceptibility, susceptibility,
       solver, iterations, tolerance, step_rate, adapt_step));
@@ -56,7 +56,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"run_testthat_tests", (DL_FUNC)&run_testthat_tests, 1},
     {NULL, NULL, 0}};
 
-RcppExport void R_init_finalsize(DllInfo *dll) {
+RcppExport void R_init_finalsize(DllInfo* dll) {
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
 }

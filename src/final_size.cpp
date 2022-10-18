@@ -21,7 +21,7 @@
 //' susceptibility to infection such as that conferred by an immunisation
 //' programme.
 //'
-//' **Note**: This is a semi-internal function that is called by
+//' **Note**: This is an internal function that is called by
 //' \link[finalsize]{final_size}. This function is somewhat faster, but lacks
 //' argument checks found in `final_size`. Use with caution.
 //'
@@ -50,8 +50,7 @@
 //' based on the solver error. Defaults to TRUE.
 //'
 //' @keywords epidemic model
-//' @export
-// [[Rcpp::export]]
+// [[Rcpp::export(name = ".final_size")]]
 Eigen::ArrayXd final_size_(const Eigen::MatrixXd &contact_matrix,
                            const Eigen::VectorXd &demography_vector,
                            const Eigen::MatrixXd &p_susceptibility,

@@ -10,8 +10,7 @@ final_size(
   p_susceptibility,
   susceptibility,
   solver = c("iterative", "newton"),
-  control = list(iterations = 10000, tolerance = 1e-06, step_rate = 1.9, adapt_step =
-    TRUE)
+  control = list()
 )
 }
 \arguments{

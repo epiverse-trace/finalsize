@@ -112,12 +112,7 @@ final_size <- function(contact_matrix,
                        p_susceptibility,
                        susceptibility,
                        solver = c("iterative", "newton"),
-                       control = list(
-                         iterations = 10000,
-                         tolerance = 1e-6,
-                         step_rate = 1.9,
-                         adapt_step = TRUE
-                       )) {
+                       control = list()) {
   # check arguments input
   stopifnot(
     "Error: contact matrix must be a matrix" =
@@ -146,7 +141,7 @@ final_size <- function(contact_matrix,
   solver <- match.arg(arg = solver, several.ok = FALSE)
 
   do.call(
-    final_size_,
+    .final_size,
     c(
       list(
         contact_matrix,

@@ -7,16 +7,17 @@
 #' in a population with heterogeneous mixing, and with heterogeneous
 #' susceptibility to infection such as that conferred by an immunisation
 #' programme.
-#' 
-#' **Note**: This is a semi-internal function that is called by
+#'
+#' **Note**: This is an internal function that is called by
 #' \link[finalsize]{final_size}. This function is somewhat faster, but lacks
 #' argument checks found in `final_size`. Use with caution.
 #'
 #' @param contact_matrix Social contact matrix. Entry \eqn{m_{ij}} gives the
-#' average number of contacts in group \eqn{i} reported by participants in 
+#' average number of contacts in group \eqn{i} reported by participants in
 #' group \eqn{j}.
-#' @param demography_vector Demography vector. Entry \eqn{v_{i}} gives proportion
-#' of total population in group \eqn{i} (model will normalise if needed)
+#' @param demography_vector Demography vector. Entry \eqn{v_{i}} gives
+#' proportion of total population in group \eqn{i} (model will normalise
+#' if needed).
 #' @param p_susceptibility A matrix giving the probability that an individual
 #' in demography group \eqn{i} is in risk (or susceptibility) group \eqn{j}.
 #' Each row represents the overall distribution of individuals in demographic
@@ -36,8 +37,7 @@
 #' based on the solver error. Defaults to TRUE.
 #'
 #' @keywords epidemic model
-#' @export
-final_size_ <- function(contact_matrix, demography_vector, p_susceptibility, susceptibility, solver = "iterative", iterations = 10000L, tolerance = 1e-6, step_rate = 1.9, adapt_step = TRUE) {
+.final_size <- function(contact_matrix, demography_vector, p_susceptibility, susceptibility, solver = "iterative", iterations = 10000L, tolerance = 1e-6, step_rate = 1.9, adapt_step = TRUE) {
     .Call('_finalsize_final_size_', PACKAGE = 'finalsize', contact_matrix, demography_vector, p_susceptibility, susceptibility, solver, iterations, tolerance, step_rate, adapt_step)
 }
 
