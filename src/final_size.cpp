@@ -51,7 +51,7 @@
 //'
 //' @keywords epidemic model
 // [[Rcpp::export(name = ".final_size")]]
-Eigen::ArrayXd final_size_(const Eigen::MatrixXd &contact_matrix,
+Eigen::MatrixXd final_size_(const Eigen::MatrixXd &contact_matrix,
                            const Eigen::VectorXd &demography_vector,
                            const Eigen::MatrixXd &p_susceptibility,
                            const Eigen::MatrixXd &susceptibility,
@@ -77,13 +77,10 @@ Eigen::ArrayXd final_size_(const Eigen::MatrixXd &contact_matrix,
     Rcpp::stop("Error: solver must be one of 'iterative' or 'newton'");
   }
 
-  // multiply final sizes from pi_2 with proportions of risk groups -- I think
-  efs_tmp = efs_tmp * s.p_susceptibility.array();
-
   // cast data to n-demography rows, n-risk-grps cols dimensions for return
   const Eigen::MatrixXd epi_final_size(Eigen::Map<Eigen::MatrixXd>(
       efs_tmp.data(), demography_vector.rows(), p_susceptibility.cols()));
 
   // return row wise sum, one per demo group
-  return epi_final_size.rowwise().sum();
+  return epi_final_size;
 }
