@@ -37,7 +37,11 @@ argument.}
 \item{control}{A list of named solver options, see \emph{Solver options}.}
 }
 \value{
-A vector of final sizes by demography group.
+A data.frame of the proportion of infected individuals, within each
+demography group and susceptibility group combination.
+If the demography groups and susceptibility groups are named, these
+names are added to relevant columns. If the groups are not named, synthetic
+names are added (e.g. \code{demo_grp_1}, \code{susc_grp_1}).
 }
 \description{
 \code{final_size} calculates the final size of an epidemic outbreak
@@ -47,13 +51,15 @@ programme.
 }
 \section{Solver options}{
 The \code{control} argument accepts a list of solver options, with the iterative
-solver taking two extra arguments than the Newton solver.
+solver taking two extra arguments than the Newton solver. This is an optional
+argument, and default options are used within the solver functions if an
+argument is missing. Arguments provided override the solver defaults.
 \subsection{Common options}{
 \enumerate{
 \item \code{iterations}: The number of iterations over which to solve for the final
-size, unless the error is below the solver tolerance.
-\item \code{tolerance}: The solver tolerance, set to \code{1e-6} by default; solving for
-final size ends when the error drops below this tolerance.
+size, unless the error is below the solver tolerance. Default = 10000.
+\item \code{tolerance}: The solver tolerance; solving for final size ends when the
+error drops below this tolerance. Defaults to set \code{1e-6}.
 }
 }
 

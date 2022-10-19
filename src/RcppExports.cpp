@@ -12,13 +12,13 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // final_size_
-Eigen::ArrayXd final_size_(const Eigen::MatrixXd& contact_matrix,
-                           const Eigen::VectorXd& demography_vector,
-                           const Eigen::MatrixXd& p_susceptibility,
-                           const Eigen::MatrixXd& susceptibility,
-                           const Rcpp::String& solver, const int& iterations,
-                           const double& tolerance, const double& step_rate,
-                           const bool& adapt_step);
+Eigen::MatrixXd final_size_(const Eigen::MatrixXd& contact_matrix,
+                            const Eigen::VectorXd& demography_vector,
+                            const Eigen::MatrixXd& p_susceptibility,
+                            const Eigen::MatrixXd& susceptibility,
+                            const Rcpp::String& solver, const int& iterations,
+                            const double& tolerance, const double& step_rate,
+                            const bool& adapt_step);
 RcppExport SEXP _finalsize_final_size_(SEXP contact_matrixSEXP,
                                        SEXP demography_vectorSEXP,
                                        SEXP p_susceptibilitySEXP,
