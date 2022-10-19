@@ -13,7 +13,6 @@ struct epi_spread_data {
   Eigen::MatrixXd contact_matrix;
   Eigen::VectorXd demography_vector;
   Eigen::VectorXd susceptibility;
-  Eigen::VectorXd p_susceptibility;
 };
 
 /// A function for epidemic spread with susceptibility groups
@@ -51,7 +50,6 @@ inline epi_spread_data epi_spread(
   tmp_data.contact_matrix = contact_matrix_;
   tmp_data.demography_vector = demography_vector_;
   tmp_data.susceptibility = rm;
-  tmp_data.p_susceptibility = lps;
 
   return tmp_data;
 }

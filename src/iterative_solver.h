@@ -9,7 +9,7 @@
 /// function for iterative solver
 // taken from Edwin van Leeuwen at
 // https://gitlab.com/epidemics-r/code_snippets/feature/newton_solver/include/finalsize.hpp
-Eigen::ArrayXd solve_final_size_iterative(
+inline Eigen::ArrayXd solve_final_size_iterative(
     const Eigen::MatrixXd &contact_matrix,
     const Eigen::VectorXd &demography_vector,
     const Eigen::VectorXd &susceptibility, const int iterations = 10000,
