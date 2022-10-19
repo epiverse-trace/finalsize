@@ -16,33 +16,33 @@ test_that("Final size with newton solver", {
   )
 
   # check that solver returns correct types
-  expect_vector(
+  expect_s3_class(
     object = epi_outcome,
-    ptype = numeric()
+    "data.frame"
   )
   # check that solver returns no nans
   expect_false(
-    any(is.nan(epi_outcome))
+    any(is.nan(epi_outcome$p_infected))
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome))
+    any(is.na(epi_outcome$p_infected))
   )
   # check that solver returns no inf
   expect_false(
-    any(is.infinite(epi_outcome))
+    any(is.infinite(epi_outcome$p_infected))
   )
   # check that solver returns values within range
   expect_true(
-    all(epi_outcome > 0)
+    all(epi_outcome$p_infected > 0)
   )
   expect_true(
-    all(epi_outcome < 1)
+    all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
   expect_equal(
     length(demography_vector) * ncol(psusc),
-    length(epi_outcome)
+    length(epi_outcome$p_infected)
   )
 })
 
@@ -63,11 +63,11 @@ test_that("Newton solver returns correct answer", {
     solver = "newton"
   )
 
-  epi_outcome_known <- 1 - exp(-r0 * epi_outcome)
+  epi_outcome_known <- 1 - exp(-r0 * epi_outcome$p_infected)
 
   tolerance <- 1e-5
   expect_true(
-    all(abs(epi_outcome - epi_outcome_known) < tolerance)
+    all(abs(epi_outcome$p_infected - epi_outcome_known) < tolerance)
   )
 })
 
@@ -98,6 +98,6 @@ test_that("Newton solver gives higher final size for large r0", {
   )
 
   expect_true(
-    all(epi_outcome_high > epi_outcome_low)
+    all(epi_outcome_high$p_infected > epi_outcome_low$p_infected)
   )
 })

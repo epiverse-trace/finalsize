@@ -29,33 +29,33 @@ test_that("Iterative solver works with r0 = 2", {
   )
 
   # check that solver returns correct types
-  expect_vector(
+  expect_s3_class(
     object = epi_outcome,
-    ptype = numeric()
+    "data.frame"
   )
   # check that solver returns no nans
   expect_false(
-    any(is.nan(epi_outcome))
+    any(is.nan(epi_outcome$p_infected))
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome))
+    any(is.na(epi_outcome$p_infected))
   )
   # check that solver returns no inf
   expect_false(
-    any(is.infinite(epi_outcome))
+    any(is.infinite(epi_outcome$p_infected))
   )
   # check that solver returns values within range
   expect_true(
-    any(epi_outcome > 0)
+    any(epi_outcome$p_infected > 0)
   )
   expect_true(
-    any(epi_outcome < 1)
+    any(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
   expect_equal(
     length(demography_vector) * ncol(psusc),
-    length(epi_outcome)
+    length(epi_outcome$p_infected)
   )
 })
 
@@ -76,28 +76,28 @@ test_that("Iterative solver works with r0 = 4", {
   )
 
   # check that solver returns correct types
-  expect_vector(
+  expect_s3_class(
     object = epi_outcome,
-    ptype = numeric()
+    "data.frame"
   )
   # check that solver returns no nans
   expect_false(
-    any(is.nan(epi_outcome))
+    any(is.nan(epi_outcome$p_infected))
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome))
+    any(is.na(epi_outcome$p_infected))
   )
   # check that solver returns no inf
   expect_false(
-    any(is.infinite(epi_outcome))
+    any(is.infinite(epi_outcome$p_infected))
   )
   # check that solver returns values within range
   expect_true(
-    all(epi_outcome > 0)
+    all(epi_outcome$p_infected > 0)
   )
   expect_true(
-    all(epi_outcome < 1)
+    all(epi_outcome$p_infected < 1)
   )
   # check for correct answer
   tolerance <- 1e-5
@@ -106,14 +106,14 @@ test_that("Iterative solver works with r0 = 4", {
     length(demography_vector)
   )
   expect_equal(
-    epi_outcome, expected_outcome,
+    epi_outcome$p_infected, expected_outcome,
     tolerance = tolerance
   )
 
   # check for size of the vector
   expect_equal(
     length(demography_vector) * ncol(psusc),
-    length(epi_outcome)
+    length(epi_outcome$p_infected)
   )
 })
 
@@ -137,28 +137,28 @@ test_that("Iterative solver works with r0 = 12", {
   )
 
   # check that solver returns correct types
-  expect_vector(
+  expect_s3_class(
     object = epi_outcome,
-    ptype = numeric()
+    "data.frame"
   )
   # check that solver returns no nans
   expect_false(
-    any(is.nan(epi_outcome))
+    any(is.nan(epi_outcome$p_infected))
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome))
+    any(is.na(epi_outcome$p_infected))
   )
   # check that solver returns no inf
   expect_false(
-    any(is.infinite(epi_outcome))
+    any(is.infinite(epi_outcome$p_infected))
   )
   # check that solver returns values within range
   expect_true(
-    all(epi_outcome > 0)
+    all(epi_outcome$p_infected > 0)
   )
   expect_true(
-    all(epi_outcome < 1)
+    all(epi_outcome$p_infected < 1)
   )
   # check for correct answer
   tolerance <- 1e-5
@@ -167,13 +167,13 @@ test_that("Iterative solver works with r0 = 12", {
     length(demography_vector)
   )
   expect_equal(
-    epi_outcome, expected_outcome,
+    epi_outcome$p_infected, expected_outcome,
     tolerance = tolerance
   )
   # check for size of the vector
   expect_equal(
     length(demography_vector) * ncol(psusc),
-    length(epi_outcome)
+    length(epi_outcome$p_infected)
   )
 })
 
@@ -197,34 +197,34 @@ test_that("Iterative solver works with r0 = 4, locked step size", {
   )
 
   # check that solver returns correct types
-  expect_vector(
+  expect_s3_class(
     object = epi_outcome,
-    ptype = numeric()
+    "data.frame"
   )
   # check that solver returns no nans
   expect_false(
-    any(is.nan(epi_outcome))
+    any(is.nan(epi_outcome$p_infected))
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome))
+    any(is.na(epi_outcome$p_infected))
   )
   # check that solver returns no inf
   expect_false(
-    any(is.infinite(epi_outcome))
+    any(is.infinite(epi_outcome$p_infected))
   )
   # check that solver returns values within range
   expect_true(
-    all(epi_outcome > 0)
+    all(epi_outcome$p_infected > 0)
   )
   expect_true(
-    all(epi_outcome < 1)
+    all(epi_outcome$p_infected < 1)
   )
   # check for correct answer
   expect_equal
   # check for size of the vector
   expect_equal(
     length(demography_vector) * ncol(psusc),
-    length(epi_outcome)
+    length(epi_outcome$p_infected)
   )
 })

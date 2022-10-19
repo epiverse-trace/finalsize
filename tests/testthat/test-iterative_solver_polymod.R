@@ -30,32 +30,32 @@ test_that("Iterative solver works with polymod data", {
   )
 
   # check that solver returns correct types
-  expect_vector(
+  expect_s3_class(
     object = epi_outcome,
-    ptype = numeric()
+    "data.frame"
   )
   # check that solver returns no nans
   expect_false(
-    any(is.nan(epi_outcome))
+    any(is.nan(epi_outcome$p_infected))
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome))
+    any(is.na(epi_outcome$p_infected))
   )
   # check that solver returns no inf
   expect_false(
-    any(is.infinite(epi_outcome))
+    any(is.infinite(epi_outcome$p_infected))
   )
   # check that solver returns values within range
   expect_true(
-    all(epi_outcome > 0)
+    all(epi_outcome$p_infected > 0)
   )
   expect_true(
-    all(epi_outcome < 1)
+    all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
   expect_equal(
-    n_demo_grps,
-    length(epi_outcome)
+    n_demo_grps * n_risk_grps,
+    length(epi_outcome$p_infected)
   )
 })

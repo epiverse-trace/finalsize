@@ -45,32 +45,37 @@ test_that("Check finalsize by groups works for Polymod, iterative solver", {
     control = control
   )
 
-  expect_type(
-    epi_outcome, "double"
+  expect_s3_class(
+    epi_outcome, "data.frame"
   )
   # check that values are not NaN
   expect_true(
-    all(!is.nan(epi_outcome))
+    all(!is.nan(epi_outcome$p_infected))
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome))
+    any(is.na(epi_outcome$p_infected))
   )
   # check that solver returns no inf
   expect_false(
-    any(is.infinite(epi_outcome))
+    any(is.infinite(epi_outcome$p_infected))
   )
   # check that solver returns values within range
   expect_true(
-    all(epi_outcome > 0)
+    all(epi_outcome$p_infected > 0)
   )
   expect_true(
-    all(epi_outcome < 1)
+    all(epi_outcome$p_infected < 1)
   )
-  # check for size of the vector
+  # check for number of demography groups returned
   expect_equal(
     n_demo_grps,
-    length(epi_outcome)
+    length(unique(epi_outcome$demo_grp))
+  )
+  # check for overall length
+  expect_equal(
+    n_demo_grps * n_risk_grps,
+    nrow(epi_outcome)
   )
 
   # expect error if solver option is incorrect
@@ -137,25 +142,25 @@ test_that("Check that more susceptible demo-grps have higher final size", {
     control = control
   )
 
-  expect_vector(
+  expect_s3_class(
     epi_outcome,
-    ptype = numeric()
+    "data.frame"
   )
   # check that solver returns values within range
   expect_true(
-    all(epi_outcome > 0)
+    all(epi_outcome$p_infected > 0)
   )
   expect_true(
-    all(epi_outcome < 1)
+    all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
   expect_equal(
-    n_demo_grps,
-    length(epi_outcome)
+    length(epi_outcome$p_infected),
+    n_demo_grps * n_risk_grps
   )
   # check that first group has higher final size
   expect_gt(
-    epi_outcome[1], epi_outcome[n_demo_grps]
+    epi_outcome$p_infected[1], epi_outcome$p_infected[n_demo_grps]
   )
 })
 
@@ -207,28 +212,29 @@ test_that("Check final size calculation is correct in complex case", {
     control = control
   )
 
-  expect_vector(
+  expect_s3_class(
     epi_outcome,
-    ptype = numeric()
+    "data.frame"
   )
   # check that solver returns values within range
   expect_true(
-    all(epi_outcome > 0)
+    all(epi_outcome$p_infected > 0)
   )
   expect_true(
-    all(epi_outcome < 1)
+    all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
   expect_equal(
     length(demography_vector),
-    length(epi_outcome)
+    length(epi_outcome$p_infected)
   )
 
   # test that final size differs by susceptibility group
   expect_lt(
-    epi_outcome[5], epi_outcome[1]
+    epi_outcome$p_infected[5], epi_outcome$p_infected[1]
   )
-  ratio <- sum(epi_outcome * demography_vector) / sum(demography_vector)
+  ratio <- sum(epi_outcome$p_infected * demography_vector) /
+    sum(demography_vector)
   expect_gt(ratio, 0.3)
   expect_lt(ratio, 0.45)
 })
