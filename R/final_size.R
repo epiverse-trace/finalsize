@@ -9,14 +9,16 @@
 #' # Solver options
 #'
 #' The `control` argument accepts a list of solver options, with the iterative
-#' solver taking two extra arguments than the Newton solver.
+#' solver taking two extra arguments than the Newton solver. This is an optional
+#' argument, and default options are used within the solver functions if an
+#' argument is missing. Arguments provided override the solver defaults.
 #'
 #' ## Common options
 #'
 #' 1. `iterations`: The number of iterations over which to solve for the final
-#' size, unless the error is below the solver tolerance.
-#' 2. `tolerance`: The solver tolerance, set to `1e-6` by default; solving for
-#' final size ends when the error drops below this tolerance.
+#' size, unless the error is below the solver tolerance. Default = 10000.
+#' 2. `tolerance`: The solver tolerance; solving for final size ends when the
+#' error drops below this tolerance. Defaults to set `1e-6`.
 #'
 #' ## Iterative solver options
 #' 1. `step_rate`: The solver step rate. Defaults to 1.9 as a value found to
@@ -42,7 +44,11 @@
 #' @param control A list of named solver options, see *Solver options*.
 #'
 #' @keywords epidemic model
-#' @return A vector of final sizes by demography group.
+#' @return A data.frame of the proportion of infected individuals, within each
+#' demography group and susceptibility group combination.
+#' If the demography groups and susceptibility groups are named, these
+#' names are added to relevant columns. If the groups are not named, synthetic
+#' names are added (e.g. `demo_grp_1`, `susc_grp_1`).
 #' @export
 #' @examples
 #' library(socialmixr)
@@ -139,8 +145,8 @@ final_size <- function(contact_matrix,
 
   # check which solver is requested
   solver <- match.arg(arg = solver, several.ok = FALSE)
-
-  do.call(
+  # get group wise final sizes
+  epi_final_size <- do.call(
     .final_size,
     c(
       list(
@@ -153,4 +159,39 @@ final_size <- function(contact_matrix,
       control
     )
   )
+
+  # final sizes times distribution of age groups in susc groups
+  epi_final_size <- epi_final_size * p_susceptibility
+
+  # check for names of age groups and susc groups
+  names_demography <- names(demography_vector)
+  if (is.null(names(names_demography))) {
+    # check if contact matrix has rownames
+    if (!is.null(rownames(contact_matrix))) {
+      names_demography <- rownames(contact_matrix)
+    } else {
+      names_demography <- sprintf(
+        "demo_grp_%i", seq_len(length(demography_vector))
+      )
+    }
+  }
+
+  # check for susc group names
+  names_susc_grps <- colnames(susceptibility)
+  if (is.null(names(names_susc_grps))) {
+    names_susc_grps <- sprintf("susc_grp_%i", seq_len(ncol(susceptibility)))
+  }
+  efs_df <- data.frame(
+    demo_grp = rep(
+      names_demography,
+      times = ncol(epi_final_size)
+    ),
+    susc_grp = rep(
+      names_susc_grps,
+      each = nrow(epi_final_size)
+    ),
+    susceptibility = as.vector(susceptibility),
+    p_infected = as.vector(epi_final_size)
+  )
+  efs_df
 }
