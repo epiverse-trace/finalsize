@@ -11,12 +11,14 @@
 // https://gitlab.com/epidemics-r/code_snippets/feature/newton_solver/include/finalsize.hpp
 //' @title Newton solver for final size.
 //'
-//' @param contact_matrix Social contact matrix. Entry $mm_{ij}$ gives average
-//' number of contacts in group $i$ reported by participants in group j
-//' @param demography_vector Demography vector. Entry $pp_{i}$ gives proportion
-//' of total population in group $i$ (model will normalise if needed)
+//' @param contact_matrix Social contact matrix. Entry \eqn{mm_{ij}} gives
+//' average number of contacts in group \eqn{i} reported by participants in
+//' group \eqn{j}.
+//' @param demography_vector Demography vector. Entry \eqn{pp_{i}} gives
+//' proportion of total population in group \eqn{i}
+//' (model will normalise if needed).
 //' @param susceptibility A matrix giving the susceptibility of individuals in
-//' demographic group $i$ and risk group $j$.
+//' demographic group \eqn{i} and risk group \eqn{j}.
 //' @param iterations Number of solver iterations. Defaults to 1,000.
 //' @param tolerance Solver error tolerance.
 //'

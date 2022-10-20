@@ -15,14 +15,16 @@
 )
 }
 \arguments{
-\item{contact_matrix}{Social contact matrix. Entry $mm_{ij}$ gives average
-number of contacts in group $i$ reported by participants in group j}
+\item{contact_matrix}{Social contact matrix. Entry \eqn{mm_{ij}} gives
+average number of contacts in group \eqn{i} reported by participants in
+group \eqn{j}.}
 
-\item{demography_vector}{Demography vector. Entry $pp_{i}$ gives proportion
-of total population in group $i$ (model will normalise if needed)}
+\item{demography_vector}{Demography vector. Entry \eqn{pp_{i}} gives
+proportion of total population in group \eqn{i}
+(model will normalise if needed).}
 
 \item{susceptibility}{A matrix giving the susceptibility of individuals in
-demographic group $i$ and risk group $j$.}
+demographic group \eqn{i} and risk group \eqn{j}.}
 
 \item{iterations}{Number of solver iterations. Defaults to 1,000.}
 
