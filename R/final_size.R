@@ -145,23 +145,27 @@ final_size <- function(contact_matrix,
 
   # check which solver is requested
   solver <- match.arg(arg = solver, several.ok = FALSE)
+  fn_solver <- switch(solver,
+    iterative = .solve_iterative,
+    newton = .solve_newton
+  )
+
+  # prepare the population data for the solver
+  epi_spread_data <- .epi_spread(
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
+    p_susceptibility = p_susceptibility,
+    susceptibility = susceptibility
+  )
+
   # get group wise final sizes
   epi_final_size <- do.call(
-    .final_size,
+    fn_solver,
     c(
-      list(
-        contact_matrix,
-        demography_vector,
-        p_susceptibility,
-        susceptibility,
-        solver
-      ),
+      epi_spread_data,
       control
     )
   )
-
-  # final sizes times distribution of age groups in susc groups
-  epi_final_size <- epi_final_size * p_susceptibility
 
   # check for names of age groups and susc groups
   names_demography <- names(demography_vector)
@@ -177,21 +181,26 @@ final_size <- function(contact_matrix,
   }
 
   # check for susc group names
-  names_susc_grps <- colnames(susceptibility)
-  if (is.null(names(names_susc_grps))) {
-    names_susc_grps <- sprintf("susc_grp_%i", seq_len(ncol(susceptibility)))
+  names_susceptibility <- colnames(susceptibility)
+  if (is.null(names(names_susceptibility))) {
+    names_susceptibility <- sprintf(
+      "susc_grp_%i", seq_len(ncol(susceptibility))
+    )
   }
-  efs_df <- data.frame(
+
+  # multiply final size by p_susceptibility
+  epi_final_size <- p_susceptibility * epi_final_size
+  epi_final_size <- data.frame(
     demo_grp = rep(
       names_demography,
       times = ncol(epi_final_size)
     ),
     susc_grp = rep(
-      names_susc_grps,
+      names_susceptibility,
       each = nrow(epi_final_size)
     ),
     susceptibility = as.vector(susceptibility),
     p_infected = as.vector(epi_final_size)
   )
-  efs_df
+  epi_final_size
 }
