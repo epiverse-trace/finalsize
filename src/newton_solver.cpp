@@ -9,11 +9,26 @@
 /// function for Newton solver
 // taken from Edwin van Leeuwen at
 // https://gitlab.com/epidemics-r/code_snippets/feature/newton_solver/include/finalsize.hpp
-inline Eigen::ArrayXd solve_final_size_newton(
-    const Eigen::MatrixXd &contact_matrix,
-    const Eigen::VectorXd &demography_vector,
-    const Eigen::MatrixXd &susceptibility, const int iterations = 10000,
-    const double tolerance = 1e-6) {
+//' @title Newton solver for final size.
+//'
+//' @param contact_matrix Social contact matrix. Entry $mm_{ij}$ gives average
+//' number of contacts in group $i$ reported by participants in group j
+//' @param demography_vector Demography vector. Entry $pp_{i}$ gives proportion
+//' of total population in group $i$ (model will normalise if needed)
+//' @param susceptibility A matrix giving the susceptibility of individuals in
+//' demographic group $i$ and risk group $j$.
+//' @param iterations Number of solver iterations. Defaults to 1,000.
+//' @param tolerance Solver error tolerance.
+//'
+//' @return A vector final sizes, of the size (N demography groups *
+//' N risk groups).
+//' @return A two dimensional array of final sizes per age-risk group.
+// [[Rcpp::export(name = ".solve_newton")]]
+Eigen::ArrayXd solve_final_size_newton(const Eigen::MatrixXd &contact_matrix,
+                                       const Eigen::VectorXd &demography_vector,
+                                       const Eigen::VectorXd &susceptibility,
+                                       const int iterations = 10000,
+                                       const double tolerance = 1e-6) {
   // count number of demography groups
   size_t nDim = demography_vector.size();
 
