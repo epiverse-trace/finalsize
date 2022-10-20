@@ -31,9 +31,7 @@ test_that("Check finalsize by groups works for Polymod, newton solver", {
   # prepare control
   control <- list(
     iterations = 10000,
-    tolerance = 1e-6,
-    step_rate = 1.9,
-    adapt_step = TRUE
+    tolerance = 1e-6
   )
 
   epi_outcome <- final_size(
@@ -110,9 +108,7 @@ test_that("Check that more susceptible demo-grps have higher final size", {
   # prepare control
   control <- list(
     iterations = 10000,
-    tolerance = 1e-6,
-    step_rate = 1.9,
-    adapt_step = TRUE
+    tolerance = 1e-6
   )
 
   epi_outcome <- final_size(
@@ -180,9 +176,7 @@ test_that("Check final size calculation is correct in complex case", {
   # prepare control
   control <- list(
     iterations = 10000,
-    tolerance = 1e-6,
-    step_rate = 1.9,
-    adapt_step = TRUE
+    tolerance = 1e-6
   )
 
   epi_outcome <- final_size(

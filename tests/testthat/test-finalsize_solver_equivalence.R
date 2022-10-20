@@ -31,9 +31,7 @@ test_that("Check finalsize by groups works for Polymod, newton solver", {
   # prepare control
   control <- list(
     iterations = 10000,
-    tolerance = 1e-6,
-    step_rate = 1.9,
-    adapt_step = TRUE
+    tolerance = 1e-6
   )
 
   # prepare outcome with iterative solver
