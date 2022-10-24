@@ -1,23 +1,26 @@
+# Prepare common elements for testing
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 20, 40),
+  symmetric = TRUE
+)
+contact_matrix <- contact_data$matrix
+demography_vector <- contact_data$demography$population
+
+# scale by maximum real eigenvalue and divide by demography
+contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
+contact_matrix <- contact_matrix / demography_vector
+
+p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
+susceptibility <- matrix(1, ncol = 1, 3)
+
 # Check final_size works with Newton solver
 # check for errors and messages
 test_that("Check for errors and messages", {
-  # checking epi spread function from finalsize
-  polymod <- socialmixr::polymod
-  contact_data <- socialmixr::contact_matrix(
-    polymod,
-    countries = "United Kingdom",
-    age.limits = c(0, 20, 40),
-    symmetric = TRUE
-  )
-  p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
-  susceptibility <- matrix(1, ncol = 1, 3)
-
-  demography_vector <- contact_data$demography$proportion
-
   # 'wrong' demography vector
   demography_vector <- c(demography_vector, 100)
-
-  contact_matrix <- matrix(contact_data$matrix, ncol = 3)
 
   # expect error on demography vector and contact matrix
   expect_error(
@@ -185,5 +188,21 @@ test_that("Check for errors and messages", {
       p_susceptibility = p_susceptibility
     ),
     regexp = "Error: susceptibility must be a matrix"
+  )
+})
+
+test_that("Check that eigenvalue checking works", {
+  contact_matrix <- contact_data$matrix
+  p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
+  susceptibility <- matrix(1, ncol = 1, 3)
+
+  expect_error(
+    final_size(
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      susceptibility = susceptibility,
+      p_susceptibility = p_susceptibility
+    ),
+    regexp = "Error: contact matrix must have a maximum real eigenvalue of 1.0"
   )
 })

@@ -1,9 +1,10 @@
 # basic test that Newton solver returns within range, for multiple risk groups
 test_that("Newton solver works with multiple risk groups", {
   r0 <- 1.3
-  # prepare some data for the solver
-  contact_matrix <- matrix(r0 / 200.0, 2, 2)
+  contact_matrix <- matrix(1.0 / 200.0, 2, 2)
   demography_vector <- rep(100.0, 2)
+  psusc <- matrix(1, nrow = 2, ncol = 1)
+  susc <- psusc
 
   n_demo_grps <- length(demography_vector)
 
@@ -14,6 +15,7 @@ test_that("Newton solver works with multiple risk groups", {
   susc <- matrix(1, nrow = length(demography_vector), ncol = n_risk_grps)
 
   epi_outcome <- final_size(
+    r0 = r0,
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     susceptibility = susc,

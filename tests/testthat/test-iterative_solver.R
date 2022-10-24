@@ -1,13 +1,16 @@
+# Prepare common data
+contact_matrix <- matrix(1.0 / 200.0, 2, 2)
+demography_vector <- rep(100.0, 2)
+psusc <- matrix(1, nrow = 2, ncol = 1)
+susc <- psusc
+
 # basic test that solver returns numerics within range
 test_that("Final size with iterative solver", {
   # prepare some data for the solver
   r0 <- 1.3
-  contact_matrix <- matrix(r0 / 200.0, 2, 2)
-  demography_vector <- rep(100.0, 2)
-  psusc <- matrix(1, nrow = 2, ncol = 1)
-  susc <- psusc
 
   epi_outcome <- final_size(
+    r0 = r0,
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     susceptibility = susc,
@@ -49,12 +52,9 @@ test_that("Final size with iterative solver", {
 test_that("Iterative solver returns correct answer", {
   # prepare some data for the solver
   r0 <- 1.3
-  contact_matrix <- matrix(r0 / 200.0, 2, 2)
-  demography_vector <- rep(100.0, 2)
-  psusc <- matrix(1, nrow = 2, ncol = 1)
-  susc <- psusc
 
   epi_outcome <- final_size(
+    r0 = r0,
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     susceptibility = susc,
@@ -74,20 +74,18 @@ test_that("Iterative solver gives higher final size for larger r0", {
   # prepare some data for the solver
   r0_low <- 1.3
   r0_high <- 3.3
-  contact_matrix <- matrix(1 / 200.0, 2, 2)
-  demography_vector <- rep(100.0, 2)
-  psusc <- matrix(1, nrow = 2, ncol = 1)
-  susc <- psusc
 
   epi_outcome_low <- final_size(
-    contact_matrix = r0_low * contact_matrix,
+    r0 = r0_low,
+    contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     susceptibility = susc,
     p_susceptibility = psusc
   )
 
   epi_outcome_high <- final_size(
-    contact_matrix = r0_high * contact_matrix,
+    r0 = r0_high,
+    contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     susceptibility = susc,
     p_susceptibility = psusc
