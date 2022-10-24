@@ -1,5 +1,3 @@
-#ifndef ITERATIVE_SOLVER_H
-#define ITERATIVE_SOLVER_H
 
 #include <Rcpp.h>
 #include <RcppEigen.h>
@@ -119,5 +117,3 @@ Eigen::ArrayXd solve_final_size_iterative(
   }
   return epi_final_size;
 }
-
-#endif

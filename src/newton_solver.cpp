@@ -1,5 +1,3 @@
-#ifndef NEWTON_SOLVER_H
-#define NEWTON_SOLVER_H
 
 #include <Rcpp.h>
 #include <RcppEigen.h>
@@ -114,5 +112,3 @@ Eigen::ArrayXd solve_final_size_newton(const Eigen::MatrixXd &contact_matrix,
 
   return epi_final_size;
 }
-
-#endif
