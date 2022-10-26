@@ -169,7 +169,7 @@ final_size <- function(contact_matrix,
 
   # check for names of age groups and susc groups
   names_demography <- names(demography_vector)
-  if (is.null(names(names_demography))) {
+  if (is.null(names_demography)) {
     # check if contact matrix has rownames
     if (!is.null(rownames(contact_matrix))) {
       names_demography <- rownames(contact_matrix)
@@ -182,7 +182,7 @@ final_size <- function(contact_matrix,
 
   # check for susc group names
   names_susceptibility <- colnames(susceptibility)
-  if (is.null(names(names_susceptibility))) {
+  if (is.null(names_susceptibility)) {
     names_susceptibility <- sprintf(
       "susc_grp_%i", seq_len(ncol(susceptibility))
     )

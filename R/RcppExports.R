@@ -27,10 +27,10 @@
 
 #' @title Iterative solver for final size.
 #'
-#' @param contact_matrix Social contact matrix. Entry \eqn{mm_{ij}} gives 
+#' @param contact_matrix Social contact matrix. Entry \eqn{mm_{ij}} gives
 #' average number of contacts in group \eqn{i} reported by participants in
 #' group \eqn{j}.
-#' @param demography_vector Demography vector. Entry \eqn{pp_{i}} gives 
+#' @param demography_vector Demography vector. Entry \eqn{pp_{i}} gives
 #' proportion of total population in group \eqn{i}
 #' (model will normalise if needed).
 #' @param susceptibility A matrix giving the susceptibility of individuals in
@@ -50,10 +50,10 @@
 
 #' @title Newton solver for final size.
 #'
-#' @param contact_matrix Social contact matrix. Entry \eqn{mm_{ij}} gives 
+#' @param contact_matrix Social contact matrix. Entry \eqn{mm_{ij}} gives
 #' average number of contacts in group \eqn{i} reported by participants in
 #' group \eqn{j}.
-#' @param demography_vector Demography vector. Entry \eqn{pp_{i}} gives 
+#' @param demography_vector Demography vector. Entry \eqn{pp_{i}} gives
 #' proportion of total population in group \eqn{i}
 #' (model will normalise if needed).
 #' @param susceptibility A matrix giving the susceptibility of individuals in
