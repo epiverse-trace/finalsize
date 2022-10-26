@@ -188,8 +188,12 @@ final_size <- function(contact_matrix,
     )
   }
 
-  # multiply final size by p_susceptibility
-  epi_final_size <- p_susceptibility * epi_final_size
+  # convert to matrix
+  epi_final_size <- matrix(
+    epi_final_size,
+    nrow = length(demography_vector),
+    ncol = ncol(susceptibility)
+  )
   epi_final_size <- data.frame(
     demo_grp = rep(
       names_demography,
