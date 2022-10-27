@@ -17,8 +17,11 @@
 //' (model will normalise if needed).
 //' @param susceptibility A matrix giving the susceptibility of individuals in
 //' demographic group \eqn{i} and risk group \eqn{j}.
-//' @param iterations Number of solver iterations. Defaults to 1,000.
-//' @param tolerance Solver error tolerance.
+//' @param iterations Number of solver iterations. Defaults to 10,000.
+//' @param tolerance Solver error tolerance. Solving for final size ends when
+//' the error drops below this tolerance. Defaults to set `1e-6`.
+//' Larger tolerance values are likely to lead to inaccurate final size
+//' estimates.
 //' @param step_rate The solver step rate. Defaults to 1.9 as a value found to
 //' work well.
 //' @param adapt_step Boolean, whether the solver step rate should be changed

@@ -17,11 +17,12 @@
 //' (model will normalise if needed).
 //' @param susceptibility A matrix giving the susceptibility of individuals in
 //' demographic group \eqn{i} and risk group \eqn{j}.
-//' @param iterations Number of solver iterations. Defaults to 1,000.
-//' @param tolerance Solver error tolerance.
+//' @param iterations Number of solver iterations. Defaults to 10,000.
+//' @param tolerance Solver error tolerance. Solving for final size ends when
+//' the error drops below this tolerance. Defaults to set `1e-6`.
+//' Larger tolerance values are likely to lead to inaccurate final size
+//' estimates.
 //'
-//' @return A vector final sizes, of the size (N demography groups *
-//' N risk groups).
 //' @return A two dimensional array of final sizes per age-risk group.
 // [[Rcpp::export(name = ".solve_newton")]]
 Eigen::ArrayXd solve_final_size_newton(const Eigen::MatrixXd &contact_matrix,
