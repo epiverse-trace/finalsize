@@ -42,10 +42,6 @@
 #' @return A two dimensional array of final sizes per age-risk group.
 .solve_newton <- function(contact_matrix, demography_vector, susceptibility, iterations = 10000L, tolerance = 1e-6) {
     .Call('_finalsize_solve_final_size_newton', PACKAGE = 'finalsize', contact_matrix, demography_vector, susceptibility, iterations, tolerance)
-=======
-.prepare_data <- function(contact_matrix, demography_vector, p_susceptibility, susceptibility) {
-    .Call('_finalsize_prepare_data', PACKAGE = 'finalsize', contact_matrix, demography_vector, p_susceptibility, susceptibility)
->>>>>>> e8b5b91 (Add r0 argument fixes #75, rename epi_spread fixes #76)
 }
 
 #' @title Prepare population data for solvers.
