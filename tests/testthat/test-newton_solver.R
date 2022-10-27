@@ -66,8 +66,9 @@ test_that("Newton solver returns correct answer", {
   epi_outcome_known <- 1 - exp(-r0 * epi_outcome$p_infected)
 
   tolerance <- 1e-5
-  expect_true(
-    all(abs(epi_outcome$p_infected - epi_outcome_known) < tolerance)
+  expect_equal(
+    epi_outcome$p_infected, epi_outcome_known,
+    tolerance = tolerance
   )
 })
 

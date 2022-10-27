@@ -131,8 +131,7 @@ test_that("Check for errors and messages", {
         step_rate = 1.9
       )
     ),
-    regexp =
-      "Solver error > 100x solver tolerance, try increasing iterations"
+    regexp = "Solver error > 100x solver tolerance, try increasing iterations"
   )
 
   # check for warning when error is much larger than tolerance, newton
@@ -204,5 +203,22 @@ test_that("Check that eigenvalue checking works", {
       p_susceptibility = p_susceptibility
     ),
     regexp = "Error: contact matrix must have a maximum real eigenvalue of 1.0"
+  )
+})
+
+# Check the contents of the control list
+test_that("Check that eigenvalue checking works", {
+  p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
+  susceptibility <- matrix(1, ncol = 1, 3)
+
+  expect_error(
+    final_size(
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      susceptibility = susceptibility,
+      p_susceptibility = p_susceptibility,
+      control = list(some_other_name = 10000)
+    ),
+    regexp = "Error: control list names can only be:"
   )
 })
