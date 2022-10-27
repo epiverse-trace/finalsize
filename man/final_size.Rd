@@ -27,7 +27,7 @@ if needed).}
 \item{p_susceptibility}{A matrix giving the probability that an individual
 in demography group \eqn{i} is in risk (or susceptibility) group \eqn{j}.
 Each row represents the overall distribution of individuals in demographic
-group $i$ across risk groups, and each row \emph{must sum to 1.0}.}
+group \eqn{i} across risk groups, and each row \emph{must sum to 1.0}.}
 
 \item{susceptibility}{A matrix giving the susceptibility of individuals in
 demographic group \eqn{i} and risk group \eqn{j}.}

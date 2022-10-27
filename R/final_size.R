@@ -36,7 +36,7 @@
 #' @param p_susceptibility A matrix giving the probability that an individual
 #' in demography group \eqn{i} is in risk (or susceptibility) group \eqn{j}.
 #' Each row represents the overall distribution of individuals in demographic
-#' group $i$ across risk groups, and each row *must sum to 1.0*.
+#' group \eqn{i} across risk groups, and each row *must sum to 1.0*.
 #' @param susceptibility A matrix giving the susceptibility of individuals in
 #' demographic group \eqn{i} and risk group \eqn{j}.
 #' @param solver Which solver to use. Options are "iterative" (default) or
