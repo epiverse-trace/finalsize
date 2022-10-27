@@ -11,8 +11,11 @@
 #' (model will normalise if needed).
 #' @param susceptibility A matrix giving the susceptibility of individuals in
 #' demographic group \eqn{i} and risk group \eqn{j}.
-#' @param iterations Number of solver iterations. Defaults to 1,000.
-#' @param tolerance Solver error tolerance.
+#' @param iterations Number of solver iterations. Defaults to 10,000.
+#' @param tolerance Solver error tolerance. Solving for final size ends when
+#' the error drops below this tolerance. Defaults to set `1e-6`. 
+#' Larger tolerance values are likely to lead to inaccurate final size
+#' estimates.
 #' @param step_rate The solver step rate. Defaults to 1.9 as a value found to
 #' work well.
 #' @param adapt_step Boolean, whether the solver step rate should be changed
@@ -34,37 +37,14 @@
 #' (model will normalise if needed).
 #' @param susceptibility A matrix giving the susceptibility of individuals in
 #' demographic group \eqn{i} and risk group \eqn{j}.
-#' @param iterations Number of solver iterations. Defaults to 1,000.
-#' @param tolerance Solver error tolerance.
+#' @param iterations Number of solver iterations. Defaults to 10,000.
+#' @param tolerance Solver error tolerance. Solving for final size ends when
+#' the error drops below this tolerance. Defaults to set `1e-6`. 
+#' Larger tolerance values are likely to lead to inaccurate final size
+#' estimates.
 #'
-#' @return A vector final sizes, of the size (N demography groups *
-#' N risk groups).
 #' @return A two dimensional array of final sizes per age-risk group.
 .solve_newton <- function(contact_matrix, demography_vector, susceptibility, iterations = 10000L, tolerance = 1e-6) {
     .Call('_finalsize_solve_final_size_newton', PACKAGE = 'finalsize', contact_matrix, demography_vector, susceptibility, iterations, tolerance)
-}
-
-#' @title Prepare population data for solvers.
-#'
-#' @description An internal function that prepares the contact matrix,
-#' demography data, and susceptibility matrix for solvers.
-#'
-#' @param contact_matrix Social contact matrix. Entry $mm_{ij}$ gives average
-#' number of contacts in group $i$ reported by participants in group j
-#' @param demography_vector Demography vector. Entry $pp_{i}$ gives proportion
-#' of total population in group $i$ (model will normalise if needed)
-#' @param p_susceptibility A matrix giving the probability that an individual
-#' in demography group $i$ is in risk (or susceptibility) group $j$.
-#' Each row represents the overall distribution of individuals in demographic
-#' group $i$ across risk groups, and each row *must sum to 1.0*.
-#' @param susceptibility A matrix giving the susceptibility of individuals in
-#' demographic group $i$ and risk group $j$.
-#'
-#' @return A list object with named elements: "contact_matrix",
-#' "demography_vector", "p_susceptibility_", and "susceptibility".
-#' The contact matrix is replicated row and column wise for each risk group
-#' and the demography vector is replicated for each risk group.
-.prepare_data <- function(contact_matrix, demography_vector, p_susceptibility, susceptibility) {
-    .Call('_finalsize_prepare_data', PACKAGE = 'finalsize', contact_matrix, demography_vector, p_susceptibility, susceptibility)
 }
 

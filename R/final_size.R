@@ -18,7 +18,8 @@
 #' 1. `iterations`: The number of iterations over which to solve for the final
 #' size, unless the error is below the solver tolerance. Default = 10000.
 #' 2. `tolerance`: The solver tolerance; solving for final size ends when the
-#' error drops below this tolerance. Defaults to set `1e-6`.
+#' error drops below this tolerance. Defaults to set `1e-6`. Larger tolerance
+#' values are likely to lead to inaccurate final size estimates.
 #'
 #' ## Iterative solver options
 #' 1. `step_rate`: The solver step rate. Defaults to 1.9 as a value found to
@@ -155,8 +156,24 @@ final_size <- function(r0 = 2.0,
     "Error: contact matrix must have a maximum real eigenvalue of 1.0" =
       (
         max(eigen(contact_matrix)$values) - 1.0 < 1e-6
+      ),
+    "Error: control list names can only be: 'iterations', 'tolerance', 
+    'step_rate', 'adapt_step'" =
+      (
+        (names(control) %in% c("iterations", "tolerance", 
+        "step_rate", "adapt_step")) | (length(control) == 0)
       )
   )
+
+  # prepare default control list
+  con <- list(
+    iterations = 10000,
+    tolerance = 1e-6,
+    step_rate = 1.9,
+    adapt_step = TRUE
+  )
+  # pass user solver options to default control list
+  con[names(control)] <- control
 
   # check which solver is requested
   solver <- match.arg(arg = solver, several.ok = FALSE)
@@ -165,20 +182,38 @@ final_size <- function(r0 = 2.0,
     newton = .solve_newton
   )
 
+  # modify control list by solver
+  con <- switch(
+    solver,
+    iterative = con,
+    newton = con[c("iterations", "tolerance")]
+  )
+
   # prepare the population data for the solver
-  epi_spread_data <- .prepare_data(
-    contact_matrix = r0 * contact_matrix,
-    demography_vector = demography_vector,
-    p_susceptibility = p_susceptibility,
-    susceptibility = susceptibility
+  # count risk groups
+  n_susc_groups <- ncol(p_susceptibility)
+  # make lps, a vector of all p_susc values
+  lps <- as.vector(p_susceptibility)
+  # replicate the demography vector and multiply by p_susceptibility
+  demography_vector_spread <- rep(demography_vector, n_susc_groups)
+  demography_vector_spread <- demography_vector_spread * lps
+
+  # replicate contact matrix
+  contact_matrix_spread <- kronecker(
+    X = matrix(1, nrow = n_susc_groups, ncol = n_susc_groups),
+    Y = r0 * contact_matrix
   )
 
   # get group wise final sizes
   epi_final_size <- do.call(
     fn_solver,
     c(
-      epi_spread_data,
-      control
+      list(
+        contact_matrix = contact_matrix_spread,
+        demography_vector = demography_vector_spread,
+        susceptibility = as.vector(susceptibility)
+      ),
+      con
     )
   )
 
