@@ -5,6 +5,7 @@
 \title{Final size of an epidemic}
 \usage{
 final_size(
+  r0 = 2,
   contact_matrix,
   demography_vector,
   p_susceptibility,
@@ -14,12 +15,14 @@ final_size(
 )
 }
 \arguments{
+\item{r0}{The basic reproductive number \eqn{R_0} of the disease.}
+
 \item{contact_matrix}{Social contact matrix. Entry \eqn{m_{ij}} gives average
 number of contacts in group \eqn{i} reported by participants in group \eqn{j}}
 
 \item{demography_vector}{Demography vector. Entry \eqn{v_{i}} gives
 proportion of total population in group \eqn{i} (model will normalise
-if needed)}
+if needed).}
 
 \item{p_susceptibility}{A matrix giving the probability that an individual
 in demography group \eqn{i} is in risk (or susceptibility) group \eqn{j}.
@@ -81,12 +84,18 @@ contact_data <- contact_matrix(
   polymod,
   countries = "United Kingdom",
   age.limits = c(0, 20, 40),
-  split = TRUE # scaling by demography
+  symmetric = TRUE
 )
-c_matrix <- t(contact_data$matrix)
-d_vector <- contact_data$participants$proportion
-n_demo_grps <- length(d_vector)
+contact_matrix <- contact_data$matrix
+demography_vector <- contact_data$demography$population
+
+# scale by maximum real eigenvalue and divide by demography
+contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
+contact_matrix <- contact_matrix / demography_vector
+
+n_demo_grps <- length(demography_vector)
 n_risk_grps <- 3
+
 # prepare p_susceptibility and susceptibility
 psusc <- matrix(
   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
@@ -98,8 +107,9 @@ susc <- matrix(
 
 # using default settings - this selects the iterative solver
 final_size(
-  contact_matrix = r0 * c_matrix,
-  demography_vector = d_vector,
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
   p_susceptibility = psusc,
   susceptibility = susc
 )
@@ -113,8 +123,9 @@ control <- list(
 )
 
 final_size(
-  contact_matrix = r0 * c_matrix,
-  demography_vector = d_vector,
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
   p_susceptibility = psusc,
   susceptibility = susc,
   solver = "iterative",
@@ -128,8 +139,9 @@ control <- list(
 )
 
 final_size(
-  contact_matrix = r0 * c_matrix,
-  demography_vector = d_vector,
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
   p_susceptibility = psusc,
   susceptibility = susc,
   solver = "newton",

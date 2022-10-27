@@ -1,5 +1,3 @@
-#ifndef EPI_SPREAD_H
-#define EPI_SPREAD_H
 
 #include <Rcpp.h>
 #include <RcppEigen.h>
@@ -29,8 +27,8 @@
 //' "demography_vector", "p_susceptibility_", and "susceptibility".
 //' The contact matrix is replicated row and column wise for each risk group
 //' and the demography vector is replicated for each risk group.
-// [[Rcpp::export(name = ".epi_spread")]]
-Rcpp::List epi_spread(
+// [[Rcpp::export(name = ".prepare_data")]]
+Rcpp::List prepare_data(
     const Eigen::MatrixXd &contact_matrix,
     const Eigen::VectorXd &demography_vector,
     const Eigen::MatrixXd &p_susceptibility,  // risk groups
@@ -63,5 +61,3 @@ Rcpp::List epi_spread(
       Rcpp::Named("demography_vector") = demography_vector_,
       Rcpp::Named("susceptibility") = rm);
 }
-
-#endif

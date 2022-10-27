@@ -11,31 +11,6 @@ Rcpp::Rostream<true>& Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// epi_spread
-Rcpp::List epi_spread(const Eigen::MatrixXd& contact_matrix,
-                      const Eigen::VectorXd& demography_vector,
-                      const Eigen::MatrixXd& p_susceptibility,
-                      const Eigen::MatrixXd& susceptibility);
-RcppExport SEXP _finalsize_epi_spread(SEXP contact_matrixSEXP,
-                                      SEXP demography_vectorSEXP,
-                                      SEXP p_susceptibilitySEXP,
-                                      SEXP susceptibilitySEXP) {
-  BEGIN_RCPP
-  Rcpp::RObject rcpp_result_gen;
-  Rcpp::RNGScope rcpp_rngScope_gen;
-  Rcpp::traits::input_parameter<const Eigen::MatrixXd&>::type contact_matrix(
-      contact_matrixSEXP);
-  Rcpp::traits::input_parameter<const Eigen::VectorXd&>::type demography_vector(
-      demography_vectorSEXP);
-  Rcpp::traits::input_parameter<const Eigen::MatrixXd&>::type p_susceptibility(
-      p_susceptibilitySEXP);
-  Rcpp::traits::input_parameter<const Eigen::MatrixXd&>::type susceptibility(
-      susceptibilitySEXP);
-  rcpp_result_gen = Rcpp::wrap(epi_spread(contact_matrix, demography_vector,
-                                          p_susceptibility, susceptibility));
-  return rcpp_result_gen;
-  END_RCPP
-}
 // solve_final_size_iterative
 Eigen::ArrayXd solve_final_size_iterative(
     const Eigen::MatrixXd& contact_matrix,
@@ -93,13 +68,38 @@ RcppExport SEXP _finalsize_solve_final_size_newton(SEXP contact_matrixSEXP,
   return rcpp_result_gen;
   END_RCPP
 }
+// prepare_data
+Rcpp::List prepare_data(const Eigen::MatrixXd& contact_matrix,
+                        const Eigen::VectorXd& demography_vector,
+                        const Eigen::MatrixXd& p_susceptibility,
+                        const Eigen::MatrixXd& susceptibility);
+RcppExport SEXP _finalsize_prepare_data(SEXP contact_matrixSEXP,
+                                        SEXP demography_vectorSEXP,
+                                        SEXP p_susceptibilitySEXP,
+                                        SEXP susceptibilitySEXP) {
+  BEGIN_RCPP
+  Rcpp::RObject rcpp_result_gen;
+  Rcpp::RNGScope rcpp_rngScope_gen;
+  Rcpp::traits::input_parameter<const Eigen::MatrixXd&>::type contact_matrix(
+      contact_matrixSEXP);
+  Rcpp::traits::input_parameter<const Eigen::VectorXd&>::type demography_vector(
+      demography_vectorSEXP);
+  Rcpp::traits::input_parameter<const Eigen::MatrixXd&>::type p_susceptibility(
+      p_susceptibilitySEXP);
+  Rcpp::traits::input_parameter<const Eigen::MatrixXd&>::type susceptibility(
+      susceptibilitySEXP);
+  rcpp_result_gen = Rcpp::wrap(prepare_data(contact_matrix, demography_vector,
+                                            p_susceptibility, susceptibility));
+  return rcpp_result_gen;
+  END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_finalsize_epi_spread", (DL_FUNC)&_finalsize_epi_spread, 4},
     {"_finalsize_solve_final_size_iterative",
      (DL_FUNC)&_finalsize_solve_final_size_iterative, 7},
     {"_finalsize_solve_final_size_newton",
      (DL_FUNC)&_finalsize_solve_final_size_newton, 5},
+    {"_finalsize_prepare_data", (DL_FUNC)&_finalsize_prepare_data, 4},
     {NULL, NULL, 0}};
 
 RcppExport void R_init_finalsize(DllInfo* dll) {

@@ -1,14 +1,21 @@
+# Prepare common elements for testing
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 20, 40),
+  symmetric = TRUE
+)
+contact_matrix <- contact_data$matrix
+demography_vector <- contact_data$demography$population
+
+# scale by maximum real eigenvalue and divide by demography
+contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
+contact_matrix <- contact_matrix / demography_vector
+
 # basic test that solver returns numerics within range, for multiple risk groups
 test_that("Iterative solver works with polymod data", {
-  polymod <- socialmixr::polymod
-  contact_data <- socialmixr::contact_matrix(
-    polymod,
-    countries = "United Kingdom",
-    age.limits = c(0, 20, 40),
-    split = TRUE
-  )
-  contact_matrix <- t(contact_data$matrix)
-  demography_vector <- contact_data$participants$proportion
+  r0 <- 1.3
 
   n_demo_grps <- length(demography_vector)
   n_risk_grps <- 3
@@ -23,6 +30,7 @@ test_that("Iterative solver works with polymod data", {
   )
 
   epi_outcome <- final_size(
+    r0 = r0,
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     susceptibility = susc,

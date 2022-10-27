@@ -12,16 +12,19 @@ upper_limit <- function(r0) {
   opt
 }
 
+# Prepare common data
+contact_matrix <- matrix(1.0 / 200.0, 2, 2)
+demography_vector <- rep(100.0, 2)
+psusc <- matrix(1, nrow = 2, ncol = 1)
+susc <- psusc
+
 # basic test that Newton solver works for various r0 near 2.0 and above
 test_that("Newton solver works with r0 = 2", {
   # prepare some data for the solver
   r0 <- 2
-  contact_matrix <- matrix(r0 / 200.0, 2, 2)
-  demography_vector <- rep(100.0, 2)
-  psusc <- matrix(1, nrow = 2, ncol = 1)
-  susc <- psusc
 
   epi_outcome <- final_size(
+    r0 = r0,
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     susceptibility = susc,
@@ -64,12 +67,9 @@ test_that("Newton solver works with r0 = 2", {
 test_that("Newton solver works with r0 = 4", {
   # prepare some data for the solver
   r0 <- 4
-  contact_matrix <- matrix(r0 / 200.0, 2, 2)
-  demography_vector <- rep(100.0, 2)
-  psusc <- matrix(1, nrow = 2, ncol = 1)
-  susc <- psusc
 
   epi_outcome <- final_size(
+    r0 = r0,
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     susceptibility = susc,
@@ -122,12 +122,9 @@ test_that("Newton solver works with r0 = 4", {
 test_that("Newton solver works with r0 = 12", {
   # prepare some data for the solver
   r0 <- 12
-  contact_matrix <- matrix(r0 / 200.0, 2, 2)
-  demography_vector <- rep(100.0, 2)
-  psusc <- matrix(1, nrow = 2, ncol = 1)
-  susc <- psusc
 
   epi_outcome <- final_size(
+    r0 = r0,
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     susceptibility = susc,
