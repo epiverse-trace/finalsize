@@ -62,7 +62,8 @@ argument is missing. Arguments provided override the solver defaults.
 \item \code{iterations}: The number of iterations over which to solve for the final
 size, unless the error is below the solver tolerance. Default = 10000.
 \item \code{tolerance}: The solver tolerance; solving for final size ends when the
-error drops below this tolerance. Defaults to set \code{1e-6}.
+error drops below this tolerance. Defaults to set \code{1e-6}. Larger tolerance
+values are likely to lead to inaccurate final size estimates.
 }
 }
 

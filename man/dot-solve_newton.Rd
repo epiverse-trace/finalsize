@@ -24,14 +24,14 @@ proportion of total population in group \eqn{i}
 \item{susceptibility}{A matrix giving the susceptibility of individuals in
 demographic group \eqn{i} and risk group \eqn{j}.}
 
-\item{iterations}{Number of solver iterations. Defaults to 1,000.}
+\item{iterations}{Number of solver iterations. Defaults to 10,000.}
 
-\item{tolerance}{Solver error tolerance.}
+\item{tolerance}{Solver error tolerance. Solving for final size ends when
+the error drops below this tolerance. Defaults to set \code{1e-6}.
+Larger tolerance values are likely to lead to inaccurate final size
+estimates.}
 }
 \value{
-A vector final sizes, of the size (N demography groups *
-N risk groups).
-
 A two dimensional array of final sizes per age-risk group.
 }
 \description{
