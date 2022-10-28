@@ -1,5 +1,3 @@
-#ifndef NEWTON_SOLVER_H
-#define NEWTON_SOLVER_H
 
 #include <Rcpp.h>
 #include <RcppEigen.h>
@@ -9,11 +7,29 @@
 /// function for Newton solver
 // taken from Edwin van Leeuwen at
 // https://gitlab.com/epidemics-r/code_snippets/feature/newton_solver/include/finalsize.hpp
-inline Eigen::ArrayXd solve_final_size_newton_cpp(
-    const Eigen::MatrixXd &contact_matrix,
-    const Eigen::VectorXd &demography_vector,
-    const Eigen::MatrixXd &susceptibility, const int iterations = 10000,
-    const double tolerance = 1e-6) {
+//' @title Newton solver for final size.
+//'
+//' @param contact_matrix Social contact matrix. Entry \eqn{mm_{ij}} gives
+//' average number of contacts in group \eqn{i} reported by participants in
+//' group \eqn{j}.
+//' @param demography_vector Demography vector. Entry \eqn{pp_{i}} gives
+//' proportion of total population in group \eqn{i}
+//' (model will normalise if needed).
+//' @param susceptibility A matrix giving the susceptibility of individuals in
+//' demographic group \eqn{i} and risk group \eqn{j}.
+//' @param iterations Number of solver iterations. Defaults to 10,000.
+//' @param tolerance Solver error tolerance. Solving for final size ends when
+//' the error drops below this tolerance. Defaults to set `1e-6`.
+//' Larger tolerance values are likely to lead to inaccurate final size
+//' estimates.
+//'
+//' @return A two dimensional array of final sizes per age-risk group.
+// [[Rcpp::export(name = ".solve_newton")]]
+Eigen::ArrayXd solve_final_size_newton(const Eigen::MatrixXd &contact_matrix,
+                                       const Eigen::VectorXd &demography_vector,
+                                       const Eigen::VectorXd &susceptibility,
+                                       const int iterations = 10000,
+                                       const double tolerance = 1e-6) {
   // count number of demography groups
   size_t nDim = demography_vector.size();
 
@@ -97,5 +113,3 @@ inline Eigen::ArrayXd solve_final_size_newton_cpp(
 
   return epi_final_size;
 }
-
-#endif

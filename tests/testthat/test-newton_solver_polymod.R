@@ -1,17 +1,23 @@
+# Prepare common elements for testing
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 20, 40),
+  symmetric = TRUE
+)
+contact_matrix <- contact_data$matrix
+demography_vector <- contact_data$demography$population
+
+# scale by maximum real eigenvalue and divide by demography
+contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
+contact_matrix <- contact_matrix / demography_vector
+
 # basic test that solver returns numerics within range, for multiple risk groups
 test_that("Newton solver works with polymod data", {
   r0 <- 1.3
-  polymod <- socialmixr::polymod
-  contact_data <- socialmixr::contact_matrix(
-    polymod,
-    countries = "United Kingdom",
-    age.limits = c(0, 20, 40),
-    split = TRUE
-  )
-  c_matrix <- t(contact_data$matrix)
-  d_vector <- contact_data$participants$proportion
 
-  n_demo_grps <- length(d_vector)
+  n_demo_grps <- length(demography_vector)
   n_risk_grps <- 3
 
   # prepare p_susceptibility and susceptibility
@@ -23,65 +29,51 @@ test_that("Newton solver works with polymod data", {
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
-    contact_matrix = r0 * c_matrix,
-    demography_vector = d_vector,
+  epi_outcome <- final_size(
+    r0 = r0,
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
+    susceptibility = susc,
     p_susceptibility = psusc,
-    susceptibility = susc
-  )
-
-  epi_outcome <- solve_final_size_newton(
-    contact_matrix = epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
+    solver = "newton"
   )
 
   # check that solver returns correct types
-  expect_vector(
+  expect_s3_class(
     object = epi_outcome,
-    ptype = numeric()
+    "data.frame"
   )
   # check that solver returns no nans
   expect_false(
-    any(is.nan(epi_outcome))
+    any(is.nan(epi_outcome$p_infected))
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome))
+    any(is.na(epi_outcome$p_infected))
   )
   # check that solver returns no inf
   expect_false(
-    any(is.infinite(epi_outcome))
+    any(is.infinite(epi_outcome$p_infected))
   )
   # check that solver returns values within range
   expect_true(
-    all(epi_outcome > 0)
+    all(epi_outcome$p_infected > 0)
   )
   expect_true(
-    all(epi_outcome < 1)
+    all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
   expect_equal(
-    n_demo_grps * n_risk_grps,
-    length(epi_outcome)
+    length(epi_outcome$p_infected),
+    n_demo_grps * n_risk_grps
   )
 })
 
 # Newton solver works with Polymod data with r0 = 2
 test_that("Newton solver works with polymod data", {
   r0 <- 2.0
-  polymod <- socialmixr::polymod
-  contact_data <- socialmixr::contact_matrix(
-    polymod,
-    countries = "United Kingdom",
-    age.limits = c(0, 20, 40),
-    split = TRUE
-  )
-  c_matrix <- t(contact_data$matrix)
-  d_vector <- contact_data$participants$proportion
 
-  n_demo_grps <- length(d_vector)
+  n_demo_grps <- length(demography_vector)
   n_risk_grps <- 3
 
   # prepare p_susceptibility and susceptibility
@@ -93,47 +85,42 @@ test_that("Newton solver works with polymod data", {
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
 
-  # needed to get demography-risk combinations
-  epi_spread_data <- epi_spread(
-    contact_matrix = c_matrix,
-    demography_vector = d_vector,
+  epi_outcome <- final_size(
+    r0 = r0,
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
+    susceptibility = susc,
     p_susceptibility = psusc,
-    susceptibility = susc
-  )
-
-  epi_outcome <- solve_final_size_newton(
-    contact_matrix = epi_spread_data[["contact_matrix"]],
-    demography_vector = epi_spread_data[["demography_vector"]],
-    susceptibility = epi_spread_data[["susceptibility"]]
+    solver = "newton"
   )
 
   # check that solver returns correct types
-  expect_vector(
+  expect_s3_class(
     object = epi_outcome,
-    ptype = numeric()
+    "data.frame"
   )
   # check that solver returns no nans
   expect_false(
-    any(is.nan(epi_outcome))
+    any(is.nan(epi_outcome$p_infected))
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome))
+    any(is.na(epi_outcome$p_infected))
   )
   # check that solver returns no inf
   expect_false(
-    any(is.infinite(epi_outcome))
+    any(is.infinite(epi_outcome$p_infected))
   )
   # check that solver returns values within range
   expect_true(
-    all(epi_outcome > 0)
+    all(epi_outcome$p_infected > 0)
   )
   expect_true(
-    all(epi_outcome < 1)
+    all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
   expect_equal(
-    n_demo_grps * n_risk_grps,
-    length(epi_outcome)
+    length(epi_outcome$p_infected),
+    n_demo_grps * n_risk_grps
   )
 })

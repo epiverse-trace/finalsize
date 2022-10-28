@@ -1,22 +1,23 @@
-# Check final_size_grps_cpp works with Newton solver
+# Prepare common elements for testing
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 20, 40),
+  symmetric = TRUE
+)
+contact_matrix <- contact_data$matrix
+demography_vector <- contact_data$demography$population
+
+# scale by maximum real eigenvalue and divide by demography
+contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
+contact_matrix <- contact_matrix / demography_vector
+
+# Check final_size works with Newton solver
 test_that("Check finalsize by groups works for Polymod, newton solver", {
   r0 <- 2.0
-  polymod <- socialmixr::polymod
-  contact_data <- socialmixr::contact_matrix(
-    polymod,
-    countries = "United Kingdom",
-    age.limits = c(0, 20, 40),
-    split = TRUE
-  )
-  c_matrix <- t(contact_data$matrix)
-  d_vector <- contact_data$participants$proportion
 
-  # Scale contact matrix to demography
-  c_matrix <- apply(
-    c_matrix, 1, function(r) r / d_vector
-  )
-
-  n_demo_grps <- length(d_vector)
+  n_demo_grps <- length(demography_vector)
   n_risk_grps <- 4
 
   # prepare p_susceptibility and susceptibility
@@ -31,68 +32,53 @@ test_that("Check finalsize by groups works for Polymod, newton solver", {
   # prepare control
   control <- list(
     iterations = 10000,
-    tolerance = 1e-6,
-    step_rate = 1.9,
-    adapt_step = TRUE
+    tolerance = 1e-6
   )
 
-  epi_outcome <- final_size_grps_cpp(
-    contact_matrix = r0 * c_matrix,
-    demography_vector = d_vector,
+  epi_outcome <- final_size(
+    r0 = r0,
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
     p_susceptibility = psusc,
     susceptibility = susc,
     solver = "newton",
     control = control
   )
 
-  expect_type(
-    epi_outcome, "double"
+  expect_s3_class(
+    epi_outcome, "data.frame"
   )
   # check that values are not NaN
   expect_true(
-    all(!is.nan(epi_outcome))
+    all(!is.nan(epi_outcome$p_infected))
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome))
+    any(is.na(epi_outcome$p_infected))
   )
   # check that solver returns no inf
   expect_false(
-    any(is.infinite(epi_outcome))
+    any(is.infinite(epi_outcome$p_infected))
   )
   # check that solver returns values within range
   expect_true(
-    all(epi_outcome > 0)
+    all(epi_outcome$p_infected > 0)
   )
   expect_true(
-    all(epi_outcome < 1)
+    all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
   expect_equal(
-    n_demo_grps,
-    length(epi_outcome)
+    length(epi_outcome$p_infected),
+    n_demo_grps * n_risk_grps
   )
 })
 
 # Check sensitivity to susceptibility using newton solver
 test_that("Check that more susceptible demo-grps have higher final size", {
-  r0 <- 1.3
-  polymod <- socialmixr::polymod
-  contact_data <- socialmixr::contact_matrix(
-    polymod,
-    countries = "United Kingdom",
-    age.limits = c(0, 20, 40),
-    split = TRUE
-  )
-  c_matrix <- t(contact_data$matrix)
-  d_vector <- contact_data$participants$proportion
+  r0 <- 2.0
 
-  # Scale contact matrix to demography
-  c_matrix <- apply(
-    c_matrix, 1, function(r) r / d_vector
-  )
-
-  n_demo_grps <- length(d_vector)
+  n_demo_grps <- length(demography_vector)
   n_risk_grps <- 4
 
   # prepare p_susceptibility and susceptibility
@@ -103,46 +89,45 @@ test_that("Check that more susceptible demo-grps have higher final size", {
   psusc <- psusc / rowSums(psusc)
   susc <- rbind(
     rep(1, n_risk_grps),
-    rep(0.1, n_risk_grps),
-    rep(0.1, n_risk_grps)
+    rep(0.5, n_risk_grps),
+    rep(0.5, n_risk_grps)
   )
 
   # prepare control
   control <- list(
     iterations = 10000,
-    tolerance = 1e-6,
-    step_rate = 1.9,
-    adapt_step = TRUE
+    tolerance = 1e-6
   )
 
-  epi_outcome <- final_size_grps_cpp(
-    contact_matrix = r0 * c_matrix,
-    demography_vector = d_vector,
+  epi_outcome <- final_size(
+    r0 = r0,
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
     p_susceptibility = psusc,
     susceptibility = susc,
     solver = "newton",
     control = control
   )
 
-  expect_vector(
+  expect_s3_class(
     epi_outcome,
-    ptype = numeric()
+    "data.frame"
   )
   # check that solver returns values within range
   expect_true(
-    all(epi_outcome > 0)
+    all(epi_outcome$p_infected > 0)
   )
   expect_true(
-    all(epi_outcome < 1)
+    all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
   expect_equal(
-    n_demo_grps,
-    length(epi_outcome)
+    length(epi_outcome$p_infected),
+    n_demo_grps * n_risk_grps
   )
   # check that first group has higher final size
   expect_gt(
-    epi_outcome[1], epi_outcome[n_demo_grps]
+    epi_outcome$p_infected[1], epi_outcome$p_infected[n_demo_grps]
   )
 })
 
@@ -180,13 +165,12 @@ test_that("Check final size calculation is correct in complex case", {
   # prepare control
   control <- list(
     iterations = 10000,
-    tolerance = 1e-6,
-    step_rate = 1.9,
-    adapt_step = TRUE
+    tolerance = 1e-6
   )
 
-  epi_outcome <- final_size_grps_cpp(
-    contact_matrix = r0 * contact_matrix,
+  epi_outcome <- final_size(
+    r0 = r0,
+    contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susc,
     susceptibility = susc,
@@ -194,28 +178,29 @@ test_that("Check final size calculation is correct in complex case", {
     control = control
   )
 
-  expect_vector(
+  expect_s3_class(
     epi_outcome,
-    ptype = numeric()
+    "data.frame"
   )
   # check that solver returns values within range
   expect_true(
-    all(epi_outcome > 0)
+    all(epi_outcome$p_infected > 0)
   )
   expect_true(
-    all(epi_outcome < 1)
+    all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
   expect_equal(
     length(demography_vector),
-    length(epi_outcome)
+    length(epi_outcome$p_infected)
   )
 
   # test that final size differs by susceptibility group
   expect_lt(
-    epi_outcome[5], epi_outcome[1]
+    epi_outcome$p_infected[5], epi_outcome$p_infected[1]
   )
-  ratio <- sum(epi_outcome * demography_vector) / sum(demography_vector)
+  ratio <- sum(epi_outcome$p_infected * demography_vector) /
+    sum(demography_vector)
   expect_gt(ratio, 0.3)
   expect_lt(ratio, 0.45)
 })

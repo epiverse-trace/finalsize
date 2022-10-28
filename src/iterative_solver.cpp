@@ -1,5 +1,3 @@
-#ifndef ITERATIVE_SOLVER_H
-#define ITERATIVE_SOLVER_H
 
 #include <Rcpp.h>
 #include <RcppEigen.h>
@@ -9,7 +7,30 @@
 /// function for iterative solver
 // taken from Edwin van Leeuwen at
 // https://gitlab.com/epidemics-r/code_snippets/feature/newton_solver/include/finalsize.hpp
-Eigen::ArrayXd solve_final_size_iterative_cpp(
+//' @title Iterative solver for final size.
+//'
+//' @param contact_matrix Social contact matrix. Entry \eqn{mm_{ij}} gives
+//' average number of contacts in group \eqn{i} reported by participants in
+//' group \eqn{j}.
+//' @param demography_vector Demography vector. Entry \eqn{pp_{i}} gives
+//' proportion of total population in group \eqn{i}
+//' (model will normalise if needed).
+//' @param susceptibility A matrix giving the susceptibility of individuals in
+//' demographic group \eqn{i} and risk group \eqn{j}.
+//' @param iterations Number of solver iterations. Defaults to 10,000.
+//' @param tolerance Solver error tolerance. Solving for final size ends when
+//' the error drops below this tolerance. Defaults to set `1e-6`.
+//' Larger tolerance values are likely to lead to inaccurate final size
+//' estimates.
+//' @param step_rate The solver step rate. Defaults to 1.9 as a value found to
+//' work well.
+//' @param adapt_step Boolean, whether the solver step rate should be changed
+//' based on the solver error. Defaults to TRUE.
+//'
+//' @return A vector of final sizes, of the size (N demography groups *
+//' N risk groups).
+// [[Rcpp::export(name = ".solve_iterative")]]
+Eigen::ArrayXd solve_final_size_iterative(
     const Eigen::MatrixXd &contact_matrix,
     const Eigen::VectorXd &demography_vector,
     const Eigen::VectorXd &susceptibility, const int iterations = 10000,
@@ -93,11 +114,9 @@ Eigen::ArrayXd solve_final_size_iterative_cpp(
 
   // Adjust numerical errors;
   for (auto i = 0; i < epi_final_size.size(); ++i) {
-    if (zeros[i])
-      // if (epi_final_size(i) < 0 && epi_final_size(i) > -tolerance)
+    if (zeros[i] ||
+        ((epi_final_size(i) < 0) && (epi_final_size(i) > -tolerance)))
       epi_final_size(i) = 0;
   }
   return epi_final_size;
 }
-
-#endif

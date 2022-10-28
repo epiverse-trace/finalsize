@@ -13,12 +13,12 @@ demography_vector <- contact_data$demography$population
 contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
 contact_matrix <- contact_matrix / demography_vector
 
-# basic test that solver returns numerics within range, for multiple risk groups
-test_that("Iterative solver works with polymod data", {
-  r0 <- 1.3
+# Check final_size works with Newton solver
+test_that("Check finalsize by groups works for Polymod, newton solver", {
+  r0 <- 2.0
 
   n_demo_grps <- length(demography_vector)
-  n_risk_grps <- 3
+  n_risk_grps <- 4
 
   # prepare p_susceptibility and susceptibility
   psusc <- matrix(
@@ -29,41 +29,38 @@ test_that("Iterative solver works with polymod data", {
     data = 1, nrow = n_demo_grps, ncol = n_risk_grps
   )
 
-  epi_outcome <- final_size(
+  # prepare control
+  control <- list(
+    iterations = 10000,
+    tolerance = 1e-6
+  )
+
+  # prepare outcome with iterative solver
+  epi_outcome_iterative <- final_size(
     r0 = r0,
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
+    p_susceptibility = psusc,
     susceptibility = susc,
-    p_susceptibility = psusc
+    solver = "iterative",
+    control = control
   )
 
-  # check that solver returns correct types
-  expect_s3_class(
-    object = epi_outcome,
-    "data.frame"
+  # prepare outcome with newton solver
+  epi_outcome_newton <- final_size(
+    r0 = r0,
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
+    p_susceptibility = psusc,
+    susceptibility = susc,
+    solver = "newton",
+    control = control
   )
-  # check that solver returns no nans
-  expect_false(
-    any(is.nan(epi_outcome$p_infected))
-  )
-  # check that solver returns no nas
-  expect_false(
-    any(is.na(epi_outcome$p_infected))
-  )
-  # check that solver returns no inf
-  expect_false(
-    any(is.infinite(epi_outcome$p_infected))
-  )
-  # check that solver returns values within range
-  expect_true(
-    all(epi_outcome$p_infected > 0)
-  )
-  expect_true(
-    all(epi_outcome$p_infected < 1)
-  )
-  # check for size of the vector
+
+  # check for equivalence
   expect_equal(
-    n_demo_grps * n_risk_grps,
-    length(epi_outcome$p_infected)
+    epi_outcome_iterative$p_infected,
+    epi_outcome_newton$p_infected,
+    tolerance = 1e-5
   )
 })

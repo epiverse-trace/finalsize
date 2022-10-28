@@ -34,6 +34,7 @@ Authors@R:
     )
 Description: This package contains function for calculating final size for an SIR epidemic in a heterogenous population, given social contact matrix and demographic data.
 RoxygenNote: 7.2.1
+Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
 Suggests: 
     covr,
@@ -42,10 +43,7 @@ Suggests:
     xml2
 Config/testthat/edition: 3
 License: MIT + file LICENSE
-Remotes:
-    epiforecasts/socialmixr
-Imports: 
-    checkmate,
+Imports:
     Rcpp,
     RcppEigen
 LinkingTo: 
