@@ -225,7 +225,7 @@ final_size <- function(r0 = 2.0,
       names_demography <- rownames(contact_matrix)
     } else {
       names_demography <- sprintf(
-        "demo_grp_%i", seq_len(length(demography_vector))
+        "demo_grp_%i", seq_along(demography_vector)
       )
     }
   }
