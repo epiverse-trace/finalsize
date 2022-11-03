@@ -19,12 +19,15 @@ susceptibility <- matrix(1, ncol = 1, 3)
 # Check final_size works with Newton solver
 # check for errors and messages
 test_that("Check for errors and messages", {
+  r0 <- 2
+  
   # 'wrong' demography vector
   demography_vector <- c(demography_vector, 100)
 
   # expect error on demography vector and contact matrix
   expect_error(
     final_size(
+      r0 = r0,
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -41,6 +44,7 @@ test_that("Check for errors and messages", {
   # expect error on demography vector and p_susceptibility
   expect_error(
     final_size(
+      r0 = r0,
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -57,6 +61,7 @@ test_that("Check for errors and messages", {
   # expect error on demography vector and susceptibility
   expect_error(
     final_size(
+      r0 = r0,
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -73,6 +78,7 @@ test_that("Check for errors and messages", {
   # expect error on p_susceptibility and susceptibility
   expect_error(
     final_size(
+      r0 = r0,
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -89,6 +95,7 @@ test_that("Check for errors and messages", {
   susceptibility <- matrix(1, ncol = 2, nrow = 3)
   expect_error(
     final_size(
+      r0 = r0,
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -105,6 +112,7 @@ test_that("Check for errors and messages", {
   p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
   expect_error(
     final_size(
+      r0 = r0,
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -119,6 +127,7 @@ test_that("Check for errors and messages", {
   # check for warning when error is much larger than tolerance, iterative
   expect_warning(
     final_size(
+      r0 = r0,
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -137,6 +146,7 @@ test_that("Check for errors and messages", {
   # check for warning when error is much larger than tolerance, newton
   expect_warning(
     final_size(
+      r0 = r0,
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -154,6 +164,7 @@ test_that("Check for errors and messages", {
   # expect errors when wrong argument types are passed
   expect_error(
     final_size(
+      r0 = r0,
       contact_matrix = as.vector(contact_matrix),
       demography_vector = demography_vector,
       p_susceptibility = p_susceptibility,
@@ -163,6 +174,7 @@ test_that("Check for errors and messages", {
   )
   expect_error(
     final_size(
+      r0 = r0,
       contact_matrix = contact_matrix,
       demography_vector = as.matrix(demography_vector),
       p_susceptibility = p_susceptibility,
@@ -172,6 +184,7 @@ test_that("Check for errors and messages", {
   )
   expect_error(
     final_size(
+      r0 = r0,
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       p_susceptibility = as.vector(p_susceptibility),
@@ -181,6 +194,7 @@ test_that("Check for errors and messages", {
   )
   expect_error(
     final_size(
+      r0 = r0,
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       susceptibility = as.vector(susceptibility),
@@ -191,12 +205,14 @@ test_that("Check for errors and messages", {
 })
 
 test_that("Check that eigenvalue checking works", {
+  r0 <- 2
   contact_matrix <- contact_data$matrix
   p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
   susceptibility <- matrix(1, ncol = 1, 3)
 
   expect_error(
     final_size(
+      r0 = r0,
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       susceptibility = susceptibility,
@@ -208,11 +224,13 @@ test_that("Check that eigenvalue checking works", {
 
 # Check the contents of the control list
 test_that("Check that eigenvalue checking works", {
+  r0 <- 2
   p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
   susceptibility <- matrix(1, ncol = 1, 3)
 
   expect_error(
     final_size(
+      r0 = r0,
       contact_matrix = contact_matrix,
       demography_vector = demography_vector,
       susceptibility = susceptibility,

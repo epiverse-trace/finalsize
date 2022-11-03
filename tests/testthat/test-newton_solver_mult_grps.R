@@ -69,6 +69,7 @@ test_that("Newton solver works with multiple risk and age groups", {
   susc <- matrix(1, nrow = n_demo_grps, ncol = n_risk_grps)
 
   epi_outcome <- final_size(
+    r0 = r0,
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     susceptibility = susc,

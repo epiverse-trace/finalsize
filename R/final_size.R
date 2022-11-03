@@ -125,7 +125,7 @@
 #'   control = control
 #' )
 #'
-final_size <- function(r0 = 2.0,
+final_size <- function(r0,
                        contact_matrix,
                        demography_vector,
                        p_susceptibility,
