@@ -5,7 +5,7 @@
 \title{Final size of an epidemic}
 \usage{
 final_size(
-  r0 = 2,
+  r0,
   contact_matrix,
   demography_vector,
   p_susceptibility,

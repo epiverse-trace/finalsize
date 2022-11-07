@@ -184,6 +184,7 @@ test_that("Iterative solver works with r0 = 4, locked step size", {
   susc <- psusc
 
   epi_outcome <- final_size(
+    r0 = r0,
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     susceptibility = susc,

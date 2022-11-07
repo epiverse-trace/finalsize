@@ -38,7 +38,8 @@ colnames(susc) <- c("susceptible", "immunised")
 # Test for demography names from named demography vector
 test_that("Finalsize returns correct demography names", {
   epi_outcome <- final_size(
-    contact_matrix = r0 * contact_matrix,
+    r0 = r0,
+    contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = psusc,
     susceptibility = susc,
@@ -66,7 +67,8 @@ test_that("Finalsize takes demography names from contact data", {
   colnames(susc) <- c("susceptible", "immunised")
 
   epi_outcome <- final_size(
-    contact_matrix = r0 * contact_matrix,
+    r0 = r0,
+    contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = psusc,
     susceptibility = susc,
@@ -94,7 +96,8 @@ test_that("Finalsize generates group names", {
   colnames(susc) <- NULL
 
   epi_outcome <- final_size(
-    contact_matrix = r0 * contact_matrix,
+    r0 = r0,
+    contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = psusc,
     susceptibility = susc,
