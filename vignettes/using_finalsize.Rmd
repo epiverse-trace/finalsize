@@ -1,0 +1,382 @@
+---
+title: "Calculating the final size of an epidemic outbreak"
+output:
+  rmarkdown::html_vignette:
+    fig_caption: yes
+    toc: true
+bibliography: references.bib
+vignette: >
+  %\VignetteIndexEntry{Predicting the final size of an epidemic}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+## Getting _finalsize_
+
+The _finalsize_ package is currently available on [Github](https://github.com/epiverse-trace/finalsize), and can be installed using the `remotes` or `devtools` packages.
+
+```{r setup, message=FALSE, warning=FALSE}
+# first install the remotes packages
+# install.packages("remotes")
+
+# install finalsize using remotes
+# remotes::install_github("epiverse-trace/finalsize")
+library(finalsize)
+
+# load useful packages
+library(data.table)
+library(ggplot2)
+library(colorspace)
+```
+
+## An epidemic in a population with uniform susceptibility
+
+This example uses social contact data from the [POLYMOD](https://cordis.europa.eu/project/id/502084) project to estimate the final size of an epidemic in the UK. These data are provided with the `socialmixr` package.
+
+The contact data are divided into five age groups: 0 -- 5, 5 -- 18, 18 -- 40, 40 -- 65, and 65 and over, specified using the `age.limits` argument in `socialmixr::contact_matrix()`.
+The `symmetric = TRUE` argument to `socialmixr::contact_matrix()` returns a symmetric contact matrix, so that the contacts reported by group _{i}_ of individuals from group _{j}_ are the same as those reported by group _{j}_ of group _{i}_.
+
+The demographic data --- the number of individuals in each age group --- is also available through `socialmixr::contact_matrix()`.
+
+```{r}
+# get UK polymod data
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 5, 18, 40, 65),
+  symmetric = TRUE
+)
+
+# get the contact matrix and demography data
+contact_matrix <- t(contact_data$matrix)
+demography_vector <- contact_data$demography$population
+
+# scale the contact matrix so the largest eigenvalue is 1.0
+contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
+
+# divide each row of the contact matrix by the corresponding demography
+contact_matrix <- contact_matrix / demography_vector
+
+n_demo_grps <- length(demography_vector)
+```
+
+In the early stages of an epidemic outbreak, it may be unclear how susceptibility to the disease varies with individual characteristic, such as age. An initial, safe assumption might be that all age groups have a similar susceptibility. 
+
+When the outbreak is of a novel pathogen or strain, the initial assumption might also be that all individuals, regardless of age, have a high susceptibility to the disease. Later sections will show how to implement different assumptions.
+
+```{r}
+# all individuals are equally and highly susceptible
+n_susc_groups <- 1L
+susc_guess <- 1.0
+```
+
+We model high uniform susceptibility as a matrix with values the range 0.0 -- 1.0, with as many rows as there are demography groups. Higher values indicate higher susceptibility. The matrix has a single column, representing the single susceptibility group to which all these individuals belong.
+
+```{r}
+susc_uniform <- matrix(
+  data = susc_guess,
+  nrow = n_demo_grps,
+  ncol = n_susc_groups
+)
+```
+
+Individuals within age groups do not differ in their susceptibility, and we model this as a matrix with as many rows as there are demography groups. The matrix has a single column indicating the proportion of each age group expected to be in each susceptibility group.
+
+This demography-susceptibility spread matrix is subject to the constraint that each of its rows must sum to 1.0, as each row represents the division of each age group into susceptibility groups.
+
+```{r}
+p_susc_uniform <- matrix(
+  data = 1.0,
+  nrow = n_demo_grps,
+  ncol = n_susc_groups
+)
+```
+
+Along with uncertainty around population susceptibility to the disease, disease attributes such as the reproduction number R<sub>0</sub> might be uncertain in the early stages of an outbreak.
+
+Using _finalsize_, we can quickly calculate the proportion of individuals infected in each demographic group for a broad range of R<sub>0</sub>. Here, we shall consider values of 1.3, 2.0, 3.0, 5.0, and 9.0.
+
+These correspond roughly to the R<sub>0</sub> of directly transmitted respiratory diseases: influenza strains (1.3 -- 2.0), the original Covid-19 strain (2.0 -- 3.0), the Covid-19 Alpha and Delta variants (≈5.0), and the Covid-19 Omicron variant and its subtypes (9.0).
+
+```{r}
+r0_range <- c(1.3, 2.0, 3.0, 5.0, 9.0)
+```
+
+```{r}
+# we run final size over all r0 values
+final_sizes <- lapply(
+  X = r0_range,
+  FUN = function(r0) {
+    df <- final_size(
+      r0 = r0,
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      susceptibility = susc_uniform,
+      p_susceptibility = p_susc_uniform
+    )
+
+    df$r0 <- r0
+
+    df
+  }
+)
+```
+
+We can prepare this data for a simple visualisation that shows how the increasing R<sub>0</sub> of a disease affects the final size of the epidemic in this population.
+
+```{r}
+# prepare data as a dataframe
+final_sizes <- rbindlist(final_sizes)
+
+# prepare age group order
+final_sizes$demo_grp <- factor(
+  final_sizes$demo_grp,
+  levels = contact_data$demography$age.group
+)
+```
+
+We can visualise the final sizes as proportion of each age group infected, with colours indicating the R<sub>0</sub> of the disease.
+
+```{r echo=FALSE, fig.cap = "Final size of an epidemic in a population with high susceptibility to disease in all age groups. In this example, over 25% of all age groups except the over-65s are infected when the disease has an R<sub>0</sub> of 1.3, equivalent to seasonal influenza. This reflects the greater social contacts of these groups. In contrast, diseases with an R<sub>0</sub> of 5.0 or 9.0 would infect nearly the same proportion of people in all age groups, reflecting their increased transmissibility."}
+# plot as columns
+ggplot(final_sizes) +
+  geom_col(
+    aes(
+      x = demo_grp, y = p_infected,
+      fill = as.factor(r0)
+    ),
+    col = "black",
+    position = position_dodge(
+      width = 0.75
+    )
+  ) +
+  scale_fill_discrete_sequential(
+    palette = "Batlow",
+    name = "R<sub>0</sub>"
+  ) +
+  scale_y_continuous(
+    labels = scales::percent
+  ) +
+  theme(
+    legend.position = "top",
+    legend.key.height = unit(2, "mm"),
+    legend.title = ggtext::element_markdown(
+      vjust = 1
+    )
+  ) +
+  labs(
+    x = "Age group",
+    y = "% Infected"
+  )
+```
+
+---
+
+## Epidemic outbreaks in populations where susceptibility varies by age
+
+When modelling epidemic outbreaks with uncertain information about the disease, it may be reasonable to assume that not all age groups have the same susceptibility to the disease.
+
+In particular, older people might be expected to have a higher susceptibility than other age groups. This assumption is defensible based on a general understanding of how immune function varies with age --- being lowest among the very young and very old.
+
+We can model this as a susceptibility matrix with higher values for the 40 -- 60 and 65+ age groups, and relatively lower values for other groups.
+
+```{r}
+# susceptibility is higher for the old
+susc_variable <- matrix(
+  data = c(0.2, 0.5, 0.6, 0.9, 1.0)
+)
+```
+
+Since age is the major driver of susceptibility, we can retain the demography-susceptibility matrix used earlier. This essentially assumes that all individuals have the same susceptibility as their age group: all infants 0 -- 5 have a susceptibility of 0.9, all children 5 -- 18 have a susceptibility of 0.3, and so on. This allows us the reuse the `p_susc_uniform` matrix.
+
+We can examine the final size of an epidemic for the same range of R<sub>0</sub> used before, ranging from the less-transmissible seasonal influenza (R<sub>0</sub> ≈ 1.3) to the highly transmissible Omicron variant of Covid-19 (R<sub>0</sub> ≈ 9.0).
+
+```{r}
+# we run final size over all r0 values
+final_sizes_var_susc <- lapply(
+  X = r0_range,
+  FUN = function(r0) {
+    df <- final_size(
+      r0 = r0,
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      susceptibility = susc_variable,
+      p_susceptibility = p_susc_uniform
+    )
+
+    df$r0 <- r0
+
+    df
+  }
+)
+```
+
+We can prepare this data for a simple visualisation that shows how the increasing R<sub>0</sub> of a disease influences the epidemic's final size in this population with heterogeneous susceptibility.
+
+```{r}
+# prepare data as a dataframe
+final_sizes_var_susc <- rbindlist(final_sizes_var_susc)
+
+# prepare age group order
+final_sizes_var_susc$demo_grp <- factor(
+  final_sizes_var_susc$demo_grp,
+  levels = contact_data$demography$age.group
+)
+```
+
+We can visualise the final sizes as proportion of each age group infected.
+
+```{r echo=FALSE, fig.cap="Final size of an epidemic outbreak in a population with heterogeneous susceptibility to disease. In this example, the reduced susceptibility of children aged five and younger leads to relatively lower epidemic final sizes for the full range of diseases, when compared with older, more susceptibile age groups."}
+ggplot(final_sizes_var_susc) +
+  geom_col(
+    aes(
+      x = demo_grp, y = p_infected,
+      fill = as.factor(r0)
+    ),
+    col = "black",
+    position = position_dodge(
+      width = 0.75
+    )
+  ) +
+  scale_fill_discrete_sequential(
+    palette = "Batlow",
+    name = "R<sub>0</sub>"
+  ) +
+  scale_y_continuous(
+    labels = scales::percent
+  ) +
+  theme(
+    legend.position = "top",
+    legend.key.height = unit(2, "mm"),
+    legend.title = ggtext::element_markdown(
+      vjust = 1
+    )
+  ) +
+  labs(
+    x = "Age group",
+    y = "% Infected"
+  )
+```
+
+---
+
+## The effect of immunisation programmes
+
+When immunisation programmes can be implemented, it may be useful to know how effective they are likely to be in reducing the final size of an epidemic outbreak.
+
+We can model the effect of immunisation on susceptibility as a reduction of the current susceptibility of each age group. This is done by adding a column to the susceptibility matrix, with lower values than the first column.
+
+```{r}
+# model an immunised group with a 25% lower susceptibility
+susc_immunised <- cbind(
+  susc_variable,
+  susc_variable * 0.25
+)
+# assign names to groups
+colnames(susc_immunised) <- c("Un-immunised", "Immunised")
+n_risk_groups <- ncol(susc_immunised)
+```
+
+The assumption here is that immunisation can reduce each age group's susceptibility by 25%, a substantial reduction.
+
+We then need to specify the proportion of individuals who have been immunised, and who therefore have lower susceptibility to the disease. To do this, we modify the demography-susceptibility risk matrix.
+
+We can specify the proportion of each age group that is immunised. Recall that each row of `p_susceptibility` must sum to 1.0. Here, we model immunisation as age-dependent: more older people are immunised than younger ones.
+
+In general terms, this could be interpreted as the rate of vaccine uptake, or as the effect of existing immunity from previous infection by a similar pathogen.
+
+```{r}
+# immunisation increases with age between 20% (infants) and 90% (65+)
+immunisation <- seq(0.2, 0.9, length.out = n_demo_grps)
+
+# add a second column to p_susceptibility
+p_susc_immunised <- cbind(
+  susceptible = 1 - immunisation,
+  immunised = immunisation
+)
+```
+
+We can then predict the final size of an epidemic caused by diseases with different R<sub>0</sub>, from the less-transmissible seasonal influenza ($R_0~\approx$ 1.3) to the highly transmissible Omicron variant of Covid-19 ($R_0~\approx$ 9.0).
+
+```{r}
+# we run final size over all r0 values
+final_sizes_immunised <- lapply(
+  X = r0_range,
+  FUN = function(r0) {
+    df <- final_size(
+      r0 = r0,
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      susceptibility = susc_immunised,
+      p_susceptibility = p_susc_immunised
+    )
+
+    df$r0 <- r0
+    df
+  }
+)
+```
+
+We can prepare this data for a simple visualisation that shows how the increasing R<sub>0</sub> of a disease influences the epidemic's final size in this population with heterogeneous susceptibility.
+
+```{r}
+# prepare data as a dataframe
+final_sizes_immunised <- rbindlist(final_sizes_immunised)
+
+# prepare age group order
+final_sizes_immunised$demo_grp <- factor(
+  final_sizes_immunised$demo_grp,
+  levels = contact_data$demography$age.group
+)
+```
+
+We can visualise the final sizes as proportion of each age group infected.
+
+```{r echo=FALSE, fig.cap = "Final size of an epidemic outbreak in a population with heterogeneous susceptibility to disease. Immunisation can strongly limit the spread of epidemic diseases with a low R<sub>0</sub>."}
+# plot as heatmap
+ggplot(final_sizes_immunised) +
+  geom_col(
+    aes(
+      x = demo_grp, y = p_infected,
+      fill = as.factor(r0)
+    ),
+    col = "black",
+    position = position_dodge(
+      width = 0.75
+    )
+  ) +
+  scale_fill_discrete_sequential(
+    palette = "Batlow",
+    name = "R<sub>0</sub>"
+  ) +
+  scale_y_continuous(
+    labels = scales::percent
+  ) +
+  theme(
+    legend.position = "top",
+    legend.key.height = unit(2, "mm"),
+    legend.title = ggtext::element_markdown(
+      vjust = 1
+    )
+  ) +
+  facet_grid(
+    rows = vars(susc_grp),
+    labeller =
+    ) +
+  labs(
+    x = "Age group",
+    y = "% Infected"
+  )
+```
+
+A follow-up vignette shows how the outcomes of immunisation programmes can be compared against each other and against a baseline scenario of no immunisation.
