@@ -5,8 +5,8 @@ upper_limit <- function(r0) {
     abs(1 - exp(-r0 * par[1]) - par[1])
   }
   opt <- optim(
-    par = c(0.5), fn = f,
-    lower = c(0), upper = c(1),
+    par = 0.5, fn = f,
+    lower = 0, upper = 1,
     method = "Brent"
   )
   opt
