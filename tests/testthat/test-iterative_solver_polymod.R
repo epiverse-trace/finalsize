@@ -62,8 +62,8 @@ test_that("Iterative solver works with polymod data", {
     all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
-  expect_equal(
-    n_demo_grps * n_risk_grps,
-    length(epi_outcome$p_infected)
+  expect_length(
+    epi_outcome$p_infected,
+    n_demo_grps * n_risk_grps
   )
 })

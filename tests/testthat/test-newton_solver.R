@@ -43,9 +43,9 @@ test_that("Final size with newton solver", {
     all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
-  expect_equal(
-    length(demography_vector) * ncol(psusc),
-    length(epi_outcome$p_infected)
+  expect_length(
+    epi_outcome$p_infected,
+    length(demography_vector) * ncol(psusc)
   )
 })
 

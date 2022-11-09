@@ -48,8 +48,8 @@ test_that("Newton solver works with multiple risk groups", {
     all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
-  expect_equal(
-    length(epi_outcome$p_infected),
+  expect_length(
+    epi_outcome$p_infected,
     n_demo_grps * n_risk_grps
   )
 })
@@ -102,8 +102,8 @@ test_that("Newton solver works with multiple risk and age groups", {
     all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
-  expect_equal(
-    length(epi_outcome$p_infected),
+  expect_length(
+    epi_outcome$p_infected,
     n_demo_grps * n_risk_grps
   )
 })

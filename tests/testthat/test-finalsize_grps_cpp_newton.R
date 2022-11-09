@@ -68,8 +68,8 @@ test_that("Check finalsize by groups works for Polymod, newton solver", {
     all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
-  expect_equal(
-    length(epi_outcome$p_infected),
+  expect_length(
+    epi_outcome$p_infected,
     n_demo_grps * n_risk_grps
   )
 })
@@ -121,8 +121,8 @@ test_that("Check that more susceptible demo-grps have higher final size", {
     all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
-  expect_equal(
-    length(epi_outcome$p_infected),
+  expect_length(
+    epi_outcome$p_infected,
     n_demo_grps * n_risk_grps
   )
   # check that first group has higher final size
@@ -190,9 +190,9 @@ test_that("Check final size calculation is correct in complex case", {
     all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
-  expect_equal(
-    length(demography_vector),
-    length(epi_outcome$p_infected)
+  expect_length(
+    epi_outcome$p_infected,
+    length(demography_vector)
   )
 
   # test that final size differs by susceptibility group
