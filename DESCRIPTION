@@ -49,7 +49,10 @@ LinkingTo:
     Rcpp,
     RcppEigen
 Suggests: 
+    colorspace,
     covr,
+    knitr,
+    rmarkdown,
     socialmixr,
     testthat (>= 3.0.0),
     xml2
