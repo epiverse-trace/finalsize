@@ -17,7 +17,7 @@ contact_matrix <- contact_matrix / demography_vector
 test_that("Check finalsize by groups works for Polymod, iterative solver", {
   r0 <- 2.0
   n_demo_grps <- length(demography_vector)
-  n_risk_grps <- 4
+  n_risk_grps <- 4L
 
   # prepare p_susceptibility and susceptibility
   psusc <- matrix(
