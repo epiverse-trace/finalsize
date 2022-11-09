@@ -7,3 +7,5 @@
 ^\.lintr$
 ^\_pkgdown.yml$
 ^cran-comments\.md$
+^doc$
+^Meta$
