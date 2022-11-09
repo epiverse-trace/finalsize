@@ -50,12 +50,12 @@ test_that("Check finalsize by groups works for Polymod, iterative solver", {
     epi_outcome, "data.frame"
   )
   # check that values are not NaN
-  expect_true(
-    all(!is.nan(epi_outcome$p_infected))
+  expect_false(
+    any(is.nan(epi_outcome$p_infected))
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome$p_infected))
+    anyNA(epi_outcome$p_infected)
   )
   # check that solver returns no inf
   expect_false(

@@ -48,7 +48,7 @@ test_that("Iterative solver works with polymod data", {
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome$p_infected))
+    anyNA(epi_outcome$p_infected)
   )
   # check that solver returns no inf
   expect_false(

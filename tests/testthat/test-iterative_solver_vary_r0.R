@@ -42,7 +42,7 @@ test_that("Iterative solver works with r0 = 2", {
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome$p_infected))
+    anyNA(epi_outcome$p_infected)
   )
   # check that solver returns no inf
   expect_false(
@@ -86,7 +86,7 @@ test_that("Iterative solver works with r0 = 4", {
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome$p_infected))
+    anyNA(epi_outcome$p_infected)
   )
   # check that solver returns no inf
   expect_false(
@@ -144,7 +144,7 @@ test_that("Iterative solver works with r0 = 12", {
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome$p_infected))
+    anyNA(epi_outcome$p_infected)
   )
   # check that solver returns no inf
   expect_false(
@@ -205,7 +205,7 @@ test_that("Iterative solver works with r0 = 4, locked step size", {
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome$p_infected))
+    anyNA(epi_outcome$p_infected)
   )
   # check that solver returns no inf
   expect_false(

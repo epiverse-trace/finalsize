@@ -30,7 +30,7 @@ test_that("Iterative solver works with multiple risk groups", {
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome$p_infected))
+    anyNA(epi_outcome$p_infected)
   )
   # check that solver returns no inf
   expect_false(
@@ -83,7 +83,7 @@ test_that("Iterative solver works with multiple risk and age groups", {
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome$p_infected))
+    anyNA(epi_outcome$p_infected)
   )
   # check that solver returns no inf
   expect_false(
