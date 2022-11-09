@@ -1,0 +1,86 @@
+---
+title: "Background: Modelling final size"
+output: rmarkdown::html_vignette
+bibliography: references.bib  
+vignette: >
+  %\VignetteIndexEntry{Background: Modelling final size}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+The final size of an epidemic outbreak in a population, with differing levels of susceptibility to the disease, is taken from [@miller2012](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/):
+$$
+\begin{aligned}
+  \pi(i) &=  1 - \sum_k p_{ik}e^{-\sum_j\sigma_{ik}\Lambda_{ij}N_j\pi(j)}\\
+\end{aligned}
+$$
+
+Here
+- $\pi(i)$ the attack rate in (age) group $i$, 
+- $\sigma_{ik}$ the susceptibility for susceptibility group $k$ in (age) group $i$, 
+- $p_{ik}$ the probability that an individual in group $i$ has susceptibility $\sigma_{ik}$, 
+- $\Lambda_{ij}$ is the probability that an infected individual from group $j$ infects an individual from group $i$, and 
+- $N_j$ the population size of group $j$. 
+
+We can then define how the final size changes under vaccination by defining the derivative of the final size. Note that the equation above calculates the final size for the whole age group $i$. If instead we are interested in the final size by age group and susceptibility group, we can solve for: $\pi(i,k) =  1 - e^{-\sum_j\sigma_{ik}\Lambda_{ij}N_j\sum_lp_{jl}\pi(j,l)}$.
+
+The _finalsize_ package currently solves for the whole age group $i$.
+
+## Algorithm for an iterative solution
+
+Iterating on solutions should converge on the solution in [@bidari2016](https://www.sciencedirect.com/science/article/pii/S0025556416302802)
+
+The basic version of this algorithm solves for final size as
+
+$$
+\begin{aligned}
+  \pi(i)_{n+1} &=  1 - \sum_k p_{ik}e^{-\sum_j\sigma_{ik}\Lambda_{ij}N_j\pi(j)_n}\\
+\end{aligned}
+$$
+
+starting with an initial guess, e.g. $\pi(i)_0 = 10^{-5}$ and keep iterating until $\pi(i)_{n+1} \approx \pi(i)_n$. This step is implemented in `final_size` by passing the option `adapt_step = FALSE` in the control list.
+
+```
+final_size(
+  # other arguments here,
+  solver = "iterative",
+  control = list(
+    adapt_step = FALSE
+  )
+)
+```
+
+In _finalsize_, we introduce a scaling parameter ($\alpha$), to try to converge to the correct solution using fewer iterations. The value of this parameter is fairly arbritrary, but some care must be taken, to not overshoot the solution (and not step outside the bounds $0 \le \pi(i)_n \le 1$). Based on some experimenting a starting value of 1.9 seemed to perform best.
+
+$$
+\begin{aligned}
+  \pi(i)_{n+1} &=  1 - \sum_k p_{ik}e^{-\sum_j\sigma_{ik}\Lambda_{ij}N_j\pi'(j)_n}\\
+  \pi'(i)_{n+1}&=\alpha(\pi(i)_{n+1} - \pi'(i)_{n})+\pi'(i)_{n}
+\end{aligned}
+$$
+
+The size of the adaptive step can be set by passing the option `step_rate = 1.9` in the control list, and setting the `adapt_step` option to `TRUE`.
+
+```
+final_size(
+  # other arguments here,
+  solver = "iterative",
+  control = list(
+    adapt_step = TRUE,
+    step_rate = 1.9
+  )
+)
+```
+
+## Algorithm for a Newton-based solver
+
+WIP.
+
+## References
