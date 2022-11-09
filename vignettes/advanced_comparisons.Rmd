@@ -1,0 +1,23 @@
+---
+title: "Advanced comparisons between immunisation scenarios"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{advanced_comparisons}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+This vignette shows how to compare between immunisation scenarios
+
+```{r setup}
+library(finalsize)
+```

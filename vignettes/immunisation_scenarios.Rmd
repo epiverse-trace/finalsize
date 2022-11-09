@@ -3,8 +3,10 @@ title: "Comparing immunisation scenarios"
 rmarkdown::html_vignette:
   fig_caption: yes
   toc: yes
-vignette: "%\\VignetteIndexEntry{Comparing immunisation scenarios} %\\VignetteEncoding{UTF-8}
-  %\\VignetteEngine{knitr::rmarkdown}\n"
+vignette: >
+  %\VignetteIndexEntry{Comparing immunisation scenarios}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
 editor_options:
   chunk_output_type: console
 ---
@@ -385,7 +387,7 @@ final_sizes_summary$scenario = factor(
 )
 ```
 
-```{r}
+```{r echo=FALSE}
 ggplot(final_sizes_summary) +
   geom_col(
     aes(
