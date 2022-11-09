@@ -102,6 +102,8 @@ psusc <- matrix(
   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 )
 psusc <- psusc / rowSums(psusc)
+# In this example, all risk groups from all age groups are completely
+# susceptible
 susc <- matrix(
   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 )

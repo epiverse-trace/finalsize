@@ -77,7 +77,8 @@
 #'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 #' )
 #' psusc <- psusc / rowSums(psusc)
-#' # In this example, all risk groups from all age groups are completely susceptible
+#' # In this example, all risk groups from all age groups are completely
+#' # susceptible
 #' susc <- matrix(
 #'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 #' )
@@ -158,10 +159,10 @@ final_size <- function(r0,
       (
         max(eigen(contact_matrix)$values) - 1.0 < 1e-6
       ),
-    "Error: control list names can only be: 'iterations', 'tolerance', 
+    "Error: control list names can only be: 'iterations', 'tolerance',
     'step_rate', 'adapt_step'" =
       (
-        (names(control) %in% c("iterations", "tolerance", 
+        (names(control) %in% c("iterations", "tolerance",
         "step_rate", "adapt_step")) | (length(control) == 0)
       )
   )
