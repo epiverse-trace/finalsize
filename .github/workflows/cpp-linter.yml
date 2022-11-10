@@ -2,8 +2,7 @@ name: cpp-linter
 
 on:
   push:
-    branches:
-      - "*"
+    paths: "src/**"
   pull_request:
     branches:
       - "*"
