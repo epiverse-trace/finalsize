@@ -2,9 +2,9 @@ name: cpp-linter
 
 on:
   push:
-    paths-ignore: "docs/**"
+    paths: "src/**"
   pull_request:
-    paths-ignore: "docs/**"
+    paths: "src/**"
 
 jobs:
   cpp-linter:
@@ -17,8 +17,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          style: file
-          files-changed-only: false
+          style: 'google'
+          files-changed-only: true
 
       - name: Fail fast?!
         if: steps.linter.outputs.checks-failed != 0
