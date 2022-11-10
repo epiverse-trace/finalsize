@@ -17,7 +17,7 @@ contact_matrix <- contact_matrix / demography_vector
 test_that("Check finalsize by groups works for Polymod, iterative solver", {
   r0 <- 2.0
   n_demo_grps <- length(demography_vector)
-  n_risk_grps <- 4
+  n_risk_grps <- 4L
 
   # prepare p_susceptibility and susceptibility
   psusc <- matrix(
@@ -50,12 +50,12 @@ test_that("Check finalsize by groups works for Polymod, iterative solver", {
     epi_outcome, "data.frame"
   )
   # check that values are not NaN
-  expect_true(
-    all(!is.nan(epi_outcome$p_infected))
+  expect_false(
+    any(is.nan(epi_outcome$p_infected))
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome$p_infected))
+    anyNA(epi_outcome$p_infected)
   )
   # check that solver returns no inf
   expect_false(
@@ -69,12 +69,12 @@ test_that("Check finalsize by groups works for Polymod, iterative solver", {
     all(epi_outcome$p_infected < 1)
   )
   # check for number of demography groups returned
-  expect_equal(
+  expect_identical(
     n_demo_grps,
     length(unique(epi_outcome$demo_grp))
   )
   # check for overall length
-  expect_equal(
+  expect_identical(
     n_demo_grps * n_risk_grps,
     nrow(epi_outcome)
   )
@@ -143,8 +143,8 @@ test_that("Check that more susceptible demo-grps have higher final size", {
     all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
-  expect_equal(
-    length(epi_outcome$p_infected),
+  expect_length(
+    epi_outcome$p_infected,
     n_demo_grps * n_risk_grps
   )
   # check that first group has higher final size
@@ -214,9 +214,9 @@ test_that("Check final size calculation is correct in complex case", {
     all(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
-  expect_equal(
-    length(demography_vector),
-    length(epi_outcome$p_infected)
+  expect_length(
+    epi_outcome$p_infected,
+    length(demography_vector)
   )
 
   # test that final size differs by susceptibility group

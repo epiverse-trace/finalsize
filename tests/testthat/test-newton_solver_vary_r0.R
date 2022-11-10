@@ -5,8 +5,8 @@ upper_limit <- function(r0) {
     abs(1 - exp(-r0 * par[1]) - par[1])
   }
   opt <- optim(
-    par = c(0.5), fn = f,
-    lower = c(0), upper = c(1),
+    par = 0.5, fn = f,
+    lower = 0, upper = 1,
     method = "Brent"
   )
   opt
@@ -43,7 +43,7 @@ test_that("Newton solver works with r0 = 2", {
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome$p_infected))
+    anyNA(epi_outcome$p_infected)
   )
   # check that solver returns no inf
   expect_false(
@@ -57,9 +57,9 @@ test_that("Newton solver works with r0 = 2", {
     any(epi_outcome$p_infected < 1)
   )
   # check for size of the vector
-  expect_equal(
-    length(demography_vector) * ncol(psusc),
-    length(epi_outcome$p_infected)
+  expect_length(
+    epi_outcome$p_infected,
+    length(demography_vector) * ncol(psusc)
   )
 })
 
@@ -88,7 +88,7 @@ test_that("Newton solver works with r0 = 4", {
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome$p_infected))
+    anyNA(epi_outcome$p_infected)
   )
   # check that solver returns no inf
   expect_false(
@@ -112,9 +112,9 @@ test_that("Newton solver works with r0 = 4", {
     tolerance = tolerance
   )
   # check for size of the vector
-  expect_equal(
-    length(demography_vector) * ncol(psusc),
-    length(epi_outcome$p_infected)
+  expect_length(
+    epi_outcome$p_infected,
+    length(demography_vector) * ncol(psusc)
   )
 })
 
@@ -146,7 +146,7 @@ test_that("Newton solver works with r0 = 12", {
   )
   # check that solver returns no nas
   expect_false(
-    any(is.na(epi_outcome$p_infected))
+    anyNA(epi_outcome$p_infected)
   )
   # check that solver returns no inf
   expect_false(
@@ -170,8 +170,8 @@ test_that("Newton solver works with r0 = 12", {
     tolerance = tolerance
   )
   # check for size of the vector
-  expect_equal(
-    length(demography_vector) * ncol(psusc),
-    length(epi_outcome$p_infected)
+  expect_length(
+    epi_outcome$p_infected,
+    length(demography_vector) * ncol(psusc)
   )
 })

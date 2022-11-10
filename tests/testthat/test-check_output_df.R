@@ -51,11 +51,11 @@ test_that("Finalsize returns correct demography names", {
   )
 
   # check for names
-  expect_equal(
-    unique(epi_outcome$demo_grp),
-    names(demography_vector)
+  expect_named(
+    demography_vector,
+    unique(epi_outcome$demo_grp)
   )
-  expect_equal(
+  expect_setequal(
     unique(epi_outcome$susc_grp), c("susceptible", "immunised")
   )
 })
@@ -80,12 +80,12 @@ test_that("Finalsize takes demography names from contact data", {
   )
 
   # check for names
-  expect_equal(
-    unique(epi_outcome$demo_grp),
+  expect_setequal(
+    epi_outcome$demo_grp,
     rownames(contact_matrix)
   )
-  expect_equal(
-    unique(epi_outcome$susc_grp), c("susceptible", "immunised")
+  expect_setequal(
+    epi_outcome$susc_grp, c("susceptible", "immunised")
   )
 })
 
@@ -109,12 +109,12 @@ test_that("Finalsize generates group names", {
   )
 
   # check for names
-  expect_equal(
-    unique(epi_outcome$demo_grp),
-    sprintf("demo_grp_%i", seq(length(demography_vector)))
+  expect_setequal(
+    epi_outcome$demo_grp,
+    sprintf("demo_grp_%i", seq_along(demography_vector))
   )
-  expect_equal(
-    unique(epi_outcome$susc_grp),
+  expect_setequal(
+    epi_outcome$susc_grp,
     sprintf(
       "susc_grp_%i", seq_len(ncol(susc))
     )
