@@ -44,8 +44,7 @@ Suggests:
 Config/testthat/edition: 3
 License: MIT + file LICENSE
 Imports:
-    Rcpp,
-    RcppEigen
+    Rcpp
 LinkingTo: 
     Rcpp,
     RcppEigen,
