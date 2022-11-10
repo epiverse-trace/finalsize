@@ -44,9 +44,9 @@ Eigen::ArrayXd solve_final_size_iterative(
   zeros.fill(0);
 
   Eigen::ArrayXd epi_final_size;  // prev in settings struct
-  if (epi_final_size.size() != nDim)
-  {
-    epi_final_size.resize(nDim); epi_final_size.fill(0.5);
+  if (epi_final_size.size() != nDim) {
+    epi_final_size.resize(nDim);
+    epi_final_size.fill(0.5);
   }
 
   Eigen::MatrixXd contact_matrix_ = contact_matrix;
