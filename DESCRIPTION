@@ -4,18 +4,18 @@ Version: 0.1
 Authors@R: 
     c(
         person(
-            given = "Adam",
-            family = "Kucharski",
-            role = c("aut", "cre"),
-            email = "adam.kucharski@lshtm.ac.uk",
-            comment = c(ORCID = "https://orcid.org/0000-0001-8814-9421")
-        ),
-        person(
             given = "Pratik",
             family = "Gupte",
-            role = c("aut"),
+            role = c("aut", "cre"),
             email = "pratik.gupte@lshtm.ac.uk",
             comment = c(ORCID = "https://orcid.org/0000-0001-5294-7819")
+        ),
+        person(
+            given = "Adam",
+            family = "Kucharski",
+            role = c("aut"),
+            email = "adam.kucharski@lshtm.ac.uk",
+            comment = c(ORCID = "https://orcid.org/0000-0001-8814-9421")
         ),
         person(
             given = "Hugo",
