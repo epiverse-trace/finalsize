@@ -32,7 +32,7 @@ Authors@R:
             comment = c(ORCID = "https://orcid.org/0000-0003-3796-2097")
         )
     )
-Description: This package contains function for calculating final size for an SIR epidemic in a heterogenous population, given social contact matrix and demographic data.
+Description: Functions for calculating final size for an SIR epidemic in a heterogenous population, given social contact matrix and demographic data.
 RoxygenNote: 7.2.1
 Roxygen: list(markdown = TRUE)
 Encoding: UTF-8
