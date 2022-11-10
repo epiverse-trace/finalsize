@@ -3,9 +3,11 @@ name: cpp-linter
 on:
   push:
     paths: "src/**"
+    paths-ignore: "src/RcppExports.cpp"
   pull_request:
     branches:
       - "*"
+    paths-ignore: "src/RcppExports.cpp"
 
 jobs:
   cpp-linter:
