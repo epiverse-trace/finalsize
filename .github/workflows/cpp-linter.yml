@@ -19,7 +19,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           style: 'google'
-          files-changed-only: true
+          files-changed-only: false
           thread-comments: true
 
       - name: Fail fast?!
@@ -27,4 +27,4 @@ jobs:
         run: |
           echo "some linter checks failed. ${{ steps.linter.outputs.checks-failed }}"
         # for actual deployment
-        # run: exit 1
+        run: exit 1
