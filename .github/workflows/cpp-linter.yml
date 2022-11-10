@@ -20,6 +20,7 @@ jobs:
         with:
           style: 'google'
           files-changed-only: true
+          thread-comments: true
 
       - name: Fail fast?!
         if: steps.linter.outputs.checks-failed != 0
