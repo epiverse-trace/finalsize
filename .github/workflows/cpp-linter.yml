@@ -3,11 +3,9 @@ name: cpp-linter
 on:
   push:
     paths: "src/**"
-    paths-ignore: "src/RcppExports.cpp"
   pull_request:
     branches:
       - "*"
-    paths-ignore: "src/RcppExports.cpp"
 
 jobs:
   cpp-linter:
@@ -23,6 +21,7 @@ jobs:
           style: 'google'
           files-changed-only: false
           thread-comments: true
+          ignore: "src/RcppExports.cpp"
 
       - name: Fail fast?!
         if: steps.linter.outputs.checks-failed != 0
