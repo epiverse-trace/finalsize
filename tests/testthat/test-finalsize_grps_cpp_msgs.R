@@ -20,7 +20,7 @@ susceptibility <- matrix(1, ncol = 1, 3)
 # check for errors and messages
 test_that("Check for errors and messages", {
   r0 <- 2
-  
+
   # 'wrong' demography vector
   demography_vector <- c(demography_vector, 100)
 

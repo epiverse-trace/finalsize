@@ -41,7 +41,7 @@ library(finalsize)
 
 _finalsize_ provides the single function `final_size()`, to calculate the final size of an epidemic.
 
-Here, an example using social contact data from the `socialmixr` package investigates the final size of an epidemic when the disease has an R<sub>0</sub> of 2.0, and given three age groups of interest --- 0-19, 20-39 and 40+.
+Here, an example using social contact data from the _socialmixr_ package investigates the final size of an epidemic when the disease has an R<sub>0</sub> of 2.0, and given three age groups of interest --- 0-19, 20-39 and 40+.
 The under-20 age group is assumed to be fully susceptible to the disease, whereas individuals aged over 20 are only half as susceptible.
 
 ```r
@@ -54,7 +54,8 @@ data(polymod)
 contact_data <- contact_matrix(
   polymod, 
   countries = "United Kingdom", 
-  age.limits = c(0,20,40)
+  age.limits = c(0,20,40),
+  symmetric = TRUE
 )
 
 # Define contact matrix (entry {ij} is contacts in group i reported by group j)
@@ -96,6 +97,19 @@ final_size(
   susceptibility
 )
 ```
+
+## Help 
+
+To report a bug please open an [issue](https://github.com/epiverse-trace/finalsize/issues/new/choose)
+
+## Contribute
+
+Contributions to `finalsize` are welcomed. Please follow the [package contributing guide](https://github.com/epiverse-trace/finalsize/blob/main/.github/CONTRIBUTING.md).
+
+## Code of Conduct
+
+Please note that the `finalsize` project is released with a [Contributor Code of Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
+
 
 ## Citation
 
