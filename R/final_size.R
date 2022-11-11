@@ -162,8 +162,10 @@ final_size <- function(r0,
     "Error: control list names can only be: 'iterations', 'tolerance',
     'step_rate', 'adapt_step'" =
       (
-        (names(control) %in% c("iterations", "tolerance",
-        "step_rate", "adapt_step")) | (length(control) == 0)
+        (names(control) %in% c(
+          "iterations", "tolerance",
+          "step_rate", "adapt_step"
+        )) | (length(control) == 0)
       )
   )
 
@@ -185,8 +187,7 @@ final_size <- function(r0,
   )
 
   # modify control list by solver
-  con <- switch(
-    solver,
+  con <- switch(solver,
     iterative = con,
     newton = con[c("iterations", "tolerance")]
   )
