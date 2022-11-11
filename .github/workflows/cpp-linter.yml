@@ -22,6 +22,7 @@ jobs:
           files-changed-only: false
           thread-comments: true
           ignore: "src/RcppExports.cpp"
+          extra-args: -header-filter=<"Rcpp.h">
 
       - name: Fail fast?!
         if: steps.linter.outputs.checks-failed != 0
