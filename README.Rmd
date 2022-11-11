@@ -29,12 +29,9 @@ _finalsize_ relies on [Eigen](https://eigen.tuxfamily.org/) via [RcppEigen](http
 
 You can install the development version of finalsize from [GitHub](https://github.com/) with:
 
-``` r
+```r
 # install.packages("devtools")
 devtools::install_github("epiverse-trace/finalsize")
-
-# load finalsize
-library(finalsize)
 ```
 
 ## Quick start
@@ -44,10 +41,13 @@ _finalsize_ provides the single function `final_size()`, to calculate the final 
 Here, an example using social contact data from the _socialmixr_ package investigates the final size of an epidemic when the disease has an R<sub>0</sub> of 2.0, and given three age groups of interest --- 0-19, 20-39 and 40+.
 The under-20 age group is assumed to be fully susceptible to the disease, whereas individuals aged over 20 are only half as susceptible.
 
-```r
+```{r}
 # Load socialmixr package
 # install.packages("socialmixr")
 library(socialmixr)
+
+# load finalsize
+library(finalsize)
 
 # Load data from POLYMOD
 data(polymod)
@@ -89,7 +89,7 @@ p_susceptibility <- matrix(
 r0 <- 1.3 # seasonal influenza
 
 # Calculate the proportion of individuals infected
-final_size(
+finalsize::final_size(
   r0,
   contact_matrix,
   demography_vector,
