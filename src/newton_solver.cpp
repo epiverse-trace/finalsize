@@ -33,15 +33,11 @@ Eigen::ArrayXd solve_final_size_newton(const Eigen::MatrixXd &contact_matrix,
   // count number of demography groups
   size_t nDim = demography_vector.size();
 
-  Eigen::ArrayXi zeros;  // previously in the settings struct
-  zeros.resize(nDim);
+  Eigen::ArrayXi zeros(nDim);
   zeros.fill(0);
 
-  Eigen::ArrayXd epi_final_size;  // prev in settings struct
-  if (epi_final_size.size() != nDim) {
-    epi_final_size.resize(nDim);
-    epi_final_size.fill(0.5);
-  }
+  Eigen::ArrayXd epi_final_size(nDim);  // prev in settings struct
+  epi_final_size.fill(0.5);
 
   Eigen::MatrixXd contact_matrix_ = contact_matrix;
   for (size_t i = 0; i < contact_matrix.rows(); ++i) {

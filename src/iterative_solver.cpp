@@ -39,15 +39,11 @@ Eigen::ArrayXd solve_final_size_iterative(
   // count number of demography groups
   size_t nDim = demography_vector.size();
 
-  Eigen::ArrayXi zeros;  // previously in the settings struct
-  zeros.resize(nDim);
+  Eigen::ArrayXi zeros(nDim);
   zeros.fill(0);
 
-  Eigen::ArrayXd epi_final_size;  // prev in settings struct
-  if (epi_final_size.size() != nDim) {
-    epi_final_size.resize(nDim);
-    epi_final_size.fill(0.5);
-  }
+  Eigen::ArrayXd epi_final_size(nDim);  // prev in settings struct
+  epi_final_size.fill(0.5);
 
   Eigen::MatrixXd contact_matrix_ = contact_matrix;
   for (size_t i = 0; i < contact_matrix.rows(); ++i) {
@@ -86,12 +82,14 @@ Eigen::ArrayXd solve_final_size_iterative(
   };
 
   double current_error = step_rate * nDim;
+  double error = NAN;
+  const double step_change = 1.1;
 
   for (auto i = 0; i < iterations; ++i) {
     epi_final_size_return = f(epi_final_size, std::move(epi_final_size_return));
 
     Eigen::ArrayXd dpi = epi_final_size - epi_final_size_return.array();
-    double error = dpi.abs().sum();
+    error = dpi.abs().sum();
     if (error < tolerance) {
       epi_final_size -= dpi;
       break;
@@ -100,7 +98,9 @@ Eigen::ArrayXd solve_final_size_iterative(
     double change = (current_error - error);
     if (change > 0) {
       epi_final_size -= step_rate * dpi;
-      if (adapt_step) step_rate *= 1.1;
+      if (adapt_step) {
+        step_rate *= step_change;
+      };
     } else {
       epi_final_size -= dpi;
       if (adapt_step) step_rate = std::max(0.9 * step_rate, 1.0);
