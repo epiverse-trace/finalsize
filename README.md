@@ -20,7 +20,7 @@ pharmaceutical interventions in the form of immunisation programmes, or
 the effect of naturally acquired immunity through previous infection
 (see the vignette).
 
-*finalsize* relies on [Eigen](https://eigen.tuxfamily.org/) via
+*finalsize* relies on [Eigen](https://gitlab.com/libeigen/eigen) via
 [RcppEigen](https://github.com/RcppCore/RcppEigen) for fast matrix
 algebra, and is developed at the [Centre for the Mathematical Modelling
 of Infectious
@@ -141,5 +141,5 @@ By contributing to this project, you agree to abide by its terms.
 Kucharski AJ, Kwok KO, Wei VW, Cowling BJ, Read JM, Lessler J, Cummings
 DA, Riley S. [The contribution of social behaviour to the transmission
 of influenza A in a human
-population](http://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004206).
+population](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004206).
 PLOS Pathogens 2014;10(6):e1004206 PMID: 24968312
