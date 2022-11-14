@@ -23,7 +23,7 @@ _finalsize_ provides quick back-of-the-envelope calculations for the final size 
 
 _finalsize_ can help provide rough estimates of the effectiveness of pharmaceutical interventions in the form of immunisation programmes, or the effect of naturally acquired immunity through previous infection (see the vignette).
 
-_finalsize_ relies on [Eigen](https://eigen.tuxfamily.org/) via [RcppEigen](https://github.com/RcppCore/RcppEigen) for fast matrix algebra, and is developed at the [Centre for the Mathematical Modelling of Infectious Diseases](https://www.lshtm.ac.uk/research/centres/centre-mathematical-modelling-infectious-diseases) at the London School of Hygiene and Tropical Medicine as part of the [Epiverse Initiative](https://data.org/initiatives/epiverse/).
+_finalsize_ relies on [Eigen](https://gitlab.com/libeigen/eigen) via [RcppEigen](https://github.com/RcppCore/RcppEigen) for fast matrix algebra, and is developed at the [Centre for the Mathematical Modelling of Infectious Diseases](https://www.lshtm.ac.uk/research/centres/centre-mathematical-modelling-infectious-diseases) at the London School of Hygiene and Tropical Medicine as part of the [Epiverse Initiative](https://data.org/initiatives/epiverse/).
 
 ## Installation
 
@@ -113,4 +113,4 @@ Please note that the `finalsize` project is released with a [Contributor Code of
 
 ## Citation
 
-Kucharski AJ, Kwok KO, Wei VW, Cowling BJ, Read JM, Lessler J, Cummings DA, Riley S. [The contribution of social behaviour to the transmission of influenza A in a human population](http://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004206). PLOS Pathogens 2014;10(6):e1004206 PMID: 24968312
+Kucharski AJ, Kwok KO, Wei VW, Cowling BJ, Read JM, Lessler J, Cummings DA, Riley S. [The contribution of social behaviour to the transmission of influenza A in a human population](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004206). PLOS Pathogens 2014;10(6):e1004206 PMID: 24968312
