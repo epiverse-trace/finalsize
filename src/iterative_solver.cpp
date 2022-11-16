@@ -1,4 +1,4 @@
-
+// Copyright (c) 2022 finalsize authors. See the LICENCE.md file for more.
 #include <Rcpp.h>
 #include <RcppEigen.h>
 
@@ -100,7 +100,7 @@ Eigen::ArrayXd solve_final_size_iterative(
       epi_final_size -= step_rate * dpi;
       if (adapt_step) {
         step_rate *= step_change;
-      };
+      }
     } else {
       epi_final_size -= dpi;
       if (adapt_step) step_rate = std::max(0.9 * step_rate, 1.0);

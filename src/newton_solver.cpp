@@ -1,4 +1,4 @@
-
+// Copyright (c) 2022 finalsize authors. See the LICENCE.md file for more.
 #include <Rcpp.h>
 #include <RcppEigen.h>
 
