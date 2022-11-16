@@ -24,4 +24,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: sudo apt-get install cppcheck
-      - run: cppcheck -isrc/RcppExports.cpp --quiet --enable=all --error-exitcode=1 .
+      - run: cppcheck -isrc/RcppExports.cpp --quiet --enable=warning --error-exitcode=1 .
