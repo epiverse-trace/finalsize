@@ -38,7 +38,7 @@ library(ggplot2)
 library(colorspace)
 ```
 
-## Epidemic outbreak in a population with uniform susceptibility
+## Getting contact and demography data
 
 This example uses social contact data from the [POLYMOD](https://cordis.europa.eu/project/id/502084) project to estimate the final size of an epidemic in the UK. These data are provided with the `socialmixr` package.
 
@@ -60,6 +60,7 @@ contact_data <- socialmixr::contact_matrix(
 # get the contact matrix and demography data
 contact_matrix <- t(contact_data$matrix)
 demography_vector <- contact_data$demography$population
+demography_data <- contact_data$demography
 
 # scale the contact matrix so the largest eigenvalue is 1.0
 contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
@@ -69,6 +70,8 @@ contact_matrix <- contact_matrix / demography_vector
 
 n_demo_grps <- length(demography_vector)
 ```
+
+## Basic usage: Epidemic outbreak with uniform susceptibility
 
 In the early stages of an epidemic outbreak, it may be unclear how susceptibility to the disease varies with individual characteristic, such as age. An initial, safe assumption might be that all age groups have a similar susceptibility. 
 
@@ -80,7 +83,7 @@ n_susc_groups <- 1L
 susc_guess <- 1.0
 ```
 
-We model high uniform susceptibility as a matrix with values the range 0.0 -- 1.0, with as many rows as there are demography groups. Higher values indicate higher susceptibility. The matrix has a single column, representing the single susceptibility group to which all these individuals belong.
+We model high uniform susceptibility as a matrix with values in the range 0.0 -- 1.0, with as many rows as there are demography groups. Higher values indicate higher susceptibility. The matrix has a single column, representing the single susceptibility group to which all these individuals belong.
 
 ```{r}
 susc_uniform <- matrix(
@@ -102,70 +105,49 @@ p_susc_uniform <- matrix(
 )
 ```
 
-Along with uncertainty around population susceptibility to the disease, disease attributes such as the reproduction number R<sub>0</sub> might be uncertain in the early stages of an outbreak.
+### Running final_size
 
-Using _finalsize_, we can quickly calculate the proportion of individuals infected in each demographic group for a broad range of R<sub>0</sub>. Here, we shall consider values of 1.3, 2.0, 3.0, 5.0, and 9.0.
-
-These correspond roughly to the R<sub>0</sub> of directly transmitted respiratory diseases: influenza strains (1.3 -- 2.0), the original Covid-19 strain (2.0 -- 3.0), the Covid-19 Alpha and Delta variants (≈ 5.0), and the Covid-19 Omicron variant and its subtypes (≈ 9.0).
+We assume that the disease has an $R_0$ of 2.0, similar to some strains of seasonal influenza. The final size of the epidemic in the population can then be calculated as follows.
 
 ```{r}
-r0_range <- c(1.3, 2.0, 3.0, 5.0, 9.0)
-```
+# define r0 as 2.0
+r0 <- 2.0
 
-```{r}
-# we run final size over all r0 values
-final_sizes <- lapply(
-  X = r0_range,
-  FUN = function(r0) {
-    df <- final_size(
-      r0 = r0,
-      contact_matrix = contact_matrix,
-      demography_vector = demography_vector,
-      susceptibility = susc_uniform,
-      p_susceptibility = p_susc_uniform
-    )
+# calculate final size
+final_size_data <- final_size(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susc_uniform,
+  p_susceptibility = p_susc_uniform
+)
 
-    df$r0 <- r0
-
-    df
-  }
+# order demographic groups
+final_size_data$demo_grp = factor(
+  final_size_data$demo_grp,
+  levels = demography_data$age.group
 )
 ```
 
-We can prepare this data for a simple visualisation that shows how the increasing R<sub>0</sub> of a disease affects the final size of the epidemic in this population.
+### Visualise final sizes
 
-```{r}
-# prepare data as a dataframe
-final_sizes <- rbindlist(final_sizes)
-
-# prepare age group order
-final_sizes$demo_grp <- factor(
-  final_sizes$demo_grp,
-  levels = contact_data$demography$age.group
-)
-```
-
-We can visualise the final sizes as proportion of each age group infected, with colours indicating the R<sub>0</sub> of the disease.
-
-```{r echo=FALSE, fig.cap = "Final size of an epidemic in a population with high susceptibility to disease in all age groups. In this example, over 25% of all age groups except the over-65s are infected when the disease has an R<sub>0</sub> of 1.3, equivalent to seasonal influenza. This reflects the greater social contacts of these groups. In contrast, diseases with an R<sub>0</sub> of 5.0 or 9.0 would infect nearly the same proportion of people in all age groups, reflecting their increased transmissibility."}
-# plot as columns
-ggplot(final_sizes) +
+```{r echo=FALSE, fig.cap = "Some caption here"}
+# plot data
+ggplot(final_size_data) +
   geom_col(
     aes(
-      x = demo_grp, y = p_infected,
-      fill = as.factor(r0)
+      demo_grp, p_infected
     ),
-    col = "black",
-    position = position_dodge(
-      width = 0.75
-    )
+    fill = "grey",
+    col = "black"
   ) +
   scale_fill_discrete_sequential(
     palette = "Purple-Yellow",
-    name = "R<sub>0</sub>"
+    name = "$R_0$"
   ) +
   scale_y_continuous(
-    labels = scales::percent
+    labels = scales::percent,
+    limits = c(0, 1)
   ) +
   theme(
     legend.position = "top",
@@ -178,9 +160,74 @@ ggplot(final_sizes) +
     x = "Age group",
     y = "% Infected"
   )
+
 ```
 
-## From final size proportions to counts
+## Uncertainty in $R_0$
+
+The reproduction number $R_0$ might be uncertain in the early stages of an outbreak. We can model this uncertainty in the $R_0$ by running `final_size` multiple times for the same contact and demography data, while sampling $R_0$ values from a distribution.
+
+We assume that estimates of the disease's $R_0$ are from a normal distribution $N(\mu = 2.0, \sigma = 0.1)$. We shall draw 1,000 samples of $R_0$ and run `final_size` on the contact data and demography data for each sample.
+
+Use cases like this demonstrate the benefits of writing `finalsize` with a C++ backend.
+
+```{r}
+# create an R0 samples vector
+r0_samples <- rnorm(n = 1000, mean = 2.0, sd = 0.1)
+```
+
+```{r}
+# run final size on each sample with the same data
+final_size_data <- Map(
+  r0_samples, seq_along(r0_samples),
+  f = function(r0, i) {
+    fs <- final_size(
+      r0 = r0,
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      susceptibility = susc_uniform,
+      p_susceptibility = p_susc_uniform
+    )
+    
+    fs$replicate <- i
+    fs
+  }
+)
+
+# combine data
+final_size_data = rbindlist(final_size_data)
+
+# order age groups
+final_size_data$demo_grp = factor(
+  final_size_data$demo_grp,
+  levels = demography_data$age.group
+)
+```
+
+### Visualise uncertainty in final size
+
+```{r echo=FALSE}
+ggplot(final_size_data) +
+  geom_boxplot(
+    aes(
+      demo_grp, p_infected
+    ),
+    outlier.size = 0.2
+  ) +
+  scale_fill_discrete_sequential(
+    rev = FALSE
+  ) +
+  scale_y_continuous(
+    labels = scales::percent,
+    limits = c(0, 1)
+  ) +
+  labs(
+    x = "Age group",
+    y = "% Infected"
+  )
+```
+
+### From final size proportions to counts
 
 `finalsize` returns the _proportion_ of each age (and risk) group infected in an epidemic outbreak. These proportions can be be converted into population counts --- numbers of people --- by multiplication with the demography vector.
 
@@ -191,40 +238,31 @@ The example below show how this can be done.
 demography_data <- contact_data$demography
 
 # merge final size counts with demography vector
-final_sizes <- merge.data.table(
-  final_sizes,
+final_size_data <- merge.data.table(
+  final_size_data,
   demography_data,
   by.x = "demo_grp",
   by.y = "age.group"
 )
 
 # reset age group order
-final_sizes$demo_grp <- factor(
-  final_sizes$demo_grp,
+final_size_data$demo_grp <- factor(
+  final_size_data$demo_grp,
   levels = contact_data$demography$age.group
 )
 
 # multiply counts with prportion infected
-final_sizes[, n_infected := p_infected * population]
+final_size_data[, n_infected := p_infected * population]
 ```
 
 The final _counts_ infected can be visualised as well.
 
-```{r echo=FALSE, fig.cap="Final size of an epidemic outbreak in a population, for different values of disease R<sub>0</sub>. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in most disease outbreaks. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected."}
-ggplot(final_sizes) +
-  geom_col(
+```{r echo=FALSE, fig.cap="Final size of an epidemic outbreak in a population, for different values of disease $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in most disease outbreaks. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected."}
+ggplot(final_size_data) +
+  geom_boxplot(
     aes(
-      x = demo_grp, y = n_infected,
-      fill = as.factor(r0)
-    ),
-    col = "black",
-    position = position_dodge(
-      width = 0.75
+      x = demo_grp, y = n_infected
     )
-  ) +
-  scale_fill_discrete_sequential(
-    palette = "Blue-Yellow",
-    name = "R<sub>0</sub>"
   ) +
   scale_y_continuous(
     labels = scales::comma_format(
@@ -246,7 +284,7 @@ ggplot(final_sizes) +
 
 ---
 
-## Age group contribution to final sizes
+### Age group contribution to final sizes
 
 The contribution of each age group to the outbreak's final size can be calculated as the number of individuals in each age group infected as a proportion of the total number of individuals infected in the outbreak.
 
@@ -254,25 +292,16 @@ This can help show which age groups are most influential for epidemic dynamics.
 
 ```{r}
 # calculate the proportional contribution to final size of the epidemic
-final_sizes[, p_contribution := n_infected / sum(n_infected),
-            by = c("r0")]
+final_size_data[, p_contribution := n_infected / sum(n_infected),
+                by = c("replicate")]
 ```
 
 ```{r echo=FALSE, fig.cap="insert caption here"}
-ggplot(final_sizes) +
-  geom_col(
+ggplot(final_size_data) +
+  geom_boxplot(
     aes(
-      x = as.factor(r0), y = p_contribution,
-      fill = demo_grp
-    ),
-    col = "black",
-    position = position_stack(
-      reverse = TRUE
+      x = demo_grp, y = p_contribution
     )
-  ) +
-  scale_fill_discrete_sequential(
-    palette = "Hawaii",
-    name = "Age group"
   ) +
   scale_y_continuous(
     labels = scales::percent
@@ -283,50 +312,7 @@ ggplot(final_sizes) +
     )
   ) +
   labs(
-    x = "R<sub>0</sub>",
+    x = "Age group",
     y = "% of final epidemic size"
-  ) +
-  theme(
-    axis.title.x = ggtext::element_markdown()
   )
 ```
-
-```{r echo=FALSE, fig.cap="Difference between the proportion of individuals in each age group infected, and the proportion of the corresponding in the population. Compared to previous visualisations, this figure shows that some groups are disproportionately infected relative to their population proportion. This effect is especially noticeable for less transmissible diseases. For example, the age group 5 -- 18 are infected substantially more than their population proportion, which is not always visible in the proportion, or raw counts of final sizes. Conversely, the age group 40 -- 65, despite making up a large number of overall cases, has a lower proportion infected than their proportion in the population."}
-ggplot(final_sizes) +
-  geom_hline(
-    yintercept = 0,
-    lty = 3
-  ) +
-  geom_col(
-    aes(
-      x = as.factor(r0), 
-      y = p_contribution - proportion,
-      fill = demo_grp
-    ),
-    col = "black",
-    position = position_dodge(
-      width = 0.75
-    )
-  ) +
-  scale_y_continuous(
-    labels = scales::percent
-  ) +
-  scale_fill_discrete_sequential(
-    palette = "Hawaii",
-    name = "Age group"
-  ) +
-  guides(
-    fill = guide_legend(
-      reverse = TRUE
-    )
-  ) +
-  labs(
-    x = "R<sub>0</sub>",
-    y = "Difference b/w proportion infected\
-    and population proportion"
-  ) +
-  theme(
-    axis.title.x = ggtext::element_markdown()
-  )
-```
-
