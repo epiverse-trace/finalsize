@@ -92,7 +92,7 @@
 #'   susceptibility = susc
 #' )
 #'
-#' # using manually specified solver settings
+#' # using manually specified solver settings for the iterative solver
 #' control <- list(
 #'   iterations = 1000,
 #'   tolerance = 1e-6,
