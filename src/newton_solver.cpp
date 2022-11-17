@@ -22,6 +22,7 @@
 //' the error drops below this tolerance. Defaults to set `1e-6`.
 //' Larger tolerance values are likely to lead to inaccurate final size
 //' estimates.
+//' @keywords internal
 //'
 //' @return A two dimensional array of final sizes per age-risk group.
 // [[Rcpp::export(name = ".solve_newton")]]

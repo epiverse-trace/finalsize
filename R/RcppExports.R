@@ -20,6 +20,7 @@
 #' work well.
 #' @param adapt_step Boolean, whether the solver step rate should be changed
 #' based on the solver error. Defaults to TRUE.
+#' @keywords internal
 #'
 #' @return A vector of final sizes, of the size (N demography groups *
 #' N risk groups).
@@ -42,6 +43,7 @@
 #' the error drops below this tolerance. Defaults to set `1e-6`.
 #' Larger tolerance values are likely to lead to inaccurate final size
 #' estimates.
+#' @keywords internal
 #'
 #' @return A two dimensional array of final sizes per age-risk group.
 .solve_newton <- function(contact_matrix, demography_vector, susceptibility, iterations = 10000L, tolerance = 1e-6) {
