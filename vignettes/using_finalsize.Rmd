@@ -1,22 +1,45 @@
 ---
-title: "Calculating the final size of an epidemic outbreak"
+title: "Calculating the final size of an epidemic"
 output:
-  rmarkdown::html_vignette:
+  bookdown::html_vignette2:
     fig_caption: yes
-    toc: true
+pkgdown:
+  as_is: true
 bibliography: references.bib
 vignette: >
-  %\VignetteIndexEntry{Calculatinng the final size of an epidemic}
+  %\VignetteIndexEntry{Calculating the final size of an epidemic}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+The final size of an epidemic can be calculated using the _finalsize_ package, using methods detailed in [@miller2012](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/). See the [Modelling Background vignette](modelling_background.html) for more on the theory underlying final size calculations.
+
+::: {.alert .alert-primary}
+## Use case {-}
+
+An epidemic is underway. You want to know how many individuals are likely to be infected in total: this is the cumulative sum of all infections, or the _final size_ of the epidemic.
+:::
+
+::: {.alert .alert-secondary}
+### What you have {-}
+
+  1. An estimate of the disease's basic reproductive number $R_0$;
+  2. An estimate of the distribution of the population in different demographic groups, often, age groups;
+  3. An estimate of the contacts between individuals of different demographic groups; and
+  4. An estimate of the susceptibility of each demographic group to the disease.
+
+### What you assume {-}
+
+  1. That the disease dynamics can be captured using a Susceptible-Infectious-Recovered (SIR) model.
+:::
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   message = FALSE,
-  warning = FALSE
+  warning = FALSE,
+  dev = "svglite"
 )
 ```
 
@@ -38,12 +61,23 @@ library(ggplot2)
 library(colorspace)
 ```
 
-## Getting contact and demography data
+## Getting $R_0$
 
-This example uses social contact data from the [POLYMOD](https://cordis.europa.eu/project/id/502084) project to estimate the final size of an epidemic in the UK. These data are provided with the `socialmixr` package.
+A number of sophisticated statistical methods can be used to estimate the $R_0$ of an epidemic in its early stages. These are not covered here.
+
+Instead, this example considers a disease with an $R_0$ of 2.0, similar to some strains of seasonal influenza.
+
+```{r}
+# define r0 as 2.0
+r0 <- 2.0
+```
+
+## Getting and preparing contact and demography data
+
+This example uses social contact data from the [POLYMOD](https://cordis.europa.eu/project/id/502084) project to estimate the final size of an epidemic in the U.K. These data are provided with the `socialmixr` package.
 
 The contact data are divided into five age groups: 0 -- 5, 5 -- 18, 18 -- 40, 40 -- 65, and 65 and over, specified using the `age.limits` argument in `socialmixr::contact_matrix()`.
-The `symmetric = TRUE` argument to `socialmixr::contact_matrix()` returns a symmetric contact matrix, so that the contacts reported by group _{i}_ of individuals from group _{j}_ are the same as those reported by group _{j}_ of group _{i}_.
+The `symmetric = TRUE` argument to `socialmixr::contact_matrix()` returns a symmetric contact matrix, so that the contacts reported by group $\{i\}$ of individuals from group $\{j\}$ are the same as those reported by group $\{j\}$ of group $\{i\}$.
 
 The demographic data --- the number of individuals in each age group --- is also available through `socialmixr::contact_matrix()`.
 
@@ -71,19 +105,26 @@ contact_matrix <- contact_matrix / demography_vector
 n_demo_grps <- length(demography_vector)
 ```
 
-## Basic usage: Epidemic outbreak with uniform susceptibility
+::: {.alert .alert-secondary}
 
-In the early stages of an epidemic outbreak, it may be unclear how susceptibility to the disease varies with individual characteristic, such as age. An initial, safe assumption might be that all age groups have a similar susceptibility. 
+### Heterogeneous social mixing {-}
 
-When the outbreak is of a novel pathogen or strain, the initial assumption might also be that all individuals, regardless of age, have a high susceptibility to the disease. Later sections will show how to implement different assumptions.
+The social contact data used in this example illustrate an important way in which populations may be heterogeneous: the various age groups can have quite different patterns of social contacts.
+
+The method implemented in _finalsize_ accounts for this heterogeneity. Other forms of population heterogeneity are covered in the [Heterogeneous susceptibility](varying_susceptibility.html) vignette.
+:::
+
+## Population susceptibility
+
+In the early stages of an epidemic outbreak, a safe assumption might be that all age groups have a similar susceptibility. 
+
+High uniform susceptibility can be modelled as a matrix with values of 1.0, with as many rows as there are demography groups. The matrix has a single column, representing the single susceptibility group to which all individuals belong.
 
 ```{r}
 # all individuals are equally and highly susceptible
 n_susc_groups <- 1L
 susc_guess <- 1.0
 ```
-
-We model high uniform susceptibility as a matrix with values in the range 0.0 -- 1.0, with as many rows as there are demography groups. Higher values indicate higher susceptibility. The matrix has a single column, representing the single susceptibility group to which all these individuals belong.
 
 ```{r}
 susc_uniform <- matrix(
@@ -93,9 +134,9 @@ susc_uniform <- matrix(
 )
 ```
 
-Individuals within age groups do not differ in their susceptibility, and we model this as a matrix with as many rows as there are demography groups. The matrix has a single column indicating the proportion of each age group expected to be in each susceptibility group.
+Final size calculations also need to know the proportion of each demographic group $\{i\}$ that falls into the susceptibility group $\{j\}$.
 
-This demography-susceptibility spread matrix is subject to the constraint that each of its rows must sum to 1.0, as each row represents the division of each age group into susceptibility groups.
+Since all individuals in each age group have the same susceptibility, there is no variation within age groups. This can be represented as a single-column matrix, with as many rows as age groups.
 
 ```{r}
 p_susc_uniform <- matrix(
@@ -105,14 +146,29 @@ p_susc_uniform <- matrix(
 )
 ```
 
-### Running final_size
+::: {.alert .alert-secondary}
 
-We assume that the disease has an $R_0$ of 2.0, similar to some strains of seasonal influenza. The final size of the epidemic in the population can then be calculated as follows.
+#### Why susceptibility and p_susceptibility are matrices {-}
+
+This example models susceptibility (`susc_uniform`) and the demography-in-susceptibility (`p_susc_uniform`) as matrices rather than vectors. This is because a single susceptibility group is a special case of the general final size equation.
+
+_finalsize_ supports multiple susceptibility groups (this will be covered later), and these are more easily represented as a matrix, the _susceptibility matrix_.
+
+Each element $\{i, j\}$ in this matrix represents the susceptibility of individuals in demographic group $\{i\}$, and susceptibility group $\{j\}$.
+
+In this example, all individuals are equally susceptible to the disease, and thus the susceptibility matrix has only a single column with identical values.
+
+Consequently, the demography-in-susceptibility matrix has the same dimensions, and all of its values are 1.0.
+
+See the [Heterogeneous susceptibility](varying_susceptibility.html) example for more on cases where susceptibility varies within age groups.
+
+:::
+
+## Running `final_size`
+
+The final size of the epidemic in the population can then be calculated using the only function in the package, `final_size`. This example allows the function to fall back on the default options for the arguments `solver` (`"iterative"`) and `control` (an empty list).
 
 ```{r}
-# define r0 as 2.0
-r0 <- 2.0
-
 # calculate final size
 final_size_data <- final_size(
   r0 = r0,
@@ -131,24 +187,21 @@ final_size_data$demo_grp = factor(
 
 ### Visualise final sizes
 
-```{r echo=FALSE, fig.cap = "Some caption here"}
+```{r echo=FALSE, fig.cap ="Final size of an SIR epidemic in each age group. The final size is the cumulative number of infections in each age group over the course of the epidemic, expressed as a proportion of the respective age group.", fig.width=5, fig.height=4}
 # plot data
 ggplot(final_size_data) +
   geom_col(
     aes(
       demo_grp, p_infected
     ),
-    fill = "grey",
+    fill = "lightgrey",
     col = "black"
-  ) +
-  scale_fill_discrete_sequential(
-    palette = "Purple-Yellow",
-    name = "$R_0$"
   ) +
   scale_y_continuous(
     labels = scales::percent,
     limits = c(0, 1)
   ) +
+  theme_classic() +
   theme(
     legend.position = "top",
     legend.key.height = unit(2, "mm"),
@@ -156,70 +209,8 @@ ggplot(final_size_data) +
       vjust = 1
     )
   ) +
-  labs(
-    x = "Age group",
-    y = "% Infected"
-  )
-
-```
-
-## Uncertainty in $R_0$
-
-The reproduction number $R_0$ might be uncertain in the early stages of an outbreak. We can model this uncertainty in the $R_0$ by running `final_size` multiple times for the same contact and demography data, while sampling $R_0$ values from a distribution.
-
-We assume that estimates of the disease's $R_0$ are from a normal distribution $N(\mu = 2.0, \sigma = 0.1)$. We shall draw 1,000 samples of $R_0$ and run `final_size` on the contact data and demography data for each sample.
-
-Use cases like this demonstrate the benefits of writing `finalsize` with a C++ backend.
-
-```{r}
-# create an R0 samples vector
-r0_samples <- rnorm(n = 1000, mean = 2.0, sd = 0.1)
-```
-
-```{r}
-# run final size on each sample with the same data
-final_size_data <- Map(
-  r0_samples, seq_along(r0_samples),
-  f = function(r0, i) {
-    fs <- final_size(
-      r0 = r0,
-      contact_matrix = contact_matrix,
-      demography_vector = demography_vector,
-      susceptibility = susc_uniform,
-      p_susceptibility = p_susc_uniform
-    )
-    
-    fs$replicate <- i
-    fs
-  }
-)
-
-# combine data
-final_size_data = rbindlist(final_size_data)
-
-# order age groups
-final_size_data$demo_grp = factor(
-  final_size_data$demo_grp,
-  levels = demography_data$age.group
-)
-```
-
-### Visualise uncertainty in final size
-
-```{r echo=FALSE}
-ggplot(final_size_data) +
-  geom_boxplot(
-    aes(
-      demo_grp, p_infected
-    ),
-    outlier.size = 0.2
-  ) +
-  scale_fill_discrete_sequential(
-    rev = FALSE
-  ) +
-  scale_y_continuous(
-    labels = scales::percent,
-    limits = c(0, 1)
+  coord_cartesian(
+    expand = FALSE
   ) +
   labs(
     x = "Age group",
@@ -227,7 +218,7 @@ ggplot(final_size_data) +
   )
 ```
 
-### From final size proportions to counts
+### Final size proportions to counts
 
 `finalsize` returns the _proportion_ of each age (and risk) group infected in an epidemic outbreak. These proportions can be be converted into population counts --- numbers of people --- by multiplication with the demography vector.
 
@@ -251,24 +242,29 @@ final_size_data$demo_grp <- factor(
   levels = contact_data$demography$age.group
 )
 
-# multiply counts with prportion infected
-final_size_data[, n_infected := p_infected * population]
+# multiply counts with proportion infected
+final_size_data$n_infected <- final_size_data$p_infected *
+  final_size_data$population
 ```
 
 The final _counts_ infected can be visualised as well.
 
-```{r echo=FALSE, fig.cap="Final size of an epidemic outbreak in a population, for different values of disease $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in most disease outbreaks. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected."}
+```{r echo=FALSE, fig.cap="Final size of an epidemic outbreak in a population, for different values of disease $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in most disease outbreaks. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected.", fig.width=5, fig.height=4}
 ggplot(final_size_data) +
-  geom_boxplot(
+  geom_col(
     aes(
       x = demo_grp, y = n_infected
-    )
+    ),
+    fill = "lightgrey",
+    col = "black"
   ) +
   scale_y_continuous(
     labels = scales::comma_format(
       scale = 1e-6, suffix = "M"
-    )
+    ),
+    limits = c(0, 15e6)
   ) +
+  theme_classic() +
   theme(
     legend.position = "top",
     legend.key.height = unit(2, "mm"),
@@ -276,43 +272,13 @@ ggplot(final_size_data) +
       vjust = 1
     )
   ) +
+  coord_cartesian(
+    expand = F
+  ) +
   labs(
     x = "Age group",
     y = "Number infected (millions)"
   )
 ```
 
----
-
-### Age group contribution to final sizes
-
-The contribution of each age group to the outbreak's final size can be calculated as the number of individuals in each age group infected as a proportion of the total number of individuals infected in the outbreak.
-
-This can help show which age groups are most influential for epidemic dynamics.
-
-```{r}
-# calculate the proportional contribution to final size of the epidemic
-final_size_data[, p_contribution := n_infected / sum(n_infected),
-                by = c("replicate")]
-```
-
-```{r echo=FALSE, fig.cap="insert caption here"}
-ggplot(final_size_data) +
-  geom_boxplot(
-    aes(
-      x = demo_grp, y = p_contribution
-    )
-  ) +
-  scale_y_continuous(
-    labels = scales::percent
-  ) +
-  guides(
-    fill = guide_legend(
-      reverse = TRUE
-    )
-  ) +
-  labs(
-    x = "Age group",
-    y = "% of final epidemic size"
-  )
-```
+## References
