@@ -6,14 +6,21 @@ Authors@R:
         person(
             given = "Pratik",
             family = "Gupte",
-            role = c("aut", "cre"),
+            role = c("aut", "cre", "cph"),
             email = "pratik.gupte@lshtm.ac.uk",
             comment = c(ORCID = "https://orcid.org/0000-0001-5294-7819")
         ),
         person(
+            given = "Edwin",
+            family = "Van Leeuwen",
+            role = c("aut", "cph"),
+            email = "edwin.vanleeuwen@ukhsa.gov.uk",
+            comment = c(ORCID = "https://orcid.org/0000-0002-2383-5305")
+        ),
+        person(
             given = "Adam",
             family = "Kucharski",
-            role = c("aut"),
+            role = c("aut", "cph"),
             email = "adam.kucharski@lshtm.ac.uk",
             comment = c(ORCID = "https://orcid.org/0000-0001-8814-9421")
         ),
@@ -30,6 +37,10 @@ Authors@R:
             role = c("ctb"),
             email = "thibaut@data.org",
             comment = c(ORCID = "https://orcid.org/0000-0003-3796-2097")
+        ),
+        person(
+            "London School of Hygiene and Tropical Medicine", 
+            role = c("cph", "fnd")
         )
     )
 Description: Calculate the final size of a susceptible-infectious-recovered epidemic in a population with demographic variation in contact patterns and susceptibility to disease, as discussed in Miller et al. (2012) <doi:10.1007/s11538-012-9749-6>.
