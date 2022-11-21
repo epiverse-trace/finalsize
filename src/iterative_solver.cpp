@@ -26,6 +26,7 @@
 //' work well.
 //' @param adapt_step Boolean, whether the solver step rate should be changed
 //' based on the solver error. Defaults to TRUE.
+//' @keywords internal
 //'
 //' @return A vector of final sizes, of the size (N demography groups *
 //' N risk groups).

@@ -92,7 +92,7 @@
 #'   susceptibility = susc
 #' )
 #'
-#' # using manually specified solver settings
+#' # using manually specified solver settings for the iterative solver
 #' control <- list(
 #'   iterations = 1000,
 #'   tolerance = 1e-6,
@@ -241,23 +241,17 @@ final_size <- function(r0,
     )
   }
 
-  # convert to matrix
-  epi_final_size <- matrix(
-    epi_final_size,
-    nrow = length(demography_vector),
-    ncol = ncol(susceptibility)
-  )
   epi_final_size <- data.frame(
     demo_grp = rep(
       names_demography,
-      times = ncol(epi_final_size)
+      times = ncol(susceptibility)
     ),
     susc_grp = rep(
       names_susceptibility,
-      each = nrow(epi_final_size)
+      each = nrow(susceptibility)
     ),
     susceptibility = as.vector(susceptibility),
-    p_infected = as.vector(epi_final_size)
+    p_infected = epi_final_size
   )
   epi_final_size
 }

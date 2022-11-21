@@ -1,5 +1,5 @@
 
-# Calculate the final size of an epidemic <img src="man/figures/logo.png" align="right" width="130"/>
+# *finalsize*: Calculate the final size of an epidemic <img src="man/figures/logo.png" align="right" width="130"/>
 
 <!-- badges: start -->
 
@@ -10,10 +10,9 @@ MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/
 coverage](https://codecov.io/gh/epiverse-trace/finalsize/branch/main/graph/badge.svg)](https://app.codecov.io/gh/epiverse-trace/finalsize?branch=main)
 <!-- badges: end -->
 
-*finalsize* provides quick back-of-the-envelope calculations for the
-final size of an epidemic outbreak in a population with demographic
-variation in contact patterns, and variation within and between age
-groups in their susceptibility to disease.
+*finalsize* provides calculations for the final size of an epidemic in a
+population with demographic variation in contact patterns, and variation
+within and between age groups in their susceptibility to disease.
 
 *finalsize* can help provide rough estimates of the effectiveness of
 pharmaceutical interventions in the form of immunisation programmes, or
@@ -30,8 +29,15 @@ at the London School of Hygiene and Tropical Medicine as part of the
 
 ## Installation
 
-You can install the development version of finalsize from
-[GitHub](https://github.com/) with:
+The package can be installed using
+
+``` r
+install.packages("finalsize")
+```
+
+The current development version of *finalsize* can be installed from
+[Github](https://github.com/epiverse-trace/finalsize) using the
+`remotes` package.
 
 ``` r
 # install.packages("devtools")
@@ -121,7 +127,7 @@ finalsize::final_size(
 ## Help
 
 To report a bug please open an
-[issue](https://github.com/epiverse-trace/finalsize/issues/new/choose)
+[issue](https://github.com/epiverse-trace/finalsize/issues/new/choose).
 
 ## Contribute
 
@@ -138,8 +144,8 @@ By contributing to this project, you agree to abide by its terms.
 
 ## Citation
 
-Kucharski AJ, Kwok KO, Wei VW, Cowling BJ, Read JM, Lessler J, Cummings
-DA, Riley S. [The contribution of social behaviour to the transmission
-of influenza A in a human
+Kucharski A.J., Kwok K.O., Wei V.W., Cowling B.J., Read J.M., Lessler
+J., Cummings D.A., Riley S. [The contribution of social behaviour to the
+transmission of influenza A in a human
 population](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004206).
 PLOS Pathogens 2014;10(6):e1004206 PMID: 24968312

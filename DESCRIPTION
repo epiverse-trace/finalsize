@@ -1,19 +1,26 @@
 Package: finalsize
-Title: Calculates Final Size for SIR Epidemic in Heterogeneous Population
+Title: Calculate the Final Size of an Epidemic
 Version: 0.1
 Authors@R: 
     c(
         person(
             given = "Pratik",
             family = "Gupte",
-            role = c("aut", "cre"),
+            role = c("aut", "cre", "cph"),
             email = "pratik.gupte@lshtm.ac.uk",
             comment = c(ORCID = "https://orcid.org/0000-0001-5294-7819")
         ),
         person(
+            given = "Edwin",
+            family = "Van Leeuwen",
+            role = c("aut", "cph"),
+            email = "edwin.vanleeuwen@ukhsa.gov.uk",
+            comment = c(ORCID = "https://orcid.org/0000-0002-2383-5305")
+        ),
+        person(
             given = "Adam",
             family = "Kucharski",
-            role = c("aut"),
+            role = c("aut", "cph"),
             email = "adam.kucharski@lshtm.ac.uk",
             comment = c(ORCID = "https://orcid.org/0000-0001-8814-9421")
         ),
@@ -32,20 +39,21 @@ Authors@R:
             comment = c(ORCID = "https://orcid.org/0000-0003-3796-2097")
         )
     )
-Description: Functions for calculating final size for an SIR epidemic in a heterogeneous population, given social contact matrix and demographic data.
-RoxygenNote: 7.2.1
-Roxygen: list(markdown = TRUE)
-Encoding: UTF-8
+Description: Calculate the final size of a susceptible-infectious-recovered epidemic in a population with demographic variation in contact patterns and susceptibility to disease, as discussed in Miller et al. (2012) <doi:10.1007/s11538-012-9749-6>.
+License: MIT + file LICENSE
+URL: https://epiverse-trace.github.io/finalsize/, https://github.com/epiverse-trace/finalsize
+BugReports: https://github.com/epiverse-trace/finalsize/issues
+Imports:
+    Rcpp
+LinkingTo: 
+    Rcpp,
+    RcppEigen
 Suggests: 
     covr,
     socialmixr,
     testthat (>= 3.0.0),
     xml2
 Config/testthat/edition: 3
-License: MIT + file LICENSE
-Imports:
-    Rcpp
-LinkingTo: 
-    Rcpp,
-    RcppEigen,
-    testthat
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.1

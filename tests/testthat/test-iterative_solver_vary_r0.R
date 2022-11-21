@@ -190,7 +190,7 @@ test_that("Iterative solver works with r0 = 4, locked step size", {
     susceptibility = susc,
     p_susceptibility = psusc,
     control = list(
-      adapt_step = TRUE
+      adapt_step = FALSE
     )
   )
 
