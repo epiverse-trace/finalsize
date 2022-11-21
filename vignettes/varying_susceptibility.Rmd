@@ -17,13 +17,13 @@ editor_options:
 Populations are often heterogeneous in their susceptibility to a disease. This heterogeneity may be age dependent and vary between age groups. It may also vary within age groups due to risk factors or due to immunisation. Combinations of within- and between-group variation in susceptibility are also likely, and can be incorporated into final size calculations [ [@miller2012] ](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/).
 
 ::: {.alert .alert-warning}
-New to _finalsize_? It may help to read the [Basic usage](using_finalsize.html) vignette first!
+**New to _finalsize_?** It may help to read the [Basic usage](using_finalsize.html) vignette first!
 :::
 
 ::: {.alert .alert-primary}
 ## Use case {-}
 
-There is substantial heterogeneity in susceptibility to disease in a population. You want to know how this heterogeneity could affect the final size of the epidemic.
+There is substantial **heterogeneity in susceptibility to disease** in a population. You want to know how this heterogeneity could affect the final size of the epidemic.
 :::
 
 ::: {.alert .alert-secondary}
@@ -288,7 +288,7 @@ ggplot(final_size_immunised) +
   geom_col(
     data = final_size_heterog,
     aes(
-     x = demo_grp, y = p_infected
+      x = demo_grp, y = p_infected
     ),
     width = 0.75,
     col = "black",

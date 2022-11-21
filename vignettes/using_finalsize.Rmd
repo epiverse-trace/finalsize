@@ -17,7 +17,7 @@ The final size of an epidemic can be calculated using the _finalsize_ package, u
 ::: {.alert .alert-primary}
 ## Use case {-}
 
-An epidemic is underway. You want to know how many individuals are likely to be infected in total: this is the cumulative sum of all infections, or the _final size_ of the epidemic.
+An epidemic is underway. You want to know **how many individuals are likely to be infected in total**: this is the cumulative sum of all infections, or the _final size_ of the epidemic.
 :::
 
 ::: {.alert .alert-secondary}
@@ -47,18 +47,20 @@ knitr::opts_chunk$set(
 
 The _finalsize_ package is currently available on [Github](https://github.com/epiverse-trace/finalsize), and can be installed using the `remotes` or `devtools` packages.
 
-```{r setup, message=FALSE, warning=FALSE}
+```
 # first install the remotes packages
-# install.packages("remotes")
+install.packages("remotes")
 
 # install finalsize using remotes
-# remotes::install_github("epiverse-trace/finalsize")
+remotes::install_github("epiverse-trace/finalsize")
+```
+
+```{r}
 library(finalsize)
 
 # load useful packages
 library(data.table)
 library(ggplot2)
-library(colorspace)
 ```
 
 ## Getting $R_0$
@@ -179,7 +181,7 @@ final_size_data <- final_size(
 )
 
 # order demographic groups
-final_size_data$demo_grp = factor(
+final_size_data$demo_grp <- factor(
   final_size_data$demo_grp,
   levels = demography_data$age.group
 )
@@ -273,7 +275,7 @@ ggplot(final_size_data) +
     )
   ) +
   coord_cartesian(
-    expand = F
+    expand = FALSE
   ) +
   labs(
     x = "Age group",
