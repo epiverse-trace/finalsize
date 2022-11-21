@@ -104,17 +104,21 @@ finalsize::final_size(
 )
 ```
 
+## Package vignettes
+
+More details on how to use _finalsize_ can be found in the [online documentation as package vignettes](https://epiverse-trace.github.io/finalsize/), under "Articles".
+
 ## Help 
 
 To report a bug please open an [issue](https://github.com/epiverse-trace/finalsize/issues/new/choose).
 
 ## Contribute
 
-Contributions to `finalsize` are welcomed. Please follow the [package contributing guide](https://github.com/epiverse-trace/finalsize/blob/main/.github/CONTRIBUTING.md).
+Contributions to _finalsize_ are welcomed. Please follow the [package contributing guide](https://github.com/epiverse-trace/finalsize/blob/main/.github/CONTRIBUTING.md).
 
 ## Code of Conduct
 
-Please note that the `finalsize` project is released with a [Contributor Code of Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
+Please note that the _finalsize_ project is released with a [Contributor Code of Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
 
 
 ## Citation
