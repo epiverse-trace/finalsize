@@ -1,3 +1,12 @@
 url: https://epiverse-trace.github.io/finalsize/
 template:
   bootstrap: 5
+  bslib:
+    font_weight_base : 300
+articles:
+- title: Package vignettes
+  navbar: Package vignettes
+  contents:
+  - using_finalsize
+  - varying_susceptibility
+  - uncertainty_params
