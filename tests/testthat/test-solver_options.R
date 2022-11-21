@@ -1,4 +1,4 @@
-#### Tests for finalsize using the Newton solver ####
+#### Tests for solver options ####
 
 #### Prepare data ####
 r0 <- 2.0
@@ -20,7 +20,7 @@ contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
 contact_matrix <- contact_matrix / demography_vector
 
 n_demo_grps <- length(demography_vector)
-n_risk_grps <- 3 # different from iterative to avoid biasing with magic numbers
+n_risk_grps <- 2
 
 # prepare p_susceptibility and susceptibility
 p_susceptibility <- matrix(
@@ -28,11 +28,12 @@ p_susceptibility <- matrix(
 )
 p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
 susceptibility <- matrix(
-  data = c(1.0, 0.75, 0.5), nrow = n_demo_grps, ncol = n_risk_grps,
+  data = c(1.0, 0.5), nrow = n_demo_grps, ncol = n_risk_grps,
   byrow = TRUE
 )
-colnames(susceptibility) <- c("susceptible", "immunised", "part-immunised")
+colnames(susceptibility) <- c("susceptible", "immunised")
 
+#### Test output using iterative solver options ####
 # prepare final_size output
 epi_outcome <- final_size(
   r0 = r0,
@@ -40,10 +41,12 @@ epi_outcome <- final_size(
   demography_vector = demography_vector,
   p_susceptibility = p_susceptibility,
   susceptibility = susceptibility,
-  solver = "newton"
+  solver = "iterative",
+  control = list(
+    adapt_step = FALSE # default option is TRUE
+  )
 )
 
-#### Test that p_infected values are correct ####
 # Test that final_size values are within range and have correct length
 test_that("final_size output is correct length and within range 0 - 1", {
   # check for bad numeric, NAN, or infinite values
@@ -65,15 +68,5 @@ test_that("final_size output is correct length and within range 0 - 1", {
   )
   expect_true(
     all(epi_outcome$p_infected <= 1.0)
-  )
-})
-
-### Test that lower susceptibility leads to lower final size ####
-# this is a test of statistical correctness but placed here for convenience
-test_that("Lower susceptibility leads to lower final size", {
-  # all fully susceptibles must have larger final size than immunised
-  expect_true(
-    all(epi_outcome[epi_outcome$susc_grp == "susceptible", ]$p_infected >
-      epi_outcome[epi_outcome$susc_grp == "immunised", ]$p_infected)
   )
 })

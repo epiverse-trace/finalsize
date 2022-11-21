@@ -7,19 +7,17 @@ contact_data <- socialmixr::contact_matrix(
   polymod,
   countries = "United Kingdom",
   age.limits = c(0, 20, 40),
-  split = TRUE
+  symmetric = TRUE
 )
-contact_matrix <- t(contact_data$matrix)
+contact_matrix <- contact_data$matrix
 demography_vector <- contact_data$demography$population
 
 # set demography vector names
 names(demography_vector) <- contact_data$demography$age.group
 
-# Scale contact matrix by eigenvalue and demography to demography
+# scale by maximum real eigenvalue and divide by demography
 contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
-contact_matrix <- apply(
-  contact_matrix, 1, function(r) r / demography_vector
-)
+contact_matrix <- contact_matrix / demography_vector
 
 n_demo_grps <- length(demography_vector)
 n_risk_grps <- 2
