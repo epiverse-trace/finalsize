@@ -1,5 +1,5 @@
 Package: finalsize
-Title: Calculate the Final Size of an Epidemic Outbreak
+Title: Calculate the Final Size of an Epidemic
 Version: 0.1
 Authors@R: 
     c(
@@ -32,7 +32,7 @@ Authors@R:
             comment = c(ORCID = "https://orcid.org/0000-0003-3796-2097")
         )
     )
-Description: Calculate the final size of a susceptible-infectious-recovered epidemic outbreak in a population with demographic variation in contact patterns and susceptibility to disease, as discussed in Miller et al. (2012) <doi:10.1007/s11538-012-9749-6>.
+Description: Calculate the final size of a susceptible-infectious-recovered epidemic in a population with demographic variation in contact patterns and susceptibility to disease, as discussed in Miller et al. (2012) <doi:10.1007/s11538-012-9749-6>.
 License: MIT + file LICENSE
 URL: https://epiverse-trace.github.io/finalsize/, https://github.com/epiverse-trace/finalsize
 BugReports: https://github.com/epiverse-trace/finalsize/issues
