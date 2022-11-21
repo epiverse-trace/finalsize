@@ -37,10 +37,6 @@ Authors@R:
             role = c("ctb"),
             email = "thibaut@data.org",
             comment = c(ORCID = "https://orcid.org/0000-0003-3796-2097")
-        ),
-        person(
-            "London School of Hygiene and Tropical Medicine", 
-            role = c("cph", "fnd")
         )
     )
 Description: Calculate the final size of a susceptible-infectious-recovered epidemic in a population with demographic variation in contact patterns and susceptibility to disease, as discussed in Miller et al. (2012) <doi:10.1007/s11538-012-9749-6>.
