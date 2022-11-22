@@ -48,7 +48,7 @@ epi_outcome <- final_size(
 )
 
 # Test that final_size values are within range and have correct length
-test_that("final_size output is correct length and within range 0 - 1", {
+test_that("Iterative solver with adaptive steps turned off works", {
   # check for bad numeric, NAN, or infinite values
   # check that values are not NaN
   expect_false(

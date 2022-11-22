@@ -260,7 +260,7 @@ test_that("Check finalsize by groups works for Polymod, newton solver", {
 #### Check for correct final size calculation in complex data case ####
 
 # test taken from EvL
-test_that("Check final_size Newton solver output in complex case", {
+test_that("Newton solver is correct in complex case", {
   # make a contact matrix
   contact_matrix <- matrix(
     data = c(
@@ -335,7 +335,7 @@ test_that("Check final_size Newton solver output in complex case", {
 #### Check for correct final size calculation in complex data case ####
 
 # test taken from EvL
-test_that("Check final_size iterative solver output in complex case", {
+test_that("Iterative solver is correct in complex case", {
   # make a contact matrix
   contact_matrix <- matrix(
     data = c(

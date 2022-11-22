@@ -44,7 +44,7 @@ epi_outcome <- final_size(
 )
 
 # Test that final_size values are within range and have correct length
-test_that("final_size output is correct length and within range 0 - 1", {
+test_that("Solver speed-ups return correct final size values", {
   # check for bad numeric, NAN, or infinite values
   # check that values are not NaN
   expect_false(
@@ -84,7 +84,7 @@ epi_outcome <- final_size(
 )
 
 # Test that final_size values are within range and have correct length
-test_that("final_size output is correct length and within range 0 - 1", {
+test_that("Newton solver speed-up returns correct value", {
   # expect that first group has p_infected = 0.0
   expect_identical(
     epi_outcome$p_infected[1], 0.0
