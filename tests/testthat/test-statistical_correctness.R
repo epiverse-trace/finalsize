@@ -150,7 +150,7 @@ test_that("final_size Newton solver outputs are valid for R0 values", {
 
 #### Check for solver equivalence with synthetic data ####
 # Test for equivalence across R0 values
-test_that("final_size outputs are equal between solvers", {
+test_that("Solvers return equivalent solutions with synthetic data", {
   r0_values <- c(1.9, 2.0, 4.0, 12.0)
 
   for (r0 in r0_values) {
@@ -190,7 +190,7 @@ test_that("final_size outputs are equal between solvers", {
 
 #### Check solver equivalence with POLYMOD data ####
 
-# Prepare common elements for testing
+# Prepare common elements for testing; POLYMOD data
 polymod <- socialmixr::polymod
 contact_data <- socialmixr::contact_matrix(
   polymod,
@@ -205,50 +205,57 @@ demography_vector <- contact_data$demography$population
 contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
 contact_matrix <- contact_matrix / demography_vector
 
+r0 <- 2.0
+
+n_demo_grps <- length(demography_vector)
+n_risk_grps <- 3L
+
+# prepare p_susceptibility and susceptibility
+p_susceptibility <- matrix(
+  data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+)
+p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
+
+# multiple susceptibility groups
+susceptibility <- matrix(
+  data = seq(0.1, 1.0, length.out = n_risk_grps),
+  nrow = n_demo_grps, ncol = n_risk_grps,
+  byrow = TRUE
+)
+
+# assign column names
+colnames(susceptibility) <- c("immunised", "part-immunised", "susceptible")
+
+# prepare control
+control <- list(
+  iterations = 10000,
+  tolerance = 1e-6
+)
+
+# prepare outcome with iterative solver
+epi_outcome_iterative <- final_size(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  p_susceptibility = p_susceptibility,
+  susceptibility = susceptibility,
+  solver = "iterative",
+  control = control
+)
+
+# prepare outcome with newton solver
+epi_outcome_newton <- final_size(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  p_susceptibility = p_susceptibility,
+  susceptibility = susceptibility,
+  solver = "newton",
+  control = control
+)
+
 # Check final_size works with Newton solver
-test_that("Check finalsize by groups works for Polymod, newton solver", {
-  r0 <- 2.0
-
-  n_demo_grps <- length(demography_vector)
-  n_risk_grps <- 4
-
-  # prepare p_susceptibility and susceptibility
-  psusc <- matrix(
-    data = 1, nrow = n_demo_grps, ncol = n_risk_grps
-  )
-  psusc <- psusc / rowSums(psusc)
-  susc <- matrix(
-    data = 1, nrow = n_demo_grps, ncol = n_risk_grps
-  )
-
-  # prepare control
-  control <- list(
-    iterations = 10000,
-    tolerance = 1e-6
-  )
-
-  # prepare outcome with iterative solver
-  epi_outcome_iterative <- final_size(
-    r0 = r0,
-    contact_matrix = contact_matrix,
-    demography_vector = demography_vector,
-    p_susceptibility = psusc,
-    susceptibility = susc,
-    solver = "iterative",
-    control = control
-  )
-
-  # prepare outcome with newton solver
-  epi_outcome_newton <- final_size(
-    r0 = r0,
-    contact_matrix = contact_matrix,
-    demography_vector = demography_vector,
-    p_susceptibility = psusc,
-    susceptibility = susc,
-    solver = "newton",
-    control = control
-  )
-
+test_that("Solvers return equivalent solutions with POLYMOD data", {
   # check for equivalence
   expect_equal(
     epi_outcome_iterative$p_infected,
@@ -256,6 +263,19 @@ test_that("Check finalsize by groups works for Polymod, newton solver", {
     tolerance = 1e-5
   )
 })
+
+### Test that lower susceptibility leads to lower final size ####
+
+test_that("Lower susceptibility leads to lower final size", {
+  # all fully susceptibles must have larger final size than immunised
+  expect_true(
+    all(epi_outcome_newton[epi_outcome_newton$susc_grp ==
+      "susceptible", ]$p_infected >
+      epi_outcome_newton[epi_outcome_newton$susc_grp ==
+        "immunised", ]$p_infected)
+  )
+})
+
 
 #### Check for correct final size calculation in complex data case ####
 
@@ -287,7 +307,7 @@ test_that("Newton solver is correct in complex case", {
 
   # a p_susceptibility matrix
   p_susc <- matrix(1, nrow(contact_matrix), 1)
-  susc <- p_susc
+  susceptibility <- p_susc
 
   # prepare control
   control <- list(
@@ -300,7 +320,7 @@ test_that("Newton solver is correct in complex case", {
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susc,
-    susceptibility = susc,
+    susceptibility = susceptibility,
     solver = "newton",
     control = control
   )
@@ -358,7 +378,7 @@ test_that("Iterative solver is correct in complex case", {
 
   # a p_susceptibility matrix
   p_susc <- matrix(1, nrow(contact_matrix), 1)
-  susc <- p_susc
+  susceptibility <- p_susc
 
   # prepare control
   control <- list(
@@ -371,7 +391,7 @@ test_that("Iterative solver is correct in complex case", {
     contact_matrix = contact_matrix,
     demography_vector = demography_vector,
     p_susceptibility = p_susc,
-    susceptibility = susc,
+    susceptibility = susceptibility,
     solver = "iterative",
     control = control
   )

@@ -31,7 +31,6 @@ susceptibility <- matrix(
   data = c(1.0, 0.75, 0.5), nrow = n_demo_grps, ncol = n_risk_grps,
   byrow = TRUE
 )
-colnames(susceptibility) <- c("susceptible", "immunised", "part-immunised")
 
 # prepare final_size output
 epi_outcome <- final_size(
@@ -65,15 +64,5 @@ test_that("Newton solver returns final size values within range 0 - 1", {
   )
   expect_true(
     all(epi_outcome$p_infected <= 1.0)
-  )
-})
-
-### Test that lower susceptibility leads to lower final size ####
-# this is a test of statistical correctness but placed here for convenience
-test_that("Lower susceptibility leads to lower final size", {
-  # all fully susceptibles must have larger final size than immunised
-  expect_true(
-    all(epi_outcome[epi_outcome$susc_grp == "susceptible", ]$p_infected >
-      epi_outcome[epi_outcome$susc_grp == "immunised", ]$p_infected)
   )
 })
