@@ -325,6 +325,9 @@ test_that("Newton solver is correct in complex case", {
     control = control
   )
 
+  # add snapshot for complex case using Newton solver
+  expect_snapshot(epi_outcome)
+
   # check that solver returns values within range
   expect_true(
     all(epi_outcome$p_infected >= 0)
@@ -370,7 +373,7 @@ test_that("Iterative solver is correct in complex case", {
   # make a demography vector
   demography_vector <- c(
     10831795, 11612456, 13511496,
-    11499398, 8167102, 4587765
+    11499398, 8167102, 40
   )
 
   # get an example r0
@@ -395,6 +398,9 @@ test_that("Iterative solver is correct in complex case", {
     solver = "iterative",
     control = control
   )
+
+  # add snapshot for complex case using iterative solver
+  expect_snapshot(epi_outcome)
 
   # check that solver returns values within range
   expect_true(
