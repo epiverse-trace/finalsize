@@ -12,7 +12,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The final size of an epidemic can be calculated using the _finalsize_ package, using methods detailed in [@miller2012](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/). See the [Modelling Background vignette](modelling_background.html) for more on the theory underlying final size calculations.
+The final size of an epidemic can be calculated using the _finalsize_ package, using methods detailed in [ @andreasen2011 ](https://link.springer.com/article/10.1007/s11538-010-9623-3), [ @miller2012 ](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/), [ @kucharski2014 ](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004206), and [@bidari2016](https://www.sciencedirect.com/science/article/pii/S0025556416302802).
 
 ::: {.alert .alert-primary}
 ## Use case {-}
