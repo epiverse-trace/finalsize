@@ -333,7 +333,7 @@ ggplot(final_size_immunised) +
     ),
     fill = guide_legend(
       nrow = 2,
-      title.position="top"
+      title.position = "top"
     )
   ) +
   coord_cartesian(
