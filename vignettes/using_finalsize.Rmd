@@ -23,14 +23,14 @@ An epidemic is underway. You want to know **how many individuals are likely to b
 ::: {.alert .alert-secondary}
 ### What you have {-}
 
-  1. An estimate of the disease's basic reproductive number $R_0$;
+  1. An estimate of the infection's basic reproduction number $R_0$;
   2. An estimate of the distribution of the population in different demographic groups, often, age groups;
   3. An estimate of the contacts between individuals of different demographic groups; and
-  4. An estimate of the susceptibility of each demographic group to the disease.
+  4. An estimate of the susceptibility of each demographic group to the infection.
 
 ### What you assume {-}
 
-  1. That the disease dynamics can be captured using a Susceptible-Infectious-Recovered (SIR) model.
+  1. That the infection dynamics can be captured using a Susceptible-Infectious-Recovered (SIR) or Susceptible-Exposed-Infectious-Recovered (SEIR) model.
 :::
 
 ```{r, include = FALSE}
@@ -63,11 +63,11 @@ library(data.table)
 library(ggplot2)
 ```
 
-## Getting $R_0$
+## Defining a value for $R_0$
 
 A number of sophisticated statistical methods can be used to estimate the $R_0$ of an epidemic in its early stages. These are not covered here.
 
-Instead, this example considers a disease with an $R_0$ of 2.0, similar to some strains of seasonal influenza.
+Instead, this example considers a infection with an $R_0$ of 2.0, similar to some strains of seasonal influenza.
 
 ```{r}
 # define r0 as 2.0
@@ -113,14 +113,14 @@ n_demo_grps <- length(demography_vector)
 
 The social contact data used in this example illustrate an important way in which populations may be heterogeneous: the various age groups can have quite different patterns of social contacts.
 
-The method implemented in _finalsize_ accounts for this heterogeneity. Other forms of population heterogeneity are covered in the [Heterogeneous susceptibility](varying_susceptibility.html) vignette.
+The method implemented in _finalsize_ accounts for this heterogeneity. Other forms of population heterogeneity are covered in the ["Heterogeneous susceptibility"](varying_susceptibility.html) vignette.
 :::
 
 ## Population susceptibility
 
 In the early stages of an epidemic outbreak, a safe assumption might be that all age groups have a similar susceptibility. 
 
-High uniform susceptibility can be modelled as a matrix with values of 1.0, with as many rows as there are demography groups. The matrix has a single column, representing the single susceptibility group to which all individuals belong.
+High uniform susceptibility can be modelled as a matrix with values of 1.0, with as many rows as there are demographic groups. The matrix has a single column, representing the single susceptibility group to which all individuals belong.
 
 ```{r}
 # all individuals are equally and highly susceptible
@@ -158,11 +158,11 @@ _finalsize_ supports multiple susceptibility groups (this will be covered later)
 
 Each element $\{i, j\}$ in this matrix represents the susceptibility of individuals in demographic group $\{i\}$, and susceptibility group $\{j\}$.
 
-In this example, all individuals are equally susceptible to the disease, and thus the susceptibility matrix has only a single column with identical values.
+In this example, all individuals are equally susceptible to infection, and thus the susceptibility matrix has only a single column with identical values.
 
 Consequently, the demography-in-susceptibility matrix has the same dimensions, and all of its values are 1.0.
 
-See the [Heterogeneous susceptibility](varying_susceptibility.html) example for more on cases where susceptibility varies within age groups.
+See the ["Heterogeneous susceptibility"](varying_susceptibility.html) example for more on cases where susceptibility varies within age groups.
 
 :::
 
@@ -251,7 +251,7 @@ final_size_data$n_infected <- final_size_data$p_infected *
 
 The final _counts_ infected can be visualised as well.
 
-```{r echo=FALSE, fig.cap="Final size of an epidemic outbreak in a population, for different values of disease $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in most disease outbreaks. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected.", fig.width=5, fig.height=4}
+```{r echo=FALSE, fig.cap="Final size of an epidemic outbreak in a population, for different values of infection $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in most  outbreaks. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected.", fig.width=5, fig.height=4}
 ggplot(final_size_data) +
   geom_col(
     aes(

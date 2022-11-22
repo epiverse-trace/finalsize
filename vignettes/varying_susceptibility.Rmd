@@ -14,23 +14,23 @@ editor_options:
   chunk_output_type: console
 ---
 
-Populations are often heterogeneous in their susceptibility to a disease. This heterogeneity may be age dependent and vary between age groups. It may also vary within age groups due to risk factors or due to immunisation. Combinations of within- and between-group variation in susceptibility are also likely, and can be incorporated into final size calculations [ [@miller2012] ](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/).
+Populations are often heterogeneous in their susceptibility to infection. This heterogeneity may be age-dependent and vary between age groups. It may also vary within age groups due to prior infection resulting in immunity or due to immunisation. Combinations of within- and between-group variation in susceptibility are also likely, and can be incorporated into final size calculations [ [@miller2012] ](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/).
 
 ::: {.alert .alert-warning}
-**New to _finalsize_?** It may help to read the [Basic usage](using_finalsize.html) vignette first!
+**New to _finalsize_?** It may help to read the ["Basic usage"](using_finalsize.html) vignette first!
 :::
 
 ::: {.alert .alert-primary}
 ## Use case {-}
 
-There is substantial **heterogeneity in susceptibility to disease** in a population. You want to know how this heterogeneity could affect the final size of the epidemic.
+There is substantial **heterogeneity in susceptibility to infection** in a population. You want to know how this heterogeneity could affect the final size of the epidemic.
 :::
 
 ::: {.alert .alert-secondary}
 ### What you have {-}
 
-  1. In addition to the disease $R_0$, demography data, and social contact data;
-  2. Data on within- and between-group variation in susceptibility to the disease; and
+  1. In addition to the infection $R_0$, demography data, and social contact data;
+  2. Data on within- and between-group variation in susceptibility to the infection; and
   3. Data on the proportion (or probability) of individuals in any demographic group in a specific susceptibility (or risk) group.
 
 ### What you assume {-}
@@ -62,7 +62,7 @@ library(colorspace)
 
 This example uses social contact data from the [POLYMOD](https://cordis.europa.eu/project/id/502084) project to estimate the final size of an epidemic in the U.K. These data are provided with the `socialmixr` package.
 
-These data are handled just as in the [Basic usage](using_finalsize.html) vignette, and the code is not displayed here. This example also considers a disease with an $R_0$ of 2.0.
+These data are handled just as in the ["Basic usage"](using_finalsize.html) vignette, and the code is not displayed here. This example also considers a disease with an $R_0$ of 2.0.
 
 ```{r include=FALSE}
 # get UK polymod data
@@ -93,8 +93,8 @@ r0 <- 2.0
 
 ## Susceptibility variation between age groups
 
-This example considers a scenario in which susceptibility to the disease varies between age groups, but not within groups.
-A common observation with many diseases is that susceptibility increases with age.
+This example considers a scenario in which susceptibility to infection varies between age groups, but not within groups.
+In this example,  susceptibility to infection  increases with age.
 
 This can be modelled as a susceptibility matrix with higher values for the 40 -- 60 and 65+ age groups, and relatively lower values for other groups.
 
@@ -168,7 +168,7 @@ final_size_data$demo_grp <- factor(
 
 Visualise the effect of modelling age-dependent susceptibility against uniform susceptibility for all age groups.
 
-```{r echo=FALSE, fig.cap="Final sizes of epidemics in populations wherein susceptibility to the disease is either uniform (green), or heterogeneous (purple), with older individuals more susceptible to the disease.", fig.width=5, fig.height=4}
+```{r echo=FALSE, fig.cap="Final sizes of epidemics in populations wherein susceptibility to the infection is either uniform (green), or heterogeneous (purple), with older individuals more susceptible to the infection.", fig.width=5, fig.height=4}
 ggplot(final_size_data) +
   geom_col(
     aes(
@@ -212,8 +212,8 @@ ggplot(final_size_data) +
 
 ## Susceptibility variation within and between age groups
 
-This example considers a scenario in which susceptibility to the disease varies within and between age groups.
-Immunisation to a disease through an intervention campaign is a common cause of within-age group variation in susceptibility, and this example can be thought of as examining the effect of vaccination.
+This example considers a scenario in which susceptibility to infection varies within and between age groups.
+Immunisation against infection through an intervention campaign is a common cause of within-age group variation in susceptibility, and this example can be thought of as examining the effect of vaccination.
 
 The effect of immunisation on susceptibility can be modelled as a reduction of the initial susceptibility of each age group. This is done by adding a column to the susceptibility matrix, with lower values than the first column.
 
@@ -240,7 +240,7 @@ n_risk_groups <- ncol(susc_immunised)
 **Note** that because there are two susceptibility groups, the susceptibility matrix has two columns. The corresponding **demography-susceptibility distribution matrix** must also have two columns!
 :::
 
-You also need to model the proportion of each age group that has been immunised, and which therefore has lower susceptibility to the disease. To do this, you can modify the demography-susceptibility distribution matrix.
+You also need to model the proportion of each age group that has been immunised, and which therefore has lower susceptibility to the infection. To do this, you can modify the demography-susceptibility distribution matrix.
 
 This example models considers half of each age group to be in the immunised and non-immunised groups.
 
@@ -283,16 +283,17 @@ final_size_immunised$demo_grp <- factor(
 
 The effect of immunisation (or some other reduction in susceptibility) can be visualised by comparing the proportion of the immunised and un-immunised groups that are infected.
 
-```{r echo=FALSE, fig.cap="Final size of an SIR epidemic with $R_0$ = 2.0, in a population wherein 50% of each age group is immunised against the disease. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 0.5.", fig.width=5, fig.height=4}
+```{r echo=FALSE, fig.cap="Final size of an SIR epidemic with $R_0$ = 2.0, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%.", fig.width=5, fig.height=4}
 ggplot(final_size_immunised) +
   geom_col(
     data = final_size_heterog,
     aes(
-      x = demo_grp, y = p_infected
+      x = demo_grp, y = p_infected,
+      fill = "baseline",
+      colour = "baseline"
     ),
     width = 0.75,
-    col = "black",
-    fill = "lightgrey"
+    show.legend = TRUE
   ) +
   geom_col(
     aes(
@@ -305,7 +306,14 @@ ggplot(final_size_immunised) +
   scale_fill_discrete_qualitative(
     palette = "Dynamic",
     rev = TRUE,
-    name = "Immunisation"
+    limits = c("Immunised", "Un-immunised"),
+    name = "Immunisation scenario",
+    na.value = "lightgrey"
+  ) +
+  scale_colour_manual(
+    values = "black",
+    name = NULL,
+    labels = "Susceptibility heterogeneous\nbetween groups,\nno immunisation"
   ) +
   scale_y_continuous(
     labels = scales::percent,
@@ -319,12 +327,22 @@ ggplot(final_size_immunised) +
       vjust = 1
     )
   ) +
+  guides(
+    colour = guide_legend(
+      override.aes = list(fill = "lightgrey")
+    ),
+    fill = guide_legend(
+      nrow = 2,
+      title.position="top"
+    )
+  ) +
   coord_cartesian(
     expand = FALSE
   ) +
   labs(
     x = "Age group",
-    y = "% Infected"
+    y = "% Infected",
+    fill = "Immunisation\nscenario"
   )
 ```
 
