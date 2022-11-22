@@ -276,7 +276,6 @@ test_that("Lower susceptibility leads to lower final size", {
   )
 })
 
-
 #### Check for correct final size calculation in complex data case ####
 
 # test taken from EvL
@@ -341,10 +340,6 @@ test_that("Newton solver is correct in complex case", {
     length(demography_vector)
   )
 
-  # test that final size differs by susceptibility group
-  expect_lt(
-    epi_outcome$p_infected[5], epi_outcome$p_infected[1]
-  )
   ratio <- sum(epi_outcome$p_infected * demography_vector) /
     sum(demography_vector)
   expect_gt(ratio, 0.3)
@@ -415,10 +410,6 @@ test_that("Iterative solver is correct in complex case", {
     length(demography_vector)
   )
 
-  # test that final size differs by susceptibility group
-  expect_lt(
-    epi_outcome$p_infected[5], epi_outcome$p_infected[1]
-  )
   ratio <- sum(epi_outcome$p_infected * demography_vector) /
     sum(demography_vector)
   expect_gt(ratio, 0.3)
