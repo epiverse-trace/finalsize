@@ -21,7 +21,7 @@ susceptibility <- matrix(1, ncol = 1, 3)
 
 
 #### Check for demography vector length mismatch ####
-test_that("Check for contact_matrix -- demography vector mismatch error", {
+test_that("Contact_matrix -- demography vector mismatch errors", {
 
   # wrong demography vector
   demography_vector <- c(demography_vector, 100)
@@ -39,7 +39,7 @@ test_that("Check for contact_matrix -- demography vector mismatch error", {
   )
 })
 
-test_that("Check for p_susceptibility -- demography vector mismatch error", {
+test_that("P_susceptibility -- demography vector mismatch errors", {
   p_susceptibility <- matrix(1, ncol = 1, nrow = 4)
 
   # expect error on demography vector and p_susceptibility
@@ -57,7 +57,7 @@ test_that("Check for p_susceptibility -- demography vector mismatch error", {
   )
 })
 
-test_that("Check for susceptibility -- demography mismatch error", {
+test_that("Susceptibility -- demography mismatch errors", {
   susceptibility <- matrix(1, ncol = 1, nrow = 4)
 
   # expect error on demography vector and susceptibility
@@ -75,7 +75,7 @@ test_that("Check for susceptibility -- demography mismatch error", {
   )
 })
 
-test_that("Check for susceptibility -- p_susceptibility mismatch error", {
+test_that("Susceptibility -- p_susceptibility mismatch errors", {
   p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
   susceptibility <- matrix(1, ncol = 2, nrow = 3)
 
@@ -95,7 +95,25 @@ test_that("Check for susceptibility -- p_susceptibility mismatch error", {
   )
 })
 
-test_that("Check for solver option error", {
+test_that("P_susceptibility rowsums > 1 errors", {
+  p_susceptibility <- p_susceptibility * 1.01
+  # expect error on p_susceptibility
+  expect_error(
+    final_size(
+      r0 = r0,
+      contact_matrix = contact_matrix,
+      demography_vector = demography_vector,
+      p_susceptibility = p_susceptibility,
+      susceptibility = susceptibility,
+      solver = "iterative",
+      control = list()
+    ),
+    regexp =
+      "Error: p_susceptibility rows must sum to 1.0"
+  )
+})
+
+test_that("Wrong solver option errors", {
   expect_error(
     final_size(
       r0 = r0,
@@ -110,7 +128,7 @@ test_that("Check for solver option error", {
   )
 })
 
-test_that("Check for warning when error is much larger than tolerance", {
+test_that("Warning when error is much larger than tolerance", {
   # for the iterative solver
   expect_warning(
     final_size(
@@ -147,7 +165,7 @@ test_that("Check for warning when error is much larger than tolerance", {
   )
 })
 
-test_that("Check that arguments are of the correct type", {
+test_that("Wrong argument type errors", {
   # expect errors when wrong argument types are passed
   expect_error(
     final_size(
@@ -192,7 +210,7 @@ test_that("Check that arguments are of the correct type", {
 })
 
 # Check the contents of the control list
-test_that("Check that eigenvalue checking works", {
+test_that("Control list has correct elements or none", {
   r0 <- 2
   p_susceptibility <- matrix(1, ncol = 1, nrow = 3)
   susceptibility <- matrix(1, ncol = 1, 3)
@@ -206,6 +224,24 @@ test_that("Check that eigenvalue checking works", {
       p_susceptibility = p_susceptibility,
       control = list(some_other_name = 10000)
     ),
-    regexp = "Error: control list names can only be:"
+    regexp = "Error: control list names can only be:" # truncated
+  )
+})
+
+# Check that the contact matrix has a leading eigenvalue of 1.0
+test_that("Contact matrix leading eigenvalue is 1.0", {
+  r0 <- 2
+  contact_matrix_unscaled <- contact_data$matrix
+  demography_vector <- contact_data$demography$population
+
+  expect_error(
+    final_size(
+      r0 = r0,
+      contact_matrix = contact_matrix_unscaled,
+      demography_vector = demography_vector,
+      susceptibility = susceptibility,
+      p_susceptibility = p_susceptibility
+    ),
+    regexp = "Error: contact matrix must have a maximum real eigenvalue of 1.0"
   )
 })
