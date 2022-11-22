@@ -44,7 +44,7 @@ epi_outcome <- final_size(
 )
 
 #### Test that final_size returns a data.frame with correct columns ####
-test_that("final_size output is dataframe with correct names", {
+test_that("Finalsize returns correct demography names", {
   # expect data.frame as output
   expect_s3_class(
     epi_outcome, "data.frame"
@@ -102,20 +102,20 @@ test_that("final_size output is correct length and within range 0 - 1", {
 })
 
 #### Test that final_size returns default group names when required ####
-names(demography_vector) <- NULL
-colnames(susceptibility) <- NULL
-
-# prepare final_size output with default names
-epi_outcome <- final_size(
-  r0 = r0,
-  contact_matrix = contact_matrix,
-  demography_vector = demography_vector,
-  p_susceptibility = p_susceptibility,
-  susceptibility = susceptibility,
-  solver = "iterative"
-)
 
 test_that("final_size returns default group names", {
+  names(demography_vector) <- NULL
+  colnames(susceptibility) <- NULL
+
+  # prepare final_size output with default names
+  epi_outcome <- final_size(
+    r0 = r0,
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
+    p_susceptibility = p_susceptibility,
+    susceptibility = susceptibility,
+    solver = "iterative"
+  )
   # demography group names are correct
   expect_identical(
     unique(epi_outcome$demo_grp),
