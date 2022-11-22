@@ -164,17 +164,19 @@ citation("finalsize")
 #> 
 #> To cite package 'finalsize' in publications use:
 #> 
-#>   Gupte P, Kucharski A (2022). _finalsize: Calculates Final Size for
-#>   SIR Epidemic in Heterogeneous Population_. R package version 0.1.
+#>   Gupte P, Van Leeuwen E, Kucharski A (2022). _finalsize: Calculate the
+#>   Final Size of an Epidemic_.
+#>   https://epiverse-trace.github.io/finalsize/,
+#>   https://github.com/epiverse-trace/finalsize.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {finalsize: Calculates Final Size for SIR Epidemic in Heterogeneous
-#> Population},
-#>     author = {Pratik Gupte and Adam Kucharski},
+#>     title = {finalsize: Calculate the Final Size of an Epidemic},
+#>     author = {Pratik Gupte and Edwin {Van Leeuwen} and Adam Kucharski},
 #>     year = {2022},
-#>     note = {R package version 0.1},
+#>     note = {https://epiverse-trace.github.io/finalsize/,
+#> https://github.com/epiverse-trace/finalsize},
 #>   }
 ```
 
