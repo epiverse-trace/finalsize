@@ -46,3 +46,4 @@ N risk groups).
 \description{
 Iterative solver for final size.
 }
+\keyword{internal}

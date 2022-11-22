@@ -37,3 +37,4 @@ A two dimensional array of final sizes per age-risk group.
 \description{
 Newton solver for final size.
 }
+\keyword{internal}
