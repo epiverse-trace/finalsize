@@ -12,7 +12,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The final size of an epidemic can be calculated using the _finalsize_ package, using methods detailed in [ @andreasen2011 ](https://link.springer.com/article/10.1007/s11538-010-9623-3), [ @miller2012 ](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/), [ @kucharski2014 ](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004206), and [@bidari2016](https://www.sciencedirect.com/science/article/pii/S0025556416302802).
+When considering responses to an epidemic, one of the first steps is to estimate how many infections there are likely to be over the course of the outbreak. This, the cumulative sum of all infections, is called the final size.
+The final size of an epidemic can be calculated using methods detailed in [ @andreasen2011 ](https://link.springer.com/article/10.1007/s11538-010-9623-3), [ @miller2012 ](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/), [ @kucharski2014 ](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004206), and [@bidari2016](https://www.sciencedirect.com/science/article/pii/S0025556416302802), and which are implemented in the _finalsize_ package.
 
 ::: {.alert .alert-primary}
 ## Use case {-}
@@ -118,7 +119,7 @@ The method implemented in _finalsize_ accounts for this heterogeneity. Other for
 
 ## Population susceptibility
 
-In the early stages of an epidemic outbreak, a safe assumption might be that all age groups have a similar susceptibility. 
+In the early stages of an epidemic outbreak, a safe assumption might be that all age groups have a similar, high susceptibility to infection. This means that all individuals fall into a single category: highly or fully susceptible.
 
 High uniform susceptibility can be modelled as a matrix with values of 1.0, with as many rows as there are demographic groups. The matrix has a single column, representing the single susceptibility group to which all individuals belong.
 
@@ -136,9 +137,11 @@ susc_uniform <- matrix(
 )
 ```
 
-Final size calculations also need to know the proportion of each demographic group $\{i\}$ that falls into the susceptibility group $\{j\}$.
+Final size calculations also need to know the proportion of each demographic group $\{i\}$ that falls into the susceptibility group $\{j\}$. This distribution of age groups into susceptibility groups can be represented by the demography-susceptibility distribution matrix.
 
-Since all individuals in each age group have the same susceptibility, there is no variation within age groups. This can be represented as a single-column matrix, with as many rows as age groups.
+Since all individuals in each age group have the same susceptibility, there is no variation within age groups. Consequently, all individuals in each age group fall into the highly or fully susceptible group. This can be represented as a single-column matrix, with as many rows as age groups, and as many columns as susceptibility groups.
+
+In this example, the matrix `p_susc_uniform` has `r n_demo_grps` rows, one for each age group, and only one column, for the single high susceptibility group that holds all individuals.
 
 ```{r}
 p_susc_uniform <- matrix(
@@ -158,9 +161,9 @@ _finalsize_ supports multiple susceptibility groups (this will be covered later)
 
 Each element $\{i, j\}$ in this matrix represents the susceptibility of individuals in demographic group $\{i\}$, and susceptibility group $\{j\}$.
 
-In this example, all individuals are equally susceptible to infection, and thus the susceptibility matrix has only a single column with identical values.
+In this example, all individuals are equally susceptible to infection, and thus the susceptibility matrix (`susc_uniform`) has only a single column with identical values.
 
-Consequently, the demography-in-susceptibility matrix has the same dimensions, and all of its values are 1.0.
+Consequently, the demography-susceptibility distribution matrix (`p_susc_uniform`) has the same dimensions, and all of its values are 1.0.
 
 See the ["Heterogeneous susceptibility"](varying_susceptibility.html) example for more on cases where susceptibility varies within age groups.
 
@@ -222,7 +225,7 @@ ggplot(final_size_data) +
 
 ### Final size proportions to counts
 
-`finalsize` returns the _proportion_ of each age (and risk) group infected in an epidemic outbreak. These proportions can be be converted into population counts --- numbers of people --- by multiplication with the demography vector.
+`finalsize` returns the _proportion_ of each age (and risk) group infected in an epidemic outbreak. The final _counts_ of individuals infected can be visualised as well, by multiplying the final proportion of each age group infected with the total number of individuals in that group.
 
 The example below show how this can be done.
 
@@ -248,8 +251,6 @@ final_size_data$demo_grp <- factor(
 final_size_data$n_infected <- final_size_data$p_infected *
   final_size_data$population
 ```
-
-The final _counts_ infected can be visualised as well.
 
 ```{r echo=FALSE, fig.cap="Final size of an epidemic outbreak in a population, for different values of infection $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in most  outbreaks. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected.", fig.width=5, fig.height=4}
 ggplot(final_size_data) +

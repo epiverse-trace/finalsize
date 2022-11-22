@@ -208,6 +208,10 @@ ggplot(final_size_data) +
 
 ::: {.alert .alert-warning}
 **Note** that, as shown in this example, a population with heterogeneous susceptibility is _always_ expected to have a lower final epidemic size overall than an otherwise identical population that is fully susceptible.
+
+This illustrates the broader point that infections in any one age group are _not independent_ of the infections in other age groups. This is due to direct or indirect social contacts between age groups.
+
+Reducing the susceptibility (and thus infections) of one age group can indirectly help to reduce infections in other age groups as well.
 :::
 
 ## Susceptibility variation within and between age groups
