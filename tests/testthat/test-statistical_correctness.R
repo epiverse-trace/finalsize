@@ -305,10 +305,6 @@ test_that("Newton solver is correct in complex case", {
     control = control
   )
 
-  expect_s3_class(
-    epi_outcome,
-    "data.frame"
-  )
   # check that solver returns values within range
   expect_true(
     all(epi_outcome$p_infected >= 0)
@@ -380,10 +376,6 @@ test_that("Iterative solver is correct in complex case", {
     control = control
   )
 
-  expect_s3_class(
-    epi_outcome,
-    "data.frame"
-  )
   # check that solver returns values within range
   expect_true(
     all(epi_outcome$p_infected >= 0)
