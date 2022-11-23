@@ -10,18 +10,14 @@ MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/
 coverage](https://codecov.io/gh/epiverse-trace/finalsize/branch/main/graph/badge.svg)](https://app.codecov.io/gh/epiverse-trace/finalsize?branch=main)
 <!-- badges: end -->
 
-*finalsize* provides quick back-of-the-envelope calculations for the
-final size of an epidemic outbreak in a population with demographic
-variation in contact patterns, and variation within and between age
-groups in their susceptibility to disease.
+*finalsize* provides calculations for the final size of an epidemic in a
+population with demographic variation in contact patterns, and variation
+within and between age groups in their susceptibility to disease.
 
-*finalsize* implements methods outlined in [Andreasen
-(2011)](https://link.springer.com/article/10.1007/s11538-010-9623-3),
-[Miller (2012)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/),
-[Kucharski et al.
-(2014)](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004206),
-and [Bidari et al.
-(2016)](https://www.sciencedirect.com/science/article/pii/S0025556416302802).
+*finalsize* implements methods outlined in Andreasen
+([2011](#ref-andreasen2011)), Miller ([2012](#ref-miller2012)),
+Kucharski et al. ([2014](#ref-kucharski2014)), and Bidari et al.
+([2016](#ref-bidari2016)).
 
 *finalsize* can help provide rough estimates of the effectiveness of
 pharmaceutical interventions in the form of immunisation programmes, or
