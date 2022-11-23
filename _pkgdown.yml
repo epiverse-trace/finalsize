@@ -7,6 +7,5 @@ articles:
 - title: Package vignettes
   navbar: Package vignettes
   contents:
-  - using_finalsize
   - varying_susceptibility
   - uncertainty_params
