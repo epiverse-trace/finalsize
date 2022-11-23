@@ -6,6 +6,7 @@ output:
 pkgdown:
   as_is: true
 bibliography: references.bib
+link-citations: true
 vignette: >
   %\VignetteIndexEntry{Calculating the final size of an epidemic}
   %\VignetteEngine{knitr::rmarkdown}
@@ -13,7 +14,7 @@ vignette: >
 ---
 
 When considering responses to an epidemic, one of the first steps is to estimate how many infections there are likely to be over the course of the outbreak. This, the cumulative sum of all infections, is called the final size.
-The final size of an epidemic can be calculated using methods detailed in [ @andreasen2011 ](https://link.springer.com/article/10.1007/s11538-010-9623-3), [ @miller2012 ](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/), [ @kucharski2014 ](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004206), and [@bidari2016](https://www.sciencedirect.com/science/article/pii/S0025556416302802), and which are implemented in the _finalsize_ package.
+The final size of an epidemic can be calculated using methods detailed in @andreasen2011, @miller2012, @kucharski2014, and @bidari2016, and which are implemented in the _finalsize_ package.
 
 ::: {.alert .alert-primary}
 ## Use case {-}
@@ -192,7 +193,7 @@ final_size_data$demo_grp <- factor(
 
 ### Visualise final sizes
 
-```{r echo=FALSE, fig.cap ="Final size of an SIR epidemic in each age group. The final size is the cumulative number of infections in each age group over the course of the epidemic, expressed as a proportion of the respective age group.", fig.width=5, fig.height=4}
+```{r echo=FALSE, fig.cap ="Final size of an SIR epidemic in each age group. The final size is the cumulative number of infections in each age group over the course of the epidemic, expressed as a proportion of the respective age group.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
 # plot data
 ggplot(final_size_data) +
   geom_col(
@@ -252,7 +253,7 @@ final_size_data$n_infected <- final_size_data$p_infected *
   final_size_data$population
 ```
 
-```{r echo=FALSE, fig.cap="Final size of an epidemic outbreak in a population, for different values of infection $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in most  outbreaks. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected.", fig.width=5, fig.height=4}
+```{r echo=FALSE, fig.cap="Final size of an epidemic outbreak in a population, for different values of infection $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in most  outbreaks. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
 ggplot(final_size_data) +
   geom_col(
     aes(
