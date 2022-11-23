@@ -3,9 +3,11 @@ title: "Modelling uncertainty in R₀"
 output:
   bookdown::html_vignette2:
     fig_caption: yes
+    code_folding: show
 pkgdown:
   as_is: true
 bibliography: references.bib
+link-citations: true
 vignette: >
   %\VignetteIndexEntry{Modelling uncertainty in R₀}
   %\VignetteEncoding{UTF-8}
@@ -48,7 +50,7 @@ knitr::opts_chunk$set(
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
-```{r setup, message=FALSE, warning=FALSE, echo=FALSE}
+```{r setup, message=FALSE, warning=FALSE, class.source = 'fold-hide'}
 library(finalsize)
 
 # load useful packages
@@ -151,7 +153,7 @@ final_size_data$demo_grp <- factor(
 
 ### Visualise uncertainty in final size
 
-```{r echo=FALSE, fig.cap="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can lead to substantial variation in the estimated final size of the epidemic.", fig.width=5, fig.height=4}
+```{r class.source = 'fold-hide', class.source = 'fold-hide', fig.cap="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can lead to substantial variation in the estimated final size of the epidemic.", fig.width=5, fig.height=4}
 ggplot(final_size_data) +
   geom_boxplot(
     aes(

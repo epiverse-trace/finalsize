@@ -1,6 +1,7 @@
 ---
 output: github_document
 bibliography: vignettes/references.bib
+link-citations: true
 ---
 
 ```{r, include = FALSE}
@@ -20,9 +21,9 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/epiverse-trace/finalsize/branch/main/graph/badge.svg)](https://app.codecov.io/gh/epiverse-trace/finalsize?branch=main)
 <!-- badges: end -->
 
-_finalsize_ provides quick back-of-the-envelope calculations for the final size of an epidemic outbreak in a population with demographic variation in contact patterns, and variation within and between age groups in their susceptibility to disease.
+_finalsize_ provides calculations for the final size of an epidemic in a population with demographic variation in contact patterns, and variation within and between age groups in their susceptibility to disease.
 
-_finalsize_ implements methods outlined in [ @andreasen2011 ](https://link.springer.com/article/10.1007/s11538-010-9623-3), [ @miller2012 ](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/), [ @kucharski2014 ](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004206), and [@bidari2016](https://www.sciencedirect.com/science/article/pii/S0025556416302802).
+_finalsize_ implements methods outlined in @andreasen2011, @miller2012, @kucharski2014, and @bidari2016.
 
 _finalsize_ can help provide rough estimates of the effectiveness of pharmaceutical interventions in the form of immunisation programmes, or the effect of naturally acquired immunity through previous infection (see the vignette).
 

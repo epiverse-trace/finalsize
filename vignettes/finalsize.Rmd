@@ -3,6 +3,7 @@ title: "Calculating the final size of an epidemic"
 output:
   bookdown::html_vignette2:
     fig_caption: yes
+    code_folding: show
 pkgdown:
   as_is: true
 bibliography: references.bib
@@ -193,7 +194,7 @@ final_size_data$demo_grp <- factor(
 
 ### Visualise final sizes
 
-```{r echo=FALSE, fig.cap ="Final size of an SIR epidemic in each age group. The final size is the cumulative number of infections in each age group over the course of the epidemic, expressed as a proportion of the respective age group.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
+```{r fig.cap ="Final size of an SIR epidemic in each age group. The final size is the cumulative number of infections in each age group over the course of the epidemic, expressed as a proportion of the respective age group.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
 # plot data
 ggplot(final_size_data) +
   geom_col(
@@ -208,13 +209,6 @@ ggplot(final_size_data) +
     limits = c(0, 1)
   ) +
   theme_classic() +
-  theme(
-    legend.position = "top",
-    legend.key.height = unit(2, "mm"),
-    legend.title = ggtext::element_markdown(
-      vjust = 1
-    )
-  ) +
   coord_cartesian(
     expand = FALSE
   ) +
@@ -253,7 +247,7 @@ final_size_data$n_infected <- final_size_data$p_infected *
   final_size_data$population
 ```
 
-```{r echo=FALSE, fig.cap="Final size of an epidemic outbreak in a population, for different values of infection $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in most  outbreaks. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
+```{r fig.cap="Final size of an epidemic outbreak in a population, for different values of infection $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in most  outbreaks. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
 ggplot(final_size_data) +
   geom_col(
     aes(
@@ -269,13 +263,6 @@ ggplot(final_size_data) +
     limits = c(0, 15e6)
   ) +
   theme_classic() +
-  theme(
-    legend.position = "top",
-    legend.key.height = unit(2, "mm"),
-    legend.title = ggtext::element_markdown(
-      vjust = 1
-    )
-  ) +
   coord_cartesian(
     expand = FALSE
   ) +
