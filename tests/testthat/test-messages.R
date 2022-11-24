@@ -9,7 +9,7 @@ contact_data <- socialmixr::contact_matrix(
   age.limits = c(0, 20, 40),
   symmetric = TRUE
 )
-contact_matrix <- contact_data$matrix
+contact_matrix <- t(contact_data$matrix)
 demography_vector <- contact_data$demography$population
 
 # scale by maximum real eigenvalue and divide by demography

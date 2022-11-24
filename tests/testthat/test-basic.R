@@ -9,7 +9,7 @@ contact_data <- socialmixr::contact_matrix(
   age.limits = c(0, 20, 40),
   symmetric = TRUE
 )
-contact_matrix <- contact_data$matrix
+contact_matrix <- t(contact_data$matrix)
 demography_vector <- contact_data$demography$population
 
 # set demography vector names
@@ -105,6 +105,8 @@ test_that("final_size output is correct length and within range 0 - 1", {
 
 test_that("final_size returns default group names", {
   names(demography_vector) <- NULL
+  colnames(contact_matrix) <- NULL
+  rownames(contact_matrix) <- NULL
   colnames(susceptibility) <- NULL
 
   # prepare final_size output with default names

@@ -198,7 +198,7 @@ contact_data <- socialmixr::contact_matrix(
   age.limits = c(0, 20, 40),
   symmetric = TRUE
 )
-contact_matrix <- contact_data$matrix
+contact_matrix <- t(contact_data$matrix)
 demography_vector <- contact_data$demography$population
 
 # scale by maximum real eigenvalue and divide by demography
@@ -256,6 +256,13 @@ epi_outcome_newton <- final_size(
 
 # Check final_size works with Newton solver
 test_that("Solvers return equivalent solutions with POLYMOD data", {
+  # expect snapshots
+  expect_snapshot(
+    epi_outcome_iterative
+  )
+  expect_snapshot(
+    epi_outcome_newton
+  )
   # check for equivalence
   expect_equal(
     epi_outcome_iterative$p_infected,
@@ -368,7 +375,7 @@ test_that("Iterative solver is correct in complex case", {
   # make a demography vector
   demography_vector <- c(
     10831795, 11612456, 13511496,
-    11499398, 8167102, 40
+    11499398, 8167102, 4587765
   )
 
   # get an example r0
