@@ -153,18 +153,25 @@ final_size_data$demo_grp <- factor(
 
 ### Visualise uncertainty in final size
 
-```{r class.source = 'fold-hide', class.source = 'fold-hide', fig.cap="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can lead to substantial variation in the estimated final size of the epidemic.", fig.width=5, fig.height=4}
+```{r class.source = 'fold-hide', class.source = 'fold-hide', fig.cap="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can also leads to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles.", fig.width=5, fig.height=4}
 ggplot(final_size_data) +
-  geom_boxplot(
+  stat_summary(
     aes(
       demo_grp, p_infected
     ),
+    fun = mean,
+    fun.min = function(x) {
+      quantile(x, 0.05)
+    },
+    fun.max = function(x) {
+      quantile(x, 0.95)
+    },
     fill = "lightgrey",
     outlier.size = 0.2
   ) +
   scale_y_continuous(
     labels = scales::percent,
-    limits = c(0, 1)
+    limits = c(0.25, 1)
   ) +
   theme_classic() +
   theme(
@@ -175,7 +182,7 @@ ggplot(final_size_data) +
     )
   ) +
   coord_cartesian(
-    expand = FALSE
+    expand = TRUE
   ) +
   labs(
     x = "Age group",
