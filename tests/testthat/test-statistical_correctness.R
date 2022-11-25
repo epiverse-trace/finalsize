@@ -271,17 +271,7 @@ test_that("Solvers return equivalent solutions with POLYMOD data", {
   )
 })
 
-# Check that all final sizes are lower than upper limit for R0
-test_that("Final sizes on POLYMOD are within upper limit", {
-  expect_true(
-    all(epi_outcome_iterative$p_infected < upper_limit(r0)$par)
-  )
-  expect_true(
-    all(epi_outcome_newton$p_infected < upper_limit(r0)$par)
-  )
-})
-
-### Test that lower susceptibility leads to lower final size ####
+#### Test that lower susceptibility leads to lower final size ####
 
 test_that("Lower susceptibility leads to lower final size", {
   # all fully susceptibles must have larger final size than immunised
@@ -290,6 +280,37 @@ test_that("Lower susceptibility leads to lower final size", {
       "susceptible", ]$p_infected >
       epi_outcome_newton[epi_outcome_newton$susc_grp ==
         "immunised", ]$p_infected)
+  )
+})
+
+#### Check mean final size in fully susceptible POLYMOD matrix < upper lim ####
+# Check that all final sizes are lower than upper limit for R0
+epi_outcome_iterative <- final_size(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  p_susceptibility = matrix(1, n_demo_grps, 1),
+  susceptibility = matrix(1, n_demo_grps, 1),
+  solver = "iterative",
+  control = control
+)
+
+epi_outcome_newton <- final_size(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  p_susceptibility = matrix(1, n_demo_grps, 1),
+  susceptibility = matrix(1, n_demo_grps, 1),
+  solver = "newton",
+  control = control
+)
+
+test_that("Mean final sizes on POLYMOD are within upper limit", {
+  expect_lte(
+    mean(epi_outcome_iterative$p_infected), upper_limit(r0)$par
+  )
+  expect_lte(
+    mean(epi_outcome_newton$p_infected), upper_limit(r0)$par
   )
 })
 
