@@ -157,7 +157,7 @@ final_size <- function(r0,
       ),
     "Error: contact matrix must have a maximum real eigenvalue of 1.0" =
       (
-        max(eigen(contact_matrix)$values) - 1.0 < 1e-6
+        abs(max(eigen(contact_matrix * demography_vector)$values) - 1.0) < 1e-6
       ),
     "Error: control list names can only be: 'iterations', 'tolerance',
     'step_rate', 'adapt_step'" =
@@ -223,8 +223,10 @@ final_size <- function(r0,
   # check for names of age groups and susc groups
   names_demography <- names(demography_vector)
   if (is.null(names_demography)) {
-    # check if contact matrix has rownames
-    if (!is.null(rownames(contact_matrix))) {
+    # check if contact matrix has column names
+    if (!is.null(colnames(contact_matrix))) {
+      names_demography <- colnames(contact_matrix)
+    } else if (!is.null(rownames(contact_matrix))) {
       names_demography <- rownames(contact_matrix)
     } else {
       names_demography <- sprintf(

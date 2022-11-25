@@ -1,4 +1,4 @@
-#### Tests for finalsize using the Newton solver ####
+#### Tests for solver options ####
 
 #### Prepare data ####
 r0 <- 2.0
@@ -20,7 +20,7 @@ contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
 contact_matrix <- contact_matrix / demography_vector
 
 n_demo_grps <- length(demography_vector)
-n_risk_grps <- 3 # different from iterative to avoid biasing with magic numbers
+n_risk_grps <- 2
 
 # prepare p_susceptibility and susceptibility
 p_susceptibility <- matrix(
@@ -28,10 +28,12 @@ p_susceptibility <- matrix(
 )
 p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
 susceptibility <- matrix(
-  data = c(1.0, 0.75, 0.5), nrow = n_demo_grps, ncol = n_risk_grps,
+  data = c(1.0, 0.5), nrow = n_demo_grps, ncol = n_risk_grps,
   byrow = TRUE
 )
+colnames(susceptibility) <- c("susceptible", "immunised")
 
+#### Test output using iterative solver options ####
 # prepare final_size output
 epi_outcome <- final_size(
   r0 = r0,
@@ -39,12 +41,14 @@ epi_outcome <- final_size(
   demography_vector = demography_vector,
   p_susceptibility = p_susceptibility,
   susceptibility = susceptibility,
-  solver = "newton"
+  solver = "iterative",
+  control = list(
+    adapt_step = FALSE # default option is TRUE
+  )
 )
 
-#### Test that p_infected values are correct ####
 # Test that final_size values are within range and have correct length
-test_that("Newton solver returns final size values within range 0 - 1", {
+test_that("Iterative solver with adaptive steps turned off works", {
   # check for bad numeric, NAN, or infinite values
   # check that values are not NaN
   expect_false(
