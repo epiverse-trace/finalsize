@@ -271,6 +271,16 @@ test_that("Solvers return equivalent solutions with POLYMOD data", {
   )
 })
 
+# Check that all final sizes are lower than upper limit for R0
+test_that("Final sizes on POLYMOD are within upper limit", {
+  expect_true(
+    all(epi_outcome_iterative$p_infected < upper_limit(r0)$par)
+  )
+  expect_true(
+    all(epi_outcome_newton$p_infected < upper_limit(r0)$par)
+  )
+})
+
 ### Test that lower susceptibility leads to lower final size ####
 
 test_that("Lower susceptibility leads to lower final size", {
