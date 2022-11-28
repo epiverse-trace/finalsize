@@ -70,7 +70,7 @@ library(ggplot2)
 
 A number of statistical methods can be used to estimate the $R_0$ of an epidemic in its early stages from available data. These are not discussed here, but some examples are given in the [_episoap_ package](https://epiverse-trace.github.io/episoap/articles/episoap.html).
 
-Instead, this example considers a infection with an $R_0$ of 2.0, similar to some strains of seasonal influenza.
+Instead, this example considers a infection with an $R_0$ of 2.0, similar to that which could potentially be observed for pandemic influenza.
 
 ```{r}
 # define r0 as 2.0
