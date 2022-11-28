@@ -20,7 +20,7 @@ The final size of an epidemic can be calculated using methods detailed in @andre
 ::: {.alert .alert-primary}
 ## Use case {-}
 
-An epidemic is underway. You want to know **how many individuals are likely to be infected in total**: this is the cumulative sum of all infections, or the _final size_ of the epidemic.
+An epidemic is underway. You want to know **how many individuals we would expect to be infected in total** for a given level of transmission and population susceptibility: this is the cumulative sum of all infections, or the _final size_ of the epidemic.
 :::
 
 ::: {.alert .alert-secondary}
