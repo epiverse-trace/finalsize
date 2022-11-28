@@ -25,7 +25,7 @@ Epidemic final size calculations are sensitive to input data such as the $R_0$ o
 ::: {.alert .alert-primary}
 ## Use case {-}
 
-The infection **parameter ($R_0$) is uncertain**. You want to know how much variation this could cause in the estimated final size of the epidemic.
+The infection **parameter ($R_0$) is uncertain**. We want to know this uncertainty could influence our estimates for the final size of the epidemic.
 :::
 
 ::: {.alert .alert-secondary}
