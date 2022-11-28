@@ -95,7 +95,7 @@ p_susceptibility <- matrix(
 )
 
 # R0 of the disease
-r0 <- 1.3 # seasonal influenza
+r0 <- 1.5 # assumed for pandemic influenza
 
 # Calculate the proportion of individuals infected
 final_size(
