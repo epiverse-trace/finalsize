@@ -123,7 +123,7 @@ The method implemented in _finalsize_ accounts for this heterogeneity. Other for
 
 ## Population susceptibility
 
-In the early stages of an epidemic outbreak, a safe assumption might be that all age groups have a similar, high susceptibility to infection. This means that all individuals fall into a single category: highly or fully susceptible.
+As an starting scenario, consider a novel pathogen where all age groups have a similar, high susceptibility to infection. This means it is assumed that all individuals fall into a single category: fully susceptible.
 
 High uniform susceptibility can be modelled as a matrix with values of 1.0, with as many rows as there are demographic groups. The matrix has a single column, representing the single susceptibility group to which all individuals belong.
 
