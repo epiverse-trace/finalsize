@@ -106,6 +106,7 @@ demography_data <- contact_data$demography
 contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
 
 # divide each row of the contact matrix by the corresponding demography
+# this reflects the assumption that each individual in group $\{j\}$ make contacts at random with individuals in group $\{i\}$
 contact_matrix <- contact_matrix / demography_vector
 
 n_demo_grps <- length(demography_vector)
