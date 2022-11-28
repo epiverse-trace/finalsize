@@ -33,7 +33,7 @@ An epidemic is underway. You want to know **how many individuals we would expect
 
 ### What you assume {-}
 
-  1. That the infection dynamics can be captured using a Susceptible-Infectious-Recovered (SIR) or Susceptible-Exposed-Infectious-Recovered (SEIR) model.
+  1. That the infection dynamics can be captured using a Susceptible-Infectious-Recovered (SIR) or Susceptible-Exposed-Infectious-Recovered (SEIR) model, where individuals who have been infected acquire immunity against subsequent infection, at least for the remaining duration of the epidemic.
 :::
 
 ```{r, include = FALSE}
