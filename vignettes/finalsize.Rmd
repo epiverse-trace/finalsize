@@ -14,7 +14,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-When considering responses to an epidemic, one of the first steps is to estimate how many infections there are likely to be over the course of the outbreak. This, the cumulative sum of all infections, is called the final size.
+When analysing an epidemic-prone infection, such as pandemic influenza, it is important to understand how many infections there could be in total. The overall number of infections that occur during such an epidemic, is called the 'final epidemic size'.
 The final size of an epidemic can be calculated using methods detailed in @andreasen2011, @miller2012, @kucharski2014, and @bidari2016, and which are implemented in the _finalsize_ package.
 
 ::: {.alert .alert-primary}
