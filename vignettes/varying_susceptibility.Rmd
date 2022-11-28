@@ -213,7 +213,7 @@ ggplot(final_size_data) +
 
 This illustrates the broader point that infections in any one age group are _not independent_ of the infections in other age groups. This is due to direct or indirect social contacts between age groups.
 
-Reducing the susceptibility (and thus infections) of one age group can indirectly help to reduce infections in other age groups as well.
+Reducing the susceptibility (and thus infections) of one age group can indirectly help to reduce infections in other age groups as well, because the overall level of epidemic transmission will be reduced.
 :::
 
 ## Susceptibility variation within and between age groups
