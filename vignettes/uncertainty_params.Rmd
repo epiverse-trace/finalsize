@@ -16,7 +16,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-Epidemic final size calculations are sensitive to input data such as the $R_0$ of the infection. This can often be uncertain in the early stages of an outbrak. This uncertainty can be included in final size calculations by running `final_size` for values drawn from a distribution, and summarising the outcomes.
+Epidemic final size calculations are sensitive to input data such as the $R_0$ of the infection. Such values can often be uncertain in the early stages of an outbreak. This uncertainty can be included in final size calculations by running `final_size` for values drawn from a distribution, and summarising the outcomes.
 
 ::: {.alert .alert-warning}
 **New to _finalsize_?** It may help to read earlier vignettes first!
@@ -25,18 +25,18 @@ Epidemic final size calculations are sensitive to input data such as the $R_0$ o
 ::: {.alert .alert-primary}
 ## Use case {-}
 
-The infection **parameter ($R_0$) is uncertain**. We want to know this uncertainty could influence our estimates for the final size of the epidemic.
+The infection **parameter ($R_0$) is uncertain**. We want to know how much variation this could cause in the estimated final size of the epidemic.
 :::
 
 ::: {.alert .alert-secondary}
-### What you have {-}
+### What we have {-}
 
   1. In addition to the $R_0$, demography data, social contact data, and data on the distribution of susceptibility among age groups;
   2. A measure of the error in the estimated $R_0$ of the infection.
 
-### What you assume {-}
+### What we assume {-}
 
-  1. An SIR epidemic, and the complete partitioning of individuals into demographic and risk groups.
+  1. An SIR epidemic, and the complete partitioning of individuals into different demographic and infection risk groups.
 :::
 
 ```{r, include = FALSE}
@@ -53,7 +53,7 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 ```{r setup, message=FALSE, warning=FALSE, class.source = 'fold-hide'}
 library(finalsize)
 
-# load useful packages
+# load necessary packages
 library(data.table)
 library(ggplot2)
 ```
@@ -92,7 +92,7 @@ n_demo_grps <- length(demography_vector)
 r0_mean <- 2.0
 ```
 
-This example considers a scenario in which susceptibility to infection does not vary.
+For simplicity, this example considers a scenario in which susceptibility to infection does not vary.
 
 ```{r}
 # susceptibility is uniform
@@ -112,7 +112,7 @@ The basic reproduction number $R_0$ of an infection might be uncertain in the ea
 
 This example assumes that the $R_0$ estimate, and the uncertainty around that estimate, is provided as the mean and standard deviation of a normal distribution.
 
-This example considers a normal distribution $N(\mu = 2.0, \sigma = 0.1)$, for an $R_0$ of 2.0. You can draw 1,000 $R_0$ samples from this distribution and run `final_size` on the contact data and demography data for each sample.
+This example considers a normal distribution $N(\mu = 2.0, \sigma = 0.1)$, for an $R_0$ of 2.0. We can draw 1,000 $R_0$ samples from this distribution and run `final_size` on the contact data and demography data for each sample.
 
 This is quick, as `finalsize` is an Rcpp package with a C++ backend.
 
@@ -153,7 +153,7 @@ final_size_data$demo_grp <- factor(
 
 ### Visualise uncertainty in final size
 
-```{r class.source = 'fold-hide', class.source = 'fold-hide', fig.cap="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can also leads to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles.", fig.width=5, fig.height=4}
+```{r class.source = 'fold-hide', class.source = 'fold-hide', fig.cap="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles.", fig.width=5, fig.height=4}
 ggplot(final_size_data) +
   stat_summary(
     aes(

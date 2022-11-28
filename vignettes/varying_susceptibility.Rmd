@@ -25,17 +25,17 @@ Populations are often heterogeneous in their susceptibility to infection followi
 ::: {.alert .alert-primary}
 ## Use case {-}
 
-There is substantial **heterogeneity in susceptibility to infection** in a population. You want to know how this heterogeneity could affect the final size of the epidemic.
+There is substantial **heterogeneity in susceptibility to infection** in a population. We want to know how this heterogeneity could affect the final size of the epidemic.
 :::
 
 ::: {.alert .alert-secondary}
-### What you have {-}
+### What we have {-}
 
   1. In addition to the infection $R_0$, demography data, and social contact data;
   2. Data on within- and between-group variation in susceptibility to the infection; and
   3. Data on the proportion (or probability) of individuals in any demographic group in a specific susceptibility (or risk) group.
 
-### What you assume {-}
+### What we assume {-}
 
   1. In addition to an SIR epidemic;
   2. The partitioning of individuals into demographic and risk groups is complete, i.e., no individuals remain unaccounted for.
@@ -54,7 +54,7 @@ knitr::opts_chunk$set(
 ```{r setup, message=FALSE, warning=FALSE, class.source = 'fold-hide'}
 library(finalsize)
 
-# load useful packages
+# load necessary packages
 library(data.table)
 library(ggplot2)
 library(colorspace)
@@ -122,7 +122,7 @@ p_susc_uniform <- matrix(
 )
 ```
 
-You can compare the final size in a population with heterogeneous susceptibility against that of a population with a uniform, high susceptibility.
+We can compare the final size in a population with heterogeneous susceptibility against that of a population with a uniform, high susceptibility.
 
 ```{r}
 # run final_size with default solvers and control options
@@ -246,7 +246,7 @@ n_risk_groups <- ncol(susc_immunised)
 **Note** that because there are two susceptibility groups, the susceptibility matrix has two columns. The corresponding **demography-susceptibility distribution matrix** must also have two columns!
 :::
 
-You also need to model the proportion of each age group that has been immunised, and which therefore has lower susceptibility to the infection. To do this, you can modify the demography-susceptibility distribution matrix.
+We also need to model the proportion of each age group that has been immunised, and which therefore has lower susceptibility to the infection. To do this, we can modify the demography-susceptibility distribution matrix.
 
 This example models considers half of each age group to be in the immunised and non-immunised groups.
 

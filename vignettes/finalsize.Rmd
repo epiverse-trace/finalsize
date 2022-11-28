@@ -15,23 +15,23 @@ vignette: >
 ---
 
 When analysing an epidemic-prone infection, such as pandemic influenza, it is important to understand how many infections there could be in total. The overall number of infections that occur during such an epidemic, is called the 'final epidemic size'.
-The final size of an epidemic can be calculated using methods detailed in @andreasen2011, @miller2012, @kucharski2014, and @bidari2016, and which are implemented in the _finalsize_ package.
+The expected final size of an epidemic can be calculated using methods detailed in @andreasen2011, @miller2012, @kucharski2014, and @bidari2016, and which are implemented in the _finalsize_ package.
 
 ::: {.alert .alert-primary}
 ## Use case {-}
 
-An epidemic is underway. You want to know **how many individuals we would expect to be infected in total** for a given level of transmission and population susceptibility: this is the cumulative sum of all infections, or the _final size_ of the epidemic.
+An epidemic is underway. We want to know **how many individuals we would expect to be infected in total** for a given level of transmission and population susceptibility: this is the cumulative sum of all infections, or the _final size_ of the epidemic.
 :::
 
 ::: {.alert .alert-secondary}
-### What you have {-}
+### What we have {-}
 
   1. An estimate of the infection's basic reproduction number $R_0$;
-  2. An estimate of the distribution of the population in different demographic groups, often, age groups;
+  2. An estimate of the distribution of the population in different demographic groups (typically age groups);
   3. An estimate of the contacts between individuals of different demographic groups; and
   4. An estimate of the susceptibility of each demographic group to the infection.
 
-### What you assume {-}
+### What we assume {-}
 
   1. That the infection dynamics can be captured using a Susceptible-Infectious-Recovered (SIR) or Susceptible-Exposed-Infectious-Recovered (SEIR) model, where individuals who have been infected acquire immunity against subsequent infection, at least for the remaining duration of the epidemic.
 :::
@@ -61,7 +61,7 @@ remotes::install_github("epiverse-trace/finalsize")
 ```{r}
 library(finalsize)
 
-# load useful packages
+# load necessary packages
 library(data.table)
 library(ggplot2)
 ```
@@ -125,7 +125,7 @@ The method implemented in _finalsize_ accounts for this heterogeneity. Other for
 
 As an starting scenario, consider a novel pathogen where all age groups have a similar, high susceptibility to infection. This means it is assumed that all individuals fall into a single category: fully susceptible.
 
-High uniform susceptibility can be modelled as a matrix with values of 1.0, with as many rows as there are demographic groups. The matrix has a single column, representing the single susceptibility group to which all individuals belong.
+Full uniform susceptibility can be modelled as a matrix with values of 1.0, with as many rows as there are demographic groups. The matrix has a single column, representing the single susceptibility group to which all individuals belong.
 
 ```{r}
 # all individuals are equally and highly susceptible
@@ -143,7 +143,7 @@ susc_uniform <- matrix(
 
 Final size calculations also need to know the proportion of each demographic group $\{i\}$ that falls into the susceptibility group $\{j\}$. This distribution of age groups into susceptibility groups can be represented by the demography-susceptibility distribution matrix.
 
-Since all individuals in each age group have the same susceptibility, there is no variation within age groups. Consequently, all individuals in each age group fall into the highly or fully susceptible group. This can be represented as a single-column matrix, with as many rows as age groups, and as many columns as susceptibility groups.
+Since all individuals in each age group have the same susceptibility, there is no variation within age groups. Consequently, all individuals in each age group are assumed to be fully susceptible. This can be represented as a single-column matrix, with as many rows as age groups, and as many columns as susceptibility groups.
 
 In this example, the matrix `p_susc_uniform` has `r n_demo_grps` rows, one for each age group, and only one column, for the single high susceptibility group that holds all individuals.
 
@@ -222,7 +222,7 @@ ggplot(final_size_data) +
 
 ### Final size proportions to counts
 
-`finalsize` returns the _proportion_ of each age (and risk) group infected in an epidemic outbreak. The final _counts_ of individuals infected can be visualised as well, by multiplying the final proportion of each age group infected with the total number of individuals in that group.
+`finalsize` returns the _proportion_ of each age (and susceptibility) group infected in an epidemic outbreak. The final _counts_ of individuals infected can be visualised as well, by multiplying the final proportion of each age group infected with the total number of individuals in that group.
 
 The example below show how this can be done.
 
@@ -249,7 +249,7 @@ final_size_data$n_infected <- final_size_data$p_infected *
   final_size_data$population
 ```
 
-```{r fig.cap="Final size of an epidemic outbreak in a population, for different values of infection $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in most  outbreaks. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
+```{r fig.cap="Final size of an epidemic outbreak in a population, for different values of infection $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in this scenario. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
 ggplot(final_size_data) +
   geom_col(
     aes(
