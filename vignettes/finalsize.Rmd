@@ -116,7 +116,7 @@ n_demo_grps <- length(demography_vector)
 
 ### Heterogeneous social mixing {-}
 
-The social contact data used in this example illustrate an important way in which populations may be heterogeneous: the various age groups can have quite different patterns of social contacts.
+The social contact data used in this example illustrate an important way in which populations may be heterogeneous: the various age groups can have substantially different patterns of social contacts, and hence different probabilities of acquiring and transmitting infection during an epidemic.
 
 The method implemented in _finalsize_ accounts for this heterogeneity. Other forms of population heterogeneity are covered in the ["Heterogeneous susceptibility"](varying_susceptibility.html) vignette.
 :::
