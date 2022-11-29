@@ -50,7 +50,7 @@ knitr::opts_chunk$set(
 
 The _finalsize_ package is currently available on [Github](https://github.com/epiverse-trace/finalsize), and can be installed using the `remotes` or `devtools` packages.
 
-```
+```r
 # first install the remotes packages
 install.packages("remotes")
 
