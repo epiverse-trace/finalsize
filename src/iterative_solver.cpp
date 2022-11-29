@@ -2,6 +2,8 @@
 #include <Rcpp.h>
 #include <RcppEigen.h>
 
+// Enable C++11 via this plugin (Rcpp 0.10.3 or later)
+// [[Rcpp::plugins(cpp11)]]
 // [[Rcpp::depends(RcppEigen)]]
 
 /// function for iterative solver
@@ -47,14 +49,14 @@ Eigen::ArrayXd solve_final_size_iterative(
   epi_final_size.fill(0.5);
 
   Eigen::MatrixXd contact_matrix_ = contact_matrix;
-  for (size_t i = 0; i < contact_matrix.rows(); ++i) {
+  for (int i = 0; i < contact_matrix.rows(); ++i) {
     // Check if value should be 0 for (limited) performance increase
     if (demography_vector(i) == 0 || susceptibility(i) == 0 ||
         contact_matrix.row(i).sum() == 0) {
       zeros[i] = 1;
       epi_final_size[i] = 0;
     }
-    for (size_t j = 0; j < contact_matrix.cols(); ++j) {
+    for (int j = 0; j < contact_matrix.cols(); ++j) {
       if (zeros[j]) {
         contact_matrix_(i, j) = 0;
       } else {
