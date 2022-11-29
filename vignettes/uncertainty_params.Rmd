@@ -45,7 +45,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   message = FALSE,
   warning = FALSE,
-  dev = "svglite"
+  dpi = 300
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
@@ -62,7 +62,7 @@ library(ggplot2)
 
 This example uses social contact data from the [POLYMOD](https://cordis.europa.eu/project/id/502084) project to estimate the final size of an epidemic in the U.K. These data are provided with the `socialmixr` package.
 
-These data are handled just as in the [Basic usage](using_finalsize.html) vignette. This example also considers an infection with an $R_0$ of 2.0.
+These data are handled just as in the [Basic usage](finalsize.html) vignette. This example also considers an infection with an $R_0$ of 2.0.
 
 ```{r}
 # get UK polymod data
