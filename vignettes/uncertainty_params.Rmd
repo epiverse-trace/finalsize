@@ -45,7 +45,7 @@ knitr::opts_chunk$set(
   comment = "#>",
   message = FALSE,
   warning = FALSE,
-  dev = "svglite"
+  dpi = 300
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
