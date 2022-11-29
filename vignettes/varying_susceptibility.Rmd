@@ -16,7 +16,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-Populations are often heterogeneous in their susceptibility to infection following exposure, independent of the exposure risk that comes from different social contact patterns. Such heterogeneity may be age-dependent and vary between age groups. It may also vary within age groups due to prior infection resulting in immunity or due to immunisation. Combinations of within- and between-group variation in susceptibility may also occur, and can be incorporated into final size calculations [ [@miller2012] ](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/).
+Populations are often heterogeneous in their susceptibility to infection following exposure, independent of the exposure risk that comes from different social contact patterns. Such heterogeneity may be age-dependent and vary between age groups. It may also vary within age groups due to prior infection resulting in immunity or due to immunisation. Combinations of within- and between-group variation in susceptibility may also occur, and can be incorporated into final size calculations [ [@miller2012] ](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/).
 
 ::: {.alert .alert-warning}
 **New to _finalsize_?** It may help to read the ["Basic usage"](finalsize.html) vignette first!

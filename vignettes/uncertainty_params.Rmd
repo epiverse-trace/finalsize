@@ -165,9 +165,7 @@ ggplot(final_size_data) +
     },
     fun.max = function(x) {
       quantile(x, 0.95)
-    },
-    fill = "lightgrey",
-    outlier.size = 0.2
+    }
   ) +
   scale_y_continuous(
     labels = scales::percent,

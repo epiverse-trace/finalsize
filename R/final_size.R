@@ -112,8 +112,8 @@
 #'
 #' # manual settings for the newton solver
 #' control <- list(
-#'   iterations = 50000,
-#'   tolerance = 1e-12
+#'   iterations = 1000,
+#'   tolerance = 1e-6
 #' )
 #'
 #' final_size(
