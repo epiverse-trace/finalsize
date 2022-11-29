@@ -89,7 +89,7 @@
     
 <p>Populations are often heterogeneous in their susceptibility to infection following exposure, independent of the exposure risk that comes from different social contact patterns. Such heterogeneity may be age-dependent and vary between age groups. It may also vary within age groups due to prior infection resulting in immunity or due to immunisation. Combinations of within- and between-group variation in susceptibility may also occur, and can be incorporated into final size calculations <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/" class="external-link"><span class="citation">(<a href="#ref-miller2012" role="doc-biblioref">Miller 2012</a>)</span></a>.</p>
 <div class="alert alert-warning">
-<p><strong>New to <em>finalsize</em>?</strong> It may help to read the <a href="using_finalsize.html">“Basic usage”</a> vignette first!</p>
+<p><strong>New to <em>finalsize</em>?</strong> It may help to read the <a href="finalsize.html">“Basic usage”</a> vignette first!</p>
 </div>
 <div class="section level2 unnumbered alert alert-primary">
 <h2 id="use-case">Use case<a class="anchor" aria-label="anchor" href="#use-case"></a>
@@ -126,7 +126,7 @@
 <h2 id="getting-r_0-and-contact-and-demography-data">Getting <span class="math inline">\(R_0\)</span> and contact and demography data<a class="anchor" aria-label="anchor" href="#getting-r_0-and-contact-and-demography-data"></a>
 </h2>
 <p>This example uses social contact data from the <a href="https://cordis.europa.eu/project/id/502084" class="external-link">POLYMOD</a> project to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
-<p>These data are handled just as in the <a href="using_finalsize.html">“Basic usage”</a> vignette, and the code is not displayed here. This example also considers a disease with an <span class="math inline">\(R_0\)</span> of 2.0.</p>
+<p>These data are handled just as in the <a href="finalsize.html">“Basic usage”</a> vignette, and the code is not displayed here. This example also considers a disease with an <span class="math inline">\(R_0\)</span> of 2.0.</p>
 <details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get UK polymod data</span></span>
 <span><span class="va">polymod</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="va"><a href="https://epiforecasts.io/socialmixr/reference/polymod.html" class="external-link">polymod</a></span></span>
@@ -252,7 +252,7 @@ In this example, susceptibility to infection increases with age.</p>
 <span>  <span class="op">)</span></span></code></pre></div>
 </details><div class="figure">
 <span style="display:block;" id="fig:unnamed-chunk-9"></span>
-<img src="varying_susceptibility_files/figure-html/unnamed-chunk-9-1.svg" alt="Final sizes of epidemics in populations wherein susceptibility to the infection is either uniform (green), or heterogeneous (purple), with older individuals more susceptible to the infection."><p class="caption">
+<img src="varying_susceptibility_files/figure-html/unnamed-chunk-9-1.png" alt="Final sizes of epidemics in populations wherein susceptibility to the infection is either uniform (green), or heterogeneous (purple), with older individuals more susceptible to the infection."><p class="caption">
 Figure 1: Final sizes of epidemics in populations wherein susceptibility to the infection is either uniform (green), or heterogeneous (purple), with older individuals more susceptible to the infection.
 </p>
 </div>
@@ -387,7 +387,7 @@ Immunisation against infection through an intervention campaign is a common caus
 <span>  <span class="op">)</span></span></code></pre></div>
 </details><div class="figure">
 <span style="display:block;" id="fig:unnamed-chunk-14"></span>
-<img src="varying_susceptibility_files/figure-html/unnamed-chunk-14-1.svg" alt="Final size of an SIR epidemic with $R_0$ = 2.0, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%."><p class="caption">
+<img src="varying_susceptibility_files/figure-html/unnamed-chunk-14-1.png" alt="Final size of an SIR epidemic with $R_0$ = 2.0, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%."><p class="caption">
 Figure 2: Final size of an SIR epidemic with <span class="math inline">\(R_0\)</span> = 2.0, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%.
 </p>
 </div>

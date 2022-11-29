@@ -123,7 +123,7 @@
 <h2 id="getting-r_0-contact-and-demography-data-and-susceptibility">Getting <span class="math inline">\(R_0\)</span>, contact and demography data, and susceptibility<a class="anchor" aria-label="anchor" href="#getting-r_0-contact-and-demography-data-and-susceptibility"></a>
 </h2>
 <p>This example uses social contact data from the <a href="https://cordis.europa.eu/project/id/502084" class="external-link">POLYMOD</a> project to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
-<p>These data are handled just as in the <a href="using_finalsize.html">Basic usage</a> vignette. This example also considers an infection with an <span class="math inline">\(R_0\)</span> of 2.0.</p>
+<p>These data are handled just as in the <a href="finalsize.html">Basic usage</a> vignette. This example also considers an infection with an <span class="math inline">\(R_0\)</span> of 2.0.</p>
 <details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get UK polymod data</span></span>
 <span><span class="va">polymod</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="va"><a href="https://epiforecasts.io/socialmixr/reference/polymod.html" class="external-link">polymod</a></span></span>
@@ -239,7 +239,7 @@
 <span>  <span class="op">)</span></span></code></pre></div>
 </details><div class="figure">
 <span style="display:block;" id="fig:unnamed-chunk-7"></span>
-<img src="uncertainty_params_files/figure-html/unnamed-chunk-7-1.svg" alt="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles."><p class="caption">
+<img src="uncertainty_params_files/figure-html/unnamed-chunk-7-1.png" alt="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles."><p class="caption">
 Figure 1: Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the <span class="math inline">\(R_0\)</span> is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in <span class="math inline">\(R_0\)</span> estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles.
 </p>
 </div>
