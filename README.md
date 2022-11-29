@@ -14,6 +14,11 @@ coverage](https://codecov.io/gh/epiverse-trace/finalsize/branch/main/graph/badge
 population with demographic variation in contact patterns, and variation
 within and between age groups in their susceptibility to disease.
 
+*finalsize* implements methods outlined in Andreasen
+([2011](#ref-andreasen2011)), Miller ([2012](#ref-miller2012)),
+Kucharski et al. ([2014](#ref-kucharski2014)), and Bidari et al.
+([2016](#ref-bidari2016)).
+
 *finalsize* can help provide rough estimates of the effectiveness of
 pharmaceutical interventions in the form of immunisation programmes, or
 the effect of naturally acquired immunity through previous infection
@@ -58,7 +63,6 @@ susceptible.
 
 ``` r
 # Load socialmixr package
-# install.packages("socialmixr")
 library(socialmixr)
 #> 
 #> Attaching package: 'socialmixr'
@@ -111,7 +115,7 @@ p_susceptibility <- matrix(
 r0 <- 1.3 # seasonal influenza
 
 # Calculate the proportion of individuals infected
-finalsize::final_size(
+final_size(
   r0,
   contact_matrix,
   demography_vector,
@@ -124,6 +128,13 @@ finalsize::final_size(
 #> 3      40+ susc_grp_1            0.5 0.006240606
 ```
 
+## Package vignettes
+
+More details on how to use *finalsize* can be found in the [online
+documentation as package
+vignettes](https://epiverse-trace.github.io/finalsize/), under
+“Articles”.
+
 ## Help
 
 To report a bug please open an
@@ -131,21 +142,77 @@ To report a bug please open an
 
 ## Contribute
 
-Contributions to `finalsize` are welcomed. Please follow the [package
+Contributions to *finalsize* are welcomed. Please follow the [package
 contributing
 guide](https://github.com/epiverse-trace/finalsize/blob/main/.github/CONTRIBUTING.md).
 
-## Code of Conduct
+## Code of conduct
 
-Please note that the `finalsize` project is released with a [Contributor
+Please note that the *finalsize* project is released with a [Contributor
 Code of
 Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md).
 By contributing to this project, you agree to abide by its terms.
 
-## Citation
+## Citing this package
 
-Kucharski A.J., Kwok K.O., Wei V.W., Cowling B.J., Read J.M., Lessler
-J., Cummings D.A., Riley S. [The contribution of social behaviour to the
-transmission of influenza A in a human
-population](https://journals.plos.org/plospathogens/article?id=10.1371/journal.ppat.1004206).
-PLOS Pathogens 2014;10(6):e1004206 PMID: 24968312
+``` r
+citation("finalsize")
+#> 
+#> To cite package 'finalsize' in publications use:
+#> 
+#>   Gupte P, Van Leeuwen E, Kucharski A (2022). _finalsize: Calculate the
+#>   Final Size of an Epidemic_.
+#>   https://epiverse-trace.github.io/finalsize/,
+#>   https://github.com/epiverse-trace/finalsize.
+#> 
+#> A BibTeX entry for LaTeX users is
+#> 
+#>   @Manual{,
+#>     title = {finalsize: Calculate the Final Size of an Epidemic},
+#>     author = {Pratik Gupte and Edwin {Van Leeuwen} and Adam Kucharski},
+#>     year = {2022},
+#>     note = {https://epiverse-trace.github.io/finalsize/,
+#> https://github.com/epiverse-trace/finalsize},
+#>   }
+```
+
+## References
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+
+<div id="ref-andreasen2011" class="csl-entry">
+
+Andreasen, Viggo. 2011. “The Final Size of an Epidemic and Its Relation
+to the Basic Reproduction Number.” *Bulletin of Mathematical Biology* 73
+(10): 2305–21. <https://doi.org/10.1007/s11538-010-9623-3>.
+
+</div>
+
+<div id="ref-bidari2016" class="csl-entry">
+
+Bidari, Subekshya, Xinying Chen, Daniel Peters, Dylanger Pittman, and
+Péter L. Simon. 2016. “Solvability of Implicit Final Size Equations for
+SIR Epidemic Models.” *Mathematical Biosciences* 282 (December): 181–90.
+<https://doi.org/10.1016/j.mbs.2016.10.012>.
+
+</div>
+
+<div id="ref-kucharski2014" class="csl-entry">
+
+Kucharski, Adam J., Kin O. Kwok, Vivian W. I. Wei, Benjamin J. Cowling,
+Jonathan M. Read, Justin Lessler, Derek A. Cummings, and Steven Riley.
+2014. “The Contribution of Social Behaviour to the Transmission of
+Influenza A in a Human Population.” *PLoS Pathogens* 10 (6): e1004206.
+<https://doi.org/10.1371/journal.ppat.1004206>.
+
+</div>
+
+<div id="ref-miller2012" class="csl-entry">
+
+Miller, Joel C. 2012. “A Note on the Derivation of Epidemic Final
+Sizes.” *Bulletin of Mathematical Biology* 74 (9): 2125–41.
+<https://doi.org/10.1007/s11538-012-9749-6>.
+
+</div>
+
+</div>

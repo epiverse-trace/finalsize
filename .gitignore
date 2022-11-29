@@ -5,3 +5,6 @@
 .DS_Store
 docs
 pkgdown
+inst/doc
+/doc/
+/Meta/
