@@ -16,7 +16,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-Epidemic final size calculations are sensitive to input data such as the $R_0$ of the infection. Such values can often be uncertain in the early stages of an outbreak. This uncertainty can be included in final size calculations by running `final_size` for values drawn from a distribution, and summarising the outcomes.
+Epidemic final size calculations are sensitive to input data such as the $R_0$ of the infection. Such values can often be uncertain in the early stages of an outbreak. This uncertainty can be included in final size calculations by running `final_size()` for values drawn from a distribution, and summarising the outcomes.
 
 ::: {.alert .alert-warning}
 **New to _finalsize_?** It may help to read earlier vignettes first!
@@ -108,11 +108,11 @@ p_susc_uniform <- susc_uniform
 
 ## Running `final_size` over $R_0$ samples
 
-The basic reproduction number $R_0$ of an infection might be uncertain in the early stages of an epidemic. This uncertainty can be modelled by running `final_size` multiple times for the same contact, demography, and susceptibility data, while sampling $R_0$ values from a distribution.
+The basic reproduction number $R_0$ of an infection might be uncertain in the early stages of an epidemic. This uncertainty can be modelled by running `final_size()` multiple times for the same contact, demography, and susceptibility data, while sampling $R_0$ values from a distribution.
 
 This example assumes that the $R_0$ estimate, and the uncertainty around that estimate, is provided as the mean and standard deviation of a normal distribution.
 
-This example considers a normal distribution $N(\mu = 2.0, \sigma = 0.1)$, for an $R_0$ of 2.0. We can draw 1,000 $R_0$ samples from this distribution and run `final_size` on the contact data and demography data for each sample.
+This example considers a normal distribution $N(\mu = 2.0, \sigma = 0.1)$, for an $R_0$ of 2.0. We can draw 1,000 $R_0$ samples from this distribution and run `final_size()` on the contact data and demography data for each sample.
 
 This is quick, as `finalsize` is an Rcpp package with a C++ backend.
 

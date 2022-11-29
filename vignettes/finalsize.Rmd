@@ -177,7 +177,7 @@ See the ["Heterogeneous susceptibility"](varying_susceptibility.html) example fo
 
 ## Running `final_size`
 
-The final size of the epidemic in the population can then be calculated using the only function in the package, `final_size`. This example allows the function to fall back on the default options for the arguments `solver` (`"iterative"`) and `control` (an empty list).
+The final size of the epidemic in the population can then be calculated using the only function in the package, `final_size()`. This example allows the function to fall back on the default options for the arguments `solver` (`"iterative"`) and `control` (an empty list).
 
 ```{r}
 # calculate final size
