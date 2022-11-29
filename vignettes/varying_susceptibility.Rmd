@@ -248,7 +248,7 @@ n_risk_groups <- ncol(susc_immunised)
 
 We also need to model the proportion of each age group that has been immunised, and which therefore has lower susceptibility to the infection. To do this, we can modify the demography-susceptibility distribution matrix.
 
-This example models considers half of each age group to be in the immunised and non-immunised groups.
+This example model considers half of each age group to be in the immunised and non-immunised groups.
 
 In general terms, this could be interpreted as the rate of vaccine uptake, or as the effect of existing immunity from previous infection by a similar pathogen.
 
