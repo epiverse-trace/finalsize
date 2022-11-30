@@ -94,8 +94,8 @@
 #'
 #' # using manually specified solver settings for the iterative solver
 #' control <- list(
-#'   iterations = 1000,
-#'   tolerance = 1e-6,
+#'   iterations = 100,
+#'   tolerance = 1e-3,
 #'   step_rate = 1.9,
 #'   adapt_step = TRUE
 #' )
@@ -112,8 +112,8 @@
 #'
 #' # manual settings for the newton solver
 #' control <- list(
-#'   iterations = 1000,
-#'   tolerance = 1e-6
+#'   iterations = 100,
+#'   tolerance = 1e-3
 #' )
 #'
 #' final_size(
