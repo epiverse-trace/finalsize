@@ -125,7 +125,7 @@ final_size(
   solver = "iterative",
   control = control
 )
-
+\dontrun{
 # manual settings for the newton solver
 control <- list(
   iterations = 100,
@@ -141,7 +141,7 @@ final_size(
   solver = "newton",
   control = control
 )
-
+}
 }
 \keyword{epidemic}
 \keyword{model}

@@ -100,7 +100,7 @@
 #'   solver = "iterative",
 #'   control = control
 #' )
-#'
+#' \dontrun{
 #' # manual settings for the newton solver
 #' control <- list(
 #'   iterations = 100,
@@ -116,7 +116,7 @@
 #'   solver = "newton",
 #'   control = control
 #' )
-#'
+#' }
 final_size <- function(r0,
                        contact_matrix,
                        demography_vector,
