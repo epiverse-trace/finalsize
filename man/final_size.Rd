@@ -108,15 +108,6 @@ susc <- matrix(
   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 )
 
-# using default settings - this selects the iterative solver
-final_size(
-  r0 = r0,
-  contact_matrix = contact_matrix,
-  demography_vector = demography_vector,
-  p_susceptibility = psusc,
-  susceptibility = susc
-)
-
 # using manually specified solver settings for the iterative solver
 control <- list(
   iterations = 100,
