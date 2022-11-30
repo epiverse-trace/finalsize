@@ -2,8 +2,8 @@
 #include <Rcpp.h>
 #include <RcppEigen.h>
 
-// Enable C++11 via this plugin (Rcpp 0.10.3 or later)
-// [[Rcpp::plugins(cpp11)]]
+// Enable C++14 via this plugin (Rcpp 0.10.3 or later)
+// [[Rcpp::plugins(cpp14)]]
 // [[Rcpp::depends(RcppEigen)]]
 
 /// function for Newton solver
@@ -63,7 +63,8 @@ Eigen::ArrayXd solve_final_size_newton(const Eigen::MatrixXd &contact_matrix,
   }
 
   Eigen::VectorXd cache_v = epi_final_size;
-  // a function f1 which corresponds to the helper fun f1 in helper_funs.h
+  // a function f1 that multiplies the contact matrix by the final size guess
+  // + the log of the guess
   auto f1 = [&contact_matrix_](const Eigen::VectorXd &x,
                                Eigen::VectorXd &&cache) {
     cache =
@@ -72,7 +73,8 @@ Eigen::ArrayXd solve_final_size_newton(const Eigen::MatrixXd &contact_matrix,
   };
 
   Eigen::MatrixXd cache_m = contact_matrix_;
-  // a function f2 which corresponds to the helper fun f2 in helper_funs.h
+  // a function f2 which adds the negative of the contact matrix
+  // to a diagonal matrix of the current final size guess
   auto f2 = [&contact_matrix_](const Eigen::VectorXd &x,
                                Eigen::MatrixXd &&cache) {
     cache = (1.0 / x.array()).matrix().asDiagonal();

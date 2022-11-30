@@ -2,8 +2,8 @@
 #include <Rcpp.h>
 #include <RcppEigen.h>
 
-// Enable C++11 via this plugin (Rcpp 0.10.3 or later)
-// [[Rcpp::plugins(cpp11)]]
+// Enable C++14 via this plugin (Rcpp 0.10.3 or later)
+// [[Rcpp::plugins(cpp14)]]
 // [[Rcpp::depends(RcppEigen)]]
 
 /// function for iterative solver
