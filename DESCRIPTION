@@ -60,7 +60,8 @@ Suggests:
     xml2,
     ggplot2,
     ggtext,
-    rmarkdown
+    rmarkdown,
+    usethis
 Config/testthat/edition: 3
 SystemRequirements: C++14
 Encoding: UTF-8
