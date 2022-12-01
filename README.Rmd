@@ -58,20 +58,14 @@ library(socialmixr)
 # load finalsize
 library(finalsize)
 
-# Load data from POLYMOD
-data(polymod)
-contact_data <- contact_matrix(
-  polymod,
-  countries = "United Kingdom",
-  age.limits = c(0, 20, 40),
-  symmetric = TRUE
-)
+# Load example POLYMOD data included with the package
+data(polymod_uk)
 
 # Define contact matrix (entry {ij} is contacts in group i reported by group j)
-contact_matrix <- t(contact_data$matrix)
+contact_matrix <- t(polymod_uk$matrix)
 
 # Define population in each age group
-demography_vector <- contact_data$demography$population
+demography_vector <- polymod_uk$demography$population
 
 # Scale the contact matrix to ensure its largest eigenvalue is 1.0
 contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
