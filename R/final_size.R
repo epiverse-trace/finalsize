@@ -53,17 +53,11 @@
 #' names are added (e.g. `demo_grp_1`, `susc_grp_1`).
 #' @export
 #' @examples
-#' library(socialmixr)
-#' data(polymod)
+#' # load example POLYMOD data included in the package
+#' data(polymod_uk)
 #' r0 <- 2.0
-#' contact_data <- contact_matrix(
-#'   polymod,
-#'   countries = "United Kingdom",
-#'   age.limits = c(0, 20, 40),
-#'   symmetric = TRUE
-#' )
-#' contact_matrix <- contact_data$matrix
-#' demography_vector <- contact_data$demography$population
+#' contact_matrix <- polymod_uk$matrix
+#' demography_vector <- polymod_uk$demography$population
 #'
 #' # scale by maximum real eigenvalue and divide by demography
 #' contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
@@ -83,6 +77,15 @@
 #'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 #' )
 #'
+#' # using default arguments for `solver` and `control`
+#' final_size(
+#'   r0 = r0,
+#'   contact_matrix = contact_matrix,
+#'   demography_vector = demography_vector,
+#'   p_susceptibility = psusc,
+#'   susceptibility = susc
+#' )
+#'
 #' # using manually specified solver settings for the iterative solver
 #' control <- list(
 #'   iterations = 100,
@@ -100,7 +103,7 @@
 #'   solver = "iterative",
 #'   control = control
 #' )
-#' \dontrun{
+#'
 #' # manual settings for the newton solver
 #' control <- list(
 #'   iterations = 100,
@@ -116,7 +119,6 @@
 #'   solver = "newton",
 #'   control = control
 #' )
-#' }
 final_size <- function(r0,
                        contact_matrix,
                        demography_vector,
