@@ -73,22 +73,14 @@ library(socialmixr)
 # load finalsize
 library(finalsize)
 
-# Load data from POLYMOD
-data(polymod)
-contact_data <- contact_matrix(
-  polymod,
-  countries = "United Kingdom",
-  age.limits = c(0, 20, 40),
-  symmetric = TRUE
-)
-#> Using POLYMOD social contact data. To cite this in a publication, use the 'cite' function
-#> Removing participants that have contacts without age information. To change this behaviour, set the 'missing.contact.age' option
+# Load example POLYMOD data included with the package
+data(polymod_uk)
 
 # Define contact matrix (entry {ij} is contacts in group i reported by group j)
-contact_matrix <- t(contact_data$matrix)
+contact_matrix <- t(polymod_uk$matrix)
 
 # Define population in each age group
-demography_vector <- contact_data$demography$population
+demography_vector <- polymod_uk$demography$population
 
 # Scale the contact matrix to ensure its largest eigenvalue is 1.0
 contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
@@ -112,7 +104,7 @@ p_susceptibility <- matrix(
 )
 
 # R0 of the disease
-r0 <- 1.3 # seasonal influenza
+r0 <- 1.5 # assumed for pandemic influenza
 
 # Calculate the proportion of individuals infected
 final_size(
@@ -122,10 +114,10 @@ final_size(
   p_susceptibility,
   susceptibility
 )
-#>   demo_grp   susc_grp susceptibility  p_infected
-#> 1   [0,20) susc_grp_1            1.0 0.036325712
-#> 2  [20,40) susc_grp_1            0.5 0.009726187
-#> 3      40+ susc_grp_1            0.5 0.006240606
+#>   demo_grp   susc_grp susceptibility p_infected
+#> 1   [0,20) susc_grp_1            1.0 0.32849966
+#> 2  [20,40) susc_grp_1            0.5 0.10532481
+#> 3      40+ susc_grp_1            0.5 0.06995193
 ```
 
 ## Package vignettes
