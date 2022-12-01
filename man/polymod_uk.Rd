@@ -7,19 +7,19 @@
 \format{
 \subsection{\code{polymod_uk}}{
 
-A list with three named elements:
+A list with two named elements:
 \describe{
-\item{matrix}{A contact matrix with mean contacts between age groups}
-\item{demography}{A data.frame with the populations and proportions of age
-groups in the U.K. population in 2005}
-\item{participants}{A data.frame with the number and proportion of
-participants in each age group in the POLYMOD survey}
+\item{contact_matrix}{A contact matrix with mean contacts between age
+groups. This matrix is scaled by its largest real eigenvalue, and  each
+row is scaled by the corresponding element in the \code{demography_vector}.}
+\item{demography_vector}{A vector with the number of individuals in each of
+three age groups: 0 -- 20, 20 -- 40, 40+.}
 }
 }
 }
 \source{
 \doi{10.1371/journal.pmed.0050074}; obtained using
-\code{socialmixr::polymod}.
+\code{socialmixr::polymod}. See further methods in \code{data-raw/polymod_uk.R}.
 }
 \usage{
 polymod_uk
@@ -28,6 +28,7 @@ polymod_uk
 An example of social contact and demography data for use with \code{finalsize},
 accessed from the POLYMOD social contacts dataset using the \code{socialmixr}
 package. Data are for the United Kingdom, and age limits are set at 0, 20,
-and 40 years, with \code{symmetric = TRUE}.
+and 40 years, with \code{symmetric = TRUE}. Code to get these data is
+given in \code{data-raw/polymod_uk.R}.
 }
 \keyword{datasets}

@@ -56,13 +56,10 @@
 #' # load example POLYMOD data included in the package
 #' data(polymod_uk)
 #' r0 <- 2.0
-#' contact_matrix <- polymod_uk$matrix
-#' demography_vector <- polymod_uk$demography$population
+#' contact_matrix <- t(polymod_uk$contact_matrix)
+#' demography_vector <- polymod_uk$demography_vector
 #'
-#' # scale by maximum real eigenvalue and divide by demography
-#' contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
-#' contact_matrix <- contact_matrix / demography_vector
-#'
+#' # define the number of age and susceptibility groups
 #' n_demo_grps <- length(demography_vector)
 #' n_risk_grps <- 3
 #'
@@ -71,7 +68,7 @@
 #'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 #' )
 #' psusc <- psusc / rowSums(psusc)
-#' # In this example, all risk groups from all age groups are completely
+#' # In this example, all risk groups from all age groups are fully
 #' # susceptible
 #' susc <- matrix(
 #'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
