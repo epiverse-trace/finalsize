@@ -101,6 +101,28 @@ test_that("final_size output is correct length and within range 0 - 1", {
   )
 })
 
+#### Test that final_size takes column names for demography names ####
+
+test_that("final_size returns default group names", {
+  names(demography_vector) <- NULL
+  rownames(contact_matrix) <- NULL
+  colnames(contact_matrix) <- sprintf("age_group_%i", seq_len(n_demo_grps))
+
+  # prepare final_size output with default names
+  epi_outcome <- final_size(
+    r0 = r0,
+    contact_matrix = contact_matrix,
+    demography_vector = demography_vector,
+    p_susceptibility = p_susceptibility,
+    susceptibility = susceptibility
+  )
+  # demography group names are correct
+  expect_identical(
+    unique(epi_outcome$demo_grp),
+    sprintf("age_group_%i", seq_len(n_demo_grps))
+  )
+})
+
 #### Test that final_size returns default group names when required ####
 
 test_that("final_size returns default group names", {
