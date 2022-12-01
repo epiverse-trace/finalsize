@@ -101,7 +101,6 @@ Eigen::ArrayXd solve_final_size_newton(const Eigen::MatrixXd &contact_matrix,
     error = cache_v.array().abs().sum();
     x += std::move(cache_v);
     if (error < tolerance) {
-      // std::cout << "Iter: " << i << " " << error << std::endl;
       break;
     }
   }
