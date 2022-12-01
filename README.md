@@ -62,14 +62,6 @@ to the disease, whereas individuals aged over 20 are only half as
 susceptible.
 
 ``` r
-# Load socialmixr package
-library(socialmixr)
-#> 
-#> Attaching package: 'socialmixr'
-#> The following object is masked from 'package:utils':
-#> 
-#>     cite
-
 # load finalsize
 library(finalsize)
 
@@ -77,17 +69,10 @@ library(finalsize)
 data(polymod_uk)
 
 # Define contact matrix (entry {ij} is contacts in group i reported by group j)
-contact_matrix <- t(polymod_uk$matrix)
+contact_matrix <- t(polymod_uk$contact_matrix)
 
 # Define population in each age group
-demography_vector <- polymod_uk$demography$population
-
-# Scale the contact matrix to ensure its largest eigenvalue is 1.0
-contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
-
-# Divide the contact matrix by the demography
-# Each i-th row divided by the corresponding i-th element of demography
-contact_matrix <- contact_matrix / demography_vector
+demography_vector <- polymod_uk$demography_vector
 
 # Define susceptibility of each group
 susceptibility <- matrix(
@@ -115,9 +100,9 @@ final_size(
   susceptibility
 )
 #>   demo_grp   susc_grp susceptibility p_infected
-#> 1   [0,20) susc_grp_1            1.0 0.32849966
-#> 2  [20,40) susc_grp_1            0.5 0.10532481
-#> 3      40+ susc_grp_1            0.5 0.06995193
+#> 1   [0,20) susc_grp_1            1.0  0.3207405
+#> 2  [20,40) susc_grp_1            0.5  0.1127051
+#> 3      40+ susc_grp_1            0.5  0.1270013
 ```
 
 ## Package vignettes
