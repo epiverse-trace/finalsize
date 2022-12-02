@@ -53,22 +53,13 @@
 #' names are added (e.g. `demo_grp_1`, `susc_grp_1`).
 #' @export
 #' @examples
-#' library(socialmixr)
-#' data(polymod)
+#' # load example POLYMOD data included in the package
+#' data(polymod_uk)
 #' r0 <- 2.0
-#' contact_data <- contact_matrix(
-#'   polymod,
-#'   countries = "United Kingdom",
-#'   age.limits = c(0, 20, 40),
-#'   symmetric = TRUE
-#' )
-#' contact_matrix <- contact_data$matrix
-#' demography_vector <- contact_data$demography$population
+#' contact_matrix <- t(polymod_uk$contact_matrix)
+#' demography_vector <- polymod_uk$demography_vector
 #'
-#' # scale by maximum real eigenvalue and divide by demography
-#' contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
-#' contact_matrix <- contact_matrix / demography_vector
-#'
+#' # define the number of age and susceptibility groups
 #' n_demo_grps <- length(demography_vector)
 #' n_risk_grps <- 3
 #'
@@ -77,13 +68,13 @@
 #'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 #' )
 #' psusc <- psusc / rowSums(psusc)
-#' # In this example, all risk groups from all age groups are completely
+#' # In this example, all risk groups from all age groups are fully
 #' # susceptible
 #' susc <- matrix(
 #'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 #' )
 #'
-#' # using default settings - this selects the iterative solver
+#' # using default arguments for `solver` and `control`
 #' final_size(
 #'   r0 = r0,
 #'   contact_matrix = contact_matrix,
@@ -94,8 +85,8 @@
 #'
 #' # using manually specified solver settings for the iterative solver
 #' control <- list(
-#'   iterations = 1000,
-#'   tolerance = 1e-6,
+#'   iterations = 100,
+#'   tolerance = 1e-3,
 #'   step_rate = 1.9,
 #'   adapt_step = TRUE
 #' )
@@ -112,8 +103,8 @@
 #'
 #' # manual settings for the newton solver
 #' control <- list(
-#'   iterations = 50000,
-#'   tolerance = 1e-12
+#'   iterations = 100,
+#'   tolerance = 1e-3
 #' )
 #'
 #' final_size(
@@ -125,7 +116,6 @@
 #'   solver = "newton",
 #'   control = control
 #' )
-#'
 final_size <- function(r0,
                        contact_matrix,
                        demography_vector,
