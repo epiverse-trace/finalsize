@@ -56,10 +56,10 @@ the final size of an epidemic.
 
 Here, an example using social contact data from the *socialmixr* package
 investigates the final size of an epidemic when the disease has an
-R<sub>0</sub> of 2.0, and given three age groups of interest — 0-19,
+R<sub>0</sub> of 1.5, and given three age groups of interest — 0-19,
 20-39 and 40+. The under-20 age group is assumed to be fully susceptible
 to the disease, whereas individuals aged over 20 are only half as
-susceptible.
+susceptible as those under 20.
 
 ``` r
 # load finalsize
@@ -69,7 +69,7 @@ library(finalsize)
 data(polymod_uk)
 
 # Define contact matrix (entry {ij} is contacts in group i reported by group j)
-contact_matrix <- t(polymod_uk$contact_matrix)
+contact_matrix <- polymod_uk$contact_matrix
 
 # Define population in each age group
 demography_vector <- polymod_uk$demography_vector
@@ -100,9 +100,9 @@ final_size(
   susceptibility
 )
 #>   demo_grp   susc_grp susceptibility p_infected
-#> 1   [0,20) susc_grp_1            1.0  0.3207405
-#> 2  [20,40) susc_grp_1            0.5  0.1127051
-#> 3      40+ susc_grp_1            0.5  0.1270013
+#> 1   [0,20) susc_grp_1            1.0 0.32849966
+#> 2  [20,40) susc_grp_1            0.5 0.10532481
+#> 3      40+ susc_grp_1            0.5 0.06995193
 ```
 
 ## Package vignettes

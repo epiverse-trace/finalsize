@@ -10,7 +10,7 @@ polymod_uk <- socialmixr::contact_matrix(
 )
 
 # get contact matrix and demography vector
-contact_matrix <- polymod_uk$matrix
+contact_matrix <- t(polymod_uk$matrix)
 demography_vector <- polymod_uk$demography$population
 
 # scale contacts by maximum real eigenvalue and divide by demography

@@ -81,7 +81,7 @@ based on the solver error. Defaults to TRUE.
 # load example POLYMOD data included in the package
 data(polymod_uk)
 r0 <- 2.0
-contact_matrix <- t(polymod_uk$contact_matrix)
+contact_matrix <- polymod_uk$contact_matrix
 demography_vector <- polymod_uk$demography_vector
 
 # define the number of age and susceptibility groups
