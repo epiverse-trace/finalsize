@@ -40,7 +40,7 @@ Eigen::ArrayXd solve_final_size_iterative(
     const double tolerance = 1e-6, double step_rate = 1.9,
     const bool adapt_step = true) {
   // count number of demography groups
-  size_t nDim = demography_vector.size();
+  int nDim = demography_vector.size();
 
   Eigen::ArrayXi zeros(nDim);
   zeros.fill(0);
@@ -72,7 +72,7 @@ Eigen::ArrayXd solve_final_size_iterative(
                const Eigen::VectorXd &epi_final_size,
                Eigen::VectorXd &&epi_final_size_return) {
     Eigen::VectorXd s = contact_matrix_ * (-epi_final_size);
-    for (size_t i = 0; i < contact_matrix_.rows(); ++i) {
+    for (int i = 0; i < contact_matrix_.rows(); ++i) {
       if (zeros[i] == 1) {
         epi_final_size_return[i] = 0;
         continue;
