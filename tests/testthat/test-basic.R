@@ -103,7 +103,7 @@ test_that("final_size output is correct length and within range 0 - 1", {
 
 #### Test that final_size takes column names for demography names ####
 
-test_that("final_size returns default group names", {
+test_that("final_size takes age group names from colnames of contact matrix", {
   names(demography_vector) <- NULL
   rownames(contact_matrix) <- NULL
   colnames(contact_matrix) <- sprintf("age_group_%i", seq_len(n_demo_grps))
