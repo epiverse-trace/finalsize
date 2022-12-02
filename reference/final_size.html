@@ -157,29 +157,13 @@ based on the solver error. Defaults to TRUE.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/epiforecasts/socialmixr" class="external-link">socialmixr</a></span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘socialmixr’</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:utils’:</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span>     cite</span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">polymod</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># load example POLYMOD data included in the package</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">polymod_uk</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">r0</span> <span class="op">&lt;-</span> <span class="fl">2.0</span></span></span>
-<span class="r-in"><span><span class="va">contact_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://epiforecasts.io/socialmixr/reference/contact_matrix.html" class="external-link">contact_matrix</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">polymod</span>,</span></span>
-<span class="r-in"><span>  countries <span class="op">=</span> <span class="st">"United Kingdom"</span>,</span></span>
-<span class="r-in"><span>  age.limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">40</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Using POLYMOD social contact data. To cite this in a publication, use the 'cite' function</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Removing participants that have contacts without age information. To change this behaviour, set the 'missing.contact.age' option</span>
-<span class="r-in"><span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span></span></span>
-<span class="r-in"><span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span></span>
+<span class="r-in"><span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">polymod_uk</span><span class="op">$</span><span class="va">contact_matrix</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">polymod_uk</span><span class="op">$</span><span class="va">demography_vector</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># scale by maximum real eigenvalue and divide by demography</span></span></span>
-<span class="r-in"><span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="va">contact_matrix</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">$</span><span class="va">values</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="va">contact_matrix</span> <span class="op">/</span> <span class="va">demography_vector</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># define the number of age and susceptibility groups</span></span></span>
 <span class="r-in"><span><span class="va">n_demo_grps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">n_risk_grps</span> <span class="op">&lt;-</span> <span class="fl">3</span></span></span>
 <span class="r-in"><span></span></span>
@@ -188,13 +172,13 @@ based on the solver error. Defaults to TRUE.</p></li>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="fl">1</span>, nrow <span class="op">=</span> <span class="va">n_demo_grps</span>, ncol <span class="op">=</span> <span class="va">n_risk_grps</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">psusc</span> <span class="op">&lt;-</span> <span class="va">psusc</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">psusc</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># In this example, all risk groups from all age groups are completely</span></span></span>
+<span class="r-in"><span><span class="co"># In this example, all risk groups from all age groups are fully</span></span></span>
 <span class="r-in"><span><span class="co"># susceptible</span></span></span>
 <span class="r-in"><span><span class="va">susc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="fl">1</span>, nrow <span class="op">=</span> <span class="va">n_demo_grps</span>, ncol <span class="op">=</span> <span class="va">n_risk_grps</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># using default settings - this selects the iterative solver</span></span></span>
+<span class="r-in"><span><span class="co"># using default arguments for `solver` and `control`</span></span></span>
 <span class="r-in"><span><span class="fu">final_size</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span></span>
 <span class="r-in"><span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span></span>
@@ -203,20 +187,20 @@ based on the solver error. Defaults to TRUE.</p></li>
 <span class="r-in"><span>  susceptibility <span class="op">=</span> <span class="va">susc</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   demo_grp   susc_grp susceptibility p_infected</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   [0,20) susc_grp_1              1  0.8947582</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  [20,40) susc_grp_1              1  0.8384984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      40+ susc_grp_1              1  0.5516973</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   [0,20) susc_grp_2              1  0.8947582</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  [20,40) susc_grp_2              1  0.8384984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      40+ susc_grp_2              1  0.5516973</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   [0,20) susc_grp_3              1  0.8947582</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  [20,40) susc_grp_3              1  0.8384984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      40+ susc_grp_3              1  0.5516973</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   [0,20) susc_grp_1              1  0.8093117</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  [20,40) susc_grp_1              1  0.7570761</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      40+ susc_grp_1              1  0.8181760</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   [0,20) susc_grp_2              1  0.8093117</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  [20,40) susc_grp_2              1  0.7570761</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      40+ susc_grp_2              1  0.8181760</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   [0,20) susc_grp_3              1  0.8093117</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  [20,40) susc_grp_3              1  0.7570761</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      40+ susc_grp_3              1  0.8181760</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># using manually specified solver settings for the iterative solver</span></span></span>
 <span class="r-in"><span><span class="va">control</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  iterations <span class="op">=</span> <span class="fl">1000</span>,</span></span>
-<span class="r-in"><span>  tolerance <span class="op">=</span> <span class="fl">1e-6</span>,</span></span>
+<span class="r-in"><span>  iterations <span class="op">=</span> <span class="fl">100</span>,</span></span>
+<span class="r-in"><span>  tolerance <span class="op">=</span> <span class="fl">1e-3</span>,</span></span>
 <span class="r-in"><span>  step_rate <span class="op">=</span> <span class="fl">1.9</span>,</span></span>
 <span class="r-in"><span>  adapt_step <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -231,20 +215,20 @@ based on the solver error. Defaults to TRUE.</p></li>
 <span class="r-in"><span>  control <span class="op">=</span> <span class="va">control</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   demo_grp   susc_grp susceptibility p_infected</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   [0,20) susc_grp_1              1  0.8947582</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  [20,40) susc_grp_1              1  0.8384984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      40+ susc_grp_1              1  0.5516973</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   [0,20) susc_grp_2              1  0.8947582</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  [20,40) susc_grp_2              1  0.8384984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      40+ susc_grp_2              1  0.5516973</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   [0,20) susc_grp_3              1  0.8947582</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  [20,40) susc_grp_3              1  0.8384984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      40+ susc_grp_3              1  0.5516973</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   [0,20) susc_grp_1              1  0.8093031</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  [20,40) susc_grp_1              1  0.7570327</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      40+ susc_grp_1              1  0.8181432</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   [0,20) susc_grp_2              1  0.8093031</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  [20,40) susc_grp_2              1  0.7570327</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      40+ susc_grp_2              1  0.8181432</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   [0,20) susc_grp_3              1  0.8093031</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  [20,40) susc_grp_3              1  0.7570327</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      40+ susc_grp_3              1  0.8181432</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># manual settings for the newton solver</span></span></span>
 <span class="r-in"><span><span class="va">control</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  iterations <span class="op">=</span> <span class="fl">50000</span>,</span></span>
-<span class="r-in"><span>  tolerance <span class="op">=</span> <span class="fl">1e-12</span></span></span>
+<span class="r-in"><span>  iterations <span class="op">=</span> <span class="fl">100</span>,</span></span>
+<span class="r-in"><span>  tolerance <span class="op">=</span> <span class="fl">1e-3</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">final_size</span><span class="op">(</span></span></span>
@@ -257,16 +241,15 @@ based on the solver error. Defaults to TRUE.</p></li>
 <span class="r-in"><span>  control <span class="op">=</span> <span class="va">control</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   demo_grp   susc_grp susceptibility p_infected</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   [0,20) susc_grp_1              1  0.8947582</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  [20,40) susc_grp_1              1  0.8384984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      40+ susc_grp_1              1  0.5516973</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   [0,20) susc_grp_2              1  0.8947582</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  [20,40) susc_grp_2              1  0.8384984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6      40+ susc_grp_2              1  0.5516973</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   [0,20) susc_grp_3              1  0.8947582</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  [20,40) susc_grp_3              1  0.8384984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9      40+ susc_grp_3              1  0.5516973</span>
-<span class="r-in"><span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   [0,20) susc_grp_1              1  0.9999873</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  [20,40) susc_grp_1              1  0.9999870</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      40+ susc_grp_1              1  0.9999873</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   [0,20) susc_grp_2              1  0.9999873</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  [20,40) susc_grp_2              1  0.9999870</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      40+ susc_grp_2              1  0.9999873</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   [0,20) susc_grp_3              1  0.9999873</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  [20,40) susc_grp_3              1  0.9999870</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      40+ susc_grp_3              1  0.9999873</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
