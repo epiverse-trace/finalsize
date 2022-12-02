@@ -34,7 +34,7 @@ Eigen::ArrayXd solve_final_size_newton(const Eigen::MatrixXd &contact_matrix,
                                        const int iterations = 10000,
                                        const double tolerance = 1e-6) {
   // count number of demography groups
-  size_t nDim = demography_vector.size();
+  int nDim = demography_vector.size();
 
   Eigen::ArrayXi zeros(nDim);
   zeros.fill(0);
@@ -43,14 +43,14 @@ Eigen::ArrayXd solve_final_size_newton(const Eigen::MatrixXd &contact_matrix,
   epi_final_size.fill(0.5);
 
   Eigen::MatrixXd contact_matrix_ = contact_matrix;
-  for (size_t i = 0; i < contact_matrix.rows(); ++i) {
+  for (int i = 0; i < contact_matrix.rows(); ++i) {
     // Check if value should be 0 for (limited) performance increase
     if (demography_vector(i) == 0 || susceptibility(i) == 0 ||
         contact_matrix.row(i).sum() == 0) {
       zeros[i] = 1;
       epi_final_size[i] = 0;
     }
-    for (size_t j = 0; j < contact_matrix.cols(); ++j) {
+    for (int j = 0; j < contact_matrix.cols(); ++j) {
       if (zeros[j] == 1) {
         contact_matrix_(i, j) = 0;
       } else {
