@@ -59,7 +59,7 @@ library(finalsize)
 data(polymod_uk)
 
 # Define contact matrix (entry {ij} is contacts in group i reported by group j)
-contact_matrix <- t(polymod_uk$contact_matrix)
+contact_matrix <- polymod_uk$contact_matrix
 
 # Define population in each age group
 demography_vector <- polymod_uk$demography_vector
