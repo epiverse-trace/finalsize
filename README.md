@@ -8,6 +8,8 @@ MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/
 [![R-CMD-check](https://github.com/epiverse-trace/finalsize/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/epiverse-trace/finalsize/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/epiverse-trace/finalsize/branch/main/graph/badge.svg)](https://app.codecov.io/gh/epiverse-trace/finalsize?branch=main)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/finalsize)](https://CRAN.R-project.org/package=finalsize)
 <!-- badges: end -->
 
 *finalsize* provides calculations for the final size of an epidemic in a
