@@ -17,11 +17,11 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v2
       - run: pip install cpplint
-      - run: cpplint --quiet --exclude="src/RcppExports.cpp" src/*.cpp
+      - run: cpplint --exclude="src/RcppExports.cpp" src/*.cpp
 
   cppcheck:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - run: sudo apt-get install cppcheck
-      - run: cppcheck -isrc/RcppExports.cpp --quiet --enable=warning --error-exitcode=1 .
+      - run: cppcheck -i src/RcppExports.cpp --enable=style --error-exitcode=1 src
