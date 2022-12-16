@@ -66,29 +66,26 @@ Eigen::ArrayXd solve_final_size_newton(const Eigen::MatrixXd &contact_matrix,
   // a function f1 that multiplies the contact matrix by the final size guess
   // + the log of the guess
   auto f1 = [&contact_matrix_](const Eigen::VectorXd &x,
-                               Eigen::VectorXd &&cache) {
-    cache =
-        contact_matrix_ * (1 - x.array()).matrix() + x.array().log().matrix();
-    return std::move(cache);
+                               Eigen::VectorXd &cache) {
+    cache = -(contact_matrix_ * (1 - x.array()).matrix() +
+              x.array().log().matrix());
   };
 
   Eigen::MatrixXd cache_m = contact_matrix_;
   // a function f2 which adds the negative of the contact matrix
   // to a diagonal matrix of the current final size guess
   auto f2 = [&contact_matrix_](const Eigen::VectorXd &x,
-                               Eigen::MatrixXd &&cache) {
+                               Eigen::MatrixXd &cache) {
     cache = (1.0 / x.array()).matrix().asDiagonal();
-    cache = -contact_matrix_ + std::move(cache);
-    return std::move(cache);
+    cache = -contact_matrix_ + cache;
   };
 
   // a function dx_f that wraps f1, f2, and performs a matrix solve
-  auto dx_f = [&f1, &f2](const Eigen::VectorXd &x, Eigen::VectorXd &&cache,
-                         Eigen::MatrixXd &&cache_m) {
-    cache_m = f2(x, std::move(cache_m));
-    cache = -f1(x, std::move(cache));
-    cache = cache_m.partialPivLu().solve(std::move(cache));
-    return std::move(cache);
+  auto dx_f = [&f1, &f2](const Eigen::VectorXd &x, Eigen::VectorXd &cache,
+                         Eigen::MatrixXd &cache_m) {
+    f2(x, cache_m);
+    f1(x, cache);
+    cache = cache_m.partialPivLu().solve(cache).array();
   };
 
   // iterate over n-iterations or until the solver tolerance is met
@@ -96,10 +93,10 @@ Eigen::ArrayXd solve_final_size_newton(const Eigen::MatrixXd &contact_matrix,
   x.fill(1e-6);
   double error = 0.0;
   for (auto i = 0; i < iterations; ++i) {
-    cache_v = dx_f(x, std::move(cache_v), std::move(cache_m)).array();
+    dx_f(x, cache_v, cache_m);
 
     error = cache_v.array().abs().sum();
-    x += std::move(cache_v);
+    x += cache_v;
     if (error < tolerance) {
       break;
     }
