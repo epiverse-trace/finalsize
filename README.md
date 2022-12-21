@@ -141,8 +141,8 @@ citation("finalsize")
 #> 
 #>   Gupte P, Van Leeuwen E, Kucharski A (2022). _finalsize: Calculate the
 #>   Final Size of an Epidemic_.
-#>   https://epiverse-trace.github.io/finalsize/,
-#>   https://github.com/epiverse-trace/finalsize.
+#>   https://github.com/epiverse-trace/finalsize,
+#>   https://epiverse-trace.github.io/finalsize/.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -150,8 +150,8 @@ citation("finalsize")
 #>     title = {finalsize: Calculate the Final Size of an Epidemic},
 #>     author = {Pratik Gupte and Edwin {Van Leeuwen} and Adam Kucharski},
 #>     year = {2022},
-#>     note = {https://epiverse-trace.github.io/finalsize/,
-#> https://github.com/epiverse-trace/finalsize},
+#>     note = {https://github.com/epiverse-trace/finalsize,
+#> https://epiverse-trace.github.io/finalsize/},
 #>   }
 ```
 
