@@ -41,8 +41,9 @@ install.packages("finalsize")
 The current development version of _finalsize_ can be installed from [Github](https://github.com/epiverse-trace/finalsize) using the `remotes` package.
 
 ```r
-# install.packages("devtools")
-devtools::install_github("epiverse-trace/finalsize")
+# check whether {remotes} is installed
+if(!require("remotes")) install.packages("remotes")
+remotes::install_github("epiverse-trace/finalsize")
 ```
 
 ## Quick start

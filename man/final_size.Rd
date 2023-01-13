@@ -8,8 +8,8 @@ final_size(
   r0,
   contact_matrix,
   demography_vector,
-  p_susceptibility,
   susceptibility,
+  p_susceptibility,
   solver = c("iterative", "newton"),
   control = list()
 )
@@ -24,13 +24,13 @@ number of contacts in group \eqn{i} reported by participants in group \eqn{j}}
 proportion of total population in group \eqn{i} (model will normalise
 if needed).}
 
+\item{susceptibility}{A matrix giving the susceptibility of individuals in
+demographic group \eqn{i} and risk group \eqn{j}.}
+
 \item{p_susceptibility}{A matrix giving the probability that an individual
 in demography group \eqn{i} is in risk (or susceptibility) group \eqn{j}.
 Each row represents the overall distribution of individuals in demographic
 group \eqn{i} across risk groups, and each row \emph{must sum to 1.0}.}
-
-\item{susceptibility}{A matrix giving the susceptibility of individuals in
-demographic group \eqn{i} and risk group \eqn{j}.}
 
 \item{solver}{Which solver to use. Options are "iterative" (default) or
 "newton", for the iterative solver, or the Newton solver, respectively.
@@ -88,24 +88,25 @@ demography_vector <- polymod_uk$demography_vector
 n_demo_grps <- length(demography_vector)
 n_risk_grps <- 3
 
-# prepare p_susceptibility and susceptibility
-psusc <- matrix(
-  data = 1, nrow = n_demo_grps, ncol = n_risk_grps
-)
-psusc <- psusc / rowSums(psusc)
 # In this example, all risk groups from all age groups are fully
 # susceptible
-susc <- matrix(
+susceptibility <- matrix(
   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 )
+
+p_susceptibility <- matrix(
+  data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+)
+# p_susceptibility rows must sum to 1.0
+p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
 
 # using default arguments for `solver` and `control`
 final_size(
   r0 = r0,
   contact_matrix = contact_matrix,
   demography_vector = demography_vector,
-  p_susceptibility = psusc,
-  susceptibility = susc
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
 )
 
 # using manually specified solver settings for the iterative solver
@@ -120,8 +121,8 @@ final_size(
   r0 = r0,
   contact_matrix = contact_matrix,
   demography_vector = demography_vector,
-  p_susceptibility = psusc,
-  susceptibility = susc,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility,
   solver = "iterative",
   control = control
 )
@@ -136,8 +137,8 @@ final_size(
   r0 = r0,
   contact_matrix = contact_matrix,
   demography_vector = demography_vector,
-  p_susceptibility = psusc,
-  susceptibility = susc,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility,
   solver = "newton",
   control = control
 )
