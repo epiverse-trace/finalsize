@@ -85,11 +85,11 @@ r0 <- 1.5 # assumed for pandemic influenza
 
 # Calculate the proportion of individuals infected
 final_size(
-  r0,
-  contact_matrix,
-  demography_vector,
-  p_susceptibility,
-  susceptibility
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
 )
 ```
 
