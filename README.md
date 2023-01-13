@@ -13,8 +13,11 @@ status](https://www.r-pkg.org/badges/version/finalsize)](https://CRAN.R-project.
 <!-- badges: end -->
 
 *finalsize* provides calculations for the final size of an epidemic in a
-population with demographic variation in contact patterns, and variation
-within and between age groups in their susceptibility to disease.
+population, which is the overall number of infected individuals,
+depending on a demographic distribution (e.g., age groups) and their
+contact patterns, accounting for different susceptibility to disease
+between groups (e.g., from different attack rates or infection
+prevalences) and within groups (e.g., due to immunization programs).
 
 *finalsize* implements methods outlined in Andreasen
 ([2011](#ref-andreasen2011)), Miller ([2012](#ref-miller2012)),
@@ -47,8 +50,9 @@ The current development version of *finalsize* can be installed from
 `remotes` package.
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("epiverse-trace/finalsize")
+# check whether {remotes} is installed
+if(!require("remotes")) install.packages("remotes")
+remotes::install_github("epiverse-trace/finalsize")
 ```
 
 ## Quick start
@@ -95,11 +99,11 @@ r0 <- 1.5 # assumed for pandemic influenza
 
 # Calculate the proportion of individuals infected
 final_size(
-  r0,
-  contact_matrix,
-  demography_vector,
-  p_susceptibility,
-  susceptibility
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
 )
 #>   demo_grp   susc_grp susceptibility p_infected
 #> 1   [0,20) susc_grp_1            1.0 0.32849966
@@ -139,7 +143,7 @@ citation("finalsize")
 #> 
 #> To cite package 'finalsize' in publications use:
 #> 
-#>   Gupte P, Van Leeuwen E, Kucharski A (2022). _finalsize: Calculate the
+#>   Gupte P, Van Leeuwen E, Kucharski A (2023). _finalsize: Calculate the
 #>   Final Size of an Epidemic_.
 #>   https://github.com/epiverse-trace/finalsize,
 #>   https://epiverse-trace.github.io/finalsize/.
@@ -149,7 +153,7 @@ citation("finalsize")
 #>   @Manual{,
 #>     title = {finalsize: Calculate the Final Size of an Epidemic},
 #>     author = {Pratik Gupte and Edwin {Van Leeuwen} and Adam Kucharski},
-#>     year = {2022},
+#>     year = {2023},
 #>     note = {https://github.com/epiverse-trace/finalsize,
 #> https://epiverse-trace.github.io/finalsize/},
 #>   }
