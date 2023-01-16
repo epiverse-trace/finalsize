@@ -51,10 +51,13 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 ```{r setup, message=FALSE, warning=FALSE, class.source = 'fold-hide'}
+# load finalsize
 library(finalsize)
 
 # load necessary packages
-library(data.table)
+if (!require("socialmixr")) install.packages("socialmixr")
+if (!require("ggplot2")) install.packages("ggplot2")
+
 library(ggplot2)
 ```
 
@@ -142,7 +145,7 @@ final_size_data <- Map(
 )
 
 # combine data
-final_size_data <- rbindlist(final_size_data)
+final_size_data <- Reduce(x = final_size_data, f = rbind)
 
 # order age groups
 final_size_data$demo_grp <- factor(

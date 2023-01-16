@@ -51,7 +51,6 @@ LinkingTo:
 Suggests: 
     colorspace,
     covr,
-    data.table,
     knitr,
     bookdown,
     scales,

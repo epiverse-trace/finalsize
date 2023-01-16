@@ -52,10 +52,14 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, message=FALSE, warning=FALSE, class.source = 'fold-hide'}
+# load finalsize
 library(finalsize)
 
 # load necessary packages
-library(data.table)
+if (!require("socialmixr")) install.packages("socialmixr")
+if (!require("ggplot2")) install.packages("ggplot2")
+if (!require("colorspace")) install.packages("colorspace")
+
 library(ggplot2)
 library(colorspace)
 ```
@@ -98,7 +102,7 @@ r0 <- 2.0
 This example considers a scenario in which susceptibility to infection varies between age groups, but not within groups.
 In this example,  susceptibility to infection  increases with age.
 
-This can be modelled as a susceptibility matrix with higher values for the 40 -- 60 and 65+ age groups, and relatively lower values for other groups.
+This can be modelled as a susceptibility matrix with higher values for the 40 -- 64 and 65 and over age groups, and relatively lower values for other groups.
 
 ```{r}
 # susceptibility is higher for the old
@@ -253,7 +257,7 @@ This example model considers half of each age group to be in the immunised and n
 In general terms, this could be interpreted as the rate of vaccine uptake, or as the effect of existing immunity from previous infection by a similar pathogen.
 
 ```{r}
-# immunisation increases with age between 20% (infants) and 90% (65+)
+# immunisation rate is uniform across age groups
 immunisation_rate <- rep(0.5, n_demo_grps)
 
 # add a second column to p_susceptibility
