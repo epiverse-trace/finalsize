@@ -16,8 +16,8 @@ status](https://www.r-pkg.org/badges/version/finalsize)](https://CRAN.R-project.
 population, which is the overall number of infected individuals,
 depending on a demographic distribution (e.g., age groups) and their
 contact patterns, accounting for different susceptibility to disease
-between groups (e.g., from different attack rates or infection
-prevalences) and within groups (e.g., due to immunization programs).
+between groups (e.g., due to age-related impaired or dysregulated immune
+responses) and within groups (e.g., due to immunization programs).
 
 *finalsize* implements methods outlined in Andreasen
 ([2011](#ref-andreasen2011)), Miller ([2012](#ref-miller2012)),
