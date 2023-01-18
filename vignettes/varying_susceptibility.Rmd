@@ -51,6 +51,16 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Primer on heterogeneous susceptibility
+
+_Susceptibility to infection may be age-dependent and vary between demographic groups_, for example, between age groups due to [age-related impaired or dysregulated host immunity](https://www.jci.org/articles/view/144115).
+Susceptibility to infection in different demographic groups may be estimated from stratified attack rates or prevalence estimates from pathogens with similar immune responses (such as SARS, MERS, and Covid-19).
+
+For between-group differences, users may prefer to gather this information from stratified [prevalence estimates](https://www.nature.com/articles/s41467-021-21237-w/tables/2) over [observed incidence case rate](https://coronavirus.data.gov.uk/details/cases?areaType=nation%26areaName=England#card-case_rates_by_age_and_sex) due to [surveillance bias](https://www.bmj.com/content/374/bmj.n2126) towards registering more symptomatic individuals.
+
+Patterns of heterogeneous susceptibility may also be context dependent, and different patterns may be observed for the same infectious pathogen in different countries.
+For example, after the first peak of Covid-19 cases in 2020, [in Peru](https://www.thelancet.com/action/showFullTableHTML?isHtml=true&tableId=tbl0001&pii=S2589-5370%2821%2900081-X) prevalence had a uniform distribution across age groups, while [in the UK](https://www.nature.com/articles/s41467-021-21237-w/tables/2) prevalence across age groups was heterogeneous.
+
 ```{r setup, message=FALSE, warning=FALSE, class.source = 'fold-hide'}
 # load finalsize
 library(finalsize)
@@ -255,6 +265,14 @@ We also need to model the proportion of each age group that has been immunised, 
 This example model considers half of each age group to be in the immunised and non-immunised groups.
 
 In general terms, this could be interpreted as the rate of vaccine uptake, or as the effect of existing immunity from previous infection by a similar pathogen.
+
+::: {.alert .alert-secondary}
+
+### Getting data on within-group susceptibility differences {-}
+
+For within-group differences in susceptibility, such as due to immunisation, users could obtain this information from [age-specific vaccination uptake statistics from national governments (here, the UK)](https://coronavirus.data.gov.uk/details/vaccinations?areaType=nation%26areaName=England#card-vaccination_uptake_by_vaccination_date_age_demographics).
+When [antibody response decays](https://www.science.org/doi/full/10.1126/sciimmunol.abe0367) are known for an immunisation course, more detailed statistics on the [percentage of people vaccinated (here, in the UK)](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/articles/coronaviruscovid19latestinsights/vaccines) in the preceding few months only, may be more informative.
+:::
 
 ```{r}
 # immunisation rate is uniform across age groups
