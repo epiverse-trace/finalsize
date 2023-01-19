@@ -70,7 +70,7 @@ r0 <- 2.0
 
 ## Getting and preparing contact and demography data
 
-This example uses social contact data from the [POLYMOD](https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.0050074) project to estimate the final size of an epidemic in the U.K. These data are provided with the `socialmixr` package.
+This example uses social contact data from the POLYMOD project [@mossong2008] to estimate the final size of an epidemic in the U.K. These data are provided with the `socialmixr` package.
 
 The contact data are divided into five age groups: 0 -- 4, 5 -- 17, 18 -- 39, 40 -- 64, and 65 and over, specified using the `age.limits` argument in `socialmixr::contact_matrix()`.
 The `symmetric = TRUE` argument to `socialmixr::contact_matrix()` returns a symmetric contact matrix, so that the contacts reported by group $\{i\}$ of individuals from group $\{j\}$ are the same as those reported by group $\{j\}$ of group $\{i\}$.
