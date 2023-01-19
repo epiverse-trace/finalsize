@@ -16,7 +16,7 @@ demography_vector <- contact_data$demography$population
 names(demography_vector) <- contact_data$demography$age.group
 
 # scale by maximum real eigenvalue and divide by demography
-contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
+contact_matrix <- contact_matrix / max(Re(eigen(contact_matrix)$values))
 contact_matrix <- contact_matrix / demography_vector
 
 n_demo_grps <- length(demography_vector)

@@ -148,7 +148,8 @@ final_size <- function(r0,
       ),
     "Error: contact matrix must have a maximum real eigenvalue of 1.0" =
       (
-        abs(max(eigen(contact_matrix * demography_vector)$values) - 1.0) < 1e-6
+        abs(max(Re(eigen(contact_matrix * demography_vector)$values) - 1.0)) <
+          1e-6
       ),
     "Error: control list names can only be: 'iterations', 'tolerance',
     'step_rate', 'adapt_step'" =

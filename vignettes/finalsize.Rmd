@@ -102,7 +102,7 @@ demography_data <- contact_data$demography
 # scale the contact matrix so the largest eigenvalue is 1.0
 # this is to ensure that the overall epidemic dynamics correctly reflect
 # the assumed value of R0
-contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
+contact_matrix <- contact_matrix / max(Re(eigen(contact_matrix)$values))
 
 # divide each row of the contact matrix by the corresponding demography
 # this reflects the assumption that each individual in group {j} make contacts
