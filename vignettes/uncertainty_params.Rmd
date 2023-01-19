@@ -82,7 +82,7 @@ contact_matrix <- t(contact_data$matrix)
 demography_vector <- contact_data$demography$population
 
 # scale the contact matrix so the largest eigenvalue is 1.0
-contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
+contact_matrix <- contact_matrix / max(Re(eigen(contact_matrix)$values))
 
 # divide each row of the contact matrix by the corresponding demography
 contact_matrix <- contact_matrix / demography_vector
