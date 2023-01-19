@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![CRAN status](https://www.r-pkg.org/badges/version/finalsize)](https://CRAN.R-project.org/package=finalsize)
 <!-- badges: end -->
 
-_finalsize_ provides calculations for the final size of an epidemic in a population, which is the overall number of infected individuals, depending on a demographic distribution (e.g., age groups) and their contact patterns, accounting for different susceptibility to disease between groups (e.g., due to age-related impaired or dysregulated immune responses) and within groups (e.g., due to immunization programs).
+_finalsize_ provides calculations for the final size of an epidemic in a population, which is the overall number of infected individuals, depending on a demographic distribution (e.g., age groups) and their contact patterns, accounting for different susceptibility to disease between groups (e.g., due to age-group specific immune responses, such as age-related reduced immune function, or immunity from prior exposure to similar pathogens) and within groups (e.g., due to immunisation programs).
 
 _finalsize_ implements methods outlined in @andreasen2011, @miller2012, @kucharski2014, and @bidari2016.
 
