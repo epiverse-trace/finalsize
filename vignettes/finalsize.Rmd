@@ -208,12 +208,14 @@ ggplot(final_size_data) +
     aes(
       demo_grp, p_infected
     ),
-    fill = "lightgrey",
-    col = "black"
+    colour = "black", fill = "grey"
   ) +
   scale_y_continuous(
     labels = scales::percent,
     limits = c(0, 1)
+  ) +
+  expand_limits(
+    x = c(0.5, nrow(final_size_data) + 0.5)
   ) +
   theme_classic() +
   coord_cartesian(
@@ -260,8 +262,10 @@ ggplot(final_size_data) +
     aes(
       x = demo_grp, y = n_infected
     ),
-    fill = "lightgrey",
-    col = "black"
+    fill = "grey", col = "black"
+  ) +
+  expand_limits(
+    x = c(0.5, nrow(final_size_data) + 0.5)
   ) +
   scale_y_continuous(
     labels = scales::comma_format(
