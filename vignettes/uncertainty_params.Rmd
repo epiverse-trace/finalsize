@@ -19,7 +19,7 @@ editor_options:
 Epidemic final size calculations are sensitive to input data such as the $R_0$ of the infection. Such values can often be uncertain in the early stages of an outbreak. This uncertainty can be included in final size calculations by running `final_size()` for values drawn from a distribution, and summarising the outcomes.
 
 ::: {.alert .alert-warning}
-**New to _finalsize_?** It may help to read earlier vignettes first!
+**New to _finalsize_?** It may help to read the ["Get started"](finalsize.html) or ["Modelling heterogeneous susceptibility"](varying_susceptibility.Rmd) vignettes first!
 :::
 
 ::: {.alert .alert-primary}
@@ -65,7 +65,7 @@ library(ggplot2)
 
 This example uses social contact data from the [POLYMOD](https://cordis.europa.eu/project/id/502084) project to estimate the final size of an epidemic in the U.K. These data are provided with the `socialmixr` package.
 
-These data are handled just as in the [Basic usage](finalsize.html) vignette. This example also considers an infection with an $R_0$ of 2.0.
+These data are handled just as in the ["Get started"](finalsize.html) vignette. This example also considers an infection with an $R_0$ of 2.0.
 
 ```{r}
 # get UK polymod data

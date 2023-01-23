@@ -19,7 +19,7 @@ editor_options:
 Populations are often heterogeneous in their susceptibility to infection following exposure, independent of the exposure risk that comes from different social contact patterns. Such heterogeneity may be age-dependent and vary between age groups. It may also vary within age groups due to prior infection resulting in immunity or due to immunisation. Combinations of within- and between-group variation in susceptibility may also occur, and can be incorporated into final size calculations [@miller2012].
 
 ::: {.alert .alert-warning}
-**New to _finalsize_?** It may help to read the ["Basic usage"](finalsize.html) vignette first!
+**New to _finalsize_?** It may help to read the ["Get started"](finalsize.html) vignette first!
 :::
 
 ::: {.alert .alert-primary}
@@ -76,7 +76,7 @@ library(colorspace)
 
 This example uses social contact data from the POLYMOD project [@mossong2008] to estimate the final size of an epidemic in the U.K. These data are provided with the `socialmixr` package.
 
-These data are handled just as in the ["Basic usage"](finalsize.html) vignette, and the code is not displayed here. This example also considers a disease with an $R_0$ of 2.0.
+These data are handled just as in the ["Get started"](finalsize.html) vignette, and the code is not displayed here. This example also considers a disease with an $R_0$ of 2.0.
 
 ```{r class.source = 'fold-hide'}
 # get UK polymod data
