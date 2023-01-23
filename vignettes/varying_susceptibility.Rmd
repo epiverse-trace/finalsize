@@ -351,8 +351,8 @@ ggplot(final_size_immunised) +
     cols = vars(scenario),
     labeller = labeller(
       scenario = c(
-       heterogeneous = "Between groups only",
-        immunisation = "Within & between groups" 
+        heterogeneous = "Between groups only",
+        immunisation = "Within & between groups"
       )
     )
   ) +
