@@ -347,6 +347,18 @@ ggplot(final_size_immunised) +
     col = "black",
     position = position_dodge()
   ) +
+  facet_grid(
+    cols = vars(scenario),
+    labeller = labeller(
+      scenario = c(
+       heterogeneous = "Between groups only",
+        immunisation = "Within & between groups" 
+      )
+    )
+  ) +
+  expand_limits(
+    x = c(0.5, length(unique(final_size_immunised$demo_grp)) + 0.5)
+  ) +
   scale_fill_discrete_qualitative(
     palette = "Dynamic",
     rev = TRUE,
@@ -356,8 +368,8 @@ ggplot(final_size_immunised) +
   ) +
   scale_colour_manual(
     values = "black",
-    name = NULL,
-    labels = "Susceptibility heterogeneous\nbetween groups,\nno immunisation"
+    name = "No immunisation",
+    labels = "Susceptibility homogeneous\nwithin groups"
   ) +
   scale_y_continuous(
     labels = scales::percent,
@@ -365,19 +377,27 @@ ggplot(final_size_immunised) +
   ) +
   theme_classic() +
   theme(
-    legend.position = "top",
+    legend.position = "bottom",
     legend.key.height = unit(2, "mm"),
     legend.title = ggtext::element_markdown(
       vjust = 1
+    ),
+    strip.background = element_blank(),
+    strip.text = element_text(
+      face = "bold",
+      size = 11
     )
   ) +
   guides(
     colour = guide_legend(
-      override.aes = list(fill = "lightgrey")
+      override.aes = list(fill = "lightgrey"),
+      title.position = "top",
+      order = 1
     ),
     fill = guide_legend(
       nrow = 2,
-      title.position = "top"
+      title.position = "top",
+      order = 2
     )
   ) +
   coord_cartesian(
@@ -386,6 +406,7 @@ ggplot(final_size_immunised) +
   labs(
     x = "Age group",
     y = "% Infected",
+    title = "Heterogeneous susceptibility",
     fill = "Immunisation\nscenario"
   )
 ```
