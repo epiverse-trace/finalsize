@@ -147,14 +147,19 @@ final_size_data <- Map(
 # combine data
 final_size_data <- Reduce(x = final_size_data, f = rbind)
 
+# examine the data
+final_size_data
+```
+
+### Visualise uncertainty in final size
+
+```{r class.source = 'fold.hide'}
 # order age groups
 final_size_data$demo_grp <- factor(
   final_size_data$demo_grp,
   levels = contact_data$demography$age.group
 )
 ```
-
-### Visualise uncertainty in final size
 
 ```{r class.source = 'fold-hide', class.source = 'fold-hide', fig.cap="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles.", fig.width=5, fig.height=4}
 ggplot(final_size_data) +

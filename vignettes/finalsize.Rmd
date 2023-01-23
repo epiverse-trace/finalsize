@@ -189,15 +189,17 @@ final_size_data <- final_size(
 
 # view the output data frame
 final_size_data
+```
 
-# order demographic groups
+### Visualise final sizes
+
+```{r class.source = 'fold.hide'}
+# order demographic groups as factors
 final_size_data$demo_grp <- factor(
   final_size_data$demo_grp,
   levels = demography_data$age.group
 )
 ```
-
-### Visualise final sizes
 
 ```{r fig.cap ="Final size of an SIR epidemic in each age group. The final size is the cumulative number of infections in each age group over the course of the epidemic, expressed as a proportion of the respective age group.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
 # plot data
