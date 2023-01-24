@@ -275,7 +275,7 @@ In general terms, this could be interpreted as the rate of vaccine uptake, or as
 ### Getting data on within-group susceptibility differences {-}
 
 For within-group differences in susceptibility, such as due to immunisation, users could obtain this information from [age-specific vaccination uptake statistics from national governments (here, the UK)](https://coronavirus.data.gov.uk/details/vaccinations?areaType=nation%26areaName=England#card-vaccination_uptake_by_vaccination_date_age_demographics).
-When antibody response decays are known for an immunisation course [@iyer2020], more detailed statistics on the [percentage of people vaccinated (here, in the UK)](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/articles/coronaviruscovid19latestinsights/vaccines) in the preceding few months only, may be more informative.
+When antibody response decays are known for an immunisation course [@iyer2020], more detailed statistics on the [percentage of people vaccinated in the preceding few months only (here, in the UK)](https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/articles/coronaviruscovid19latestinsights/vaccines), may be more informative.
 :::
 
 ```{r}
