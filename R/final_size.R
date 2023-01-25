@@ -33,12 +33,12 @@
 #' @param demography_vector Demography vector. Entry \eqn{v_{i}} gives
 #' proportion of total population in group \eqn{i} (model will normalise
 #' if needed).
+#' @param susceptibility A matrix giving the susceptibility of individuals in
+#' demographic group \eqn{i} and risk group \eqn{j}.
 #' @param p_susceptibility A matrix giving the probability that an individual
 #' in demography group \eqn{i} is in risk (or susceptibility) group \eqn{j}.
 #' Each row represents the overall distribution of individuals in demographic
 #' group \eqn{i} across risk groups, and each row *must sum to 1.0*.
-#' @param susceptibility A matrix giving the susceptibility of individuals in
-#' demographic group \eqn{i} and risk group \eqn{j}.
 #' @param solver Which solver to use. Options are "iterative" (default) or
 #' "newton", for the iterative solver, or the Newton solver, respectively.
 #' Special conditions apply when using the Newton solver, see the `control`
@@ -63,24 +63,25 @@
 #' n_demo_grps <- length(demography_vector)
 #' n_risk_grps <- 3
 #'
-#' # prepare p_susceptibility and susceptibility
-#' psusc <- matrix(
-#'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
-#' )
-#' psusc <- psusc / rowSums(psusc)
 #' # In this example, all risk groups from all age groups are fully
 #' # susceptible
-#' susc <- matrix(
+#' susceptibility <- matrix(
 #'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 #' )
+#'
+#' p_susceptibility <- matrix(
+#'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+#' )
+#' # p_susceptibility rows must sum to 1.0
+#' p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
 #'
 #' # using default arguments for `solver` and `control`
 #' final_size(
 #'   r0 = r0,
 #'   contact_matrix = contact_matrix,
 #'   demography_vector = demography_vector,
-#'   p_susceptibility = psusc,
-#'   susceptibility = susc
+#'   susceptibility = susceptibility,
+#'   p_susceptibility = p_susceptibility
 #' )
 #'
 #' # using manually specified solver settings for the iterative solver
@@ -95,8 +96,8 @@
 #'   r0 = r0,
 #'   contact_matrix = contact_matrix,
 #'   demography_vector = demography_vector,
-#'   p_susceptibility = psusc,
-#'   susceptibility = susc,
+#'   susceptibility = susceptibility,
+#'   p_susceptibility = p_susceptibility,
 #'   solver = "iterative",
 #'   control = control
 #' )
@@ -111,16 +112,16 @@
 #'   r0 = r0,
 #'   contact_matrix = contact_matrix,
 #'   demography_vector = demography_vector,
-#'   p_susceptibility = psusc,
-#'   susceptibility = susc,
+#'   susceptibility = susceptibility,
+#'   p_susceptibility = p_susceptibility,
 #'   solver = "newton",
 #'   control = control
 #' )
 final_size <- function(r0,
                        contact_matrix,
                        demography_vector,
-                       p_susceptibility,
                        susceptibility,
+                       p_susceptibility,
                        solver = c("iterative", "newton"),
                        control = list()) {
   # check arguments input
@@ -147,7 +148,8 @@ final_size <- function(r0,
       ),
     "Error: contact matrix must have a maximum real eigenvalue of 1.0" =
       (
-        abs(max(eigen(contact_matrix * demography_vector)$values) - 1.0) < 1e-6
+        abs(max(Re(eigen(contact_matrix * demography_vector)$values) - 1.0)) <
+          1e-6
       ),
     "Error: control list names can only be: 'iterations', 'tolerance',
     'step_rate', 'adapt_step'" =
@@ -210,7 +212,7 @@ final_size <- function(r0,
     )
   )
 
-  # check for names of age groups and susc groups
+  # check for names of age groups and susceptibility groups
   names_demography <- names(demography_vector)
   if (is.null(names_demography)) {
     # check if contact matrix has column names
@@ -225,7 +227,7 @@ final_size <- function(r0,
     }
   }
 
-  # check for susc group names
+  # check for susceptibility group names
   names_susceptibility <- colnames(susceptibility)
   if (is.null(names_susceptibility)) {
     names_susceptibility <- sprintf(

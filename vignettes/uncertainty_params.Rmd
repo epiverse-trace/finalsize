@@ -19,7 +19,7 @@ editor_options:
 Epidemic final size calculations are sensitive to input data such as the $R_0$ of the infection. Such values can often be uncertain in the early stages of an outbreak. This uncertainty can be included in final size calculations by running `final_size()` for values drawn from a distribution, and summarising the outcomes.
 
 ::: {.alert .alert-warning}
-**New to _finalsize_?** It may help to read earlier vignettes first!
+**New to _finalsize_?** It may help to read the ["Get started"](finalsize.html) or ["Modelling heterogeneous susceptibility"](varying_susceptibility.Rmd) vignettes first!
 :::
 
 ::: {.alert .alert-primary}
@@ -51,10 +51,13 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 ```{r setup, message=FALSE, warning=FALSE, class.source = 'fold-hide'}
+# load finalsize
 library(finalsize)
 
 # load necessary packages
-library(data.table)
+if (!require("socialmixr")) install.packages("socialmixr")
+if (!require("ggplot2")) install.packages("ggplot2")
+
 library(ggplot2)
 ```
 
@@ -62,7 +65,7 @@ library(ggplot2)
 
 This example uses social contact data from the [POLYMOD](https://cordis.europa.eu/project/id/502084) project to estimate the final size of an epidemic in the U.K. These data are provided with the `socialmixr` package.
 
-These data are handled just as in the [Basic usage](finalsize.html) vignette. This example also considers an infection with an $R_0$ of 2.0.
+These data are handled just as in the ["Get started"](finalsize.html) vignette. This example also considers an infection with an $R_0$ of 2.0.
 
 ```{r}
 # get UK polymod data
@@ -79,7 +82,7 @@ contact_matrix <- t(contact_data$matrix)
 demography_vector <- contact_data$demography$population
 
 # scale the contact matrix so the largest eigenvalue is 1.0
-contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
+contact_matrix <- contact_matrix / max(Re(eigen(contact_matrix)$values))
 
 # divide each row of the contact matrix by the corresponding demography
 contact_matrix <- contact_matrix / demography_vector
@@ -142,16 +145,21 @@ final_size_data <- Map(
 )
 
 # combine data
-final_size_data <- rbindlist(final_size_data)
+final_size_data <- Reduce(x = final_size_data, f = rbind)
 
+# examine the data
+final_size_data
+```
+
+### Visualise uncertainty in final size
+
+```{r class.source = 'fold.hide'}
 # order age groups
 final_size_data$demo_grp <- factor(
   final_size_data$demo_grp,
   levels = contact_data$demography$age.group
 )
 ```
-
-### Visualise uncertainty in final size
 
 ```{r class.source = 'fold-hide', class.source = 'fold-hide', fig.cap="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles.", fig.width=5, fig.height=4}
 ggplot(final_size_data) +

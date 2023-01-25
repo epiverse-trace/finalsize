@@ -14,7 +14,7 @@ contact_matrix <- t(polymod_uk$matrix)
 demography_vector <- polymod_uk$demography$population
 
 # scale contacts by maximum real eigenvalue and divide by demography
-contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
+contact_matrix <- contact_matrix / max(Re(eigen(contact_matrix)$values))
 contact_matrix <- contact_matrix / demography_vector
 
 polymod_uk <- list(

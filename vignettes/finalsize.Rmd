@@ -46,23 +46,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Getting _finalsize_
-
-The _finalsize_ package is currently available on [Github](https://github.com/epiverse-trace/finalsize), and can be installed using the `remotes` or `devtools` packages.
-
-```r
-# first install the remotes packages
-install.packages("remotes")
-
-# install finalsize using remotes
-remotes::install_github("epiverse-trace/finalsize")
-```
-
 ```{r}
+# load finalsize
 library(finalsize)
 
 # load necessary packages
-library(data.table)
+if (!require("socialmixr")) install.packages("socialmixr")
+if (!require("ggplot2")) install.packages("ggplot2")
+
 library(ggplot2)
 ```
 
@@ -79,9 +70,9 @@ r0 <- 2.0
 
 ## Getting and preparing contact and demography data
 
-This example uses social contact data from the [POLYMOD](https://cordis.europa.eu/project/id/502084) project to estimate the final size of an epidemic in the U.K. These data are provided with the `socialmixr` package.
+This example uses social contact data from the POLYMOD project [@mossong2008] to estimate the final size of an epidemic in the U.K. These data are provided with the `socialmixr` package.
 
-The contact data are divided into five age groups: 0 -- 5, 5 -- 18, 18 -- 40, 40 -- 65, and 65 and over, specified using the `age.limits` argument in `socialmixr::contact_matrix()`.
+The contact data are divided into five age groups: 0 -- 4, 5 -- 17, 18 -- 39, 40 -- 64, and 65 and over, specified using the `age.limits` argument in `socialmixr::contact_matrix()`.
 The `symmetric = TRUE` argument to `socialmixr::contact_matrix()` returns a symmetric contact matrix, so that the contacts reported by group $\{i\}$ of individuals from group $\{j\}$ are the same as those reported by group $\{j\}$ of group $\{i\}$.
 
 The demographic data --- the number of individuals in each age group --- is also available through `socialmixr::contact_matrix()`.
@@ -96,6 +87,13 @@ contact_data <- socialmixr::contact_matrix(
   symmetric = TRUE
 )
 
+# view the elements of the contact data list
+# the contact matrix
+contact_data$matrix
+
+# the demography data
+contact_data$demography
+
 # get the contact matrix and demography data
 contact_matrix <- t(contact_data$matrix)
 demography_vector <- contact_data$demography$population
@@ -104,7 +102,7 @@ demography_data <- contact_data$demography
 # scale the contact matrix so the largest eigenvalue is 1.0
 # this is to ensure that the overall epidemic dynamics correctly reflect
 # the assumed value of R0
-contact_matrix <- contact_matrix / max(eigen(contact_matrix)$values)
+contact_matrix <- contact_matrix / max(Re(eigen(contact_matrix)$values))
 
 # divide each row of the contact matrix by the corresponding demography
 # this reflects the assumption that each individual in group {j} make contacts
@@ -189,14 +187,19 @@ final_size_data <- final_size(
   p_susceptibility = p_susc_uniform
 )
 
-# order demographic groups
+# view the output data frame
+final_size_data
+```
+
+### Visualise final sizes
+
+```{r class.source = 'fold.hide'}
+# order demographic groups as factors
 final_size_data$demo_grp <- factor(
   final_size_data$demo_grp,
   levels = demography_data$age.group
 )
 ```
-
-### Visualise final sizes
 
 ```{r fig.cap ="Final size of an SIR epidemic in each age group. The final size is the cumulative number of infections in each age group over the course of the epidemic, expressed as a proportion of the respective age group.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
 # plot data
@@ -205,12 +208,14 @@ ggplot(final_size_data) +
     aes(
       demo_grp, p_infected
     ),
-    fill = "lightgrey",
-    col = "black"
+    colour = "black", fill = "grey"
   ) +
   scale_y_continuous(
     labels = scales::percent,
     limits = c(0, 1)
+  ) +
+  expand_limits(
+    x = c(0.5, nrow(final_size_data) + 0.5)
   ) +
   theme_classic() +
   coord_cartesian(
@@ -233,7 +238,7 @@ The example below show how this can be done.
 demography_data <- contact_data$demography
 
 # merge final size counts with demography vector
-final_size_data <- merge.data.table(
+final_size_data <- merge(
   final_size_data,
   demography_data,
   by.x = "demo_grp",
@@ -251,14 +256,16 @@ final_size_data$n_infected <- final_size_data$p_infected *
   final_size_data$population
 ```
 
-```{r fig.cap="Final size of an epidemic outbreak in a population, for different values of infection $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in this scenario. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
+```{r fig.cap="Final size of an epidemic outbreak in a population, for different values of infection $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 64 make up the bulk of cases in this scenario. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
 ggplot(final_size_data) +
   geom_col(
     aes(
       x = demo_grp, y = n_infected
     ),
-    fill = "lightgrey",
-    col = "black"
+    fill = "grey", col = "black"
+  ) +
+  expand_limits(
+    x = c(0.5, nrow(final_size_data) + 0.5)
   ) +
   scale_y_continuous(
     labels = scales::comma_format(
