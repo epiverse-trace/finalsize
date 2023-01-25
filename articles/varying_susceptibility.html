@@ -95,9 +95,9 @@
 
     
     
-<p>Populations are often heterogeneous in their susceptibility to infection following exposure, independent of the exposure risk that comes from different social contact patterns. Such heterogeneity may be age-dependent and vary between age groups. It may also vary within age groups due to prior infection resulting in immunity or due to immunisation. Combinations of within- and between-group variation in susceptibility may also occur, and can be incorporated into final size calculations <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/" class="external-link"><span class="citation">(<a href="#ref-miller2012" role="doc-biblioref">Miller 2012</a>)</span></a>.</p>
+<p>Populations are often heterogeneous in their susceptibility to infection following exposure, independent of the exposure risk that comes from different social contact patterns. Such heterogeneity may be age-dependent and vary between age groups. It may also vary within age groups due to prior infection resulting in immunity or due to immunisation. Combinations of within- and between-group variation in susceptibility may also occur, and can be incorporated into final size calculations <span class="citation">(<a href="#ref-miller2012" role="doc-biblioref">Miller 2012</a>)</span>.</p>
 <div class="alert alert-warning">
-<p><strong>New to <em>finalsize</em>?</strong> It may help to read the <a href="finalsize.html">“Basic usage”</a> vignette first!</p>
+<p><strong>New to <em>finalsize</em>?</strong> It may help to read the <a href="finalsize.html">“Get started”</a> vignette first!</p>
 </div>
 <div class="section level2 unnumbered alert alert-primary">
 <h2 id="use-case">Use case<a class="anchor" aria-label="anchor" href="#use-case"></a>
@@ -123,18 +123,30 @@
 </ol>
 </div>
 </div>
+<div class="section level2">
+<h2 id="primer-on-heterogeneous-susceptibility">Primer on heterogeneous susceptibility<a class="anchor" aria-label="anchor" href="#primer-on-heterogeneous-susceptibility"></a>
+</h2>
+<p>A working definition of susceptibility is the probability of becoming infected on contact with an infectious person.</p>
+<p>Age-specific factors influencing the susceptibility of individuals include, but are not limited to, direct (immunological) susceptibility to infection upon exposure (e.g., due to natural susceptibility from previous infections, differences in vaccination status), and age-specific heterogeneous risk behaviour <span class="citation">(<a href="#ref-franco2022" role="doc-biblioref">Franco et al. 2022</a>)</span>.</p>
+<p>For example, for SARS-CoV-2, children are less susceptible to it than adults. Decreased susceptibility could result from immune cross-protection from other coronaviruses <span class="citation">(<a href="#ref-huang2020" role="doc-biblioref">Huang et al. 2020</a>)</span>, or from non-specific protection resulting from recent infection by other respiratory viruses <span class="citation">(<a href="#ref-cowling2012" role="doc-biblioref">Cowling et al. 2012</a>)</span>, which children experience more frequently than adults <span class="citation">(<a href="#ref-tsagarakis2018" role="doc-biblioref">Tsagarakis et al. 2018</a>; <a href="#ref-davies2020" role="doc-biblioref">Davies et al. 2020</a>)</span>.</p>
 <details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/epiverse-trace/finalsize" class="external-link">finalsize</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># load finalsize</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/epiverse-trace/finalsize" class="external-link">finalsize</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load necessary packages</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/epiforecasts/socialmixr" class="external-link">"socialmixr"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"socialmixr"</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://colorspace.R-Forge.R-project.org/" class="external-link">"colorspace"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"colorspace"</span><span class="op">)</span></span>
+<span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://colorspace.R-Forge.R-project.org/" class="external-link">colorspace</a></span><span class="op">)</span></span></code></pre></div>
-</details><div class="section level2">
+</details>
+</div>
+<div class="section level2">
 <h2 id="getting-r_0-and-contact-and-demography-data">Getting <span class="math inline">\(R_0\)</span> and contact and demography data<a class="anchor" aria-label="anchor" href="#getting-r_0-and-contact-and-demography-data"></a>
 </h2>
-<p>This example uses social contact data from the <a href="https://cordis.europa.eu/project/id/502084" class="external-link">POLYMOD</a> project to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
-<p>These data are handled just as in the <a href="finalsize.html">“Basic usage”</a> vignette, and the code is not displayed here. This example also considers a disease with an <span class="math inline">\(R_0\)</span> of 2.0.</p>
+<p>This example uses social contact data from the POLYMOD project <span class="citation">(<a href="#ref-mossong2008" role="doc-biblioref">Mossong et al. 2008</a>)</span> to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
+<p>These data are handled just as in the <a href="finalsize.html">“Get started”</a> vignette, and the code is not displayed here. This example also considers a disease with an <span class="math inline">\(R_0\)</span> of 2.0.</p>
 <details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get UK polymod data</span></span>
 <span><span class="va">polymod</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="va"><a href="https://epiforecasts.io/socialmixr/reference/polymod.html" class="external-link">polymod</a></span></span>
@@ -150,7 +162,7 @@
 <span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span>
 <span></span>
 <span><span class="co"># scale the contact matrix so the largest eigenvalue is 1.0</span></span>
-<span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="va">contact_matrix</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">$</span><span class="va">values</span><span class="op">)</span></span>
+<span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="va">contact_matrix</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/complex.html" class="external-link">Re</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">$</span><span class="va">values</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># divide each row of the contact matrix by the corresponding demography</span></span>
 <span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="va">contact_matrix</span> <span class="op">/</span> <span class="va">demography_vector</span></span>
@@ -165,7 +177,7 @@
 </h2>
 <p>This example considers a scenario in which susceptibility to infection varies between age groups, but not within groups.
 In this example, susceptibility to infection increases with age.</p>
-<p>This can be modelled as a susceptibility matrix with higher values for the 40 – 60 and 65+ age groups, and relatively lower values for other groups.</p>
+<p>This can be modelled as a susceptibility matrix with higher values for the 40 – 64 and 65 and over age groups, and relatively lower values for other groups.</p>
 <details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># susceptibility is higher for the old</span></span>
 <span><span class="va">susc_variable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span>
@@ -205,7 +217,8 @@ In this example, susceptibility to infection increases with age.</p>
 <span>  susceptibility <span class="op">=</span> <span class="va">susc_uniform</span>,</span>
 <span>  p_susceptibility <span class="op">=</span> <span class="va">p_susc_uniform</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-</details><details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+</details><p>Visualise the effect of modelling age-dependent susceptibility against uniform susceptibility for all age groups.</p>
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># assign scenario name and join data</span></span>
 <span><span class="va">final_size_heterog</span><span class="op">$</span><span class="va">scenario</span> <span class="op">&lt;-</span> <span class="st">"heterogeneous"</span></span>
 <span><span class="va">final_size_uniform</span><span class="op">$</span><span class="va">scenario</span> <span class="op">&lt;-</span> <span class="st">"uniform"</span></span>
@@ -220,9 +233,22 @@ In this example, susceptibility to infection increases with age.</p>
 <span><span class="va">final_size_data</span><span class="op">$</span><span class="va">demo_grp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span>
 <span>  <span class="va">final_size_data</span><span class="op">$</span><span class="va">demo_grp</span>,</span>
 <span>  levels <span class="op">=</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">age.group</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-</details><p>Visualise the effect of modelling age-dependent susceptibility against uniform susceptibility for all age groups.</p>
-<details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># examine the combined data</span></span>
+<span><span class="va">final_size_data</span></span>
+<span><span class="co">#&gt;    demo_grp   susc_grp susceptibility p_infected      scenario</span></span>
+<span><span class="co">#&gt; 1     [0,5) susc_grp_1            0.2 0.08438181 heterogeneous</span></span>
+<span><span class="co">#&gt; 2    [5,18) susc_grp_1            0.5 0.39000734 heterogeneous</span></span>
+<span><span class="co">#&gt; 3   [18,40) susc_grp_1            0.6 0.35635678 heterogeneous</span></span>
+<span><span class="co">#&gt; 4   [40,65) susc_grp_1            0.9 0.43945122 heterogeneous</span></span>
+<span><span class="co">#&gt; 5       65+ susc_grp_1            1.0 0.32834904 heterogeneous</span></span>
+<span><span class="co">#&gt; 6     [0,5) susc_grp_1            1.0 0.64348986       uniform</span></span>
+<span><span class="co">#&gt; 7    [5,18) susc_grp_1            1.0 0.87774777       uniform</span></span>
+<span><span class="co">#&gt; 8   [18,40) susc_grp_1            1.0 0.77233709       uniform</span></span>
+<span><span class="co">#&gt; 9   [40,65) susc_grp_1            1.0 0.70232650       uniform</span></span>
+<span><span class="co">#&gt; 10      65+ susc_grp_1            1.0 0.51318727       uniform</span></span></code></pre></div>
+</details><details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">final_size_data</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
@@ -233,6 +259,9 @@ In this example, susceptibility to infection increases with age.</p>
 <span>    position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span></span>
 <span>      width <span class="op">=</span> <span class="fl">0.75</span></span>
 <span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expand_limits.html" class="external-link">expand_limits</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">final_size_data</span><span class="op">$</span><span class="va">demo_grp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://colorspace.R-Forge.R-project.org/reference/scale_colour_discrete_qualitative.html" class="external-link">scale_fill_discrete_qualitative</a></span><span class="op">(</span></span>
 <span>    palette <span class="op">=</span> <span class="st">"Cold"</span>,</span>
@@ -296,8 +325,14 @@ Immunisation against infection through an intervention campaign is a common caus
 <p>We also need to model the proportion of each age group that has been immunised, and which therefore has lower susceptibility to the infection. To do this, we can modify the demography-susceptibility distribution matrix.</p>
 <p>This example model considers half of each age group to be in the immunised and non-immunised groups.</p>
 <p>In general terms, this could be interpreted as the rate of vaccine uptake, or as the effect of existing immunity from previous infection by a similar pathogen.</p>
+<div class="section level3 unnumbered alert alert-secondary">
+<h3 id="getting-data-on-within-group-susceptibility-differences">Getting data on within-group susceptibility differences<a class="anchor" aria-label="anchor" href="#getting-data-on-within-group-susceptibility-differences"></a>
+</h3>
+<p>For within-group differences in susceptibility, such as due to immunisation, users could obtain this information from <a href="https://coronavirus.data.gov.uk/details/vaccinations?areaType=nation%26areaName=England#card-vaccination_uptake_by_vaccination_date_age_demographics" class="external-link">age-specific vaccination uptake statistics from national governments (here, the UK)</a>.
+When antibody response decays are known for an immunisation course <span class="citation">(<a href="#ref-iyer2020" role="doc-biblioref">Iyer et al. 2020</a>)</span>, more detailed statistics on the <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/articles/coronaviruscovid19latestinsights/vaccines" class="external-link">percentage of people vaccinated in the preceding few months only (here, in the UK)</a>, may be more informative.</p>
+</div>
 <details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># immunisation increases with age between 20% (infants) and 90% (65+)</span></span>
+<code class="sourceCode R"><span><span class="co"># immunisation rate is uniform across age groups</span></span>
 <span><span class="va">immunisation_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="va">n_demo_grps</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># add a second column to p_susceptibility</span></span>
@@ -316,9 +351,10 @@ Immunisation against infection through an intervention campaign is a common caus
 <span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
 <span>  susceptibility <span class="op">=</span> <span class="va">susc_immunised</span>,</span>
 <span>  p_susceptibility <span class="op">=</span> <span class="va">p_susc_immunised</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># add scenario identifier</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+</details><p>The effect of immunisation (or some other reduction in susceptibility) can be visualised by comparing the proportion of the immunised and un-immunised groups that are infected.</p>
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># add scenario identifier</span></span>
 <span><span class="va">final_size_immunised</span><span class="op">$</span><span class="va">scenario</span> <span class="op">&lt;-</span> <span class="st">"immunisation"</span></span>
 <span></span>
 <span><span class="co"># prepare age group order</span></span>
@@ -330,9 +366,23 @@ Immunisation against infection through an intervention campaign is a common caus
 <span><span class="va">final_size_immunised</span><span class="op">$</span><span class="va">demo_grp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span>
 <span>  <span class="va">final_size_immunised</span><span class="op">$</span><span class="va">demo_grp</span>,</span>
 <span>  levels <span class="op">=</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">age.group</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-</details><p>The effect of immunisation (or some other reduction in susceptibility) can be visualised by comparing the proportion of the immunised and un-immunised groups that are infected.</p>
-<details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># examine the data</span></span>
+<span><span class="va">final_size_immunised</span></span>
+<span><span class="co">#&gt;    demo_grp     susc_grp susceptibility p_infected     scenario</span></span>
+<span><span class="co">#&gt; 1     [0,5) Un-immunised          0.200 0.04109737 immunisation</span></span>
+<span><span class="co">#&gt; 2    [5,18) Un-immunised          0.500 0.21109758 immunisation</span></span>
+<span><span class="co">#&gt; 3   [18,40) Un-immunised          0.600 0.19043169 immunisation</span></span>
+<span><span class="co">#&gt; 4   [40,65) Un-immunised          0.900 0.24332081 immunisation</span></span>
+<span><span class="co">#&gt; 5       65+ Un-immunised          1.000 0.17411344 immunisation</span></span>
+<span><span class="co">#&gt; 6     [0,5)    Immunised          0.150 0.03098415 immunisation</span></span>
+<span><span class="co">#&gt; 7    [5,18)    Immunised          0.375 0.16291904 immunisation</span></span>
+<span><span class="co">#&gt; 8   [18,40)    Immunised          0.450 0.14652633 immunisation</span></span>
+<span><span class="co">#&gt; 9   [40,65)    Immunised          0.675 0.18869558 immunisation</span></span>
+<span><span class="co">#&gt; 10      65+    Immunised          0.750 0.13365615 immunisation</span></span></code></pre></div>
+</details><p>Compare scenarios in which susceptibility is heterogeneous between groups, against the immunisation scenario in which susceptibility also varies within groups.</p>
+<details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">final_size_immunised</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">final_size_heterog</span>,</span>
@@ -352,6 +402,18 @@ Immunisation against infection through an intervention campaign is a common caus
 <span>    col <span class="op">=</span> <span class="st">"black"</span>,</span>
 <span>    position <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/position_dodge.html" class="external-link">position_dodge</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html" class="external-link">facet_grid</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html" class="external-link">vars</a></span><span class="op">(</span><span class="va">scenario</span><span class="op">)</span>,</span>
+<span>    labeller <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labeller.html" class="external-link">labeller</a></span><span class="op">(</span></span>
+<span>      scenario <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>        heterogeneous <span class="op">=</span> <span class="st">"Between groups only"</span>,</span>
+<span>        immunisation <span class="op">=</span> <span class="st">"Within &amp; between groups"</span></span>
+<span>      <span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expand_limits.html" class="external-link">expand_limits</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">final_size_immunised</span><span class="op">$</span><span class="va">demo_grp</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://colorspace.R-Forge.R-project.org/reference/scale_colour_discrete_qualitative.html" class="external-link">scale_fill_discrete_qualitative</a></span><span class="op">(</span></span>
 <span>    palette <span class="op">=</span> <span class="st">"Dynamic"</span>,</span>
 <span>    rev <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -361,8 +423,8 @@ Immunisation against infection through an intervention campaign is a common caus
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html" class="external-link">scale_colour_manual</a></span><span class="op">(</span></span>
 <span>    values <span class="op">=</span> <span class="st">"black"</span>,</span>
-<span>    name <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>    labels <span class="op">=</span> <span class="st">"Susceptibility heterogeneous\nbetween groups,\nno immunisation"</span></span>
+<span>    name <span class="op">=</span> <span class="st">"No immunisation"</span>,</span>
+<span>    labels <span class="op">=</span> <span class="st">"Susceptibility homogeneous\nwithin groups"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span></span>
 <span>    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span>,</span>
@@ -370,19 +432,27 @@ Immunisation against infection through an intervention campaign is a common caus
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span></span>
-<span>    legend.position <span class="op">=</span> <span class="st">"top"</span>,</span>
+<span>    legend.position <span class="op">=</span> <span class="st">"bottom"</span>,</span>
 <span>    legend.key.height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grid/unit.html" class="external-link">unit</a></span><span class="op">(</span><span class="fl">2</span>, <span class="st">"mm"</span><span class="op">)</span>,</span>
 <span>    legend.title <span class="op">=</span> <span class="fu">ggtext</span><span class="fu">::</span><span class="fu"><a href="https://wilkelab.org/ggtext/reference/element_markdown.html" class="external-link">element_markdown</a></span><span class="op">(</span></span>
 <span>      vjust <span class="op">=</span> <span class="fl">1</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    strip.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>    strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span></span>
+<span>      face <span class="op">=</span> <span class="st">"bold"</span>,</span>
+<span>      size <span class="op">=</span> <span class="fl">11</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span></span>
 <span>    colour <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span></span>
-<span>      override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"lightgrey"</span><span class="op">)</span></span>
+<span>      override.aes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"lightgrey"</span><span class="op">)</span>,</span>
+<span>      title.position <span class="op">=</span> <span class="st">"top"</span>,</span>
+<span>      order <span class="op">=</span> <span class="fl">1</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    fill <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html" class="external-link">guide_legend</a></span><span class="op">(</span></span>
 <span>      nrow <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>      title.position <span class="op">=</span> <span class="st">"top"</span></span>
+<span>      title.position <span class="op">=</span> <span class="st">"top"</span>,</span>
+<span>      order <span class="op">=</span> <span class="fl">2</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span></span>
@@ -391,11 +461,12 @@ Immunisation against infection through an intervention campaign is a common caus
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    x <span class="op">=</span> <span class="st">"Age group"</span>,</span>
 <span>    y <span class="op">=</span> <span class="st">"% Infected"</span>,</span>
+<span>    title <span class="op">=</span> <span class="st">"Heterogeneous susceptibility"</span>,</span>
 <span>    fill <span class="op">=</span> <span class="st">"Immunisation\nscenario"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 </details><div class="figure">
-<span style="display:block;" id="fig:unnamed-chunk-14"></span>
-<img src="varying_susceptibility_files/figure-html/unnamed-chunk-14-1.png" alt="Final size of an SIR epidemic with $R_0$ = 2.0, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%."><p class="caption">
+<span style="display:block;" id="fig:unnamed-chunk-15"></span>
+<img src="varying_susceptibility_files/figure-html/unnamed-chunk-15-1.png" alt="Final size of an SIR epidemic with $R_0$ = 2.0, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%."><p class="caption">
 Figure 2: Final size of an SIR epidemic with <span class="math inline">\(R_0\)</span> = 2.0, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%.
 </p>
 </div>
@@ -404,8 +475,29 @@ Figure 2: Final size of an SIR epidemic with <span class="math inline">\(R_0\)</
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-cowling2012" class="csl-entry">
+Cowling, Benjamin J., Vicky J. Fang, Hiroshi Nishiura, Kwok-Hung Chan, Sophia Ng, Dennis K. M. Ip, Susan S. Chiu, Gabriel M. Leung, and J. S. Malik Peiris. 2012. <span>“Increased <span>Risk</span> of <span>Noninfluenza Respiratory Virus Infections Associated With Receipt</span> of <span>Inactivated Influenza Vaccine</span>.”</span> <em>Clinical Infectious Diseases</em> 54 (12): 1778–83. <a href="https://doi.org/10.1093/cid/cis307" class="external-link">https://doi.org/10.1093/cid/cis307</a>.
+</div>
+<div id="ref-davies2020" class="csl-entry">
+Davies, Nicholas G., Petra Klepac, Yang Liu, Kiesha Prem, Mark Jit, and Rosalind M. Eggo. 2020. <span>“Age-Dependent Effects in the Transmission and Control of <span>COVID-19</span> Epidemics.”</span> <em>Nature Medicine</em> 26 (8): 1205–11. <a href="https://doi.org/10.1038/s41591-020-0962-9" class="external-link">https://doi.org/10.1038/s41591-020-0962-9</a>.
+</div>
+<div id="ref-franco2022" class="csl-entry">
+Franco, Nicolas, Pietro Coletti, Lander Willem, Leonardo Angeli, Adrien Lajot, Steven Abrams, Philippe Beutels, Christel Faes, and Niel Hens. 2022. <span>“Inferring Age-Specific Differences in Susceptibility to and Infectiousness Upon <span>SARS-CoV-2</span> Infection Based on <span>Belgian</span> Social Contact Data.”</span> <em>PLOS Computational Biology</em> 18 (3): e1009965. <a href="https://doi.org/10.1371/journal.pcbi.1009965" class="external-link">https://doi.org/10.1371/journal.pcbi.1009965</a>.
+</div>
+<div id="ref-huang2020" class="csl-entry">
+Huang, Angkana T., Bernardo Garcia-Carreras, Matt D. T. Hitchings, Bingyi Yang, Leah C. Katzelnick, Susan M. Rattigan, Brooke A. Borgert, et al. 2020. <span>“A Systematic Review of Antibody Mediated Immunity to Coronaviruses: Kinetics, Correlates of Protection, and Association with Severity.”</span> <em>Nature Communications</em> 11 (1): 4704. <a href="https://doi.org/10.1038/s41467-020-18450-4" class="external-link">https://doi.org/10.1038/s41467-020-18450-4</a>.
+</div>
+<div id="ref-iyer2020" class="csl-entry">
+Iyer, Anita S., Forrest K. Jones, Ariana Nodoushani, Meagan Kelly, Margaret Becker, Damien Slater, Rachel Mills, et al. 2020. <span>“Persistence and Decay of Human Antibody Responses to the Receptor Binding Domain of <span>SARS-CoV-2</span> Spike Protein in <span>COVID-19</span> Patients.”</span> <em>Science Immunology</em> 5 (52): eabe0367. <a href="https://doi.org/10.1126/sciimmunol.abe0367" class="external-link">https://doi.org/10.1126/sciimmunol.abe0367</a>.
+</div>
 <div id="ref-miller2012" class="csl-entry">
 Miller, Joel C. 2012. <span>“A Note on the Derivation of Epidemic Final Sizes.”</span> <em>Bulletin of Mathematical Biology</em> 74 (9): 2125–41. <a href="https://doi.org/10.1007/s11538-012-9749-6" class="external-link">https://doi.org/10.1007/s11538-012-9749-6</a>.
+</div>
+<div id="ref-mossong2008" class="csl-entry">
+Mossong, Joël, Niel Hens, Mark Jit, Philippe Beutels, Kari Auranen, Rafael Mikolajczyk, Marco Massari, et al. 2008. <span>“Social <span>Contacts</span> and <span>Mixing Patterns Relevant</span> to the <span>Spread</span> of <span>Infectious Diseases</span>.”</span> <em>PLOS Medicine</em> 5 (3): e74. <a href="https://doi.org/10.1371/journal.pmed.0050074" class="external-link">https://doi.org/10.1371/journal.pmed.0050074</a>.
+</div>
+<div id="ref-tsagarakis2018" class="csl-entry">
+Tsagarakis, Nikolaos J., Anthi Sideri, Panagiotis Makridis, Argyro Triantafyllou, Alexandra Stamoulakatou, and Eleni Papadogeorgaki. 2018. <span>“Age-Related Prevalence of Common Upper Respiratory Pathogens, Based on the Application of the <span>FilmArray Respiratory</span> Panel in a Tertiary Hospital in <span>Greece</span>.”</span> <em>Medicine</em> 97 (22): e10903. <a href="https://doi.org/10.1097/MD.0000000000010903" class="external-link">https://doi.org/10.1097/MD.0000000000010903</a>.
 </div>
 </div>
 </div>

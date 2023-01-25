@@ -80,8 +80,8 @@ programme.</p>
 <span>  <span class="va">r0</span>,</span>
 <span>  <span class="va">contact_matrix</span>,</span>
 <span>  <span class="va">demography_vector</span>,</span>
-<span>  <span class="va">p_susceptibility</span>,</span>
 <span>  <span class="va">susceptibility</span>,</span>
+<span>  <span class="va">p_susceptibility</span>,</span>
 <span>  solver <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iterative"</span>, <span class="st">"newton"</span><span class="op">)</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -104,16 +104,16 @@ proportion of total population in group \(i\) (model will normalise
 if needed).</p></dd>
 
 
+<dt>susceptibility</dt>
+<dd><p>A matrix giving the susceptibility of individuals in
+demographic group \(i\) and risk group \(j\).</p></dd>
+
+
 <dt>p_susceptibility</dt>
 <dd><p>A matrix giving the probability that an individual
 in demography group \(i\) is in risk (or susceptibility) group \(j\).
 Each row represents the overall distribution of individuals in demographic
 group \(i\) across risk groups, and each row <em>must sum to 1.0</em>.</p></dd>
-
-
-<dt>susceptibility</dt>
-<dd><p>A matrix giving the susceptibility of individuals in
-demographic group \(i\) and risk group \(j\).</p></dd>
 
 
 <dt>solver</dt>
@@ -175,24 +175,25 @@ based on the solver error. Defaults to TRUE.</p></li>
 <span class="r-in"><span><span class="va">n_demo_grps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">n_risk_grps</span> <span class="op">&lt;-</span> <span class="fl">3</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># prepare p_susceptibility and susceptibility</span></span></span>
-<span class="r-in"><span><span class="va">psusc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="fl">1</span>, nrow <span class="op">=</span> <span class="va">n_demo_grps</span>, ncol <span class="op">=</span> <span class="va">n_risk_grps</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">psusc</span> <span class="op">&lt;-</span> <span class="va">psusc</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">psusc</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># In this example, all risk groups from all age groups are fully</span></span></span>
 <span class="r-in"><span><span class="co"># susceptible</span></span></span>
-<span class="r-in"><span><span class="va">susc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">susceptibility</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="fl">1</span>, nrow <span class="op">=</span> <span class="va">n_demo_grps</span>, ncol <span class="op">=</span> <span class="va">n_risk_grps</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">p_susceptibility</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="fl">1</span>, nrow <span class="op">=</span> <span class="va">n_demo_grps</span>, ncol <span class="op">=</span> <span class="va">n_risk_grps</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># p_susceptibility rows must sum to 1.0</span></span></span>
+<span class="r-in"><span><span class="va">p_susceptibility</span> <span class="op">&lt;-</span> <span class="va">p_susceptibility</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">rowSums</a></span><span class="op">(</span><span class="va">p_susceptibility</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># using default arguments for `solver` and `control`</span></span></span>
 <span class="r-in"><span><span class="fu">final_size</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span></span>
 <span class="r-in"><span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span></span>
 <span class="r-in"><span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span></span>
-<span class="r-in"><span>  p_susceptibility <span class="op">=</span> <span class="va">psusc</span>,</span></span>
-<span class="r-in"><span>  susceptibility <span class="op">=</span> <span class="va">susc</span></span></span>
+<span class="r-in"><span>  susceptibility <span class="op">=</span> <span class="va">susceptibility</span>,</span></span>
+<span class="r-in"><span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   demo_grp   susc_grp susceptibility p_infected</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   [0,20) susc_grp_1              1  0.8532885</span>
@@ -217,8 +218,8 @@ based on the solver error. Defaults to TRUE.</p></li>
 <span class="r-in"><span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span></span>
 <span class="r-in"><span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span></span>
 <span class="r-in"><span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span></span>
-<span class="r-in"><span>  p_susceptibility <span class="op">=</span> <span class="va">psusc</span>,</span></span>
-<span class="r-in"><span>  susceptibility <span class="op">=</span> <span class="va">susc</span>,</span></span>
+<span class="r-in"><span>  susceptibility <span class="op">=</span> <span class="va">susceptibility</span>,</span></span>
+<span class="r-in"><span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span>,</span></span>
 <span class="r-in"><span>  solver <span class="op">=</span> <span class="st">"iterative"</span>,</span></span>
 <span class="r-in"><span>  control <span class="op">=</span> <span class="va">control</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -243,8 +244,8 @@ based on the solver error. Defaults to TRUE.</p></li>
 <span class="r-in"><span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span></span>
 <span class="r-in"><span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span></span>
 <span class="r-in"><span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span></span>
-<span class="r-in"><span>  p_susceptibility <span class="op">=</span> <span class="va">psusc</span>,</span></span>
-<span class="r-in"><span>  susceptibility <span class="op">=</span> <span class="va">susc</span>,</span></span>
+<span class="r-in"><span>  susceptibility <span class="op">=</span> <span class="va">susceptibility</span>,</span></span>
+<span class="r-in"><span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span>,</span></span>
 <span class="r-in"><span>  solver <span class="op">=</span> <span class="st">"newton"</span>,</span></span>
 <span class="r-in"><span>  control <span class="op">=</span> <span class="va">control</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>

@@ -121,30 +121,21 @@ The expected final size of an epidemic can be calculated using methods detailed 
 </ol>
 </div>
 </div>
-<div class="section level2">
-<h2 id="getting-finalsize">Getting <em>finalsize</em><a class="anchor" aria-label="anchor" href="#getting-finalsize"></a>
-</h2>
-<p>The <em>finalsize</em> package is currently available on <a href="https://github.com/epiverse-trace/finalsize" class="external-link">Github</a>, and can be installed using the <code>remotes</code> or <code>devtools</code> packages.</p>
 <details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># first install the remotes packages</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># install finalsize using remotes</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"epiverse-trace/finalsize"</span><span class="op">)</span></span></code></pre></div>
-</details><details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/epiverse-trace/finalsize" class="external-link">finalsize</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># load finalsize</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/epiverse-trace/finalsize" class="external-link">finalsize</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># load necessary packages</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://github.com/epiforecasts/socialmixr" class="external-link">"socialmixr"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"socialmixr"</span><span class="op">)</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://ggplot2.tidyverse.org" class="external-link">"ggplot2"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ggplot2"</span><span class="op">)</span></span>
+<span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span></code></pre></div>
-</details>
-</div>
-<div class="section level2">
+</details><div class="section level2">
 <h2 id="defining-a-value-for-r_0">Defining a value for <span class="math inline">\(R_0\)</span><a class="anchor" aria-label="anchor" href="#defining-a-value-for-r_0"></a>
 </h2>
 <p>A number of statistical methods can be used to estimate the <span class="math inline">\(R_0\)</span> of an epidemic in its early stages from available data. These are not discussed here, but some examples are given in the <a href="https://epiverse-trace.github.io/episoap/articles/episoap.html" class="external-link"><em>episoap</em> package</a>.</p>
 <p>Instead, this example considers a infection with an <span class="math inline">\(R_0\)</span> of 2.0, similar to that which could potentially be observed for pandemic influenza.</p>
-<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># define r0 as 2.0</span></span>
 <span><span class="va">r0</span> <span class="op">&lt;-</span> <span class="fl">2.0</span></span></code></pre></div>
 </details>
@@ -152,11 +143,11 @@ The expected final size of an epidemic can be calculated using methods detailed 
 <div class="section level2">
 <h2 id="getting-and-preparing-contact-and-demography-data">Getting and preparing contact and demography data<a class="anchor" aria-label="anchor" href="#getting-and-preparing-contact-and-demography-data"></a>
 </h2>
-<p>This example uses social contact data from the <a href="https://cordis.europa.eu/project/id/502084" class="external-link">POLYMOD</a> project to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
-<p>The contact data are divided into five age groups: 0 – 5, 5 – 18, 18 – 40, 40 – 65, and 65 and over, specified using the <code>age.limits</code> argument in <code><a href="https://epiforecasts.io/socialmixr/reference/contact_matrix.html" class="external-link">socialmixr::contact_matrix()</a></code>.
+<p>This example uses social contact data from the POLYMOD project <span class="citation">(<a href="#ref-mossong2008" role="doc-biblioref">Mossong et al. 2008</a>)</span> to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
+<p>The contact data are divided into five age groups: 0 – 4, 5 – 17, 18 – 39, 40 – 64, and 65 and over, specified using the <code>age.limits</code> argument in <code><a href="https://epiforecasts.io/socialmixr/reference/contact_matrix.html" class="external-link">socialmixr::contact_matrix()</a></code>.
 The <code>symmetric = TRUE</code> argument to <code><a href="https://epiforecasts.io/socialmixr/reference/contact_matrix.html" class="external-link">socialmixr::contact_matrix()</a></code> returns a symmetric contact matrix, so that the contacts reported by group <span class="math inline">\(\{i\}\)</span> of individuals from group <span class="math inline">\(\{j\}\)</span> are the same as those reported by group <span class="math inline">\(\{j\}\)</span> of group <span class="math inline">\(\{i\}\)</span>.</p>
 <p>The demographic data — the number of individuals in each age group — is also available through <code><a href="https://epiforecasts.io/socialmixr/reference/contact_matrix.html" class="external-link">socialmixr::contact_matrix()</a></code>.</p>
-<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get UK polymod data</span></span>
 <span><span class="va">polymod</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="va"><a href="https://epiforecasts.io/socialmixr/reference/polymod.html" class="external-link">polymod</a></span></span>
 <span><span class="va">contact_data</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="fu"><a href="https://epiforecasts.io/socialmixr/reference/contact_matrix.html" class="external-link">contact_matrix</a></span><span class="op">(</span></span>
@@ -166,6 +157,26 @@ The <code>symmetric = TRUE</code> argument to <code><a href="https://epiforecast
 <span>  symmetric <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># view the elements of the contact data list</span></span>
+<span><span class="co"># the contact matrix</span></span>
+<span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span></span>
+<span><span class="co">#&gt;       contact.age.group</span></span>
+<span><span class="co">#&gt;            [0,5)   [5,18)  [18,40)  [40,65)       65+</span></span>
+<span><span class="co">#&gt;   [1,] 1.9157895 1.467205 3.278803 1.559611 0.3658614</span></span>
+<span><span class="co">#&gt;   [2,] 0.5191021 8.858736 3.421566 2.616146 0.6260247</span></span>
+<span><span class="co">#&gt;   [3,] 0.6252718 1.844236 5.440972 3.492124 0.8092367</span></span>
+<span><span class="co">#&gt;   [4,] 0.2792593 1.324010 3.278895 4.178218 1.2380907</span></span>
+<span><span class="co">#&gt;   [5,] 0.1306272 0.631752 1.515092 2.468756 1.7142857</span></span>
+<span></span>
+<span><span class="co"># the demography data</span></span>
+<span><span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span></span>
+<span><span class="co">#&gt;    age.group population proportion year</span></span>
+<span><span class="co">#&gt; 1:     [0,5)    3453670 0.05728738 2005</span></span>
+<span><span class="co">#&gt; 2:    [5,18)    9761554 0.16191873 2005</span></span>
+<span><span class="co">#&gt; 3:   [18,40)   18110368 0.30040378 2005</span></span>
+<span><span class="co">#&gt; 4:   [40,65)   19288101 0.31993930 2005</span></span>
+<span><span class="co">#&gt; 5:       65+    9673058 0.16045081 2005</span></span>
+<span></span>
 <span><span class="co"># get the contact matrix and demography data</span></span>
 <span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>
 <span><span class="va">demography_vector</span> <span class="op">&lt;-</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">population</span></span>
@@ -174,7 +185,7 @@ The <code>symmetric = TRUE</code> argument to <code><a href="https://epiforecast
 <span><span class="co"># scale the contact matrix so the largest eigenvalue is 1.0</span></span>
 <span><span class="co"># this is to ensure that the overall epidemic dynamics correctly reflect</span></span>
 <span><span class="co"># the assumed value of R0</span></span>
-<span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="va">contact_matrix</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">$</span><span class="va">values</span><span class="op">)</span></span>
+<span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="va">contact_matrix</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/complex.html" class="external-link">Re</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">contact_matrix</span><span class="op">)</span><span class="op">$</span><span class="va">values</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># divide each row of the contact matrix by the corresponding demography</span></span>
 <span><span class="co"># this reflects the assumption that each individual in group {j} make contacts</span></span>
@@ -194,11 +205,11 @@ The <code>symmetric = TRUE</code> argument to <code><a href="https://epiforecast
 </h2>
 <p>As a starting scenario, consider a novel pathogen where all age groups have a similar, high susceptibility to infection. This means it is assumed that all individuals fall into a single category: fully susceptible.</p>
 <p>Full uniform susceptibility can be modelled as a matrix with values of 1.0, with as many rows as there are demographic groups. The matrix has a single column, representing the single susceptibility group to which all individuals belong.</p>
-<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># all individuals are equally and highly susceptible</span></span>
 <span><span class="va">n_susc_groups</span> <span class="op">&lt;-</span> <span class="fl">1L</span></span>
 <span><span class="va">susc_guess</span> <span class="op">&lt;-</span> <span class="fl">1.0</span></span></code></pre></div>
-</details><details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+</details><details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">susc_uniform</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">susc_guess</span>,</span>
 <span>  nrow <span class="op">=</span> <span class="va">n_demo_grps</span>,</span>
@@ -207,7 +218,7 @@ The <code>symmetric = TRUE</code> argument to <code><a href="https://epiforecast
 </details><p>Final size calculations also need to know the proportion of each demographic group <span class="math inline">\(\{i\}\)</span> that falls into the susceptibility group <span class="math inline">\(\{j\}\)</span>. This distribution of age groups into susceptibility groups can be represented by the demography-susceptibility distribution matrix.</p>
 <p>Since all individuals in each age group have the same susceptibility, there is no variation within age groups. Consequently, all individuals in each age group are assumed to be fully susceptible. This can be represented as a single-column matrix, with as many rows as age groups, and as many columns as susceptibility groups.</p>
 <p>In this example, the matrix <code>p_susc_uniform</code> has 5 rows, one for each age group, and only one column, for the single high susceptibility group that holds all individuals.</p>
-<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_susc_uniform</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="fl">1.0</span>,</span>
 <span>  nrow <span class="op">=</span> <span class="va">n_demo_grps</span>,</span>
@@ -228,7 +239,7 @@ The <code>symmetric = TRUE</code> argument to <code><a href="https://epiforecast
 <h2 id="running-final_size">Running <code>final_size</code><a class="anchor" aria-label="anchor" href="#running-final_size"></a>
 </h2>
 <p>The final size of the epidemic in the population can then be calculated using the only function in the package, <code><a href="../reference/final_size.html">final_size()</a></code>. This example allows the function to fall back on the default options for the arguments <code>solver</code> (<code>"iterative"</code>) and <code>control</code> (an empty list).</p>
-<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># calculate final size</span></span>
 <span><span class="va">final_size_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/final_size.html">final_size</a></span><span class="op">(</span></span>
 <span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
@@ -238,27 +249,38 @@ The <code>symmetric = TRUE</code> argument to <code><a href="https://epiforecast
 <span>  p_susceptibility <span class="op">=</span> <span class="va">p_susc_uniform</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># order demographic groups</span></span>
+<span><span class="co"># view the output data frame</span></span>
+<span><span class="va">final_size_data</span></span>
+<span><span class="co">#&gt;   demo_grp   susc_grp susceptibility p_infected</span></span>
+<span><span class="co">#&gt; 1    [0,5) susc_grp_1              1  0.6434899</span></span>
+<span><span class="co">#&gt; 2   [5,18) susc_grp_1              1  0.8777478</span></span>
+<span><span class="co">#&gt; 3  [18,40) susc_grp_1              1  0.7723371</span></span>
+<span><span class="co">#&gt; 4  [40,65) susc_grp_1              1  0.7023265</span></span>
+<span><span class="co">#&gt; 5      65+ susc_grp_1              1  0.5131873</span></span></code></pre></div>
+</details><div class="section level3">
+<h3 id="visualise-final-sizes">Visualise final sizes<a class="anchor" aria-label="anchor" href="#visualise-final-sizes"></a>
+</h3>
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># order demographic groups as factors</span></span>
 <span><span class="va">final_size_data</span><span class="op">$</span><span class="va">demo_grp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span>
 <span>  <span class="va">final_size_data</span><span class="op">$</span><span class="va">demo_grp</span>,</span>
 <span>  levels <span class="op">=</span> <span class="va">demography_data</span><span class="op">$</span><span class="va">age.group</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-</details><div class="section level3">
-<h3 id="visualise-final-sizes">Visualise final sizes<a class="anchor" aria-label="anchor" href="#visualise-final-sizes"></a>
-</h3>
-<details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+</details><details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot data</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">final_size_data</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
 <span>      <span class="va">demo_grp</span>, <span class="va">p_infected</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    fill <span class="op">=</span> <span class="st">"lightgrey"</span>,</span>
-<span>    col <span class="op">=</span> <span class="st">"black"</span></span>
+<span>    colour <span class="op">=</span> <span class="st">"black"</span>, fill <span class="op">=</span> <span class="st">"grey"</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span></span>
 <span>    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="va"><a href="https://scales.r-lib.org/reference/percent_format.html" class="external-link">percent</a></span>,</span>
 <span>    limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expand_limits.html" class="external-link">expand_limits</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">final_size_data</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_classic</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/coord_cartesian.html" class="external-link">coord_cartesian</a></span><span class="op">(</span></span>
@@ -269,8 +291,8 @@ The <code>symmetric = TRUE</code> argument to <code><a href="https://epiforecast
 <span>    y <span class="op">=</span> <span class="st">"% Infected"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 </details><div class="figure">
-<span style="display:block;" id="fig:unnamed-chunk-9"></span>
-<img src="finalsize_files/figure-html/unnamed-chunk-9-1.png" alt="Final size of an SIR epidemic in each age group. The final size is the cumulative number of infections in each age group over the course of the epidemic, expressed as a proportion of the respective age group."><p class="caption">
+<span style="display:block;" id="fig:unnamed-chunk-10"></span>
+<img src="finalsize_files/figure-html/unnamed-chunk-10-1.png" alt="Final size of an SIR epidemic in each age group. The final size is the cumulative number of infections in each age group over the course of the epidemic, expressed as a proportion of the respective age group."><p class="caption">
 Figure 1: Final size of an SIR epidemic in each age group. The final size is the cumulative number of infections in each age group over the course of the epidemic, expressed as a proportion of the respective age group.
 </p>
 </div>
@@ -285,7 +307,7 @@ Figure 1: Final size of an SIR epidemic in each age group. The final size is the
 <span><span class="va">demography_data</span> <span class="op">&lt;-</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span></span>
 <span></span>
 <span><span class="co"># merge final size counts with demography vector</span></span>
-<span><span class="va">final_size_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">merge.data.table</a></span><span class="op">(</span></span>
+<span><span class="va">final_size_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span></span>
 <span>  <span class="va">final_size_data</span>,</span>
 <span>  <span class="va">demography_data</span>,</span>
 <span>  by.x <span class="op">=</span> <span class="st">"demo_grp"</span>,</span>
@@ -307,8 +329,10 @@ Figure 1: Final size of an SIR epidemic in each age group. The final size is the
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
 <span>      x <span class="op">=</span> <span class="va">demo_grp</span>, y <span class="op">=</span> <span class="va">n_infected</span></span>
 <span>    <span class="op">)</span>,</span>
-<span>    fill <span class="op">=</span> <span class="st">"lightgrey"</span>,</span>
-<span>    col <span class="op">=</span> <span class="st">"black"</span></span>
+<span>    fill <span class="op">=</span> <span class="st">"grey"</span>, col <span class="op">=</span> <span class="st">"black"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expand_limits.html" class="external-link">expand_limits</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">final_size_data</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_y_continuous</a></span><span class="op">(</span></span>
 <span>    labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/comma.html" class="external-link">comma_format</a></span><span class="op">(</span></span>
@@ -325,9 +349,9 @@ Figure 1: Final size of an SIR epidemic in each age group. The final size is the
 <span>    y <span class="op">=</span> <span class="st">"Number infected (millions)"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 </details><div class="figure">
-<span style="display:block;" id="fig:unnamed-chunk-11"></span>
-<img src="finalsize_files/figure-html/unnamed-chunk-11-1.png" alt="Final size of an epidemic outbreak in a population, for different values of infection $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 65 make up the bulk of cases in this scenario. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected."><p class="caption">
-Figure 2: Final size of an epidemic outbreak in a population, for different values of infection <span class="math inline">\(R_0\)</span>. Converting the final size proportions in each age group to counts shows that individuals aged 18 – 65 make up the bulk of cases in this scenario. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar <em>proportions</em> of each age group are infected.
+<span style="display:block;" id="fig:unnamed-chunk-12"></span>
+<img src="finalsize_files/figure-html/unnamed-chunk-12-1.png" alt="Final size of an epidemic outbreak in a population, for different values of infection $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 64 make up the bulk of cases in this scenario. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected."><p class="caption">
+Figure 2: Final size of an epidemic outbreak in a population, for different values of infection <span class="math inline">\(R_0\)</span>. Converting the final size proportions in each age group to counts shows that individuals aged 18 – 64 make up the bulk of cases in this scenario. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar <em>proportions</em> of each age group are infected.
 </p>
 </div>
 </div>
@@ -347,6 +371,9 @@ Kucharski, Adam J., Kin O. Kwok, Vivian W. I. Wei, Benjamin J. Cowling, Jonathan
 </div>
 <div id="ref-miller2012" class="csl-entry">
 Miller, Joel C. 2012. <span>“A Note on the Derivation of Epidemic Final Sizes.”</span> <em>Bulletin of Mathematical Biology</em> 74 (9): 2125–41. <a href="https://doi.org/10.1007/s11538-012-9749-6" class="external-link">https://doi.org/10.1007/s11538-012-9749-6</a>.
+</div>
+<div id="ref-mossong2008" class="csl-entry">
+Mossong, Joël, Niel Hens, Mark Jit, Philippe Beutels, Kari Auranen, Rafael Mikolajczyk, Marco Massari, et al. 2008. <span>“Social <span>Contacts</span> and <span>Mixing Patterns Relevant</span> to the <span>Spread</span> of <span>Infectious Diseases</span>.”</span> <em>PLOS Medicine</em> 5 (3): e74. <a href="https://doi.org/10.1371/journal.pmed.0050074" class="external-link">https://doi.org/10.1371/journal.pmed.0050074</a>.
 </div>
 </div>
 </div>

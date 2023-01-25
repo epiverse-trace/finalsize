@@ -91,7 +91,7 @@
 </div>
 <!-- badges: start -->
 
-<p><em>finalsize</em> provides calculations for the final size of an epidemic in a population with demographic variation in contact patterns, and variation within and between age groups in their susceptibility to disease.</p>
+<p><em>finalsize</em> provides calculations for the final size of an epidemic in a population, which is the overall number of infected individuals, depending on a demographic distribution (e.g., age groups) and their contact patterns, accounting for different susceptibility to disease between groups (e.g., due to age-group specific immune responses) and within groups (e.g., due to immunisation programs).</p>
 <p><em>finalsize</em> implements methods outlined in Andreasen (<a href="#ref-andreasen2011">2011</a>), Miller (<a href="#ref-miller2012">2012</a>), Kucharski et al. (<a href="#ref-kucharski2014">2014</a>), and Bidari et al. (<a href="#ref-bidari2016">2016</a>).</p>
 <p><em>finalsize</em> can help provide rough estimates of the effectiveness of pharmaceutical interventions in the form of immunisation programmes, or the effect of naturally acquired immunity through previous infection (see the vignette).</p>
 <p><em>finalsize</em> relies on <a href="https://gitlab.com/libeigen/eigen" class="external-link">Eigen</a> via <a href="https://github.com/RcppCore/RcppEigen" class="external-link">RcppEigen</a> for fast matrix algebra, and is developed at the <a href="https://www.lshtm.ac.uk/research/centres/centre-mathematical-modelling-infectious-diseases" class="external-link">Centre for the Mathematical Modelling of Infectious Diseases</a> at the London School of Hygiene and Tropical Medicine as part of the <a href="https://data.org/initiatives/epiverse/" class="external-link">Epiverse Initiative</a>.</p>
@@ -103,8 +103,9 @@
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"finalsize"</span><span class="op">)</span></span></code></pre></div>
 <p>The current development version of <em>finalsize</em> can be installed from <a href="https://github.com/epiverse-trace/finalsize" class="external-link">Github</a> using the <code>remotes</code> package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"epiverse-trace/finalsize"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># check whether {remotes} is installed</span></span>
+<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"epiverse-trace/finalsize"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
@@ -143,11 +144,11 @@
 <span></span>
 <span><span class="co"># Calculate the proportion of individuals infected</span></span>
 <span><span class="fu"><a href="reference/final_size.html">final_size</a></span><span class="op">(</span></span>
-<span>  <span class="va">r0</span>,</span>
-<span>  <span class="va">contact_matrix</span>,</span>
-<span>  <span class="va">demography_vector</span>,</span>
-<span>  <span class="va">p_susceptibility</span>,</span>
-<span>  <span class="va">susceptibility</span></span>
+<span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
+<span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
+<span>  susceptibility <span class="op">=</span> <span class="va">susceptibility</span>,</span>
+<span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;   demo_grp   susc_grp susceptibility p_infected</span></span>
 <span><span class="co">#&gt; 1   [0,20) susc_grp_1            1.0 0.32849966</span></span>
@@ -182,7 +183,7 @@
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; To cite package 'finalsize' in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   Gupte P, Van Leeuwen E, Kucharski A (2022). _finalsize: Calculate the</span></span>
+<span><span class="co">#&gt;   Gupte P, Van Leeuwen E, Kucharski A (2023). _finalsize: Calculate the</span></span>
 <span><span class="co">#&gt;   Final Size of an Epidemic_.</span></span>
 <span><span class="co">#&gt;   https://github.com/epiverse-trace/finalsize,</span></span>
 <span><span class="co">#&gt;   https://epiverse-trace.github.io/finalsize/.</span></span>
@@ -192,7 +193,7 @@
 <span><span class="co">#&gt;   @Manual{,</span></span>
 <span><span class="co">#&gt;     title = {finalsize: Calculate the Final Size of an Epidemic},</span></span>
 <span><span class="co">#&gt;     author = {Pratik Gupte and Edwin {Van Leeuwen} and Adam Kucharski},</span></span>
-<span><span class="co">#&gt;     year = {2022},</span></span>
+<span><span class="co">#&gt;     year = {2023},</span></span>
 <span><span class="co">#&gt;     note = {https://github.com/epiverse-trace/finalsize,</span></span>
 <span><span class="co">#&gt; https://epiverse-trace.github.io/finalsize/},</span></span>
 <span><span class="co">#&gt;   }</span></span></code></pre></div>
