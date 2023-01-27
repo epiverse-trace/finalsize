@@ -147,8 +147,8 @@ final_size_data <- Map(
 # combine data
 final_size_data <- Reduce(x = final_size_data, f = rbind)
 
-# examine the data
-final_size_data
+# examine some replicates in the data
+head(final_size_data, 15)
 ```
 
 ### Visualise uncertainty in final size
