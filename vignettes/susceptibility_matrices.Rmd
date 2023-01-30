@@ -9,7 +9,7 @@ pkgdown:
 bibliography: references.bib
 link-citations: true
 vignette: >
-  %\VignetteIndexEntry{Examples of susceptiblity matrices₀}
+  %\VignetteIndexEntry{Examples of susceptiblity matrices}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
