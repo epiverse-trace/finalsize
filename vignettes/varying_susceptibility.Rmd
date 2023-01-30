@@ -76,7 +76,7 @@ library(colorspace)
 
 This example uses social contact data from the POLYMOD project [@mossong2008] to estimate the final size of an epidemic in the U.K. These data are provided with the `socialmixr` package.
 
-These data are handled just as in the ["Get started"](finalsize.html) vignette, and the code is not displayed here. This example also considers a disease with an $R_0$ of 2.0.
+These data are handled just as in the ["Get started"](finalsize.html) vignette, and the code is not displayed here. This example also considers a disease with an $R_0$ of 1.5.
 
 ```{r class.source = 'fold-hide'}
 # get UK polymod data
@@ -102,7 +102,7 @@ n_demo_grps <- length(demography_vector)
 ```
 
 ```{r class.source = 'fold-hide'}
-r0 <- 2.0
+r0 <- 1.5
 ```
 
 ## Susceptibility variation between age groups
@@ -115,7 +115,7 @@ This can be modelled as a susceptibility matrix with higher values for the 40 --
 ```{r}
 # susceptibility is higher for the old
 susc_variable <- matrix(
-  data = c(0.2, 0.5, 0.6, 0.9, 1.0)
+  data = c(0.75, 0.8, 0.85, 0.9, 1.0)
 )
 n_susc_groups <- 1L
 ```
@@ -327,7 +327,7 @@ final_size_immunised
 
 Compare scenarios in which susceptibility is heterogeneous between groups, against the immunisation scenario in which susceptibility also varies within groups.
 
-```{r fig.cap="Final size of an SIR epidemic with $R_0$ = 2.0, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
+```{r fig.cap="Final size of an SIR epidemic with $R_0$ = 1.5, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
 ggplot(final_size_immunised) +
   geom_col(
     data = final_size_heterog,
@@ -409,6 +409,38 @@ ggplot(final_size_immunised) +
     title = "Heterogeneous susceptibility",
     fill = "Immunisation\nscenario"
   )
+```
+
+## Heterogeneous susceptibility without social contact heterogeneity
+
+_finalsize_ can also account for heterogeneous susceptibilities without having to include heterogeneity in social contact patterns. This may be useful when calculating the final epidemic size without a good estimate of social contact patterns available.
+
+This is done in a similar way as in the ["Get started"](finalsize.html) vignette, but with `susceptibility` and `p_susceptibility` passed as $N$-column matrices, referring to the susceptibilities of the $N$ susceptibility groups, and the proportions of the population that are in these groups, respectively.
+
+This example considers pandemic influenza with an $R_0$ of 1.5, affecting the U.K population of 67 million which is assumed to mix uniformly, but which has two distinct susceptibility groups, with susceptibility values of 1.0 (70% of the population), and 0.7 (30% of the population).
+
+```{r}
+# define r0
+r0 <- 1.5
+
+# define UK population size and prepare contact matrix
+uk_pop <- 67 * 1e6
+contact_matrix <- matrix(1.0) / uk_pop
+
+# define susceptibility matrix
+susceptibility <- matrix(c(1.0, 0.7), nrow = 1, ncol = 2)
+
+# define p_susceptibility
+p_susceptibility <- matrix(c(0.7, 0.3), nrow = 1, ncol = 2)
+
+# running final_size()
+final_size(
+  r0 = r0,
+  demography_vector = uk_pop,
+  contact_matrix = contact_matrix,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
+)
 ```
 
 ## References
