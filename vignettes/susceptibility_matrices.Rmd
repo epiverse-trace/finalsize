@@ -1,0 +1,380 @@
+---
+title: "Examples of susceptiblity matrices"
+output:
+  bookdown::html_vignette2:
+    fig_caption: yes
+    code_folding: show
+pkgdown:
+  as_is: true
+bibliography: references.bib
+link-citations: true
+vignette: >
+  %\VignetteIndexEntry{Examples of susceptiblity matrices₀}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+_finalsize_ requires two matrices as arguments. The matrix format allows to easily represent __multiple__ demographic groups with __multiple__ susceptibility groups.
+
+::: {.alert .alert-warning}
+**New to _finalsize_?** It may help to read the ["Get started"](finalsize.html) vignette first!
+:::
+
+::: {.alert .alert-primary}
+## Use case {-}
+
+You need to create **two susceptibility matrices** to feed two arguments of the `final_size()` function. Here are five case examples with different scenarios for the content of each matrix.
+:::
+
+::: {.alert .alert-secondary}
+### What we have {-}
+
+  1. The susceptibility of a given number of demographic groups per a given number of susceptibility groups;
+  2. The probability of the population in each demographic group and susceptibility group.
+
+### What we assume {-}
+
+  1. The complete partitioning of individuals into different demographic and infection risk groups (susceptibility groups).
+:::
+
+
+## _finalsize_ matrices
+
+### Susceptibility matrix
+
+Contains the _**susceptibility**_ of the population in each demographic group that belongs to each susceptibility group.
+
+::: {.alert .alert-secondary}
+$$
+i \; demographic \; groups \left.\vphantom{\begin{matrix}
+s_{1,1} & s_{1,2} & \cdots & s_{1,j} \\
+s_{2,1} & s_{2,2} & \cdots & s_{2,j} \\
+\vdots  & \vdots  & \ddots & \vdots  \\
+s_{i,1} & s_{i,2} & \cdots & s_{i,j} 
+\end{matrix}}\right\{
+\overbrace{
+\begin{matrix}
+s_{1,1} & s_{1,2} & \cdots & s_{1,j} \\
+s_{2,1} & s_{2,2} & \cdots & s_{2,j} \\
+\vdots  & \vdots  & \ddots & \vdots  \\
+s_{i,1} & s_{i,2} & \cdots & s_{i,j} 
+\end{matrix}}^{\displaystyle j \; susceptibility \; groups}
+\quad
+s: susceptibility
+$$
+
+Each element $\{i, j\}$ in this matrix represents the susceptibility of individuals in demographic group $\{i\}$ (rows), and susceptibility group $\{j\}$ (columns).
+:::
+
+### Demography-susceptibility distribution matrix
+
+Contains the _**probability**_ of the population in each demographic group that belongs to each susceptibility group.
+
+::: {.alert .alert-secondary}
+$$
+i \; demographic \; groups \left.\vphantom{\begin{matrix}
+p_{1,1} & p_{1,2} & \cdots & p_{1,j} \\
+p_{2,1} & p_{2,2} & \cdots & p_{2,j} \\
+\vdots  & \vdots  & \ddots & \vdots  \\
+p_{i,1} & p_{i,2} & \cdots & p_{i,j} 
+\end{matrix}}\right\{
+\overbrace{
+\begin{matrix}
+p_{1,1} & p_{1,2} & \cdots & p_{1,j} \\
+p_{2,1} & p_{2,2} & \cdots & p_{2,j} \\
+\vdots  & \vdots  & \ddots & \vdots  \\
+p_{i,1} & p_{i,2} & \cdots & p_{i,j} 
+\end{matrix}}^{\displaystyle j \; susceptibility \; groups}
+\quad
+p: probability
+$$
+
+Each element $\{i, j\}$ in this matrix represents the proportion of each demographic group $\{i\}$ that falls into the susceptibility group $\{j\}$. Consequently, each of its **rows must always sum to 1.0**.
+:::
+
+Here we share five case examples with different scenarios for the content of each matrix.
+
+## Homogenious susceptibility
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE,
+  dpi = 300
+)
+options(rmarkdown.html_vignette.check_title = FALSE)
+```
+
+```{r setup, message=FALSE, warning=FALSE, class.source = 'fold-hide'}
+# load necessary packages
+if (!require("dplyr")) install.packages("dplyr")
+if (!require("tibble")) install.packages("tibble")
+
+library(dplyr)
+library(tibble)
+```
+
+### Case 1: Uniform susceptibility
+
+In the population,
+all individuals from all age groups
+have 80% susceptibility to the infection
+
+``` {r}
+# susceptibility matrix
+susceptibility <- 
+  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
+         susceptible = c(0.8, 0.8, 0.8, 0.8, 0.8)) %>% 
+  column_to_rownames(var = "age_group") %>% 
+  as.matrix()
+
+susceptibility
+```
+
+::: {.alert .alert-warning}
+In this example, all individuals are equally susceptible to infection, and thus the **susceptibility matrix** (`susceptibility`) has only a single column with identical values.
+:::
+
+```{r}
+# demography-susceptibility distribution matrix
+p_susceptibility <- 
+  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
+         susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0)) %>% 
+  column_to_rownames(var = "age_group") %>% 
+  as.matrix()
+
+p_susceptibility
+```
+
+::: {.alert .alert-warning}
+The __susceptibility matrix__ and the __demography-susceptibility distribution matrix__ has always the same dimensions.
+
+$$
+4 \; demographic \; groups \left.\vphantom{\begin{matrix}
+s_{1,1} \\
+s_{2,1} \\
+s_{3,1} \\
+s_{4,1} 
+\end{matrix}}\right\{
+\overbrace{
+\begin{matrix}
+s_{1,1} \\
+s_{2,1} \\
+s_{3,1} \\
+s_{4,1} 
+\end{matrix}}^{\displaystyle 1 \; susceptibility \; group}
+\quad
+4 \; demographic \; groups \left.\vphantom{\begin{matrix}
+p_{1,1} \\
+p_{2,1} \\
+p_{3,1} \\
+p_{4,1} 
+\end{matrix}}\right\{
+\overbrace{
+\begin{matrix}
+p_{1,1} \\
+p_{2,1} \\
+p_{3,1} \\
+p_{4,1} 
+\end{matrix}}^{\displaystyle 1 \; susceptibility \; group}
+$$
+:::
+
+## Heterogeneous susceptibility
+
+### Case 2: Between groups only
+
+In the population,
+there is different
+susceptibility to the infection
+between individuals of different age groups
+from 20% (infants) to 100% (65+).
+
+``` {r}
+# susceptibility matrix
+susceptibility <- 
+  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
+         susceptible = c(0.2, 0.5, 0.6, 0.9, 1.0)) %>% 
+  column_to_rownames(var = "age_group") %>% 
+  as.matrix()
+
+susceptibility
+
+# demography-susceptibility distribution matrix
+p_susceptibility <- 
+  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
+         susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0)) %>% 
+  column_to_rownames(var = "age_group") %>% 
+  as.matrix()
+
+p_susceptibility
+```
+
+### Case 3: Within and between groups
+
+In the population, there is different
+susceptibility to the infection:
+
+- between individuals of different age groups
+from 20% (infants) to 100% (65+), and
+
+- within individuals of the same age group
+due the immunization effect of 25%
+to the 40% of each of the age groups.
+
+``` {r}
+immunization_effect <- 0.25
+
+# susceptibility matrix
+susceptibility <- 
+  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
+         unimmunised = c(0.2, 0.5, 0.6, 0.9, 1.0)) %>% 
+  mutate(immunised = unimmunised * (1 - immunization_effect)) %>%
+  column_to_rownames(var = "age_group") %>% 
+  as.matrix()
+
+susceptibility
+
+# demography-susceptibility distribution matrix
+p_susceptibility <- 
+  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
+         immunised = c(0.4, 0.4, 0.4, 0.4, 0.4)) %>% 
+  mutate(unimmunised = 1 - immunised) %>% 
+  column_to_rownames(var = "age_group") %>% 
+  as.matrix()
+
+p_susceptibility
+```
+
+::: {.alert .alert-warning}
+**Note** that because there are two susceptibility groups, the susceptibility matrix has two columns. The corresponding **demography-susceptibility distribution matrix** must also have two columns!
+
+$$
+4 \; demographic \; groups \left.\vphantom{\begin{matrix}
+s_{1,1} & s_{1,2} \\
+s_{2,1} & s_{2,2} \\
+s_{3,1} & s_{3,2} \\
+s_{4,1} & s_{4,2} 
+\end{matrix}}\right\{
+\overbrace{
+\begin{matrix}
+s_{1,1} & s_{1,2} \\
+s_{2,1} & s_{2,2} \\
+s_{3,1} & s_{3,2} \\
+s_{4,1} & s_{4,2} 
+\end{matrix}}^{\displaystyle 2 \; susceptibility \; groups}
+\quad
+4 \; demographic \; groups \left.\vphantom{\begin{matrix}
+p_{1,1} & p_{1,2} \\
+p_{2,1} & p_{2,2} \\
+p_{3,1} & p_{3,2} \\
+p_{4,1} & p_{4,2} 
+\end{matrix}}\right\{
+\overbrace{
+\begin{matrix}
+p_{1,1} & p_{1,2} \\
+p_{2,1} & p_{2,2} \\
+p_{3,1} & p_{3,2} \\
+p_{4,1} & p_{4,2} 
+\end{matrix}}^{\displaystyle 2 \; susceptibility \; groups}
+$$
+:::
+
+### Case 4: Within groups in different proportion
+
+In the population,
+there is different
+susceptibility to the infection:
+
+- between individuals of different age groups
+from 20% (infants) to 100% (65+), and
+
+- within individuals of the same age group
+due the immunization effect of 25%.
+
+Also the
+immunization uptake rate
+is in different proportions
+for each of the age groups:
+immunization increases with age
+from 20% (infants) to 90% (65+)
+
+``` {r}
+immunization_effect <- 0.25
+
+# susceptibility matrix
+susceptibility <- 
+  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
+         unimmunised = c(0.2, 0.5, 0.6, 0.9, 1.0)) %>% 
+  mutate(immunised = unimmunised * (1 - immunization_effect)) %>%
+  column_to_rownames(var = "age_group") %>% 
+  as.matrix()
+
+susceptibility
+
+# demography-susceptibility distribution matrix
+p_susceptibility <- 
+  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
+         immunised = c(0.2, 0.4, 0.6, 0.7, 0.9)) %>% 
+  mutate(unimmunised = 1 - immunised) %>% 
+  column_to_rownames(var = "age_group") %>% 
+  as.matrix()
+
+p_susceptibility
+```
+
+### Case 5: Within three groups
+
+In the population,
+there is different
+susceptibility to the infection:
+
+- between individuals of different age groups
+from 20% (infants) to 100% (65+), and
+
+- within individuals of the same age group
+due the immunization effect of 25%
+to the 40% of each of the age groups.
+
+Additionally,
+10% of individuals
+in each of the age groups
+have
+100% susceptibility,
+due to no immunization
+or not exposed
+to similar pathogens previously.
+
+``` {r}
+immunization_effect <- 0.25
+
+# susceptibility matrix
+susceptibility <- 
+  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
+         susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0),
+         unimmunised = c(0.2, 0.5, 0.6, 0.9, 1.0)) %>% 
+  mutate(immunised = unimmunised * (1 - immunization_effect)) %>%
+  column_to_rownames(var = "age_group") %>% 
+  as.matrix()
+
+susceptibility
+
+# demography-susceptibility distribution matrix
+p_susceptibility <- 
+  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
+         susceptible = c(0.1, 0.1, 0.1, 0.1, 0.1),
+         immunised = c(0.4, 0.4, 0.4, 0.4, 0.4)) %>% 
+  mutate(unimmunised = 1 - immunised - susceptible) %>% 
+  column_to_rownames(var = "age_group") %>% 
+  as.matrix()
+
+p_susceptibility
+```
+
+::: {.alert .alert-warning}
+**Recall** that each row of the demography-susceptibility distribution matrix must always sum to 1.0!
+:::
