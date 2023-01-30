@@ -27,9 +27,8 @@ An epidemic is underway. We want to know **how many individuals we would expect 
 ### What we have {-}
 
   1. An estimate of the infection's basic reproduction number $R_0$;
-  2. An estimate of the distribution of the population in different demographic groups (typically age groups);
-  3. An estimate of the contacts between individuals of different demographic groups; and
-  4. An estimate of the susceptibility of each demographic group to the infection.
+  2. An estimate of the population size;
+  3. An estimate of the susceptibility of the population to the infection.
 
 ### What we assume {-}
 
@@ -49,128 +48,63 @@ knitr::opts_chunk$set(
 ```{r}
 # load finalsize
 library(finalsize)
-
-# load necessary packages
-if (!require("socialmixr")) install.packages("socialmixr")
-if (!require("ggplot2")) install.packages("ggplot2")
-
-library(ggplot2)
 ```
 
 ## Defining a value for $R_0$
 
 A number of statistical methods can be used to estimate the $R_0$ of an epidemic in its early stages from available data. These are not discussed here, but some examples are given in the [_episoap_ package](https://epiverse-trace.github.io/episoap/articles/episoap.html).
 
-Instead, this example considers a infection with an $R_0$ of 2.0, similar to that which could potentially be observed for pandemic influenza.
+Instead, this example considers a infection with an $R_0$ of 1.5, similar to that which could potentially be observed for pandemic influenza.
 
 ```{r}
-# define r0 as 2.0
-r0 <- 2.0
+# define r0 as 1.5
+r0 <- 1.5
 ```
 
-## Getting and preparing contact and demography data
+## Getting population estimates
 
-This example uses social contact data from the POLYMOD project [@mossong2008] to estimate the final size of an epidemic in the U.K. These data are provided with the `socialmixr` package.
-
-The contact data are divided into five age groups: 0 -- 4, 5 -- 17, 18 -- 39, 40 -- 64, and 65 and over, specified using the `age.limits` argument in `socialmixr::contact_matrix()`.
-The `symmetric = TRUE` argument to `socialmixr::contact_matrix()` returns a symmetric contact matrix, so that the contacts reported by group $\{i\}$ of individuals from group $\{j\}$ are the same as those reported by group $\{j\}$ of group $\{i\}$.
-
-The demographic data --- the number of individuals in each age group --- is also available through `socialmixr::contact_matrix()`.
+Population estimates at the country scale are relatively easy to get from trusted data aggregators such as [Our World in Data](https://ourworldindata.org/world-population-growth).
+More detailed breakdowns of population estimates at the sub-national scale may be available from their respective national governments.
+Here, we use an estimate for the U.K. population size of about 67 million.
 
 ```{r}
-# get UK polymod data
-polymod <- socialmixr::polymod
-contact_data <- socialmixr::contact_matrix(
-  polymod,
-  countries = "United Kingdom",
-  age.limits = c(0, 5, 18, 40, 65),
-  symmetric = TRUE
-)
+# get UK population size
+uk_pop <- 67 * 1e6
+```
 
-# view the elements of the contact data list
-# the contact matrix
-contact_data$matrix
+This initial example assumes uniform mixing, i.e., that all individuals in the population have a similar number of social contacts. This can be modelled in the form of a single-element contact matrix, which must be divided by the population size.
 
-# the demography data
-contact_data$demography
-
-# get the contact matrix and demography data
-contact_matrix <- t(contact_data$matrix)
-demography_vector <- contact_data$demography$population
-demography_data <- contact_data$demography
-
-# scale the contact matrix so the largest eigenvalue is 1.0
-# this is to ensure that the overall epidemic dynamics correctly reflect
-# the assumed value of R0
-contact_matrix <- contact_matrix / max(Re(eigen(contact_matrix)$values))
-
-# divide each row of the contact matrix by the corresponding demography
-# this reflects the assumption that each individual in group {j} make contacts
-# at random with individuals in group {i}
-contact_matrix <- contact_matrix / demography_vector
-
-n_demo_grps <- length(demography_vector)
+```{r}
+# prepare contact matrix
+contact_matrix <- matrix(1.0) / uk_pop
 ```
 
 ::: {.alert .alert-secondary}
+Social contacts are well known to be non-uniform, with age being a strong influence on how many contacts a person has, and moreover, on the ages of their contacts. A relatively simple example is that of children of school-going age, who typically have more social contacts than the elderly, and most of whose social contacts are with other schoolchildren.
 
-### Heterogeneous social mixing {-}
-
-The social contact data used in this example illustrate an important way in which populations may be heterogeneous: the various age groups can have substantially different patterns of social contacts, and hence different probabilities of acquiring and transmitting infection during an epidemic.
-
-The method implemented in _finalsize_ accounts for this heterogeneity. Other forms of population heterogeneity are covered in the ["Heterogeneous susceptibility"](varying_susceptibility.html) vignette.
+The ["Modelling heterogeneous contacts"](varying_contacts.Rmd) vignette explores how this can be incorporated into final epidemic size calculations using _finalsize_.
 :::
 
-## Population susceptibility
+## Modelling population susceptibility
 
-As a starting scenario, consider a novel pathogen where all age groups have a similar, high susceptibility to infection. This means it is assumed that all individuals fall into a single category: fully susceptible.
-
-Full uniform susceptibility can be modelled as a matrix with values of 1.0, with as many rows as there are demographic groups. The matrix has a single column, representing the single susceptibility group to which all individuals belong.
+In this initial example, the population is assumed to be fully susceptible to infection. This is modelled in the form of a matrix with a single element, called `susceptibility`.
 
 ```{r}
-# all individuals are equally and highly susceptible
-n_susc_groups <- 1L
-susc_guess <- 1.0
+# all individuals are fully susceptible
+susceptibility <- matrix(1.0)
 ```
 
-```{r}
-susc_uniform <- matrix(
-  data = susc_guess,
-  nrow = n_demo_grps,
-  ncol = n_susc_groups
-)
-```
-
-Final size calculations also need to know the proportion of each demographic group $\{i\}$ that falls into the susceptibility group $\{j\}$. This distribution of age groups into susceptibility groups can be represented by the demography-susceptibility distribution matrix.
-
-Since all individuals in each age group have the same susceptibility, there is no variation within age groups. Consequently, all individuals in each age group are assumed to be fully susceptible. This can be represented as a single-column matrix, with as many rows as age groups, and as many columns as susceptibility groups.
-
-In this example, the matrix `p_susc_uniform` has `r n_demo_grps` rows, one for each age group, and only one column, for the single high susceptibility group that holds all individuals.
+Since all individuals are fully susceptible, the break-up of the population into susceptibility groups can be represented as another single-element matrix, called `p_susceptibility`.
 
 ```{r}
-p_susc_uniform <- matrix(
-  data = 1.0,
-  nrow = n_demo_grps,
-  ncol = n_susc_groups
-)
+# all individuals are in the single, high-susceptibility group
+p_susceptibility <- matrix(1.0)
 ```
 
 ::: {.alert .alert-secondary}
+Susceptibility to infection is well known to vary due to a number of factors, including age, prior exposure to the pathogen, or immunisation due to a vaccination campaign.
 
-#### Why susceptibility and p_susceptibility are matrices {-}
-
-This example models susceptibility (`susc_uniform`) and the demography-in-susceptibility (`p_susc_uniform`) as matrices rather than vectors. This is because a single susceptibility group is a special case of the general final size equation.
-
-_finalsize_ supports multiple susceptibility groups (this will be covered later), and these are more easily represented as a matrix, the _susceptibility matrix_.
-
-Each element $\{i, j\}$ in this matrix represents the susceptibility of individuals in demographic group $\{i\}$, and susceptibility group $\{j\}$.
-
-In this example, all individuals are equally susceptible to infection, and thus the susceptibility matrix (`susc_uniform`) has only a single column with identical values.
-
-Consequently, the demography-susceptibility distribution matrix (`p_susc_uniform`) has the same dimensions, and all of its values are 1.0.
-
-See the ["Heterogeneous susceptibility"](varying_susceptibility.html) example for more on cases where susceptibility varies within age groups.
-
+The ["Modelling heterogeneous susceptibility"](varying_susceptibility.Rmd) vignette explores how variation in susceptibility within and between demographic groups can be incorporated into final epidemic size calculations using _finalsize_.
 :::
 
 ## Running `final_size`
@@ -182,105 +116,17 @@ The final size of the epidemic in the population can then be calculated using th
 final_size_data <- final_size(
   r0 = r0,
   contact_matrix = contact_matrix,
-  demography_vector = demography_vector,
-  susceptibility = susc_uniform,
-  p_susceptibility = p_susc_uniform
+  demography_vector = uk_pop,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
 )
 
 # view the output data frame
 final_size_data
 ```
 
-### Visualise final sizes
+This is the final epidemic size without accounting for heterogeneity in social contacts by age or other factors, and without accounting for variation in susceptibility to infection between or within demographic groups.
 
-```{r class.source = 'fold.hide'}
-# order demographic groups as factors
-final_size_data$demo_grp <- factor(
-  final_size_data$demo_grp,
-  levels = demography_data$age.group
-)
-```
-
-```{r fig.cap ="Final size of an SIR epidemic in each age group. The final size is the cumulative number of infections in each age group over the course of the epidemic, expressed as a proportion of the respective age group.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
-# plot data
-ggplot(final_size_data) +
-  geom_col(
-    aes(
-      demo_grp, p_infected
-    ),
-    colour = "black", fill = "grey"
-  ) +
-  scale_y_continuous(
-    labels = scales::percent,
-    limits = c(0, 1)
-  ) +
-  expand_limits(
-    x = c(0.5, nrow(final_size_data) + 0.5)
-  ) +
-  theme_classic() +
-  coord_cartesian(
-    expand = FALSE
-  ) +
-  labs(
-    x = "Age group",
-    y = "% Infected"
-  )
-```
-
-### Final size proportions to counts
-
-`finalsize` returns the _proportion_ of each age (and susceptibility) group infected in an epidemic outbreak. The final _counts_ of individuals infected can be visualised as well, by multiplying the final proportion of each age group infected with the total number of individuals in that group.
-
-The example below show how this can be done.
-
-```{r}
-# prepare demography data
-demography_data <- contact_data$demography
-
-# merge final size counts with demography vector
-final_size_data <- merge(
-  final_size_data,
-  demography_data,
-  by.x = "demo_grp",
-  by.y = "age.group"
-)
-
-# reset age group order
-final_size_data$demo_grp <- factor(
-  final_size_data$demo_grp,
-  levels = contact_data$demography$age.group
-)
-
-# multiply counts with proportion infected
-final_size_data$n_infected <- final_size_data$p_infected *
-  final_size_data$population
-```
-
-```{r fig.cap="Final size of an epidemic outbreak in a population, for different values of infection $R_0$. Converting the final size proportions in each age group to counts shows that individuals aged 18 -- 64 make up the bulk of cases in this scenario. This may be attributed to this being both the largest age range in the analysis (more years in this range than any other), and because more people fall into this wide range than others. Contrast this figure with the one above, in which similar _proportions_ of each age group are infected.", fig.width=5, fig.height=4, class.source = 'fold-hide'}
-ggplot(final_size_data) +
-  geom_col(
-    aes(
-      x = demo_grp, y = n_infected
-    ),
-    fill = "grey", col = "black"
-  ) +
-  expand_limits(
-    x = c(0.5, nrow(final_size_data) + 0.5)
-  ) +
-  scale_y_continuous(
-    labels = scales::comma_format(
-      scale = 1e-6, suffix = "M"
-    ),
-    limits = c(0, 15e6)
-  ) +
-  theme_classic() +
-  coord_cartesian(
-    expand = FALSE
-  ) +
-  labs(
-    x = "Age group",
-    y = "Number infected (millions)"
-  )
-```
+This value, of about `r scales::percent(round(final_size_data$p_infected, 2))` of the population infected, is easily converted to a count, and suggests that about `r scales::comma(final_size_data$p_infected * uk_pop, scale = 1e-6, suffix = " million")` people would be infected over the course of this epidemic.
 
 ## References
