@@ -96,7 +96,7 @@ Each element $\{i, j\}$ in this matrix represents the proportion of each demogra
 
 Here we share five case examples with different scenarios for the content of each matrix.
 
-## Homogenious susceptibility
+## Homogeneous susceptibility
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
