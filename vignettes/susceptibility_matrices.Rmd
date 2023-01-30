@@ -126,10 +126,11 @@ have 80% susceptibility to the infection
 
 ``` {r}
 # susceptibility matrix
-susceptibility <- 
-  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
-         susceptible = c(0.8, 0.8, 0.8, 0.8, 0.8)) %>% 
-  column_to_rownames(var = "age_group") %>% 
+susceptibility <- tibble(
+  age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
+  susceptible = c(0.8, 0.8, 0.8, 0.8, 0.8)
+  ) %>%
+  column_to_rownames(var = "age_group") %>%
   as.matrix()
 
 susceptibility
@@ -141,10 +142,11 @@ In this example, all individuals are equally susceptible to infection, and thus 
 
 ```{r}
 # demography-susceptibility distribution matrix
-p_susceptibility <- 
-  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
-         susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0)) %>% 
-  column_to_rownames(var = "age_group") %>% 
+p_susceptibility <- tibble(
+  age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
+  susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0)
+  ) %>%
+  column_to_rownames(var = "age_group") %>%
   as.matrix()
 
 p_susceptibility
@@ -196,19 +198,21 @@ from 20% (infants) to 100% (65+).
 
 ``` {r}
 # susceptibility matrix
-susceptibility <- 
-  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
-         susceptible = c(0.2, 0.5, 0.6, 0.9, 1.0)) %>% 
-  column_to_rownames(var = "age_group") %>% 
+susceptibility <- tibble(
+  age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
+  susceptible = c(0.2, 0.5, 0.6, 0.9, 1.0)
+  ) %>%
+  column_to_rownames(var = "age_group") %>%
   as.matrix()
 
 susceptibility
 
 # demography-susceptibility distribution matrix
-p_susceptibility <- 
-  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
-         susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0)) %>% 
-  column_to_rownames(var = "age_group") %>% 
+p_susceptibility <- tibble(
+  age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
+  susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0)
+  ) %>%
+  column_to_rownames(var = "age_group") %>%
   as.matrix()
 
 p_susceptibility
@@ -230,21 +234,23 @@ to the 40% of each of the age groups.
 immunization_effect <- 0.25
 
 # susceptibility matrix
-susceptibility <- 
-  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
-         unimmunised = c(0.2, 0.5, 0.6, 0.9, 1.0)) %>% 
+susceptibility <- tibble(
+  age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
+  unimmunised = c(0.2, 0.5, 0.6, 0.9, 1.0)
+  ) %>%
   mutate(immunised = unimmunised * (1 - immunization_effect)) %>%
-  column_to_rownames(var = "age_group") %>% 
+  column_to_rownames(var = "age_group") %>%
   as.matrix()
 
 susceptibility
 
 # demography-susceptibility distribution matrix
-p_susceptibility <- 
-  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
-         immunised = c(0.4, 0.4, 0.4, 0.4, 0.4)) %>% 
-  mutate(unimmunised = 1 - immunised) %>% 
-  column_to_rownames(var = "age_group") %>% 
+p_susceptibility <- tibble(
+  age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
+  immunised = c(0.4, 0.4, 0.4, 0.4, 0.4)
+  ) %>%
+  mutate(unimmunised = 1 - immunised) %>%
+  column_to_rownames(var = "age_group") %>%
   as.matrix()
 
 p_susceptibility
@@ -307,21 +313,23 @@ from 20% (infants) to 90% (65+)
 immunization_effect <- 0.25
 
 # susceptibility matrix
-susceptibility <- 
-  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
-         unimmunised = c(0.2, 0.5, 0.6, 0.9, 1.0)) %>% 
+susceptibility <- tibble(
+  age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
+  unimmunised = c(0.2, 0.5, 0.6, 0.9, 1.0)
+  ) %>%
   mutate(immunised = unimmunised * (1 - immunization_effect)) %>%
-  column_to_rownames(var = "age_group") %>% 
+  column_to_rownames(var = "age_group") %>%
   as.matrix()
 
 susceptibility
 
 # demography-susceptibility distribution matrix
-p_susceptibility <- 
-  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
-         immunised = c(0.2, 0.4, 0.6, 0.7, 0.9)) %>% 
-  mutate(unimmunised = 1 - immunised) %>% 
-  column_to_rownames(var = "age_group") %>% 
+p_susceptibility <- tibble(
+  age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
+  immunised = c(0.2, 0.4, 0.6, 0.7, 0.9)
+  ) %>%
+  mutate(unimmunised = 1 - immunised) %>%
+  column_to_rownames(var = "age_group") %>%
   as.matrix()
 
 p_susceptibility
@@ -353,23 +361,25 @@ to similar pathogens previously.
 immunization_effect <- 0.25
 
 # susceptibility matrix
-susceptibility <- 
-  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
-         susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0),
-         unimmunised = c(0.2, 0.5, 0.6, 0.9, 1.0)) %>% 
+susceptibility <- tibble(
+  age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
+  susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0),
+  unimmunised = c(0.2, 0.5, 0.6, 0.9, 1.0)
+  ) %>%
   mutate(immunised = unimmunised * (1 - immunization_effect)) %>%
-  column_to_rownames(var = "age_group") %>% 
+  column_to_rownames(var = "age_group") %>%
   as.matrix()
 
 susceptibility
 
 # demography-susceptibility distribution matrix
-p_susceptibility <- 
-  tibble(age_group = c("[0,5)","[5,18)","[18,40)","[40,65)","65+"),
-         susceptible = c(0.1, 0.1, 0.1, 0.1, 0.1),
-         immunised = c(0.4, 0.4, 0.4, 0.4, 0.4)) %>% 
-  mutate(unimmunised = 1 - immunised - susceptible) %>% 
-  column_to_rownames(var = "age_group") %>% 
+p_susceptibility <- tibble(
+  age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
+  susceptible = c(0.1, 0.1, 0.1, 0.1, 0.1),
+  immunised = c(0.4, 0.4, 0.4, 0.4, 0.4)
+  ) %>%
+  mutate(unimmunised = 1 - immunised - susceptible) %>%
+  column_to_rownames(var = "age_group") %>%
   as.matrix()
 
 p_susceptibility
