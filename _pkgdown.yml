@@ -17,5 +17,6 @@ articles:
 - title: Package vignettes
   navbar: Package vignettes
   contents:
+  - varying_contacts
   - varying_susceptibility
   - uncertainty_params
