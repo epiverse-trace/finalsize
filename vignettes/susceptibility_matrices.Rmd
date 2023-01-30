@@ -154,7 +154,7 @@ p_susceptibility
 The __susceptibility matrix__ and the __demography-susceptibility distribution matrix__ has always the same dimensions.
 
 $$
-4 \; demographic \; groups \left.\vphantom{\begin{matrix}
+4 \; demo. \; groups \left.\vphantom{\begin{matrix}
 s_{1,1} \\
 s_{2,1} \\
 s_{3,1} \\
@@ -168,7 +168,7 @@ s_{3,1} \\
 s_{4,1} 
 \end{matrix}}^{\displaystyle 1 \; susceptibility \; group}
 \quad
-4 \; demographic \; groups \left.\vphantom{\begin{matrix}
+4 \; demo. \; groups \left.\vphantom{\begin{matrix}
 p_{1,1} \\
 p_{2,1} \\
 p_{3,1} \\
@@ -254,7 +254,7 @@ p_susceptibility
 **Note** that because there are two susceptibility groups, the susceptibility matrix has two columns. The corresponding **demography-susceptibility distribution matrix** must also have two columns!
 
 $$
-4 \; demographic \; groups \left.\vphantom{\begin{matrix}
+4 \; demo. \; groups \left.\vphantom{\begin{matrix}
 s_{1,1} & s_{1,2} \\
 s_{2,1} & s_{2,2} \\
 s_{3,1} & s_{3,2} \\
@@ -268,7 +268,7 @@ s_{3,1} & s_{3,2} \\
 s_{4,1} & s_{4,2} 
 \end{matrix}}^{\displaystyle 2 \; susceptibility \; groups}
 \quad
-4 \; demographic \; groups \left.\vphantom{\begin{matrix}
+4 \; demo. \; groups \left.\vphantom{\begin{matrix}
 p_{1,1} & p_{1,2} \\
 p_{2,1} & p_{2,2} \\
 p_{3,1} & p_{3,2} \\
