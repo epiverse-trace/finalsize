@@ -1,5 +1,5 @@
 ---
-title: "Examples of susceptiblity matrices"
+title: "Guide to constructing susceptibility matrices"
 output:
   bookdown::html_vignette2:
     fig_caption: yes
@@ -9,7 +9,7 @@ pkgdown:
 bibliography: references.bib
 link-citations: true
 vignette: >
-  %\VignetteIndexEntry{Examples of susceptiblity matrices}
+  %\VignetteIndexEntry{Guide to constructing susceptibility matrices}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
