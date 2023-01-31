@@ -42,7 +42,7 @@ You need to create **two matrices**, `susceptibility` and `p_susceptibility`, to
 :::
 
 
-## _finalsize_ matrices
+## Primer on susceptibility and demography-in-susceptibility matrices
 
 ### Susceptibility matrix
 
