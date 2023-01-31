@@ -16,7 +16,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-_finalsize_ requires two matrices as arguments. The matrix format allows to easily represent __multiple__ demographic groups with __multiple__ susceptibility groups.
+Modelling the final size of an epidemic using _finalsize_ requires us to represent the susceptibility status of multiple demographic groups, as well as the proportions of each demographic group in potentially many susceptibility groups. This is done in final size calculations by representing the relevant system of differential equations [@ miller2012] in matrix form. R's matrix class allows us to easily represent _multiple_ demographic groups with _multiple_ susceptibility groups.
+
+This guide explains how to construct susceptibility (`susceptibility`) and demography-in-susceptibility (`p_susceptibility`) matrices to represent various scenarios that we might wish to model when estimating epidemic final sizes.
 
 ::: {.alert .alert-warning}
 **New to _finalsize_?** It may help to read the ["Get started"](finalsize.html) vignette first!
