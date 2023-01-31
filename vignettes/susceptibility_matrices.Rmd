@@ -27,7 +27,7 @@ This guide explains how to construct susceptibility (`susceptibility`) and demog
 ::: {.alert .alert-primary}
 ## Use case {-}
 
-You need to create **two susceptibility matrices** to feed two arguments of the `final_size()` function. Here are five case examples with different scenarios for the content of each matrix.
+You need to create **two matrices**, `susceptibility` and `p_susceptibility`, to pass to the two arguments of the `final_size()` function. Here are five case examples with different scenarios for the content of each matrix.
 :::
 
 ::: {.alert .alert-secondary}
