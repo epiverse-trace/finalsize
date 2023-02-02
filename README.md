@@ -12,12 +12,16 @@ coverage](https://codecov.io/gh/epiverse-trace/finalsize/branch/main/graph/badge
 status](https://www.r-pkg.org/badges/version/finalsize)](https://CRAN.R-project.org/package=finalsize)
 <!-- badges: end -->
 
-*finalsize* provides calculations for the final size of an epidemic in a
-population, which is the overall number of infected individuals,
-depending on a demographic distribution (e.g., age groups) and their
-contact patterns, accounting for different susceptibility to disease
-between groups (e.g., due to age-group specific immune responses) and
-within groups (e.g., due to immunisation programs).
+*finalsize* is an R package to calculate the final size of a SIR
+epidemic in populations with heterogeneity in social contacts and
+infection susceptibility.
+
+*finalsize* provides estimates for the total proportion of a population
+infected over the course of an epidemic, and can account for a
+demographic distribution (such as age groups) and demography-specific
+contact patterns, as well as for heterogeneous susceptibility to
+infection between groups (such as due to age-group specific immune
+responses) and within groups (such as due to immunisation programs).
 
 *finalsize* implements methods outlined in Andreasen
 ([2011](#ref-andreasen2011)), Miller ([2012](#ref-miller2012)),
