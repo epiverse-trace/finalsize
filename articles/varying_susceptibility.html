@@ -57,6 +57,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <h6 class="dropdown-header" data-toc-skip>Package vignettes</h6>
+    <a class="dropdown-item" href="../articles/varying_contacts.html">Modelling heterogeneous social contacts</a>
     <a class="dropdown-item" href="../articles/varying_susceptibility.html">Modelling heterogeneous susceptibility</a>
     <a class="dropdown-item" href="../articles/uncertainty_params.html">Modelling uncertainty in R₀</a>
   </div>
@@ -97,7 +98,7 @@
     
 <p>Populations are often heterogeneous in their susceptibility to infection following exposure, independent of the exposure risk that comes from different social contact patterns. Such heterogeneity may be age-dependent and vary between age groups. It may also vary within age groups due to prior infection resulting in immunity or due to immunisation. Combinations of within- and between-group variation in susceptibility may also occur, and can be incorporated into final size calculations <span class="citation">(<a href="#ref-miller2012" role="doc-biblioref">Miller 2012</a>)</span>.</p>
 <div class="alert alert-warning">
-<p><strong>New to <em>finalsize</em>?</strong> It may help to read the <a href="finalsize.html">“Get started”</a> vignette first!</p>
+<p><strong>New to <em>finalsize</em>?</strong> It may help to read the <a href="finalsize.html">“Get started”</a> and <a href="varying_contacts.html">“Modelling heterogeneous contacts”</a> vignettes first!</p>
 </div>
 <div class="section level2 unnumbered alert alert-primary">
 <h2 id="use-case">Use case<a class="anchor" aria-label="anchor" href="#use-case"></a>
@@ -146,7 +147,7 @@
 <h2 id="getting-r_0-and-contact-and-demography-data">Getting <span class="math inline">\(R_0\)</span> and contact and demography data<a class="anchor" aria-label="anchor" href="#getting-r_0-and-contact-and-demography-data"></a>
 </h2>
 <p>This example uses social contact data from the POLYMOD project <span class="citation">(<a href="#ref-mossong2008" role="doc-biblioref">Mossong et al. 2008</a>)</span> to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
-<p>These data are handled just as in the <a href="finalsize.html">“Get started”</a> vignette, and the code is not displayed here. This example also considers a disease with an <span class="math inline">\(R_0\)</span> of 2.0.</p>
+<p>These data are handled just as in the <a href="finalsize.html">“Get started”</a> vignette, and the code is not displayed here. This example also considers a disease with an <span class="math inline">\(R_0\)</span> of 1.5.</p>
 <details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get UK polymod data</span></span>
 <span><span class="va">polymod</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="va"><a href="https://epiforecasts.io/socialmixr/reference/polymod.html" class="external-link">polymod</a></span></span>
@@ -169,7 +170,7 @@
 <span></span>
 <span><span class="va">n_demo_grps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span></span></code></pre></div>
 </details><details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">r0</span> <span class="op">&lt;-</span> <span class="fl">2.0</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">r0</span> <span class="op">&lt;-</span> <span class="fl">1.5</span></span></code></pre></div>
 </details>
 </div>
 <div class="section level2">
@@ -181,7 +182,7 @@ In this example, susceptibility to infection increases with age.</p>
 <details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># susceptibility is higher for the old</span></span>
 <span><span class="va">susc_variable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span>, <span class="fl">0.9</span>, <span class="fl">1.0</span><span class="op">)</span></span>
+<span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.75</span>, <span class="fl">0.8</span>, <span class="fl">0.85</span>, <span class="fl">0.9</span>, <span class="fl">1.0</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">n_susc_groups</span> <span class="op">&lt;-</span> <span class="fl">1L</span></span></code></pre></div>
 </details><div class="alert alert-warning">
@@ -238,16 +239,16 @@ In this example, susceptibility to infection increases with age.</p>
 <span><span class="co"># examine the combined data</span></span>
 <span><span class="va">final_size_data</span></span>
 <span><span class="co">#&gt;    demo_grp   susc_grp susceptibility p_infected      scenario</span></span>
-<span><span class="co">#&gt; 1     [0,5) susc_grp_1            0.2 0.08438181 heterogeneous</span></span>
-<span><span class="co">#&gt; 2    [5,18) susc_grp_1            0.5 0.39000734 heterogeneous</span></span>
-<span><span class="co">#&gt; 3   [18,40) susc_grp_1            0.6 0.35635678 heterogeneous</span></span>
-<span><span class="co">#&gt; 4   [40,65) susc_grp_1            0.9 0.43945122 heterogeneous</span></span>
-<span><span class="co">#&gt; 5       65+ susc_grp_1            1.0 0.32834904 heterogeneous</span></span>
-<span><span class="co">#&gt; 6     [0,5) susc_grp_1            1.0 0.64348986       uniform</span></span>
-<span><span class="co">#&gt; 7    [5,18) susc_grp_1            1.0 0.87774777       uniform</span></span>
-<span><span class="co">#&gt; 8   [18,40) susc_grp_1            1.0 0.77233709       uniform</span></span>
-<span><span class="co">#&gt; 9   [40,65) susc_grp_1            1.0 0.70232650       uniform</span></span>
-<span><span class="co">#&gt; 10      65+ susc_grp_1            1.0 0.51318727       uniform</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     [0,5) susc_grp_1           0.75  0.2288298 heterogeneous</span></span>
+<span><span class="co">#&gt; 2    [5,18) susc_grp_1           0.80  0.4639058 heterogeneous</span></span>
+<span><span class="co">#&gt; 3   [18,40) susc_grp_1           0.85  0.3517122 heterogeneous</span></span>
+<span><span class="co">#&gt; 4   [40,65) susc_grp_1           0.90  0.3119224 heterogeneous</span></span>
+<span><span class="co">#&gt; 5       65+ susc_grp_1           1.00  0.2163372 heterogeneous</span></span>
+<span><span class="co">#&gt; 6     [0,5) susc_grp_1           1.00  0.4160682       uniform</span></span>
+<span><span class="co">#&gt; 7    [5,18) susc_grp_1           1.00  0.6888703       uniform</span></span>
+<span><span class="co">#&gt; 8   [18,40) susc_grp_1           1.00  0.5379381       uniform</span></span>
+<span><span class="co">#&gt; 9   [40,65) susc_grp_1           1.00  0.4639496       uniform</span></span>
+<span><span class="co">#&gt; 10      65+ susc_grp_1           1.00  0.3042623       uniform</span></span></code></pre></div>
 </details><details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">final_size_data</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span></span>
@@ -371,16 +372,16 @@ When antibody response decays are known for an immunisation course <span class="
 <span><span class="co"># examine the data</span></span>
 <span><span class="va">final_size_immunised</span></span>
 <span><span class="co">#&gt;    demo_grp     susc_grp susceptibility p_infected     scenario</span></span>
-<span><span class="co">#&gt; 1     [0,5) Un-immunised          0.200 0.04109737 immunisation</span></span>
-<span><span class="co">#&gt; 2    [5,18) Un-immunised          0.500 0.21109758 immunisation</span></span>
-<span><span class="co">#&gt; 3   [18,40) Un-immunised          0.600 0.19043169 immunisation</span></span>
-<span><span class="co">#&gt; 4   [40,65) Un-immunised          0.900 0.24332081 immunisation</span></span>
-<span><span class="co">#&gt; 5       65+ Un-immunised          1.000 0.17411344 immunisation</span></span>
-<span><span class="co">#&gt; 6     [0,5)    Immunised          0.150 0.03098415 immunisation</span></span>
-<span><span class="co">#&gt; 7    [5,18)    Immunised          0.375 0.16291904 immunisation</span></span>
-<span><span class="co">#&gt; 8   [18,40)    Immunised          0.450 0.14652633 immunisation</span></span>
-<span><span class="co">#&gt; 9   [40,65)    Immunised          0.675 0.18869558 immunisation</span></span>
-<span><span class="co">#&gt; 10      65+    Immunised          0.750 0.13365615 immunisation</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     [0,5) Un-immunised         0.7500 0.10882106 immunisation</span></span>
+<span><span class="co">#&gt; 2    [5,18) Un-immunised         0.8000 0.25096327 immunisation</span></span>
+<span><span class="co">#&gt; 3   [18,40) Un-immunised         0.8500 0.17473366 immunisation</span></span>
+<span><span class="co">#&gt; 4   [40,65) Un-immunised         0.9000 0.15172135 immunisation</span></span>
+<span><span class="co">#&gt; 5       65+ Un-immunised         1.0000 0.10075783 immunisation</span></span>
+<span><span class="co">#&gt; 6     [0,5)    Immunised         0.5625 0.08277964 immunisation</span></span>
+<span><span class="co">#&gt; 7    [5,18)    Immunised         0.6000 0.19484900 immunisation</span></span>
+<span><span class="co">#&gt; 8   [18,40)    Immunised         0.6375 0.13414414 immunisation</span></span>
+<span><span class="co">#&gt; 9   [40,65)    Immunised         0.6750 0.11609844 immunisation</span></span>
+<span><span class="co">#&gt; 10      65+    Immunised         0.7500 0.07656251 immunisation</span></span></code></pre></div>
 </details><p>Compare scenarios in which susceptibility is heterogeneous between groups, against the immunisation scenario in which susceptibility also varies within groups.</p>
 <details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">final_size_immunised</span><span class="op">)</span> <span class="op">+</span></span>
@@ -466,10 +467,43 @@ When antibody response decays are known for an immunisation course <span class="
 <span>  <span class="op">)</span></span></code></pre></div>
 </details><div class="figure">
 <span style="display:block;" id="fig:unnamed-chunk-15"></span>
-<img src="varying_susceptibility_files/figure-html/unnamed-chunk-15-1.png" alt="Final size of an SIR epidemic with $R_0$ = 2.0, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%."><p class="caption">
-Figure 2: Final size of an SIR epidemic with <span class="math inline">\(R_0\)</span> = 2.0, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%.
+<img src="varying_susceptibility_files/figure-html/unnamed-chunk-15-1.png" alt="Final size of an SIR epidemic with $R_0$ = 1.5, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%."><p class="caption">
+Figure 2: Final size of an SIR epidemic with <span class="math inline">\(R_0\)</span> = 1.5, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%.
 </p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="heterogeneous-susceptibility-without-social-contact-heterogeneity">Heterogeneous susceptibility without social contact heterogeneity<a class="anchor" aria-label="anchor" href="#heterogeneous-susceptibility-without-social-contact-heterogeneity"></a>
+</h2>
+<p><em>finalsize</em> can also account for heterogeneous susceptibilities without having to include heterogeneity in social contact patterns. This may be useful when calculating the final epidemic size without a good estimate of social contact patterns available.</p>
+<p>This is done in a similar way as in the <a href="finalsize.html">“Get started”</a> vignette, but with <code>susceptibility</code> and <code>p_susceptibility</code> passed as <span class="math inline">\(N\)</span>-column matrices, referring to the susceptibilities of the <span class="math inline">\(N\)</span> susceptibility groups, and the proportions of the population that are in these groups, respectively.</p>
+<p>This example considers pandemic influenza with an <span class="math inline">\(R_0\)</span> of 1.5, affecting the U.K population of 67 million which is assumed to mix uniformly, but which has two distinct susceptibility groups, with susceptibility values of 1.0 (70% of the population), and 0.7 (30% of the population).</p>
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># define r0</span></span>
+<span><span class="va">r0</span> <span class="op">&lt;-</span> <span class="fl">1.5</span></span>
+<span></span>
+<span><span class="co"># define UK population size and prepare contact matrix</span></span>
+<span><span class="va">uk_pop</span> <span class="op">&lt;-</span> <span class="fl">67</span> <span class="op">*</span> <span class="fl">1e6</span></span>
+<span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1.0</span><span class="op">)</span> <span class="op">/</span> <span class="va">uk_pop</span></span>
+<span></span>
+<span><span class="co"># define susceptibility matrix</span></span>
+<span><span class="va">susceptibility</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">0.7</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">1</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># define p_susceptibility</span></span>
+<span><span class="va">p_susceptibility</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.7</span>, <span class="fl">0.3</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">1</span>, ncol <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># running final_size()</span></span>
+<span><span class="fu"><a href="../reference/final_size.html">final_size</a></span><span class="op">(</span></span>
+<span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
+<span>  demography_vector <span class="op">=</span> <span class="va">uk_pop</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
+<span>  susceptibility <span class="op">=</span> <span class="va">susceptibility</span>,</span>
+<span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt;     demo_grp   susc_grp susceptibility p_infected</span></span>
+<span><span class="co">#&gt; 1 demo_grp_1 susc_grp_1            1.0  0.5083807</span></span>
+<span><span class="co">#&gt; 2 demo_grp_1 susc_grp_2            0.7  0.3916685</span></span></code></pre></div>
+</details>
 </div>
 <div class="section level2 unnumbered">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

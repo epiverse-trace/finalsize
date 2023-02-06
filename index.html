@@ -57,6 +57,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <h6 class="dropdown-header" data-toc-skip>Package vignettes</h6>
+    <a class="dropdown-item" href="articles/varying_contacts.html">Modelling heterogeneous social contacts</a>
     <a class="dropdown-item" href="articles/varying_susceptibility.html">Modelling heterogeneous susceptibility</a>
     <a class="dropdown-item" href="articles/uncertainty_params.html">Modelling uncertainty in R₀</a>
   </div>
@@ -91,7 +92,8 @@
 </div>
 <!-- badges: start -->
 
-<p><em>finalsize</em> provides calculations for the final size of an epidemic in a population, which is the overall number of infected individuals, depending on a demographic distribution (e.g., age groups) and their contact patterns, accounting for different susceptibility to disease between groups (e.g., due to age-group specific immune responses) and within groups (e.g., due to immunisation programs).</p>
+<p><em>finalsize</em> is an R package to calculate the final size of a SIR epidemic in populations with heterogeneity in social contacts and infection susceptibility.</p>
+<p><em>finalsize</em> provides estimates for the total proportion of a population infected over the course of an epidemic, and can account for a demographic distribution (such as age groups) and demography-specific contact patterns, as well as for heterogeneous susceptibility to infection between groups (such as due to age-group specific immune responses) and within groups (such as due to immunisation programs).</p>
 <p><em>finalsize</em> implements methods outlined in Andreasen (<a href="#ref-andreasen2011">2011</a>), Miller (<a href="#ref-miller2012">2012</a>), Kucharski et al. (<a href="#ref-kucharski2014">2014</a>), and Bidari et al. (<a href="#ref-bidari2016">2016</a>).</p>
 <p><em>finalsize</em> can help provide rough estimates of the effectiveness of pharmaceutical interventions in the form of immunisation programmes, or the effect of naturally acquired immunity through previous infection (see the vignette).</p>
 <p><em>finalsize</em> relies on <a href="https://gitlab.com/libeigen/eigen" class="external-link">Eigen</a> via <a href="https://github.com/RcppCore/RcppEigen" class="external-link">RcppEigen</a> for fast matrix algebra, and is developed at the <a href="https://www.lshtm.ac.uk/research/centres/centre-mathematical-modelling-infectious-diseases" class="external-link">Centre for the Mathematical Modelling of Infectious Diseases</a> at the London School of Hygiene and Tropical Medicine as part of the <a href="https://data.org/initiatives/epiverse/" class="external-link">Epiverse Initiative</a>.</p>

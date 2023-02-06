@@ -57,6 +57,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <h6 class="dropdown-header" data-toc-skip>Package vignettes</h6>
+    <a class="dropdown-item" href="../articles/varying_contacts.html">Modelling heterogeneous social contacts</a>
     <a class="dropdown-item" href="../articles/varying_susceptibility.html">Modelling heterogeneous susceptibility</a>
     <a class="dropdown-item" href="../articles/uncertainty_params.html">Modelling uncertainty in R₀</a>
   </div>
@@ -97,7 +98,7 @@
     
 <p>Epidemic final size calculations are sensitive to input data such as the <span class="math inline">\(R_0\)</span> of the infection. Such values can often be uncertain in the early stages of an outbreak. This uncertainty can be included in final size calculations by running <code><a href="../reference/final_size.html">final_size()</a></code> for values drawn from a distribution, and summarising the outcomes.</p>
 <div class="alert alert-warning">
-<p><strong>New to <em>finalsize</em>?</strong> It may help to read the <a href="finalsize.html">“Get started”</a> or <a href="varying_susceptibility.Rmd">“Modelling heterogeneous susceptibility”</a> vignettes first!</p>
+<p><strong>New to <em>finalsize</em>?</strong> It may help to read the <a href="finalsize.html">“Get started”</a>, <a href="varying_contacts.html">“Modelling heterogeneous contacts”</a>, or <a href="varying_susceptibility.Rmd">“Modelling heterogeneous susceptibility”</a> vignettes first!</p>
 </div>
 <div class="section level2 unnumbered alert alert-primary">
 <h2 id="use-case">Use case<a class="anchor" aria-label="anchor" href="#use-case"></a>
@@ -134,7 +135,7 @@
 <h2 id="getting-r_0-contact-and-demography-data-and-susceptibility">Getting <span class="math inline">\(R_0\)</span>, contact and demography data, and susceptibility<a class="anchor" aria-label="anchor" href="#getting-r_0-contact-and-demography-data-and-susceptibility"></a>
 </h2>
 <p>This example uses social contact data from the <a href="https://cordis.europa.eu/project/id/502084" class="external-link">POLYMOD</a> project to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
-<p>These data are handled just as in the <a href="finalsize.html">“Get started”</a> vignette. This example also considers an infection with an <span class="math inline">\(R_0\)</span> of 2.0.</p>
+<p>These data are handled just as in the <a href="finalsize.html">“Get started”</a> vignette. This example also considers an infection with an <span class="math inline">\(R_0\)</span> of 1.5.</p>
 <details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get UK polymod data</span></span>
 <span><span class="va">polymod</span> <span class="op">&lt;-</span> <span class="fu">socialmixr</span><span class="fu">::</span><span class="va"><a href="https://epiforecasts.io/socialmixr/reference/polymod.html" class="external-link">polymod</a></span></span>
@@ -157,8 +158,8 @@
 <span></span>
 <span><span class="va">n_demo_grps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">demography_vector</span><span class="op">)</span></span></code></pre></div>
 </details><details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># mean R0 is 2.0</span></span>
-<span><span class="va">r0_mean</span> <span class="op">&lt;-</span> <span class="fl">2.0</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># mean R0 is 1.5</span></span>
+<span><span class="va">r0_mean</span> <span class="op">&lt;-</span> <span class="fl">1.5</span></span></code></pre></div>
 </details><p>For simplicity, this example considers a scenario in which susceptibility to infection does not vary.</p>
 <details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># susceptibility is uniform</span></span>
@@ -177,7 +178,7 @@
 </h2>
 <p>The basic reproduction number <span class="math inline">\(R_0\)</span> of an infection might be uncertain in the early stages of an epidemic. This uncertainty can be modelled by running <code><a href="../reference/final_size.html">final_size()</a></code> multiple times for the same contact, demography, and susceptibility data, while sampling <span class="math inline">\(R_0\)</span> values from a distribution.</p>
 <p>This example assumes that the <span class="math inline">\(R_0\)</span> estimate, and the uncertainty around that estimate, is provided as the mean and standard deviation of a normal distribution.</p>
-<p>This example considers a normal distribution <span class="math inline">\(N(\mu = 2.0, \sigma = 0.1)\)</span>, for an <span class="math inline">\(R_0\)</span> of 2.0. We can draw 1,000 <span class="math inline">\(R_0\)</span> samples from this distribution and run <code><a href="../reference/final_size.html">final_size()</a></code> on the contact data and demography data for each sample.</p>
+<p>This example considers a normal distribution <span class="math inline">\(N(\mu = 1.5, \sigma = 0.1)\)</span>, for an <span class="math inline">\(R_0\)</span> of 1.5. We can draw 1,000 <span class="math inline">\(R_0\)</span> samples from this distribution and run <code><a href="../reference/final_size.html">final_size()</a></code> on the contact data and demography data for each sample.</p>
 <p>This is quick, as <code>finalsize</code> is an Rcpp package with a C++ backend.</p>
 <details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create an R0 samples vector</span></span>
@@ -208,21 +209,21 @@
 <span><span class="co"># examine some replicates in the data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">final_size_data</span>, <span class="fl">15</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    demo_grp   susc_grp susceptibility p_infected replicate r0_estimate</span></span>
-<span><span class="co">#&gt; 1     [0,5) susc_grp_1              1  0.6112415         1    1.908567</span></span>
-<span><span class="co">#&gt; 2    [5,18) susc_grp_1              1  0.8565038         1    1.908567</span></span>
-<span><span class="co">#&gt; 3   [18,40) susc_grp_1              1  0.7422964         1    1.908567</span></span>
-<span><span class="co">#&gt; 4   [40,65) susc_grp_1              1  0.6697843         1    1.908567</span></span>
-<span><span class="co">#&gt; 5       65+ susc_grp_1              1  0.4811527         1    1.908567</span></span>
-<span><span class="co">#&gt; 6     [0,5) susc_grp_1              1  0.6876578         2    2.142630</span></span>
-<span><span class="co">#&gt; 7    [5,18) susc_grp_1              1  0.9041119         2    2.142630</span></span>
-<span><span class="co">#&gt; 8   [18,40) susc_grp_1              1  0.8115564         2    2.142630</span></span>
-<span><span class="co">#&gt; 9   [40,65) susc_grp_1              1  0.7460164         2    2.142630</span></span>
-<span><span class="co">#&gt; 10      65+ susc_grp_1              1  0.5586351         2    2.142630</span></span>
-<span><span class="co">#&gt; 11    [0,5) susc_grp_1              1  0.6641279         3    2.063865</span></span>
-<span><span class="co">#&gt; 12   [5,18) susc_grp_1              1  0.8904556         3    2.063865</span></span>
-<span><span class="co">#&gt; 13  [18,40) susc_grp_1              1  0.7909470         3    2.063865</span></span>
-<span><span class="co">#&gt; 14  [40,65) susc_grp_1              1  0.7228749         3    2.063865</span></span>
-<span><span class="co">#&gt; 15      65+ susc_grp_1              1  0.5341862         3    2.063865</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     [0,5) susc_grp_1              1  0.4029589         1    1.478672</span></span>
+<span><span class="co">#&gt; 2    [5,18) susc_grp_1              1  0.6749603         1    1.478672</span></span>
+<span><span class="co">#&gt; 3   [18,40) susc_grp_1              1  0.5229481         1    1.478672</span></span>
+<span><span class="co">#&gt; 4   [40,65) susc_grp_1              1  0.4496970         1    1.478672</span></span>
+<span><span class="co">#&gt; 5       65+ susc_grp_1              1  0.2932850         1    1.478672</span></span>
+<span><span class="co">#&gt; 6     [0,5) susc_grp_1              1  0.4481765         2    1.554763</span></span>
+<span><span class="co">#&gt; 7    [5,18) susc_grp_1              1  0.7214199         2    1.554763</span></span>
+<span><span class="co">#&gt; 8   [18,40) susc_grp_1              1  0.5740205         2    1.554763</span></span>
+<span><span class="co">#&gt; 9   [40,65) susc_grp_1              1  0.4986691         2    1.554763</span></span>
+<span><span class="co">#&gt; 10      65+ susc_grp_1              1  0.3315893         2    1.554763</span></span>
+<span><span class="co">#&gt; 11    [0,5) susc_grp_1              1  0.4412078         3    1.542557</span></span>
+<span><span class="co">#&gt; 12   [5,18) susc_grp_1              1  0.7145351         3    1.542557</span></span>
+<span><span class="co">#&gt; 13  [18,40) susc_grp_1              1  0.5662667         3    1.542557</span></span>
+<span><span class="co">#&gt; 14  [40,65) susc_grp_1              1  0.4911574         3    1.542557</span></span>
+<span><span class="co">#&gt; 15      65+ susc_grp_1              1  0.3256043         3    1.542557</span></span></code></pre></div>
 </details><div class="section level3">
 <h3 id="visualise-uncertainty-in-final-size">Visualise uncertainty in final size<a class="anchor" aria-label="anchor" href="#visualise-uncertainty-in-final-size"></a>
 </h3>
@@ -267,8 +268,8 @@
 <span>  <span class="op">)</span></span></code></pre></div>
 </details><div class="figure">
 <span style="display:block;" id="fig:unnamed-chunk-8"></span>
-<img src="uncertainty_params_files/figure-html/unnamed-chunk-8-1.png" alt="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles."><p class="caption">
-Figure 1: Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the <span class="math inline">\(R_0\)</span> is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in <span class="math inline">\(R_0\)</span> estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles.
+<img src="uncertainty_params_files/figure-html/unnamed-chunk-8-1.png" alt="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 1.5, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles."><p class="caption">
+Figure 1: Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the <span class="math inline">\(R_0\)</span> is estimated to be 1.5, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in <span class="math inline">\(R_0\)</span> estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles.
 </p>
 </div>
 </div>
