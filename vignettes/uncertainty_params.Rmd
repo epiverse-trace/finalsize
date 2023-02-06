@@ -19,7 +19,7 @@ editor_options:
 Epidemic final size calculations are sensitive to input data such as the $R_0$ of the infection. Such values can often be uncertain in the early stages of an outbreak. This uncertainty can be included in final size calculations by running `final_size()` for values drawn from a distribution, and summarising the outcomes.
 
 ::: {.alert .alert-warning}
-**New to _finalsize_?** It may help to read the ["Get started"](finalsize.html) or ["Modelling heterogeneous susceptibility"](varying_susceptibility.Rmd) vignettes first!
+**New to _finalsize_?** It may help to read the ["Get started"](finalsize.html), ["Modelling heterogeneous contacts"](varying_contacts.html), or ["Modelling heterogeneous susceptibility"](varying_susceptibility.Rmd) vignettes first!
 :::
 
 ::: {.alert .alert-primary}
@@ -65,7 +65,7 @@ library(ggplot2)
 
 This example uses social contact data from the [POLYMOD](https://cordis.europa.eu/project/id/502084) project to estimate the final size of an epidemic in the U.K. These data are provided with the `socialmixr` package.
 
-These data are handled just as in the ["Get started"](finalsize.html) vignette. This example also considers an infection with an $R_0$ of 2.0.
+These data are handled just as in the ["Get started"](finalsize.html) vignette. This example also considers an infection with an $R_0$ of 1.5.
 
 ```{r}
 # get UK polymod data
@@ -91,8 +91,8 @@ n_demo_grps <- length(demography_vector)
 ```
 
 ```{r}
-# mean R0 is 2.0
-r0_mean <- 2.0
+# mean R0 is 1.5
+r0_mean <- 1.5
 ```
 
 For simplicity, this example considers a scenario in which susceptibility to infection does not vary.
@@ -115,7 +115,7 @@ The basic reproduction number $R_0$ of an infection might be uncertain in the ea
 
 This example assumes that the $R_0$ estimate, and the uncertainty around that estimate, is provided as the mean and standard deviation of a normal distribution.
 
-This example considers a normal distribution $N(\mu = 2.0, \sigma = 0.1)$, for an $R_0$ of 2.0. We can draw 1,000 $R_0$ samples from this distribution and run `final_size()` on the contact data and demography data for each sample.
+This example considers a normal distribution $N(\mu = 1.5, \sigma = 0.1)$, for an $R_0$ of 1.5. We can draw 1,000 $R_0$ samples from this distribution and run `final_size()` on the contact data and demography data for each sample.
 
 This is quick, as `finalsize` is an Rcpp package with a C++ backend.
 
@@ -161,7 +161,7 @@ final_size_data$demo_grp <- factor(
 )
 ```
 
-```{r class.source = 'fold-hide', class.source = 'fold-hide', fig.cap="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 2.0, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles.", fig.width=5, fig.height=4}
+```{r class.source = 'fold-hide', class.source = 'fold-hide', fig.cap="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 1.5, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles.", fig.width=5, fig.height=4}
 ggplot(final_size_data) +
   stat_summary(
     aes(
