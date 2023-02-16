@@ -11,19 +11,16 @@
 //'
 // [[Rcpp::export(name=".final_size")]]
 Eigen::ArrayXd final_size(const Rcpp::List &parameters) {
-  
   if (strcmp(parameters["solver"], "iterative") == 0) {
     return finalsize::solve_final_size_iterative(
-      parameters["contact_matrix"], parameters["demography_vector"],
-      parameters["susceptibility"], parameters["iterations"],
-      parameters["tolerance"], parameters["step_rate"],
-      parameters["adapt_step"]
-    );
+        parameters["contact_matrix"], parameters["demography_vector"],
+        parameters["susceptibility"], parameters["iterations"],
+        parameters["tolerance"], parameters["step_rate"],
+        parameters["adapt_step"]);
   } else {
     return finalsize::solve_final_size_newton(
-      parameters["contact_matrix"], parameters["demography_vector"],
-      parameters["susceptibility"], parameters["iterations"],
-      parameters["tolerance"]
-    );
+        parameters["contact_matrix"], parameters["demography_vector"],
+        parameters["susceptibility"], parameters["iterations"],
+        parameters["tolerance"]);
   }
 }
