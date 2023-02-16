@@ -288,24 +288,15 @@ p_{4,1} & p_{4,2}
 $$
 :::
 
-### Case 4: Within groups in different proportion
+### Case 4: Susceptibility varies within groups in different proportion
 
-In the population,
-there is different
-susceptibility to the infection:
+This scenario assumes that, in the population, there is different susceptibility to the infection:
 
-- between individuals of different age groups
-from 20% (infants) to 100% (65+), and
+- between individuals of different age groups from 20% (infants) to 100% (65+), and
 
-- within individuals of the same age group
-due the immunization effect of 25%.
+- within individuals of the same age group due the immunization effect of 25%.
 
-Also the
-immunization uptake rate
-is in different proportions
-for each of the age groups:
-immunization increases with age
-from 20% (infants) to 90% (65+)
+The immunization uptake rate is also different for each of the age groups: immunization increases with age from 20% (infants) to 90% (65+)
 
 ``` {r}
 immunization_effect <- 0.25
