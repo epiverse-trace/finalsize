@@ -46,7 +46,7 @@ You need to create **two matrices**, `susceptibility` and `p_susceptibility`, to
 
 ### Susceptibility matrix
 
-Contains the _**susceptibility**_ of the population in each demographic group that belongs to each susceptibility group.
+Represents the _**probability of infection**_ of each combination of demographic and infection-risk groups.
 
 ::: {.alert .alert-secondary}
 $$
@@ -68,6 +68,12 @@ s: susceptibility
 $$
 
 Each element $\{i, j\}$ in this matrix represents the susceptibility of individuals in demographic group $\{i\}$ (rows), and susceptibility group $\{j\}$ (columns).
+:::
+
+::: {.alert .alert-warning}
+A common example of a demographic group in a population is an age group, and each population is typically made up of multiple age groups. 
+
+Examples of infection-risk groups may include individuals of different immunization status, or with different prior exposure to pathogens. Final size calculations allow us to specify a different susceptibility to infection for each demography and risk group combination (e.g. fully vaccinated people over 65 years old).
 :::
 
 ### Demography-in-susceptibility matrix
