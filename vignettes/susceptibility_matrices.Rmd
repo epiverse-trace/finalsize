@@ -159,7 +159,7 @@ p_susceptibility
 ```
 
 ::: {.alert .alert-warning}
-The __susceptibility matrix__ and the __demography-susceptibility distribution matrix__ has always the same dimensions.
+The __susceptibility matrix__ and the __demography-susceptibility distribution matrix__ must always have the same dimensions.
 
 $$
 4 \; demo. \; groups \left.\vphantom{\begin{matrix}
