@@ -194,13 +194,9 @@ $$
 
 ## Heterogeneous susceptibility
 
-### Case 2: Between groups only
+### Case 2: Susceptibility varies between groups
 
-In the population,
-there is different
-susceptibility to the infection
-between individuals of different age groups
-from 20% (infants) to 100% (65+).
+This scenario assumes that, in the population, there is different susceptibility to the infection between individuals of different age groups, from 20% (infants) to 100% (65+).
 
 ``` {r}
 # susceptibility matrix
