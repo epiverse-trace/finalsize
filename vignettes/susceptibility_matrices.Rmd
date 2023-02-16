@@ -271,7 +271,7 @@ s_{1,1} & s_{1,2} \\
 s_{2,1} & s_{2,2} \\
 s_{3,1} & s_{3,2} \\
 s_{4,1} & s_{4,2} 
-\end{matrix}}^{\displaystyle 2 \; susceptibility \; groups}
+\end{matrix}}^{\displaystyle 2 \; suscept. \; groups}
 \quad
 4 \; demo. \; groups \left.\vphantom{\begin{matrix}
 p_{1,1} & p_{1,2} \\
@@ -285,7 +285,7 @@ p_{1,1} & p_{1,2} \\
 p_{2,1} & p_{2,2} \\
 p_{3,1} & p_{3,2} \\
 p_{4,1} & p_{4,2} 
-\end{matrix}}^{\displaystyle 2 \; susceptibility \; groups}
+\end{matrix}}^{\displaystyle 2 \; suscept. \; groups}
 $$
 :::
 
