@@ -31,11 +31,11 @@ namespace finalsize {
 /// drops below this tolerance. Defaults to set `1e-6`. Larger tolerance
 /// values are likely to lead to inaccurate final size estimates.
 /// @return A vector of final sizes.
-inline Eigen::ArrayXd solve_final_size_newton(const Eigen::MatrixXd &contact_matrix,
-                                       const Eigen::VectorXd &demography_vector,
-                                       const Eigen::VectorXd &susceptibility,
-                                       const int iterations = 10000,
-                                       const double tolerance = 1e-6) {
+inline Eigen::ArrayXd solve_final_size_newton(
+    const Eigen::MatrixXd &contact_matrix,
+    const Eigen::VectorXd &demography_vector,
+    const Eigen::VectorXd &susceptibility, const int iterations = 10000,
+    const double tolerance = 1e-6) {
   // count number of demography groups
   int nDim = demography_vector.size();
 

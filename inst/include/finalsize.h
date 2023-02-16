@@ -10,4 +10,4 @@
 #include "iterative_solver.h"
 #include "newton_solver.h"
 
-#endif // finalsize_finalsize_H_GEN_
+#endif  // finalsize_finalsize_H_GEN_
