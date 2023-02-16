@@ -128,9 +128,7 @@ library(tibble)
 
 ### Case 1: Uniform susceptibility
 
-In the population,
-all individuals from all age groups
-have 80% susceptibility to the infection
+This scenario assumes that all individuals from all age groups in the population of interest have 80% susceptibility to the infection.
 
 ``` {r}
 # susceptibility matrix
