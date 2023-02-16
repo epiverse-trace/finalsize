@@ -324,27 +324,15 @@ p_susceptibility <- tibble(
 p_susceptibility
 ```
 
-### Case 5: Within three groups
+### Case 5: Susceptibility varies within three groups
 
-In the population,
-there is different
-susceptibility to the infection:
+This scenario assumes that, in the population, there is different susceptibility to the infection:
 
-- between individuals of different age groups
-from 20% (infants) to 100% (65+), and
+- between individuals of different age groups from 20% (infants) to 100% (65+), and
 
-- within individuals of the same age group
-due the immunization effect of 25%
-to the 40% of each of the age groups.
+- within individuals of the same age group due the immunization effect of 25% to the 40% of each of the age groups.
 
-Additionally,
-10% of individuals
-in each of the age groups
-have
-100% susceptibility,
-due to no immunization
-or not exposed
-to similar pathogens previously.
+Additionally, 10% of individuals in each of the age groups have 100% susceptibility, due to no immunization or not exposed to similar pathogens previously.
 
 ``` {r}
 immunization_effect <- 0.25
