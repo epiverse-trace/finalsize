@@ -102,7 +102,7 @@ $$
 Each element $\{i, j\}$ in this matrix represents the proportion of each demographic group $\{i\}$ that falls into the susceptibility group $\{j\}$. Consequently, each of its **rows must always sum to 1.0**.
 :::
 
-Here we share five case examples with different scenarios for the content of each matrix.
+Here we share five case examples with different scenarios and how each influences the content and structure of the two matrices.
 
 ## Homogeneous susceptibility
 
