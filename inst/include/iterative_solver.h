@@ -5,6 +5,8 @@
 // clang-format off
 #include <Rcpp.h>
 #include <RcppEigen.h>
+
+#include <algorithm>
 // clang-format on
 
 // Enable C++14 via this plugin (Rcpp 0.10.3 or later)
