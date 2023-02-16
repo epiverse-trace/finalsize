@@ -3,6 +3,10 @@
 #include <finalsize.h>
 #include <string.h>
 
+// Enable C++14 via this plugin (Rcpp 0.10.3 or later)
+// [[Rcpp::plugins(cpp14)]]
+// [[Rcpp::depends(RcppEigen)]]
+
 //' @title Calculate the final size of an epidemic
 //' @description An internal function that interfaces between the R function
 //' `final_size()` and functions in the package header.
