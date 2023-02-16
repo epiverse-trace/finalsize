@@ -171,18 +171,8 @@ final_size <- function(r0,
   # pass user solver options to default control list
   con[names(control)] <- control
 
-  # check which solver is requested
+  # # check which solver is requested
   solver <- match.arg(arg = solver, several.ok = FALSE)
-  fn_solver <- switch(solver,
-    iterative = .solve_iterative,
-    newton = .solve_newton
-  )
-
-  # modify control list by solver
-  con <- switch(solver,
-    iterative = con,
-    newton = con[c("iterations", "tolerance")]
-  )
 
   # prepare the population data for the solver
   # count risk groups
@@ -200,17 +190,17 @@ final_size <- function(r0,
   )
 
   # get group wise final sizes
-  epi_final_size <- do.call(
-    fn_solver,
+  epi_final_size <- .final_size(
     c(
       list(
         contact_matrix = contact_matrix_spread,
         demography_vector = demography_vector_spread,
-        susceptibility = as.vector(susceptibility)
+        susceptibility = as.vector(susceptibility),
+        solver = solver
       ),
       con
     )
-  )
+  ) # using internal Rcpp function
 
   # check for names of age groups and susceptibility groups
   names_demography <- names(demography_vector)
