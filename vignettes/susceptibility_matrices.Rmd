@@ -70,9 +70,9 @@ $$
 Each element $\{i, j\}$ in this matrix represents the susceptibility of individuals in demographic group $\{i\}$ (rows), and susceptibility group $\{j\}$ (columns).
 :::
 
-### Demography-susceptibility distribution matrix
+### Demography-in-susceptibility matrix
 
-Contains the _**probability**_ of the population in each demographic group that belongs to each susceptibility group.
+Represents the _**proportion (or probability)**_ that individuals in a demographic group are also in a specific susceptibility group.
 
 ::: {.alert .alert-secondary}
 $$
