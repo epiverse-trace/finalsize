@@ -7,10 +7,6 @@
 #include <RcppEigen.h>
 // clang-format on
 
-// Enable C++14 via this plugin (Rcpp 0.10.3 or later)
-// [[Rcpp::plugins(cpp14)]]
-// [[Rcpp::depends(RcppEigen)]]
-
 // add to namespace finalsize
 namespace finalsize {
 
