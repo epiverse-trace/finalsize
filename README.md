@@ -43,15 +43,18 @@ at the London School of Hygiene and Tropical Medicine as part of the
 
 ## Installation
 
-The package can be installed using
+The package can be installed from CRAN using
 
 ``` r
 install.packages("finalsize")
 ```
 
+### Development version
+
 The current development version of *finalsize* can be installed from
 [Github](https://github.com/epiverse-trace/finalsize) using the
-`remotes` package.
+`remotes` package. The development version documentation can be found
+[here](https://epiverse-trace.github.io/finalsize/dev/).
 
 ``` r
 # check whether {remotes} is installed
