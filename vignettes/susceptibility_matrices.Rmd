@@ -143,7 +143,7 @@ susceptibility
 ```
 
 ::: {.alert .alert-warning}
-In this example, all individuals are equally susceptible to infection, and thus the **susceptibility matrix** (`susceptibility`) has only a single column with identical values.
+In this example, all individuals and age groups are equally susceptible to infection; thus, the **susceptibility matrix** (`susceptibility`) has only a single column with identical values.
 :::
 
 ```{r}
