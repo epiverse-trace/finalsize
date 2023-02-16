@@ -18,10 +18,12 @@ jobs:
       - uses: actions/setup-python@v2
       - run: pip install cpplint
       - run: cpplint --exclude="src/RcppExports.cpp" src/*.cpp
+      - run: cpplint inst/include/*.h
 
   cppcheck:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - run: sudo apt-get install cppcheck
-      - run: cppcheck -i src/RcppExports.cpp --enable=style --error-exitcode=1 src
+      - run: cppcheck --std=c++14 -i src/RcppExports.cpp --enable=style --error-exitcode=1 src
+      - run: cppcheck --std=c++14 --language=c++ --enable=style --error-exitcode=1 inst/include/*.h
