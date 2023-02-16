@@ -38,7 +38,7 @@ You need to create **two matrices**, `susceptibility` and `p_susceptibility`, to
 
 ### What we assume {-}
 
-  1. The complete partitioning of individuals into different demographic and infection risk groups (susceptibility groups).
+  1. Complete partitioning of individuals into different demographic and susceptibility groups, i.e., that all individuals in the population fall into only one demographic group, and only one susceptibility group.
 :::
 
 
