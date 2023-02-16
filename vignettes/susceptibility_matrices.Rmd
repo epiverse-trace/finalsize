@@ -33,8 +33,9 @@ You need to create **two matrices**, `susceptibility` and `p_susceptibility`, to
 ::: {.alert .alert-secondary}
 ### What we have {-}
 
-  1. The susceptibility of a given number of demographic groups per a given number of susceptibility groups;
-  2. The probability of the population in each demographic group and susceptibility group.
+  1. A scenario in which all individuals are equally susceptible to an infection; or,
+  2. A scenario in which older individuals are more susceptible to infection than younger individuals; or,
+  3. A scenario in which susceptibility increases with age, but older individuals benefit from immunization.
 
 ### What we assume {-}
 
