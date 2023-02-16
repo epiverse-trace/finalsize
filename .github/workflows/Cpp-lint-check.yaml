@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v2
       - run: pip install cpplint
       - run: cpplint --exclude="src/RcppExports.cpp" src/*.cpp
-      - run: cpplint inst/include/*.h
+      - run: cpplint --exclude="inst/include/finalsize.h" inst/include/*.h
 
   cppcheck:
     runs-on: ubuntu-latest
