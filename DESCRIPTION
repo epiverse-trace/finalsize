@@ -51,11 +51,13 @@ LinkingTo:
 Suggests: 
     colorspace,
     covr,
+    dplyr,
     knitr,
     bookdown,
     scales,
     socialmixr,
     testthat (>= 3.0.0),
+    tibble,
     xml2,
     ggplot2,
     ggtext,

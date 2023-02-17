@@ -22,3 +22,7 @@ articles:
   - varying_contacts
   - varying_susceptibility
   - uncertainty_params
+- title: Modelling guides
+  navbar: Modelling guides
+  contents:
+  - susceptibility_matrices
