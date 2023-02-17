@@ -256,7 +256,7 @@ p_susceptibility
 ```
 
 ::: {.alert .alert-warning}
-**Note** that because there are two susceptibility groups, the susceptibility matrix has two columns. The corresponding **demography-in-susceptibility matrix** must also have two columns!
+**Note** that because there are two susceptibility groups, the **susceptibility matrix** has two columns. The corresponding **demography-in-susceptibility matrix** must also have two columns!
 
 $$
 4 \; demo. \; groups \left.\vphantom{\begin{matrix}
