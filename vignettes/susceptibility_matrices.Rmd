@@ -148,7 +148,7 @@ In this example, all individuals and age groups are equally susceptible to infec
 :::
 
 ```{r}
-# demography-susceptibility distribution matrix
+# demography-in-susceptibility matrix
 p_susceptibility <- tibble(
   age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
   susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0)
@@ -160,7 +160,7 @@ p_susceptibility
 ```
 
 ::: {.alert .alert-warning}
-The __susceptibility matrix__ and the __demography-susceptibility distribution matrix__ must always have the same dimensions.
+The __susceptibility matrix__ and the __demography-in-susceptibility matrix__ must always have the same dimensions.
 
 $$
 4 \; demo. \; groups \left.\vphantom{\begin{matrix}
@@ -210,7 +210,7 @@ susceptibility <- tibble(
 
 susceptibility
 
-# demography-susceptibility distribution matrix
+# demography-in-susceptibility matrix
 p_susceptibility <- tibble(
   age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
   susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0)
@@ -243,7 +243,7 @@ susceptibility <- tibble(
 
 susceptibility
 
-# demography-susceptibility distribution matrix
+# demography-in-susceptibility matrix
 p_susceptibility <- tibble(
   age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
   immunised = c(0.4, 0.4, 0.4, 0.4, 0.4)
@@ -256,7 +256,7 @@ p_susceptibility
 ```
 
 ::: {.alert .alert-warning}
-**Note** that because there are two susceptibility groups, the susceptibility matrix has two columns. The corresponding **demography-susceptibility distribution matrix** must also have two columns!
+**Note** that because there are two susceptibility groups, the susceptibility matrix has two columns. The corresponding **demography-in-susceptibility matrix** must also have two columns!
 
 $$
 4 \; demo. \; groups \left.\vphantom{\begin{matrix}
@@ -313,7 +313,7 @@ susceptibility <- tibble(
 
 susceptibility
 
-# demography-susceptibility distribution matrix
+# demography-in-susceptibility matrix
 p_susceptibility <- tibble(
   age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
   immunised = c(0.2, 0.4, 0.6, 0.7, 0.9)
@@ -350,7 +350,7 @@ susceptibility <- tibble(
 
 susceptibility
 
-# demography-susceptibility distribution matrix
+# demography-in-susceptibility matrix
 p_susceptibility <- tibble(
   age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
   susceptible = c(0.1, 0.1, 0.1, 0.1, 0.1),
@@ -364,7 +364,7 @@ p_susceptibility
 ```
 
 ::: {.alert .alert-warning}
-**Recall** that each row of the demography-susceptibility distribution matrix must always sum to 1.0!
+**Recall** that each row of the demography-in-susceptibility matrix must always sum to 1.0!
 :::
 
 ## References
