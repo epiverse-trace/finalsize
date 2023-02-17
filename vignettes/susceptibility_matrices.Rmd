@@ -160,7 +160,7 @@ p_susceptibility
 ```
 
 ::: {.alert .alert-warning}
-The __susceptibility matrix__ and the __demography-in-susceptibility matrix__ must always have the same dimensions.
+The __susceptibility matrix__ (`susceptibility`) and the __demography-in-susceptibility matrix__ (`p_susceptibility`) must always have the same dimensions.
 
 $$
 4 \; demo. \; groups \left.\vphantom{\begin{matrix}
@@ -364,7 +364,7 @@ p_susceptibility
 ```
 
 ::: {.alert .alert-warning}
-**Recall** that each row of the demography-in-susceptibility matrix must always sum to 1.0!
+**Recall** that each row of the demography-in-susceptibility matrix (`p_susceptibility`) must always sum to 1.0!
 :::
 
 ## References
