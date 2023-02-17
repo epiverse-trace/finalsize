@@ -61,6 +61,9 @@
     <a class="dropdown-item" href="../articles/varying_contacts.html">Modelling heterogeneous social contacts</a>
     <a class="dropdown-item" href="../articles/varying_susceptibility.html">Modelling heterogeneous susceptibility</a>
     <a class="dropdown-item" href="../articles/uncertainty_params.html">Modelling uncertainty in R₀</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Modelling guides</h6>
+    <a class="dropdown-item" href="../articles/susceptibility_matrices.html">Guide to constructing susceptibility matrices</a>
   </div>
 </li>
 <li class="nav-item">
@@ -210,21 +213,21 @@
 <span><span class="co"># examine some replicates in the data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">final_size_data</span>, <span class="fl">15</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    demo_grp   susc_grp susceptibility p_infected replicate r0_estimate</span></span>
-<span><span class="co">#&gt; 1     [0,5) susc_grp_1              1  0.4564070         1    1.569420</span></span>
-<span><span class="co">#&gt; 2    [5,18) susc_grp_1              1  0.7294257         1    1.569420</span></span>
-<span><span class="co">#&gt; 3   [18,40) susc_grp_1              1  0.5831223         1    1.569420</span></span>
-<span><span class="co">#&gt; 4   [40,65) susc_grp_1              1  0.5075230         1    1.569420</span></span>
-<span><span class="co">#&gt; 5       65+ susc_grp_1              1  0.3386973         1    1.569420</span></span>
-<span><span class="co">#&gt; 6     [0,5) susc_grp_1              1  0.3387725         2    1.381738</span></span>
-<span><span class="co">#&gt; 7    [5,18) susc_grp_1              1  0.6013242         2    1.381738</span></span>
-<span><span class="co">#&gt; 8   [18,40) susc_grp_1              1  0.4474730         2    1.381738</span></span>
-<span><span class="co">#&gt; 9   [40,65) susc_grp_1              1  0.3793447         2    1.381738</span></span>
-<span><span class="co">#&gt; 10      65+ susc_grp_1              1  0.2409748         2    1.381738</span></span>
-<span><span class="co">#&gt; 11    [0,5) susc_grp_1              1  0.4217055         3    1.509349</span></span>
-<span><span class="co">#&gt; 12   [5,18) susc_grp_1              1  0.6947397         3    1.509349</span></span>
-<span><span class="co">#&gt; 13  [18,40) susc_grp_1              1  0.5443386         3    1.509349</span></span>
-<span><span class="co">#&gt; 14  [40,65) susc_grp_1              1  0.4700652         3    1.509349</span></span>
-<span><span class="co">#&gt; 15      65+ susc_grp_1              1  0.3090145         3    1.509349</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     [0,5) susc_grp_1              1  0.4982318         1    1.648283</span></span>
+<span><span class="co">#&gt; 2    [5,18) susc_grp_1              1  0.7680627         1    1.648283</span></span>
+<span><span class="co">#&gt; 3   [18,40) susc_grp_1              1  0.6284178         1    1.648283</span></span>
+<span><span class="co">#&gt; 4   [40,65) susc_grp_1              1  0.5522003         1    1.648283</span></span>
+<span><span class="co">#&gt; 5       65+ susc_grp_1              1  0.3754966         1    1.648283</span></span>
+<span><span class="co">#&gt; 6     [0,5) susc_grp_1              1  0.3560572         2    1.406707</span></span>
+<span><span class="co">#&gt; 7    [5,18) susc_grp_1              1  0.6220901         2    1.406707</span></span>
+<span><span class="co">#&gt; 8   [18,40) susc_grp_1              1  0.4681303         2    1.406707</span></span>
+<span><span class="co">#&gt; 9   [40,65) susc_grp_1              1  0.3983759         2    1.406707</span></span>
+<span><span class="co">#&gt; 10      65+ susc_grp_1              1  0.2548320         2    1.406707</span></span>
+<span><span class="co">#&gt; 11    [0,5) susc_grp_1              1  0.3947446         3    1.465591</span></span>
+<span><span class="co">#&gt; 12   [5,18) susc_grp_1              1  0.6660555         3    1.465591</span></span>
+<span><span class="co">#&gt; 13  [18,40) susc_grp_1              1  0.5134804         3    1.465591</span></span>
+<span><span class="co">#&gt; 14  [40,65) susc_grp_1              1  0.4407450         3    1.465591</span></span>
+<span><span class="co">#&gt; 15      65+ susc_grp_1              1  0.2864586         3    1.465591</span></span></code></pre></div>
 </details><div class="section level3">
 <h3 id="visualise-uncertainty-in-final-size">Visualise uncertainty in final size<a class="anchor" aria-label="anchor" href="#visualise-uncertainty-in-final-size"></a>
 </h3>
