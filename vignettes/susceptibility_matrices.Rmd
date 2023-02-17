@@ -364,7 +364,7 @@ p_susceptibility
 ```
 
 ::: {.alert .alert-warning}
-**Recall** that each row of the demography-in-susceptibility matrix (`p_susceptibility`) must always sum to 1.0!
+**Recall** that in the **demography-in-susceptibility matrix** (`p_susceptibility`) each row must always sum to 1.0!
 :::
 
 ## References
