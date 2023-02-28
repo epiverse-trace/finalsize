@@ -134,6 +134,26 @@ p_susc_uniform <- matrix(
 )
 ```
 
+## Calculate the effective $R_0$
+
+The effective $R_0$ of the epidemic can often be different in a population with heterogeneous social contacts and heterogeneous susceptibility, both within and between groups.
+The effective $R_0$ is called $R_{\text{eff}}$ and can be calculated using the function `r_eff()`.
+
+```{r}
+# calculate the effective R0 using `r_eff()`
+r_eff(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susc_variable,
+  p_susceptibility = p_susc_uniform
+)
+```
+
+This calculation shows that the user-specified $R_0$ = 1.5 gives an $R_{\text{eff}}$ of $\approx$ 1.258 in this population, because not all individuals are fully susceptible to infection.
+
+## Calculate the final epidemic size
+
 We can compare the final size in a population with heterogeneous susceptibility against that of a population with a uniform, high susceptibility.
 
 ```{r}
