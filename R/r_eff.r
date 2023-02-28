@@ -45,7 +45,7 @@
 #' # p_susceptibility rows must sum to 1.0
 #' p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
 #'
-#' # using default arguments for `solver` and `control`
+#' # calculate R_effective
 #' r_eff(
 #'   r0 = r0,
 #'   contact_matrix = contact_matrix,
