@@ -104,7 +104,17 @@ p_susceptibility <- matrix(
 # R0 of the disease
 r0 <- 1.5 # assumed for pandemic influenza
 
-# Calculate the proportion of individuals infected
+# calculate the effective R0 using `r_eff()`
+r_eff(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
+)
+#> [1] 1.171758
+
+# Calculate the proportion of individuals infected in each age group
 final_size(
   r0 = r0,
   contact_matrix = contact_matrix,
