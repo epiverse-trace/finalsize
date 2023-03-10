@@ -4,7 +4,14 @@
 \alias{r0_to_lambda}
 \title{Calculate \eqn{R_0} from transmission rate (\eqn{\lambda})}
 \usage{
-r0_to_lambda(r0, contact_matrix, demography_vector, infectious_period = 1.8)
+r0_to_lambda(
+  r0,
+  contact_matrix,
+  demography_vector,
+  susceptibility,
+  p_susceptibility,
+  infectious_period = 1.8
+)
 }
 \arguments{
 \item{r0}{The basic reproductive number \eqn{R_0} of the infection.}
@@ -15,6 +22,14 @@ number of contacts in group \eqn{i} reported by participants in group \eqn{j}}
 \item{demography_vector}{Demography vector. Entry \eqn{v_{i}} gives
 proportion of total population in group \eqn{i}.}
 
+\item{susceptibility}{A matrix giving the susceptibility of individuals in
+demographic group \eqn{i} and risk group \eqn{k}.}
+
+\item{p_susceptibility}{A matrix giving the probability that an individual
+in demography group \eqn{i} is in risk (or susceptibility) group \eqn{k}.
+Each row represents the overall distribution of individuals in demographic
+group \eqn{i} across risk groups, and each row \emph{must sum to 1.0}.}
+
 \item{infectious_period}{Duration of the infectious period in days.
 Default value is 1.8 days.}
 }
@@ -24,13 +39,13 @@ Returns the transmission rate of the infection, also called the
 transmission rate (\eqn{\beta}).
 }
 \description{
-Uses the transmission rate (\eqn{\lambda}), contact matrix
-(\eqn{c}), population (\eqn{N}), and infectious period (\eqn{\gamma}) to
-calculate the R0 using the following equation.
-\deqn{\lambda max(EV(C)) \gamma}
+Uses the R0 (\eqn{R0}), contact matrix (\eqn{C}),
+population (\eqn{N}), and infectious period (\eqn{\gamma})
+to calculate the transmission rate using the following equation.
+\deqn{\lambda = R_0 / (\text{Max}(EV(C)) \gamma)}
 where \eqn{EV(C)} denotes the eigenvalues of the matrix \eqn{C} which is
-calculated from the contact matrix and the population
-(\eqn{C[i,j] = c[i,j] N[j]}).
+calculated from the social contacts matrix scaled by the number of
+individuals in each demographic and susceptibility group in the population.
 }
 \examples{
 # Get example dataset and prepare contact matrix and demography
@@ -40,12 +55,28 @@ demography_vector <- polymod_uk$demography_vector
 
 # define R0 similar to pandemic influenza
 r0 <- 1.5
-
 # define infectious period of 5 days
 infectious_period <- 5
+# define the number of age and susceptibility groups
+n_demo_grps <- length(demography_vector)
+n_risk_grps <- 3
+
+# In this example, all risk groups from all age groups are fully
+# susceptible
+susceptibility <- matrix(
+  data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+)
+
+p_susceptibility <- matrix(
+  data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+)
+# p_susceptibility rows must sum to 1.0
+p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
 
 r0_to_lambda(
-  r0, contact_matrix, demography_vector, infectious_period
+  r0, contact_matrix, demography_vector,
+  susceptibility, p_susceptibility,
+  infectious_period
 )
 
 }

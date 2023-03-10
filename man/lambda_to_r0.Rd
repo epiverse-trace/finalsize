@@ -8,6 +8,8 @@ lambda_to_r0(
   lambda,
   contact_matrix,
   demography_vector,
+  susceptibility,
+  p_susceptibility,
   infectious_period = 1.8
 )
 }
@@ -22,6 +24,14 @@ number of contacts in group \eqn{i} reported by participants in group \eqn{j}}
 \item{demography_vector}{Demography vector. Entry \eqn{v_{i}} gives
 proportion of total population in group \eqn{i}.}
 
+\item{susceptibility}{A matrix giving the susceptibility of individuals in
+demographic group \eqn{i} and risk group \eqn{k}.}
+
+\item{p_susceptibility}{A matrix giving the probability that an individual
+in demography group \eqn{i} is in risk (or susceptibility) group \eqn{k}.
+Each row represents the overall distribution of individuals in demographic
+group \eqn{i} across risk groups, and each row \emph{must sum to 1.0}.}
+
 \item{infectious_period}{Duration of the infectious period in days.
 Default value is 1.8 days.}
 }
@@ -29,13 +39,15 @@ Default value is 1.8 days.}
 Returns the \eqn{R_0} for the infection in the population.
 }
 \description{
-Uses the transmission rate (\eqn{\lambda}), contact matrix
-(\eqn{c}), population (\eqn{N}), and infectious period (\eqn{\gamma}) to
-calculate the R0 using the following equation.
-\deqn{\lambda max(EV(C)) \gamma}
+Uses the transmission rate (\eqn{\lambda}), social contacts
+matrix (\eqn{c}), demography (\eqn{N}), the distribution \eqn{P} of each
+demographic group \eqn{i} into susceptibility groups \eqn{S}, and the
+infectious period (\eqn{\gamma}) to calculate the \eqn{R0} using the
+following equation.
+\deqn{R_0 = \text{Max}(EV(C)) \times \lambda \gamma}
 where \eqn{EV(C)} denotes the eigenvalues of the matrix \eqn{C} which is
-calculated from the contact matrix and the population
-(\eqn{C[i,j] = c[i,j] N[j]}).
+calculated from the social contacts matrix scaled by the number of
+individuals in each demographic and susceptibility group in the population.
 }
 \examples{
 # Get example dataset and prepare contact matrix and demography
@@ -48,9 +60,26 @@ lambda <- 0.3
 
 # define infectious period of 5 days
 infectious_period <- 5
+# define the number of age and susceptibility groups
+n_demo_grps <- length(demography_vector)
+n_risk_grps <- 3
+
+# In this example, all risk groups from all age groups are fully
+# susceptible
+susceptibility <- matrix(
+  data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+)
+
+p_susceptibility <- matrix(
+  data = 1, nrow = n_demo_grps, ncol = n_risk_grps
+)
+# p_susceptibility rows must sum to 1.0
+p_susceptibility <- p_susceptibility / rowSums(p_susceptibility)
 
 lambda_to_r0(
-  lambda, contact_matrix, demography_vector, infectious_period
+  lambda, contact_matrix, demography_vector,
+  susceptibility, p_susceptibility,
+  infectious_period
 )
 
 }
