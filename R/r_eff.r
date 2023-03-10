@@ -12,9 +12,9 @@
 #' proportion of total population in group \eqn{i} (model will normalise
 #' if needed).
 #' @param susceptibility A matrix giving the susceptibility of individuals in
-#' demographic group \eqn{i} and risk group \eqn{j}.
+#' demographic group \eqn{i} and risk group \eqn{k}.
 #' @param p_susceptibility A matrix giving the probability that an individual
-#' in demography group \eqn{i} is in risk (or susceptibility) group \eqn{j}.
+#' in demography group \eqn{i} is in risk (or susceptibility) group \eqn{k}.
 #' Each row represents the overall distribution of individuals in demographic
 #' group \eqn{i} across risk groups, and each row *must sum to 1.0*.
 #'
@@ -59,6 +59,7 @@ r_eff <- function(r0,
                   susceptibility,
                   p_susceptibility) {
   # check arguments input
+  checkmate::assert_number(r0, lower = 0, finite = TRUE)
   stopifnot(
     "Error: contact matrix must be a matrix" =
       (is.matrix(contact_matrix)),
@@ -101,12 +102,6 @@ r_eff <- function(r0,
     X = matrix(1, nrow = n_susc_groups, ncol = n_susc_groups),
     Y = contact_matrix * r0
   )
-
-  # set contact_matrix values to zero if there are no contacts among ...
-  # demography groups, or if demography groups are empty
-  i_here <- demography_vector_spread == 0 | as.vector(susceptibility) == 0 |
-    rowSums(contact_matrix_spread) == 0
-  contact_matrix_spread[i_here, i_here] <- 0.0
 
   # process contact matrix in solver specific ways
   contact_matrix_spread <- t(
