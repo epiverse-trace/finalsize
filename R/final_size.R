@@ -34,9 +34,9 @@
 #' proportion of total population in group \eqn{i} (model will normalise
 #' if needed).
 #' @param susceptibility A matrix giving the susceptibility of individuals in
-#' demographic group \eqn{i} and risk group \eqn{j}.
+#' demographic group \eqn{i} and risk group \eqn{k}.
 #' @param p_susceptibility A matrix giving the probability that an individual
-#' in demography group \eqn{i} is in risk (or susceptibility) group \eqn{j}.
+#' in demography group \eqn{i} is in risk (or susceptibility) group \eqn{k}.
 #' Each row represents the overall distribution of individuals in demographic
 #' group \eqn{i} across risk groups, and each row *must sum to 1.0*.
 #' @param solver Which solver to use. Options are "iterative" (default) or
@@ -125,6 +125,7 @@ final_size <- function(r0,
                        solver = c("iterative", "newton"),
                        control = list()) {
   # check arguments input
+  checkmate::assert_number(r0, lower = 0, finite = TRUE)
   stopifnot(
     "Error: contact matrix must be a matrix" =
       (is.matrix(contact_matrix)),
