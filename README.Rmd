@@ -1,6 +1,6 @@
 ---
 output: github_document
-bibliography: vignettes/references.bib
+bibliography: vignettes/references.json
 link-citations: true
 ---
 
