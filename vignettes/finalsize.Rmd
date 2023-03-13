@@ -6,7 +6,7 @@ output:
     code_folding: show
 pkgdown:
   as_is: true
-bibliography: references.bib
+bibliography: references.json
 link-citations: true
 vignette: >
   %\VignetteIndexEntry{Calculating the final size of an epidemic}
