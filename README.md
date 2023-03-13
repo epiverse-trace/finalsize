@@ -201,8 +201,8 @@ SIR Epidemic Models.” *Mathematical Biosciences* 282 (December): 181–90.
 
 Kucharski, Adam J., Kin O. Kwok, Vivian W. I. Wei, Benjamin J. Cowling,
 Jonathan M. Read, Justin Lessler, Derek A. Cummings, and Steven Riley.
-2014. “The Contribution of Social Behaviour to the Transmission of
-Influenza A in a Human Population.” *PLoS Pathogens* 10 (6): e1004206.
+2014. “The contribution of social behaviour to the transmission of
+influenza A in a human population.” *PLoS pathogens* 10 (6): e1004206.
 <https://doi.org/10.1371/journal.ppat.1004206>.
 
 </div>
