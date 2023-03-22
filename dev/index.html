@@ -152,7 +152,17 @@
 <span><span class="co"># R0 of the disease</span></span>
 <span><span class="va">r0</span> <span class="op">&lt;-</span> <span class="fl">1.5</span> <span class="co"># assumed for pandemic influenza</span></span>
 <span></span>
-<span><span class="co"># Calculate the proportion of individuals infected</span></span>
+<span><span class="co"># calculate the effective R0 using `r_eff()`</span></span>
+<span><span class="fu"><a href="reference/r_eff.html">r_eff</a></span><span class="op">(</span></span>
+<span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
+<span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
+<span>  susceptibility <span class="op">=</span> <span class="va">susceptibility</span>,</span>
+<span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.171758</span></span>
+<span></span>
+<span><span class="co"># Calculate the proportion of individuals infected in each age group</span></span>
 <span><span class="fu"><a href="reference/final_size.html">final_size</a></span><span class="op">(</span></span>
 <span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
 <span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
@@ -219,7 +229,7 @@ Andreasen, Viggo. 2011. “The Final Size of an Epidemic and Its Relation to th
 Bidari, Subekshya, Xinying Chen, Daniel Peters, Dylanger Pittman, and Péter L. Simon. 2016. “Solvability of Implicit Final Size Equations for SIR Epidemic Models.” <em>Mathematical Biosciences</em> 282 (December): 181–90. <a href="https://doi.org/10.1016/j.mbs.2016.10.012" class="external-link uri">https://doi.org/10.1016/j.mbs.2016.10.012</a>.
 </div>
 <div id="ref-kucharski2014" class="csl-entry">
-Kucharski, Adam J., Kin O. Kwok, Vivian W. I. Wei, Benjamin J. Cowling, Jonathan M. Read, Justin Lessler, Derek A. Cummings, and Steven Riley. 2014. “The Contribution of Social Behaviour to the Transmission of Influenza A in a Human Population.” <em>PLoS Pathogens</em> 10 (6): e1004206. <a href="https://doi.org/10.1371/journal.ppat.1004206" class="external-link uri">https://doi.org/10.1371/journal.ppat.1004206</a>.
+Kucharski, Adam J., Kin O. Kwok, Vivian W. I. Wei, Benjamin J. Cowling, Jonathan M. Read, Justin Lessler, Derek A. Cummings, and Steven Riley. 2014. “The contribution of social behaviour to the transmission of influenza A in a human population.” <em>PLoS pathogens</em> 10 (6): e1004206. <a href="https://doi.org/10.1371/journal.ppat.1004206" class="external-link uri">https://doi.org/10.1371/journal.ppat.1004206</a>.
 </div>
 <div id="ref-miller2012" class="csl-entry">
 Miller, Joel C. 2012. “A Note on the Derivation of Epidemic Final Sizes.” <em>Bulletin of Mathematical Biology</em> 74 (9): 2125–41. <a href="https://doi.org/10.1007/s11538-012-9749-6" class="external-link uri">https://doi.org/10.1007/s11538-012-9749-6</a>.

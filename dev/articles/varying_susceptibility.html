@@ -199,8 +199,30 @@ In this example, susceptibility to infection increases with age.</p>
 <span>  nrow <span class="op">=</span> <span class="va">n_demo_grps</span>,</span>
 <span>  ncol <span class="op">=</span> <span class="va">n_susc_groups</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-</details><p>We can compare the final size in a population with heterogeneous susceptibility against that of a population with a uniform, high susceptibility.</p>
+</details>
+</div>
+<div class="section level2">
+<h2 id="calculate-the-effective-r_0">Calculate the effective <span class="math inline">\(R_0\)</span><a class="anchor" aria-label="anchor" href="#calculate-the-effective-r_0"></a>
+</h2>
+<p>The effective <span class="math inline">\(R_0\)</span> of the epidemic can often be different in a population with heterogeneous social contacts and heterogeneous susceptibility, both within and between groups.
+The effective <span class="math inline">\(R_0\)</span> is called <span class="math inline">\(R_{\text{eff}}\)</span> and can be calculated using the function <code><a href="../reference/r_eff.html">r_eff()</a></code>.</p>
 <details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># calculate the effective R0 using `r_eff()`</span></span>
+<span><span class="fu"><a href="../reference/r_eff.html">r_eff</a></span><span class="op">(</span></span>
+<span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
+<span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
+<span>  susceptibility <span class="op">=</span> <span class="va">susc_variable</span>,</span>
+<span>  p_susceptibility <span class="op">=</span> <span class="va">p_susc_uniform</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.25815</span></span></code></pre></div>
+</details><p>This calculation shows that the user-specified <span class="math inline">\(R_0\)</span> = 1.5 gives an <span class="math inline">\(R_{\text{eff}}\)</span> of <span class="math inline">\(\approx\)</span> 1.258 in this population, because not all individuals are fully susceptible to infection.</p>
+</div>
+<div class="section level2">
+<h2 id="calculate-the-final-epidemic-size">Calculate the final epidemic size<a class="anchor" aria-label="anchor" href="#calculate-the-final-epidemic-size"></a>
+</h2>
+<p>We can compare the final size in a population with heterogeneous susceptibility against that of a population with a uniform, high susceptibility.</p>
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run final_size with default solvers and control options</span></span>
 <span><span class="co"># final size with heterogeneous susceptibility</span></span>
 <span><span class="va">final_size_heterog</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/final_size.html">final_size</a></span><span class="op">(</span></span>
@@ -210,7 +232,7 @@ In this example, susceptibility to infection increases with age.</p>
 <span>  susceptibility <span class="op">=</span> <span class="va">susc_variable</span>,</span>
 <span>  p_susceptibility <span class="op">=</span> <span class="va">p_susc_uniform</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-</details><details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+</details><details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># prepare uniform susceptibility matrix</span></span>
 <span><span class="va">susc_uniform</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1.0</span>, nrow <span class="op">=</span> <span class="va">n_demo_grps</span>, ncol <span class="op">=</span> <span class="va">n_susc_groups</span><span class="op">)</span></span>
 <span></span>
@@ -223,7 +245,7 @@ In this example, susceptibility to infection increases with age.</p>
 <span>  p_susceptibility <span class="op">=</span> <span class="va">p_susc_uniform</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </details><p>Visualise the effect of modelling age-dependent susceptibility against uniform susceptibility for all age groups.</p>
-<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># assign scenario name and join data</span></span>
 <span><span class="va">final_size_heterog</span><span class="op">$</span><span class="va">scenario</span> <span class="op">&lt;-</span> <span class="st">"heterogeneous"</span></span>
 <span><span class="va">final_size_uniform</span><span class="op">$</span><span class="va">scenario</span> <span class="op">&lt;-</span> <span class="st">"uniform"</span></span>
@@ -253,7 +275,7 @@ In this example, susceptibility to infection increases with age.</p>
 <span><span class="co">#&gt; 8   [18,40) susc_grp_1           1.00  0.5379381       uniform</span></span>
 <span><span class="co">#&gt; 9   [40,65) susc_grp_1           1.00  0.4639496       uniform</span></span>
 <span><span class="co">#&gt; 10      65+ susc_grp_1           1.00  0.3042623       uniform</span></span></code></pre></div>
-</details><details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+</details><details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">final_size_data</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>
@@ -293,8 +315,8 @@ In this example, susceptibility to infection increases with age.</p>
 <span>    y <span class="op">=</span> <span class="st">"% Infected"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 </details><div class="figure">
-<span style="display:block;" id="fig:unnamed-chunk-9"></span>
-<img src="varying_susceptibility_files/figure-html/unnamed-chunk-9-1.png" alt="Final sizes of epidemics in populations wherein susceptibility to the infection is either uniform (green), or heterogeneous (purple), with older individuals more susceptible to the infection."><p class="caption">
+<span style="display:block;" id="fig:unnamed-chunk-10"></span>
+<img src="varying_susceptibility_files/figure-html/unnamed-chunk-10-1.png" alt="Final sizes of epidemics in populations wherein susceptibility to the infection is either uniform (green), or heterogeneous (purple), with older individuals more susceptible to the infection."><p class="caption">
 Figure 1: Final sizes of epidemics in populations wherein susceptibility to the infection is either uniform (green), or heterogeneous (purple), with older individuals more susceptible to the infection.
 </p>
 </div>
@@ -310,11 +332,11 @@ Figure 1: Final sizes of epidemics in populations wherein susceptibility to the 
 <p>This example considers a scenario in which susceptibility to infection varies within and between age groups.
 Immunisation against infection through an intervention campaign is a common cause of within-age group variation in susceptibility, and this example can be thought of as examining the effect of vaccination.</p>
 <p>The effect of immunisation on susceptibility can be modelled as a reduction of the initial susceptibility of each age group. This is done by adding a column to the susceptibility matrix, with lower values than the first column.</p>
-<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># immunisation effect</span></span>
 <span><span class="va">immunisation_effect</span> <span class="op">&lt;-</span> <span class="fl">0.25</span></span></code></pre></div>
 </details><p>This example considers a modest 25% reduction in susceptibility due to vaccination.</p>
-<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># model an immunised group with a 25% lower susceptibility</span></span>
 <span><span class="va">susc_immunised</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span></span>
 <span>  <span class="va">susc_variable</span>,</span>
@@ -336,7 +358,7 @@ Immunisation against infection through an intervention campaign is a common caus
 <p>For within-group differences in susceptibility, such as due to immunisation, users could obtain this information from <a href="https://coronavirus.data.gov.uk/details/vaccinations?areaType=nation%26areaName=England#card-vaccination_uptake_by_vaccination_date_age_demographics" class="external-link">age-specific vaccination uptake statistics from national governments (here, the UK)</a>.
 When antibody response decays are known for an immunisation course <span class="citation">(<a href="#ref-iyer2020" role="doc-biblioref">Iyer et al. 2020</a>)</span>, more detailed statistics on the <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/articles/coronaviruscovid19latestinsights/vaccines" class="external-link">percentage of people vaccinated in the preceding few months only (here, in the UK)</a>, may be more informative.</p>
 </div>
-<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># immunisation rate is uniform across age groups</span></span>
 <span><span class="va">immunisation_rate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="va">n_demo_grps</span><span class="op">)</span></span>
 <span></span>
@@ -348,7 +370,7 @@ When antibody response decays are known for an immunisation course <span class="
 </details><div class="alert alert-warning">
 <p><strong>Recall</strong> that each row of the demography-susceptibility distribution matrix must always sum to 1.0!</p>
 </div>
-<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># we run final size over all r0 values</span></span>
 <span><span class="va">final_size_immunised</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/final_size.html">final_size</a></span><span class="op">(</span></span>
 <span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
@@ -358,7 +380,7 @@ When antibody response decays are known for an immunisation course <span class="
 <span>  p_susceptibility <span class="op">=</span> <span class="va">p_susc_immunised</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 </details><p>The effect of immunisation (or some other reduction in susceptibility) can be visualised by comparing the proportion of the immunised and un-immunised groups that are infected.</p>
-<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># add scenario identifier</span></span>
 <span><span class="va">final_size_immunised</span><span class="op">$</span><span class="va">scenario</span> <span class="op">&lt;-</span> <span class="st">"immunisation"</span></span>
 <span></span>
@@ -387,7 +409,7 @@ When antibody response decays are known for an immunisation course <span class="
 <span><span class="co">#&gt; 9   [40,65)    Immunised         0.6750 0.11609844 immunisation</span></span>
 <span><span class="co">#&gt; 10      65+    Immunised         0.7500 0.07656251 immunisation</span></span></code></pre></div>
 </details><p>Compare scenarios in which susceptibility is heterogeneous between groups, against the immunisation scenario in which susceptibility also varies within groups.</p>
-<details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">final_size_immunised</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html" class="external-link">geom_col</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">final_size_heterog</span>,</span>
@@ -470,8 +492,8 @@ When antibody response decays are known for an immunisation course <span class="
 <span>    fill <span class="op">=</span> <span class="st">"Immunisation\nscenario"</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
 </details><div class="figure">
-<span style="display:block;" id="fig:unnamed-chunk-15"></span>
-<img src="varying_susceptibility_files/figure-html/unnamed-chunk-15-1.png" alt="Final size of an SIR epidemic with $R_0$ = 1.5, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%."><p class="caption">
+<span style="display:block;" id="fig:unnamed-chunk-16"></span>
+<img src="varying_susceptibility_files/figure-html/unnamed-chunk-16-1.png" alt="Final size of an SIR epidemic with $R_0$ = 1.5, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%."><p class="caption">
 Figure 2: Final size of an SIR epidemic with <span class="math inline">\(R_0\)</span> = 1.5, in a population wherein 50% of each age group is immunised against the infection. The immunisation is assumed to reduce the initial susceptibility of each age group by 25%. This leads to both within- and between-group heterogeneity in susceptibility. Vaccinating even 50% of each age group can substantially reduce the epidemic final size in comparison with a scenario in which there is no immunisation (grey). Note that the final sizes in this figure are all below 50%.
 </p>
 </div>
@@ -482,7 +504,7 @@ Figure 2: Final size of an SIR epidemic with <span class="math inline">\(R_0\)</
 <p><em>finalsize</em> can also account for heterogeneous susceptibilities without having to include heterogeneity in social contact patterns. This may be useful when calculating the final epidemic size without a good estimate of social contact patterns available.</p>
 <p>This is done in a similar way as in the <a href="finalsize.html">“Get started”</a> vignette, but with <code>susceptibility</code> and <code>p_susceptibility</code> passed as <span class="math inline">\(N\)</span>-column matrices, referring to the susceptibilities of the <span class="math inline">\(N\)</span> susceptibility groups, and the proportions of the population that are in these groups, respectively.</p>
 <p>This example considers pandemic influenza with an <span class="math inline">\(R_0\)</span> of 1.5, affecting the U.K population of 67 million which is assumed to mix uniformly, but which has two distinct susceptibility groups, with susceptibility values of 1.0 (70% of the population), and 0.7 (30% of the population).</p>
-<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># define r0</span></span>
 <span><span class="va">r0</span> <span class="op">&lt;-</span> <span class="fl">1.5</span></span>
 <span></span>
