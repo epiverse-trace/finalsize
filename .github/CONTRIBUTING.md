@@ -6,11 +6,11 @@ This outlines how to propose a change to finalsize.
 
 If you want to make a change, it's a good idea to first file an issue and make sure someone from the team agrees that it’s needed.
 If you’ve found a bug, please file an issue that illustrates the bug with a minimal 
-[reprex](https://www.tidyverse.org/help/#reprex) (this will also help you write a unit test, if needed). See [bug report template](../.github/ISSUE_TEMPLATE/bug_report.md). If you have a feature request see [feature request](../.github/ISSUE_TEMPLATE/feature_request.md).
+[reprex](https://www.tidyverse.org/help/#reprex) (this will also help you write a unit test, if needed). See [bug report template](https://github.com/epiverse-trace/finalsize/issues/new?assignees=&labels=&template=bug_report.md&title=). If you have a feature request see [feature request](https://github.com/epiverse-trace/finalsize/issues/new?assignees=&labels=&template=feature_request.md&title=).
 
 ### Pull request process
 
-See [pull request template](../.github/PULL_REQUEST_TEMPLATE/pull_request_template.md)
+See [pull request template](https://github.com/epiverse-trace/finalsize/blob/main/.github/PULL_REQUEST_TEMPLATE/pull_request_template.md)
 
 *   Fork the package and clone onto your computer. If you haven't done this before, we recommend using `usethis::create_from_github("epiverse-trace/finalsize", fork = TRUE)`.
 
