@@ -5,6 +5,9 @@
 
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/epiverse-trace/finalsize/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/epiverse-trace/finalsize/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/epiverse-trace/finalsize/branch/main/graph/badge.svg)](https://app.codecov.io/gh/epiverse-trace/finalsize?branch=main)
@@ -39,7 +42,7 @@ algebra, and is developed at the [Centre for the Mathematical Modelling
 of Infectious
 Diseases](https://www.lshtm.ac.uk/research/centres/centre-mathematical-modelling-infectious-diseases)
 at the London School of Hygiene and Tropical Medicine as part of the
-[Epiverse Initiative](https://data.org/initiatives/epiverse/).
+[Epiverse-TRACE](https://data.org/initiatives/epiverse/).
 
 ## Installation
 
