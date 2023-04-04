@@ -63,7 +63,10 @@ Suggests:
     ggplot2,
     ggtext,
     rmarkdown,
-    usethis
+    usethis,
+    forcats,
+    purrr,
+    tidyr
 Config/testthat/edition: 3
 SystemRequirements: C++14
 Encoding: UTF-8
