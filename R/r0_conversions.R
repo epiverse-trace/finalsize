@@ -5,7 +5,7 @@
 #' demographic group \eqn{i} into susceptibility groups \eqn{S}, and the
 #' infectious period (\eqn{\gamma}) to calculate the \eqn{R0} using the
 #' following equation.
-#' \deqn{R_0 = \text{Max}(EV(C)) \times \lambda \gamma}
+#' \deqn{R_0 = {Max}(EV(C)) \times \lambda \gamma}
 #' where \eqn{EV(C)} denotes the eigenvalues of the matrix \eqn{C} which is
 #' calculated from the social contacts matrix scaled by the number of
 #' individuals in each demographic and susceptibility group in the population.
@@ -114,7 +114,7 @@ lambda_to_r0 <- function(lambda, contact_matrix, demography_vector,
 #' @description Uses the R0 (\eqn{R0}), contact matrix (\eqn{C}),
 #' population (\eqn{N}), and infectious period (\eqn{\gamma})
 #' to calculate the transmission rate using the following equation.
-#' \deqn{\lambda = R_0 / (\text{Max}(EV(C)) \gamma)}
+#' \deqn{\lambda = R_0 / ({Max}(EV(C)) \gamma)}
 #' where \eqn{EV(C)} denotes the eigenvalues of the matrix \eqn{C} which is
 #' calculated from the social contacts matrix scaled by the number of
 #' individuals in each demographic and susceptibility group in the population.
