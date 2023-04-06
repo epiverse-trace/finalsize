@@ -1,0 +1,326 @@
+---
+title: "Comparison with a compartmental model"
+output:
+  bookdown::html_vignette2:
+    fig_caption: yes
+    code_folding: show
+pkgdown:
+  as_is: true
+vignette: >
+  %\VignetteIndexEntry{Comparison with a compartmental model}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+The final size equation is derived analytically from a compartmental epidemiological model, the susceptible-infectious-recovered (SIR) model. Yet it can only be solved numerically --- thus with perfect solvers the final epidemic size from an SIR model and a final size calculation should be the same.
+
+This vignette compares the final epidemic sizes from a simple SIR model with those estimated using `finalsize::final_size()`.
+
+::: {.alert .alert-warning}
+**New to _finalsize_?** It may help to read the ["Get started"](finalsize.html) vignette first!
+:::
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE,
+  dpi = 300
+)
+```
+
+```{r setup, class.source = 'fold-hide'}
+library(finalsize)
+```
+
+## SIR model definition
+
+First, define a simple SIR model and a helper function to replicate the contact matrix by rows and columns. Here, the model is defined as an iteration of transitions between the epidemiological compartments. These transitions form a system of ordinary differential equations (ODEs), whose solution through time could also have been obtained by using a solver such as `deSolve::lsoda()`.
+
+::: {.alert .alert-primary}
+**Interested in compartmental modelling to obtain timeseries of epidemic outcomes?**
+
+The [_epidemics_ package](https://epiverse-trace.github.io/epidemics/) might be useful!
+:::
+
+```{r class.source = 'fold-hide'}
+# Replicate the contact matrix
+repmat <- function(X, m, n) {
+  mx <- dim(X)[1]
+  nx <- dim(X)[2]
+  matrix(t(matrix(X, mx, nx * n)), mx * m, nx * n, byrow = TRUE)
+}
+
+# Calculate the proportion of individuals infected
+final_size_r <- function(r0, contact_matrix,
+                         demography_vector, susceptibility, p_susceptibility) {
+  # check p_susceptibility
+  stopifnot(all(rowSums(p_susceptibility) == 1))
+
+  p_susc <- as.vector(p_susceptibility)
+  susc <- as.vector(susceptibility)
+  demo_v <- rep(demography_vector, ncol(p_susceptibility)) * p_susc
+  nsteps <- 10000
+
+  # epidemiological parameters
+  h <- 0.1
+  beta <- r0
+  gamma <- 1
+
+  # initial conditions
+  I <- 1e-8 * demo_v
+  S <- demo_v - I
+  R <- 0
+
+  # prepare contact matrix
+  m <- repmat(contact_matrix, ncol(p_susceptibility), ncol(p_susceptibility))
+
+  # multiply contact matrix by susceptibility
+  m <- m * susc
+
+  # iterate over compartmental transitions
+  for (i in seq_len(nsteps)) {
+    force <- (m %*% I) * S * h * beta
+    S <- S - force
+    g <- I * gamma * h
+    I <- I + force - g
+    R <- R + g
+  }
+
+  # return proportion of individuals recovered
+  as.vector(R / demo_v)
+}
+```
+
+Prepare $R_0$.
+
+```{r}
+r0 <- 2.0
+```
+
+## Final size in a uniformly mixing population
+
+Here, the assumption is of a uniformly mixing population where social contacts do not differ among demographic groups (here, age groups).
+
+```{r}
+# estimated population size for the UK is 67 million
+population_size <- 67e6
+
+# estimate using finalsize::final_size
+final_size_finalsize <- final_size(
+  r0 = r0,
+  contact_matrix = matrix(1) / population_size,
+  demography_vector = population_size,
+  susceptibility = matrix(1),
+  p_susceptibility = matrix(1),
+  solver = "newton"
+)
+
+# estimate from SIR model
+final_size_sir <- final_size_r(
+  r0 = r0,
+  contact_matrix = 0.99 * matrix(1) / population_size,
+  demography_vector = population_size,
+  susceptibility = matrix(1),
+  p_susceptibility = matrix(1)
+)
+
+# View the estimates
+final_size_finalsize
+
+final_size_sir
+```
+
+There is a small discrepancy between the final epidemics sizes returned by `final_size()` and the SIR model. One quick check to identify the source of the error would be to calculate the difference between the two sides of the finalsize equation, i.e. $x$, the estimated final size, against $1 - e^{-R_0x}$ (for a difference of $x - (1 - e^{-R_0x})$) to see which of the final size estimates is incorrect --- a small error, below the error tolerance value ($1^{-6}$), would indicate that the method being checked is more or less correct, while a larger error would suggest the method is not correct.
+
+This can be written as a temporary function.
+
+```{r}
+# function to check error in final size estimates
+final_size_error <- function(x, r0, tolerance = 1e-6) {
+  error <- abs(x - (1.0 - exp(-r0 * x)))
+  if (any(error > tolerance)) {
+    print("Final size estimate error is greater than tolerance!")
+  }
+  # return error
+  error
+}
+```
+
+```{r}
+# error for estimate using finalsize::final_size()
+final_size_error(final_size_finalsize$p_infected, r0)
+
+# error for estimate from SIR model
+final_size_error(final_size_sir, r0)
+```
+
+This suggests that it is the SIR model which makes a small error in the final size estimate, while `finalsize::final_size()` provides an estimate that is within the specified solver tolerance ($1^{-6}$).
+
+## Final size with heterogeneous mixing
+
+Here, the comparison considers scenarios in which social contacts vary by demographic groups, here, age groups. See the vignette on ["Modelling heterogeneous social contacts"](varying_contacts.html) for more guidance on how to implement such scenarios.
+
+### Prepare population data {-}
+
+First, prepare the population data using the dataset provided with _finalsize_. This includes preparing the population's age-specific contact matrix and demography distribution vector, as well as the susceptibility and demography-in-susceptibility distribution vectors. See the ["Guide to constructing susceptibility matrices"](susceptibility_matrices.html) for help understanding this latter step, and see the the vignette on ["Modelling heterogeneous susceptibility"](varying_susceptibility.html) for worked out examples.
+
+```{r class.source = 'fold-hide'}
+# Load example POLYMOD data included with the package
+data(polymod_uk)
+
+# Define contact matrix (entry {ij} is contacts in group i
+# reported by group j)
+contact_matrix <- polymod_uk$contact_matrix
+
+# Define population in each age group
+demography_vector <- polymod_uk$demography_vector
+```
+
+Examine the contact matrix and demography vector.
+
+```{r}
+contact_matrix
+
+demography_vector
+```
+
+### Susceptibility varies between groups
+
+In this scenario, susceptibility to infection only varies between groups, with older age groups (20 and above) only half as susceptible as individuals aged (0 -- 19).
+
+```{r}
+# Define susceptibility of each group
+susceptibility <- matrix(
+  data = c(1.0, 0.5, 0.5),
+  nrow = length(demography_vector),
+  ncol = 1
+)
+
+# Assume uniform susceptibility within age groups
+p_susceptibility <- matrix(
+  data = 1.0,
+  nrow = length(demography_vector),
+  ncol = 1
+)
+```
+
+Examine the final size estimates.
+
+```{r}
+# from {finalsize} using finalsize::final_size
+final_size(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility,
+  solver = "newton"
+)
+
+# using SIR model
+final_size_r(
+  r0 = r0,
+  contact_matrix = contact_matrix * 0.99,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
+)
+```
+
+The final size estimates are very close, and the difference does not fundamentally alter our understanding of the potential outcomes of an epidemic in this population.
+
+### Susceptibility varies within groups in different proportions
+
+In this scenario, susceptibility to infection varies within age groups, with a fraction of each age group much less susceptible. Additionally, the proportion of individuals with low susceptibility varies between groups, with individuals aged (0 -- 19) much more likely to have low susceptibility than older age groups.
+
+```{r}
+# Define susceptibility of each group
+# Here
+susceptibility <- matrix(
+  c(1.0, 0.1),
+  nrow = length(demography_vector), ncol = 2,
+  byrow = TRUE
+)
+
+# view the susceptibility matrix
+susceptibility
+
+# Assume variation in susceptibility within age groups
+# A higher proportion of 0 -- 20s are in the lower susceptibility group
+p_susceptibility <- matrix(1, nrow = length(demography_vector), ncol = 2)
+p_susceptibility[, 2] <- c(0.6, 0.5, 0.3)
+p_susceptibility[, 1] <- 1 - p_susceptibility[, 2]
+
+# view p_susceptibility
+p_susceptibility
+```
+
+Examine the final size estimates for this scenario.
+
+```{r}
+# estimate group-specific final sizes using finalsize::final_size
+final_size(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
+)
+
+# estimate group-specific final sizes from the SIR model
+final_size_r(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
+)
+```
+
+Here too, the final size estimates are very similar, and provide essentially the same understanding of the potential outcomes of an epidemic in this population.
+
+### Complete immunity to infection in part of the population
+
+In this scenario, a fraction of each age group is completely immune to infection. Additionally, individuals aged (0 -- 19) are much more likely to have complete immunity than older age groups.
+
+```{r}
+# Define susceptibility of each group
+susceptibility <- matrix(1, nrow = length(demography_vector), ncol = 2)
+susceptibility[, 2] <- 0.0
+
+# view susceptibility
+susceptibility
+
+# Assume that some proportion are completely immune
+# complete immunity is more common among younger individuals
+p_susceptibility <- matrix(1, nrow = length(demography_vector), ncol = 2)
+p_susceptibility[, 2] <- c(0.6, 0.5, 0.3)
+p_susceptibility[, 1] <- 1 - p_susceptibility[, 2]
+
+# view p_susceptibility
+p_susceptibility
+```
+
+```{r}
+final_size(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
+)
+
+final_size_r(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
+)
+```
+
+Here, the method from `finalsize::final_size()` correctly provides estimates of 0.0 for the susceptibility group (in each age group) that is completely immune, while the SIR model method estimates that a very small fraction of the completely immune groups are still infected. This discrepancy is due to the assumption of initial conditions for the SIR model, wherein the same fraction ($1^{-8}$) are assumed to be initially infected.
