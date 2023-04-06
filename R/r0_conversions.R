@@ -3,7 +3,7 @@
 #' @description Uses the transmission rate (\eqn{\lambda}), social contacts
 #' matrix (\eqn{c}), demography (\eqn{N}), the distribution \eqn{P} of each
 #' demographic group \eqn{i} into susceptibility groups \eqn{S}, and the
-#' infectious period (\eqn{\gamma}) to calculate the \eqn{R0} using the
+#' infectious period (\eqn{\gamma}) to calculate the \eqn{R_0} using the
 #' following equation.
 #' \deqn{R_0 = {Max}(EV(C)) \times \lambda \gamma}
 #' where \eqn{EV(C)} denotes the eigenvalues of the matrix \eqn{C} which is
