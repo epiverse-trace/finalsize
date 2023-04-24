@@ -39,6 +39,13 @@ Authors@R:
             comment = c(ORCID = "https://orcid.org/0000-0003-3796-2097")
         ),
         person(
+            given = "Andree",
+            family = "Valle-Campos",
+            role = c("ctb"),
+            email = "andree.valle-campos@lshtm.ac.uk",
+            comment = c(ORCID = "https://orcid.org/0000-0002-7779-481X")
+        ),
+        person(
             given = "Joshua W.",
             family = "Lambert",
             role = c("rev"),
