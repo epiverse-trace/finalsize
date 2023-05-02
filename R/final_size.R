@@ -50,7 +50,8 @@
 #' demography group and susceptibility group combination.
 #' If the demography groups and susceptibility groups are named, these
 #' names are added to relevant columns. If the groups are not named, synthetic
-#' names are added (e.g. `demo_grp_1`, `susc_grp_1`).
+#' names are added of the form `demo_grp_<i>`, for each \eqn{i-\text{th}}
+#' demographic group.
 #' @export
 #' @examples
 #' # load example POLYMOD data included in the package
@@ -130,7 +131,7 @@ final_size <- function(r0,
     "Error: contact matrix must be a matrix" =
       (is.matrix(contact_matrix)),
     "Error: demography vector must be a numeric vector" =
-      (is.vector(demography_vector, mode = "numeric"))
+      (is.vector(demography_vector, mode = "numeric")),
     "Error: p_susceptibility must be a matrix" =
       (is.matrix(p_susceptibility)),
     "Error: susceptibility must be a matrix" =
@@ -149,7 +150,12 @@ final_size <- function(r0,
       ),
     "Error: contact matrix must have a maximum real eigenvalue of 1.0" =
       (
-        abs(max(Re(eigen(contact_matrix * demography_vector, only.values = TRUE)$values) - 1.0)) <
+        abs(
+          max(Re(eigen(
+            contact_matrix * demography_vector,
+            only.values = TRUE
+          )$values) - 1.0)
+        ) <
           1e-6
       ),
     "Error: control list names can only be: 'iterations', 'tolerance',
