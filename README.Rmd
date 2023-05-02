@@ -13,25 +13,25 @@ knitr::opts_chunk$set(
 )
 ```
 
-# _finalsize_: Calculate the final size of an epidemic <img src="man/figures/logo.png" align="right" width="130"/>
+# _{{ packagename }}_: Calculate the final size of an epidemic <img src="man/figures/logo.png" align="right" width="130"/>
 
 <!-- badges: start -->
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check](https://github.com/epiverse-trace/finalsize/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/epiverse-trace/finalsize/actions/workflows/R-CMD-check.yaml)
-[![Codecov test coverage](https://codecov.io/gh/epiverse-trace/finalsize/branch/main/graph/badge.svg)](https://app.codecov.io/gh/epiverse-trace/finalsize?branch=main)
+[![R-CMD-check](https://github.com/{{ gh_repo }}/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/{{ gh_repo }}/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/{{ gh_repo }}/branch/main/graph/badge.svg)](https://app.codecov.io/gh/{{ gh_repo }}?branch=main)
 [![CRAN status](https://www.r-pkg.org/badges/version/finalsize)](https://CRAN.R-project.org/package=finalsize)
 <!-- badges: end -->
 
-_finalsize_ is an R package to calculate the final size of a SIR epidemic in populations with heterogeneity in social contacts and infection susceptibility.
+_{{ packagename }}_ is an R package to calculate the final size of a SIR epidemic in populations with heterogeneity in social contacts and infection susceptibility.
 
-_finalsize_ provides estimates for the total proportion of a population infected over the course of an epidemic, and can account for a demographic distribution (such as age groups) and demography-specific contact patterns, as well as for heterogeneous susceptibility to infection between groups (such as due to age-group specific immune responses) and within groups (such as due to immunisation programs).
+_{{ packagename }}_ provides estimates for the total proportion of a population infected over the course of an epidemic, and can account for a demographic distribution (such as age groups) and demography-specific contact patterns, as well as for heterogeneous susceptibility to infection between groups (such as due to age-group specific immune responses) and within groups (such as due to immunisation programs).
 
-_finalsize_ implements methods outlined in @andreasen2011, @miller2012, @kucharski2014, and @bidari2016.
+_{{ packagename }}_ implements methods outlined in @andreasen2011, @miller2012, @kucharski2014, and @bidari2016.
 
-_finalsize_ can help provide rough estimates of the effectiveness of pharmaceutical interventions in the form of immunisation programmes, or the effect of naturally acquired immunity through previous infection (see the vignette).
+_{{ packagename }}_ can help provide rough estimates of the effectiveness of pharmaceutical interventions in the form of immunisation programmes, or the effect of naturally acquired immunity through previous infection (see the vignette).
 
-_finalsize_ relies on [Eigen](https://gitlab.com/libeigen/eigen) via [RcppEigen](https://github.com/RcppCore/RcppEigen) for fast matrix algebra, and is developed at the [Centre for the Mathematical Modelling of Infectious Diseases](https://www.lshtm.ac.uk/research/centres/centre-mathematical-modelling-infectious-diseases) at the London School of Hygiene and Tropical Medicine as part of the [Epiverse-TRACE](https://data.org/initiatives/epiverse/).
+_{{ packagename }}_ relies on [Eigen](https://gitlab.com/libeigen/eigen) via [RcppEigen](https://github.com/RcppCore/RcppEigen) for fast matrix algebra, and is developed at the [Centre for the Mathematical Modelling of Infectious Diseases](https://www.lshtm.ac.uk/research/centres/centre-mathematical-modelling-infectious-diseases) at the London School of Hygiene and Tropical Medicine as part of the [Epiverse-TRACE](https://data.org/initiatives/epiverse/).
 
 ## Installation
 
@@ -43,18 +43,18 @@ install.packages("finalsize")
 
 ### Development version
 
-The current development version of _finalsize_ can be installed from [Github](https://github.com/epiverse-trace/finalsize) using the `remotes` package.
+The current development version of _{{ packagename }}_ can be installed from [Github](https://github.com/{{ gh_repo }}) using the `remotes` package.
 The development version documentation can be found [here](https://epiverse-trace.github.io/finalsize/dev/).
 
 ```r
-# check whether {remotes} is installed
-if(!require("remotes")) install.packages("remotes")
-remotes::install_github("epiverse-trace/finalsize")
+if(!require("pak")) install.packages("pak")
+pak::pak("{{ gh_repo }}")
 ```
 
 ## Quick start
 
-_finalsize_ provides the single function `final_size()`, to calculate the final size of an epidemic.
+The main function in _{{ packagename }}_ is `final_size()`, which calculates the final size of an epidemic.
+Helper functions included in _{{ packagename }}_ can calculate the effective $R_0$, called $R_{eff}$, from demographic and susceptibility distribution data, while other helpers can convert between $R_0$ and the transmission rate $\lambda$.
 
 Here, an example using social contact data from the _socialmixr_ package investigates the final size of an epidemic when the disease has an R<sub>0</sub> of 1.5, and given three age groups of interest --- 0-19, 20-39 and 40+.
 The under-20 age group is assumed to be fully susceptible to the disease, whereas individuals aged over 20 are only half as susceptible as those under 20.
@@ -110,19 +110,19 @@ final_size(
 
 ## Package vignettes
 
-More details on how to use _finalsize_ can be found in the [online documentation as package vignettes](https://epiverse-trace.github.io/finalsize/), under "Articles".
+More details on how to use _{{ packagename }}_ can be found in the [online documentation as package vignettes](https://epiverse-trace.github.io/finalsize/), under "Articles".
 
-## Help 
+## Help
 
-To report a bug please open an [issue](https://github.com/epiverse-trace/finalsize/issues/new/choose).
+To report a bug please open an [issue](https://github.com/{{ gh_repo }}/issues/new/choose).
 
 ## Contribute
 
-Contributions to _finalsize_ are welcomed. Please follow the [package contributing guide](https://github.com/epiverse-trace/finalsize/blob/main/.github/CONTRIBUTING.md).
+Contributions to _{{ packagename }}_ are welcomed. Please follow the [package contributing guide](https://github.com/{{ gh_repo }}/blob/main/.github/CONTRIBUTING.md).
 
 ## Code of conduct
 
-Please note that the _finalsize_ project is released with a [Contributor Code of Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
+Please note that the _{{ packagename }}_ project is released with a [Contributor Code of Conduct](https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT.md). By contributing to this project, you agree to abide by its terms.
 
 
 ## Citing this package
