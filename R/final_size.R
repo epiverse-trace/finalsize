@@ -130,7 +130,7 @@ final_size <- function(r0,
     "Error: contact matrix must be a matrix" =
       (is.matrix(contact_matrix)),
     "Error: demography vector must be a numeric vector" =
-      (is.vector(demography_vector) & is.numeric(demography_vector)),
+      (is.vector(demography_vector, mode = "numeric"))
     "Error: p_susceptibility must be a matrix" =
       (is.matrix(p_susceptibility)),
     "Error: susceptibility must be a matrix" =
