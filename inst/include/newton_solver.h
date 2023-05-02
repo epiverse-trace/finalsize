@@ -41,19 +41,19 @@ inline Eigen::ArrayXd solve_final_size_newton(
   Eigen::VectorXd cache_v = epi_final_size;
   // a function f1 that multiplies the contact matrix by the final size guess
   // + the log of the guess
-  auto f1 = [&contact_matrix_](const Eigen::VectorXd &x,
-                               Eigen::VectorXd &cache) {
-    cache = -(contact_matrix_ * (1 - x.array()).matrix() +
-              x.array().log().matrix());
+  auto f1 = [&contact_matrix](const Eigen::VectorXd &x,
+                              Eigen::VectorXd &cache) {
+    cache =
+        -(contact_matrix * (1 - x.array()).matrix() + x.array().log().matrix());
   };
 
-  Eigen::MatrixXd cache_m = contact_matrix_;
+  Eigen::MatrixXd cache_m = contact_matrix;
   // a function f2 which adds the negative of the contact matrix
   // to a diagonal matrix of the current final size guess
-  auto f2 = [&contact_matrix_](const Eigen::VectorXd &x,
-                               Eigen::MatrixXd &cache) {
+  auto f2 = [&contact_matrix](const Eigen::VectorXd &x,
+                              Eigen::MatrixXd &cache) {
     cache = (1.0 / x.array()).matrix().asDiagonal();
-    cache = -contact_matrix_ + cache;
+    cache = -contact_matrix + cache;
   };
 
   // a function dx_f that wraps f1, f2, and performs a matrix solve
