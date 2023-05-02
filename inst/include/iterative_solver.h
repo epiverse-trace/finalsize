@@ -7,6 +7,7 @@
 #include <RcppEigen.h>
 
 #include <algorithm>
+#include <utility>
 // clang-format on
 
 // add to namespace finalsize
@@ -59,7 +60,6 @@ inline Eigen::ArrayXd solve_final_size_iterative(
     }
     return std::move(epi_final_size_return);
   };
-
 
   double current_error = step_rate * nDim;
   double error = NAN;
