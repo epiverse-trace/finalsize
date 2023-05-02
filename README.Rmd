@@ -54,7 +54,7 @@ pak::pak("{{ gh_repo }}")
 ## Quick start
 
 The main function in _{{ packagename }}_ is `final_size()`, which calculates the final size of an epidemic.
-Helper functions included in _{{ packagename }}_ can calculate the effective $R_0$, called $R_{eff}$, from demographic and susceptibility distribution data, while other helpers can convert between $R_0$ and the transmission rate $\lambda$.
+Helper functions included in _{{ packagename }}_ are provided to calculate the effective $R_0$, called $R_{eff}$, from demographic and susceptibility distribution data, while other helpers can convert between $R_0$ and the transmission rate $\lambda$.
 
 Here, an example using social contact data from the _socialmixr_ package investigates the final size of an epidemic when the disease has an R<sub>0</sub> of 1.5, and given three age groups of interest --- 0-19, 20-39 and 40+.
 The under-20 age group is assumed to be fully susceptible to the disease, whereas individuals aged over 20 are only half as susceptible as those under 20.
