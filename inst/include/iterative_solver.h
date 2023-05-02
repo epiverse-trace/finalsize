@@ -70,18 +70,14 @@ inline Eigen::ArrayXd solve_final_size_iterative(
   // define functions to minimise error in final size estimate
   auto f = [&contact_matrix_, &susceptibility, &zeros](
                const Eigen::VectorXd &epi_final_size,
-               Eigen::VectorXd &epi_final_size_return) {
+               Eigen::VectorXd &&epi_final_size_return) {
     Eigen::VectorXd s = contact_matrix_ * (-epi_final_size);
     for (int i = 0; i < contact_matrix_.rows(); ++i) {
-      if (zeros[i] == 1) {
-        epi_final_size_return[i] = 0;
-        continue;
-      }
-      epi_final_size_return[i] = 1;
-
-      epi_final_size_return(i) -= exp(susceptibility(i) * s(i));
+      epi_final_size_return[i] = 1 - exp(susceptibility(i) * s(i));
     }
+    return std::move(epi_final_size_return);
   };
+
 
   double current_error = step_rate * nDim;
   double error = NAN;
