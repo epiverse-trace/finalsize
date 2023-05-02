@@ -155,10 +155,10 @@ final_size <- function(r0,
     "Error: control list names can only be: 'iterations', 'tolerance',
     'step_rate', 'adapt_step'" =
       (
-        (names(control) %in% c(
+        all(names(control) %in% c(
           "iterations", "tolerance",
           "step_rate", "adapt_step"
-        )) | (length(control) == 0)
+        )) || (length(control) == 0)
       )
   )
 
