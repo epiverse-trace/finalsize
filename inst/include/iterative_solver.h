@@ -42,15 +42,12 @@ inline Eigen::ArrayXd solve_final_size_iterative(
   // count number of demography groups
   int nDim = demography_vector.size();
 
-  Eigen::ArrayXi zeros(nDim);
-  zeros.fill(0);
-
   Eigen::ArrayXd epi_final_size(nDim);  // prev in settings struct
   epi_final_size.fill(0.5);
 
   Eigen::VectorXd epi_final_size_return(nDim);
   // define functions to minimise error in final size estimate
-  void f = [&contact_matrix, &susceptibility, &zeros](
+  auto f = [&contact_matrix, &susceptibility](
                const Eigen::VectorXd &epi_final_size,
                Eigen::VectorXd &epi_final_size_return) {
     Eigen::VectorXd s = contact_matrix * (-epi_final_size);
@@ -91,9 +88,9 @@ inline Eigen::ArrayXd solve_final_size_iterative(
         "> 100x solver tolerance, try increasing iterations");
   }
 
-  // Adjust numerical errors;
+  // Adjust numerical errors, account for groups where final size is expected 0
   for (auto i = 0; i < epi_final_size.size(); ++i) {
-    if (zeros[i] ||
+    if ((contact_matrix.row(i).sum() == 0) ||
         ((epi_final_size(i) < 0) && (epi_final_size(i) > -tolerance)))
       epi_final_size(i) = 0;
   }
