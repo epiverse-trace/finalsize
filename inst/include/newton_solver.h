@@ -35,31 +35,8 @@ inline Eigen::ArrayXd solve_final_size_newton(
   // count number of demography groups
   int nDim = demography_vector.size();
 
-  Eigen::ArrayXi zeros(nDim);
-  zeros.fill(0);
-
   Eigen::ArrayXd epi_final_size(nDim);  // prev in settings struct
   epi_final_size.fill(0.5);
-
-  Eigen::MatrixXd contact_matrix_ = contact_matrix;
-  for (int i = 0; i < contact_matrix.rows(); ++i) {
-    // Check if value should be 0 for (limited) performance increase
-    if (demography_vector(i) == 0 || susceptibility(i) == 0 ||
-        contact_matrix.row(i).sum() == 0) {
-      zeros[i] = 1;
-      epi_final_size[i] = 0;
-    }
-    for (int j = 0; j < contact_matrix.cols(); ++j) {
-      if (zeros[j] == 1) {
-        contact_matrix_(i, j) = 0;
-      } else {
-        // Scale contacts appropriately
-        // Could add transmissibility (j)?
-        contact_matrix_(i, j) =
-            susceptibility(i) * contact_matrix(i, j) * demography_vector(j);
-      }
-    }
-  }
 
   Eigen::VectorXd cache_v = epi_final_size;
   // a function f1 that multiplies the contact matrix by the final size guess
