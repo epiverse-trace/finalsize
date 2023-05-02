@@ -196,6 +196,15 @@ final_size <- function(r0,
     Y = r0 * contact_matrix
   )
 
+  # scale contact matrix correctly depending on the method
+  contact_matrix_spread <- switch(solver,
+    iterative = t(t(contact_matrix_spread) * demography_vector_spread),
+    newton = t(
+      t(contact_matrix_spread * as.vector(susceptibility)) *
+        demography_vector_spread
+    )
+  )
+
   # get group wise final sizes
   epi_final_size <- .final_size(
     c(
