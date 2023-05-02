@@ -60,15 +60,17 @@ The current development version of *finalsize* can be installed from
 [here](https://epiverse-trace.github.io/finalsize/dev/).
 
 ``` r
-# check whether {remotes} is installed
-if(!require("remotes")) install.packages("remotes")
-remotes::install_github("epiverse-trace/finalsize")
+if(!require("pak")) install.packages("pak")
+pak::pak("epiverse-trace/finalsize")
 ```
 
 ## Quick start
 
-*finalsize* provides the single function `final_size()`, to calculate
-the final size of an epidemic.
+The main function in *finalsize* is `final_size()`, which calculates the
+final size of an epidemic. Helper functions included in *finalsize* are
+provided to calculate the effective $R_0$, called $R_{eff}$, from
+demographic and susceptibility distribution data, while other helpers
+can convert between $R_0$ and the transmission rate $\lambda$.
 
 Here, an example using social contact data from the *socialmixr* package
 investigates the final size of an epidemic when the disease has an
@@ -160,7 +162,6 @@ By contributing to this project, you agree to abide by its terms.
 
 ``` r
 citation("finalsize")
-#> 
 #> To cite package 'finalsize' in publications use:
 #> 
 #>   Gupte P, Van Leeuwen E, Kucharski A (2023). _finalsize: Calculate the
