@@ -120,18 +120,7 @@ lambda_to_r0 <- function(lambda, contact_matrix, demography_vector,
 #' individuals in each demographic and susceptibility group in the population.
 #'
 #' @param r0 The basic reproductive number \eqn{R_0} of the infection.
-#' @param contact_matrix Social contact matrix. Entry \eqn{m_{ij}} gives average
-#' number of contacts in group \eqn{i} reported by participants in group \eqn{j}
-#' @param demography_vector Demography vector. Entry \eqn{v_{i}} gives
-#' proportion of total population in group \eqn{i}.
-#' @param susceptibility A matrix giving the susceptibility of individuals in
-#' demographic group \eqn{i} and risk group \eqn{k}.
-#' @param p_susceptibility A matrix giving the probability that an individual
-#' in demography group \eqn{i} is in risk (or susceptibility) group \eqn{k}.
-#' Each row represents the overall distribution of individuals in demographic
-#' group \eqn{i} across risk groups, and each row *must sum to 1.0*.
-#' @param infectious_period Duration of the infectious period in days.
-#' Default value is 1.8 days.
+#' @inheritParams lambda_to_r0
 #' @export
 #' @return Returns the transmission rate of the infection, also called the
 #' 'force of infection' (\eqn{\lambda}). This is different from the effective
