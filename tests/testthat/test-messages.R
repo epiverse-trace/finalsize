@@ -143,7 +143,10 @@ test_that("Warning when error is much larger than tolerance", {
         tolerance = 1e-12
       )
     ),
-    regexp = "Solver error > 100x solver tolerance, try increasing iterations"
+    regexp = paste0(
+      "The solver reached the maximum number of iterations but solver error ",
+      "> 100x solver tolerance, try increasing iterations"
+    )
   )
 
   # for the newton solver
@@ -160,8 +163,10 @@ test_that("Warning when error is much larger than tolerance", {
         tolerance = 1e-12
       )
     ),
-    regexp =
-      "Solver error > 100x solver tolerance, try increasing iterations"
+    regexp = paste0(
+      "The solver reached the maximum number of iterations but solver error ",
+      "> 100x solver tolerance, try increasing iterations"
+    )
   )
 })
 
