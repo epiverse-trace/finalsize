@@ -83,7 +83,10 @@ r_eff <- function(r0,
       ),
     "Error: contact matrix must have a maximum real eigenvalue of 1.0" =
       (
-        abs(max(Re(eigen(contact_matrix * demography_vector, only.values = TRUE)$values) - 1.0)) <
+        abs(max(Re(eigen(
+          contact_matrix * demography_vector,
+          only.values = TRUE
+        )$values) - 1.0)) <
           1e-6
       )
   )
