@@ -106,7 +106,7 @@ lambda_to_r0 <- function(lambda, contact_matrix, demography_vector,
   # calculate the largest real eigenvalue of the new matrix
   # return the product of the dominant eigenvalue, lambda, and the infectious
   # period as R0
-  max(Re(eigen(contact_matrix_spread)$values)) * lambda * infectious_period
+  max(Re(eigen(contact_matrix_spread, only.values = TRUE)$values)) * lambda * infectious_period
 }
 
 #' @title Calculate transmission rate (\eqn{\lambda}) from \eqn{R_0}
@@ -203,5 +203,5 @@ r0_to_lambda <- function(r0, contact_matrix, demography_vector,
   # calculate the largest real eigenvalue of the new matrix
   # return lambda as the R0 divided by the (dominant eigenvalue times the
   # infectious period)
-  r0 / (max(Re(eigen(contact_matrix_spread)$values)) * infectious_period)
+  r0 / (max(Re(eigen(contact_matrix_spread, only.values = TRUE)$values)) * infectious_period)
 }
