@@ -111,7 +111,8 @@ inline Eigen::ArrayXd solve_final_size_iterative(
   }
   if (current_error / tolerance > 100.0) {
     Rcpp::warning(
-        "The solver reached the maximum number of iterations but solver error > 100x solver tolerance, try increasing iterations");
+        "The solver reached the maximum number of iterations but solver error "
+        "> 100x solver tolerance, try increasing iterations");
   }
 
   // Adjust numerical errors;
