@@ -7,7 +7,6 @@
 #include <RcppEigen.h>
 
 #include <algorithm>
-#include <utility>
 // clang-format on
 
 // add to namespace finalsize
@@ -51,14 +50,13 @@ inline Eigen::ArrayXd solve_final_size_iterative(
 
   Eigen::VectorXd epi_final_size_return(nDim);
   // define functions to minimise error in final size estimate
-  auto f = [&contact_matrix, &susceptibility, &zeros](
+  void f = [&contact_matrix, &susceptibility, &zeros](
                const Eigen::VectorXd &epi_final_size,
                Eigen::VectorXd &epi_final_size_return) {
     Eigen::VectorXd s = contact_matrix * (-epi_final_size);
     for (int i = 0; i < contact_matrix.rows(); ++i) {
-      epi_final_size_return(i) = 1.0 - exp(susceptibility(i) * s(i));
+      epi_final_size_return[i] = 1.0 - exp(susceptibility(i) * s(i));
     }
-    return std::move(epi_final_size_return);
   };
 
   double current_error = step_rate * nDim;
