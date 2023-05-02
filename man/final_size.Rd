@@ -44,7 +44,8 @@ A data.frame of the proportion of infected individuals, within each
 demography group and susceptibility group combination.
 If the demography groups and susceptibility groups are named, these
 names are added to relevant columns. If the groups are not named, synthetic
-names are added (e.g. \code{demo_grp_1}, \code{susc_grp_1}).
+names are added of the form \verb{demo_grp_<i>}, for each demographic group
+\eqn{i}.
 }
 \description{
 \code{final_size} calculates the final size of an epidemic outbreak

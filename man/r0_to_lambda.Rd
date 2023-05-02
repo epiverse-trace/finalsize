@@ -2,7 +2,7 @@
 % Please edit documentation in R/r0_conversions.R
 \name{r0_to_lambda}
 \alias{r0_to_lambda}
-\title{Calculate \eqn{R_0} from transmission rate (\eqn{\lambda})}
+\title{Calculate transmission rate (\eqn{\lambda}) from \eqn{R_0}}
 \usage{
 r0_to_lambda(
   r0,

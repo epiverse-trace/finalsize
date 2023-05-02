@@ -50,8 +50,8 @@
 #' demography group and susceptibility group combination.
 #' If the demography groups and susceptibility groups are named, these
 #' names are added to relevant columns. If the groups are not named, synthetic
-#' names are added of the form `demo_grp_<i>`, for each \eqn{i-\text{th}}
-#' demographic group.
+#' names are added of the form `demo_grp_<i>`, for each demographic group
+#' \eqn{i}.
 #' @export
 #' @examples
 #' # load example POLYMOD data included in the package
