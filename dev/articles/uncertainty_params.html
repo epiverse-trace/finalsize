@@ -232,21 +232,21 @@
 <span><span class="co"># examine some replicates in the data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">final_size_data</span>, <span class="fl">15</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    demo_grp   susc_grp susceptibility p_infected replicate r0_estimate</span></span>
-<span><span class="co">#&gt; 1     [0,5) susc_grp_1              1  0.4041708         1    1.480620</span></span>
-<span><span class="co">#&gt; 2    [5,18) susc_grp_1              1  0.6762617         1    1.480620</span></span>
-<span><span class="co">#&gt; 3   [18,40) susc_grp_1              1  0.5243401         1    1.480620</span></span>
-<span><span class="co">#&gt; 4   [40,65) susc_grp_1              1  0.4510165         1    1.480620</span></span>
-<span><span class="co">#&gt; 5       65+ susc_grp_1              1  0.2942956         1    1.480620</span></span>
-<span><span class="co">#&gt; 6     [0,5) susc_grp_1              1  0.3473559         2    1.394040</span></span>
-<span><span class="co">#&gt; 7    [5,18) susc_grp_1              1  0.6117257         2    1.394040</span></span>
-<span><span class="co">#&gt; 8   [18,40) susc_grp_1              1  0.4577613         2    1.394040</span></span>
-<span><span class="co">#&gt; 9   [40,65) susc_grp_1              1  0.3888028         2    1.394040</span></span>
-<span><span class="co">#&gt; 10      65+ susc_grp_1              1  0.2478355         2    1.394040</span></span>
-<span><span class="co">#&gt; 11    [0,5) susc_grp_1              1  0.4903663         3    1.632859</span></span>
-<span><span class="co">#&gt; 12   [5,18) susc_grp_1              1  0.7610525         3    1.632859</span></span>
-<span><span class="co">#&gt; 13  [18,40) susc_grp_1              1  0.6200236         3    1.632859</span></span>
-<span><span class="co">#&gt; 14  [40,65) susc_grp_1              1  0.5438405         3    1.632859</span></span>
-<span><span class="co">#&gt; 15      65+ susc_grp_1              1  0.3684878         3    1.632859</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     [0,5) susc_grp_1              1  0.3493238         1    1.396887</span></span>
+<span><span class="co">#&gt; 2    [5,18) susc_grp_1              1  0.6140854         1    1.396887</span></span>
+<span><span class="co">#&gt; 3   [18,40) susc_grp_1              1  0.4601117         1    1.396887</span></span>
+<span><span class="co">#&gt; 4   [40,65) susc_grp_1              1  0.3909692         1    1.396887</span></span>
+<span><span class="co">#&gt; 5       65+ susc_grp_1              1  0.2494141         1    1.396887</span></span>
+<span><span class="co">#&gt; 6     [0,5) susc_grp_1              1  0.3757763         2    1.436178</span></span>
+<span><span class="co">#&gt; 7    [5,18) susc_grp_1              1  0.6449236         2    1.436178</span></span>
+<span><span class="co">#&gt; 8   [18,40) susc_grp_1              1  0.4914006         2    1.436178</span></span>
+<span><span class="co">#&gt; 9   [40,65) susc_grp_1              1  0.4200129         2    1.436178</span></span>
+<span><span class="co">#&gt; 10      65+ susc_grp_1              1  0.2708453         2    1.436178</span></span>
+<span><span class="co">#&gt; 11    [0,5) susc_grp_1              1  0.4991438         3    1.650091</span></span>
+<span><span class="co">#&gt; 12   [5,18) susc_grp_1              1  0.7688681         3    1.650091</span></span>
+<span><span class="co">#&gt; 13  [18,40) susc_grp_1              1  0.6293874         3    1.650091</span></span>
+<span><span class="co">#&gt; 14  [40,65) susc_grp_1              1  0.5531684         3    1.650091</span></span>
+<span><span class="co">#&gt; 15      65+ susc_grp_1              1  0.3763120         3    1.650091</span></span></code></pre></div>
 </details>
 </div>
 <div class="tab-pane" id="with-tidyverse" role="tabpanel" aria-labelledby="with-tidyverse-tab">
@@ -291,21 +291,21 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 6</span></span></span>
 <span><span class="co">#&gt;    rowname    r0 demo_grp susc_grp   susceptibility p_infected</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1        1.48 [0,5)    susc_grp_1              1      0.404</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1        1.48 [5,18)   susc_grp_1              1      0.676</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1        1.48 [18,40)  susc_grp_1              1      0.524</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1        1.48 [40,65)  susc_grp_1              1      0.451</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1        1.48 65+      susc_grp_1              1      0.294</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2        1.39 [0,5)    susc_grp_1              1      0.347</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2        1.39 [5,18)   susc_grp_1              1      0.612</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2        1.39 [18,40)  susc_grp_1              1      0.458</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2        1.39 [40,65)  susc_grp_1              1      0.389</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 2        1.39 65+      susc_grp_1              1      0.248</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 3        1.63 [0,5)    susc_grp_1              1      0.490</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> 3        1.63 [5,18)   susc_grp_1              1      0.761</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> 3        1.63 [18,40)  susc_grp_1              1      0.620</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> 3        1.63 [40,65)  susc_grp_1              1      0.544</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> 3        1.63 65+      susc_grp_1              1      0.368</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1        1.40 [0,5)    susc_grp_1              1      0.349</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1        1.40 [5,18)   susc_grp_1              1      0.614</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1        1.40 [18,40)  susc_grp_1              1      0.460</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1        1.40 [40,65)  susc_grp_1              1      0.391</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1        1.40 65+      susc_grp_1              1      0.249</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2        1.44 [0,5)    susc_grp_1              1      0.376</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2        1.44 [5,18)   susc_grp_1              1      0.645</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2        1.44 [18,40)  susc_grp_1              1      0.491</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2        1.44 [40,65)  susc_grp_1              1      0.420</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 2        1.44 65+      susc_grp_1              1      0.271</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 3        1.65 [0,5)    susc_grp_1              1      0.499</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> 3        1.65 [5,18)   susc_grp_1              1      0.769</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> 3        1.65 [18,40)  susc_grp_1              1      0.629</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> 3        1.65 [40,65)  susc_grp_1              1      0.553</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> 3        1.65 65+      susc_grp_1              1      0.376</span></span></code></pre></div>
 </details>
 </div>
 </div>
