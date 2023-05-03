@@ -25,6 +25,13 @@ Authors@R:
             comment = c(ORCID = "https://orcid.org/0000-0001-8814-9421")
         ),
         person(
+            given = "Rosalind",
+            family = "Eggo",
+            role = c("ctb"),
+            email = "r.eggo@lshtm.ac.uk",
+            comment = c(ORCID = "https://orcid.org/0000-0002-0362-6717")
+        ),
+        person(
             given = "Hugo",
             family = "Gruson",
             role = c("ctb"),
