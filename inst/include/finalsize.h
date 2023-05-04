@@ -5,9 +5,6 @@
 #ifndef finalsize_finalsize_H_
 #define finalsize_finalsize_H_
 
-// [[Rcpp::plugins(cpp14)]]
-// [[Rcpp::depends(RcppEigen)]]
-
 // Include the Rcpp Header and RcppEigen
 #include <Rcpp.h>
 #include <RcppEigen.h>
