@@ -12,3 +12,4 @@
 ^Meta$
 ^pkgdown$
 ^data-raw$
+^revdep$
