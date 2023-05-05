@@ -2,7 +2,7 @@
 % Please edit documentation in R/r_eff.R
 \name{r_eff}
 \alias{r_eff}
-\title{Effective \eqn{R_0} in a heterogeneous population}
+\title{Calculate \eqn{R_eff} in a heterogeneous population}
 \usage{
 r_eff(r0, contact_matrix, demography_vector, susceptibility, p_susceptibility)
 }

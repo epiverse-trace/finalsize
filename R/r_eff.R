@@ -1,4 +1,4 @@
-#' @title Effective \eqn{R_0} in a heterogeneous population
+#' @title Calculate \eqn{R_eff} in a heterogeneous population
 #'
 #' @description `r_eff` calculates the effective reproductive number \eqn{R_eff}
 #' in a population with heterogeneous mixing, and with heterogeneous
