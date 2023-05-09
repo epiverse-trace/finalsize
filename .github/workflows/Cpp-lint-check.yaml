@@ -25,5 +25,5 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: sudo apt-get install cppcheck
-      - run: cppcheck --std=c++17 -i src/RcppExports.cpp --enable=performance,portability,warning,style --error-exitcode=1 src
-      - run: cppcheck --std=c++17 --language=c++ --enable=performance,portability,warning,style --error-exitcode=1 inst/include/*.h
+      - run: cppcheck -i src/RcppExports.cpp --enable=performance,portability,warning,style --error-exitcode=1 src
+      - run: cppcheck --language=c++ --enable=performance,portability,warning,style --error-exitcode=1 inst/include/*.h
