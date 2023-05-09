@@ -38,7 +38,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">finalsize</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,6 +60,10 @@
     <a class="dropdown-item" href="../articles/varying_contacts.html">Modelling heterogeneous social contacts</a>
     <a class="dropdown-item" href="../articles/varying_susceptibility.html">Modelling heterogeneous susceptibility</a>
     <a class="dropdown-item" href="../articles/uncertainty_params.html">Modelling uncertainty in R₀</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Modelling guides and background</h6>
+    <a class="dropdown-item" href="../articles/compare_sir_model.html">Comparison with a compartmental model</a>
+    <a class="dropdown-item" href="../articles/susceptibility_matrices.html">Guide to constructing susceptibility matrices</a>
   </div>
 </li>
 <li class="nav-item">
@@ -183,7 +187,19 @@
 <details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create an R0 samples vector</span></span>
 <span><span class="va">r0_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">1000</span>, mean <span class="op">=</span> <span class="va">r0_mean</span>, sd <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></code></pre></div>
-</details><details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+</details><div class="section level3 tabset">
+<h3 id="iterate-final_size">Iterate final_size()<a class="anchor" aria-label="anchor" href="#iterate-final_size"></a>
+</h3>
+
+
+<ul class="nav nav-tabs" id="iterate-final_size" role="tablist">
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#with-base-r" id="with-base-r-tab" type="button" role="tab" aria-controls="with-base-r" aria-selected="true" class="active nav-link">With base R</button></li>
+<li role="presentation" class="nav-item"><button data-bs-toggle="tab" data-bs-target="#with-tidyverse" id="with-tidyverse-tab" type="button" role="tab" aria-controls="with-tidyverse" aria-selected="false" class="nav-link">With {tidyverse}</button></li>
+</ul>
+<div class="tab-content">
+<div class="active  tab-pane" id="with-base-r" role="tabpanel" aria-labelledby="with-base-r-tab">
+
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run final size on each sample with the same data</span></span>
 <span><span class="va">final_size_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Map</a></span><span class="op">(</span></span>
 <span>  <span class="va">r0_samples</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">r0_samples</span><span class="op">)</span>,</span>
@@ -206,34 +222,97 @@
 <span><span class="co"># combine data</span></span>
 <span><span class="va">final_size_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Reduce</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">final_size_data</span>, f <span class="op">=</span> <span class="va">rbind</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># examine some replicates in the data</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">final_size_data</span>, <span class="fl">15</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    demo_grp   susc_grp susceptibility p_infected replicate r0_estimate</span></span>
-<span><span class="co">#&gt; 1     [0,5) susc_grp_1              1  0.4367572         1    1.534857</span></span>
-<span><span class="co">#&gt; 2    [5,18) susc_grp_1              1  0.7100865         1    1.534857</span></span>
-<span><span class="co">#&gt; 3   [18,40) susc_grp_1              1  0.5612920         1    1.534857</span></span>
-<span><span class="co">#&gt; 4   [40,65) susc_grp_1              1  0.4863530         1    1.534857</span></span>
-<span><span class="co">#&gt; 5       65+ susc_grp_1              1  0.3217977         1    1.534857</span></span>
-<span><span class="co">#&gt; 6     [0,5) susc_grp_1              1  0.4561761         2    1.569005</span></span>
-<span><span class="co">#&gt; 7    [5,18) susc_grp_1              1  0.7292030         2    1.569005</span></span>
-<span><span class="co">#&gt; 8   [18,40) susc_grp_1              1  0.5828678         2    1.569005</span></span>
-<span><span class="co">#&gt; 9   [40,65) susc_grp_1              1  0.5072749         2    1.569005</span></span>
-<span><span class="co">#&gt; 10      65+ susc_grp_1              1  0.3384974         2    1.569005</span></span>
-<span><span class="co">#&gt; 11    [0,5) susc_grp_1              1  0.4385746         3    1.537992</span></span>
-<span><span class="co">#&gt; 12   [5,18) susc_grp_1              1  0.7119080         3    1.537992</span></span>
-<span><span class="co">#&gt; 13  [18,40) susc_grp_1              1  0.5633255         3    1.537992</span></span>
-<span><span class="co">#&gt; 14  [40,65) susc_grp_1              1  0.4883156         3    1.537992</span></span>
-<span><span class="co">#&gt; 15      65+ susc_grp_1              1  0.3233506         3    1.537992</span></span></code></pre></div>
-</details><div class="section level3">
-<h3 id="visualise-uncertainty-in-final-size">Visualise uncertainty in final size<a class="anchor" aria-label="anchor" href="#visualise-uncertainty-in-final-size"></a>
-</h3>
-<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># order age groups</span></span>
+<span><span class="co"># order age groups</span></span>
 <span><span class="va">final_size_data</span><span class="op">$</span><span class="va">demo_grp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span></span>
 <span>  <span class="va">final_size_data</span><span class="op">$</span><span class="va">demo_grp</span>,</span>
 <span>  levels <span class="op">=</span> <span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span><span class="op">$</span><span class="va">age.group</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-</details><details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># examine some replicates in the data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">final_size_data</span>, <span class="fl">15</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    demo_grp   susc_grp susceptibility p_infected replicate r0_estimate</span></span>
+<span><span class="co">#&gt; 1     [0,5) susc_grp_1              1  0.4966535         1    1.645165</span></span>
+<span><span class="co">#&gt; 2    [5,18) susc_grp_1              1  0.7666654         1    1.645165</span></span>
+<span><span class="co">#&gt; 3   [18,40) susc_grp_1              1  0.6267382         1    1.645165</span></span>
+<span><span class="co">#&gt; 4   [40,65) susc_grp_1              1  0.5505245         1    1.645165</span></span>
+<span><span class="co">#&gt; 5       65+ susc_grp_1              1  0.3740869         1    1.645165</span></span>
+<span><span class="co">#&gt; 6     [0,5) susc_grp_1              1  0.4192445         2    1.505254</span></span>
+<span><span class="co">#&gt; 7    [5,18) susc_grp_1              1  0.6921855         2    1.505254</span></span>
+<span><span class="co">#&gt; 8   [18,40) susc_grp_1              1  0.5415478         2    1.505254</span></span>
+<span><span class="co">#&gt; 9   [40,65) susc_grp_1              1  0.4673963         2    1.505254</span></span>
+<span><span class="co">#&gt; 10      65+ susc_grp_1              1  0.3069375         2    1.505254</span></span>
+<span><span class="co">#&gt; 11    [0,5) susc_grp_1              1  0.2361050         3    1.247536</span></span>
+<span><span class="co">#&gt; 12   [5,18) susc_grp_1              1  0.4620530         3    1.247536</span></span>
+<span><span class="co">#&gt; 13  [18,40) susc_grp_1              1  0.3200075         3    1.247536</span></span>
+<span><span class="co">#&gt; 14  [40,65) susc_grp_1              1  0.2652699         3    1.247536</span></span>
+<span><span class="co">#&gt; 15      65+ susc_grp_1              1  0.1619579         3    1.247536</span></span></code></pre></div>
+</details>
+</div>
+<div class="tab-pane" id="with-tidyverse" role="tabpanel" aria-labelledby="with-tidyverse-tab">
+
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://purrr.tidyverse.org/" class="external-link">purrr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://forcats.tidyverse.org/" class="external-link">forcats</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">final_size_data</span> <span class="op">&lt;-</span></span>
+<span>  <span class="co"># create a dataframe with values from a vector</span></span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>r0 <span class="op">=</span> <span class="va">r0_samples</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://tibble.tidyverse.org/reference/rownames.html" class="external-link">rownames_to_column</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># map the function final_size() to all the r0 values</span></span>
+<span>  <span class="co"># with the same set of arguments</span></span>
+<span>  <span class="co"># with {purrr}</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    temp <span class="op">=</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map</a></span><span class="op">(</span></span>
+<span>      .x <span class="op">=</span> <span class="va">r0</span>,</span>
+<span>      .f <span class="op">=</span> <span class="va">final_size</span>,</span>
+<span>      contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
+<span>      demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
+<span>      susceptibility <span class="op">=</span> <span class="va">susc_uniform</span>,</span>
+<span>      p_susceptibility <span class="op">=</span> <span class="va">p_susc_uniform</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># unnest all the dataframe outputs in temp</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/unnest.html" class="external-link">unnest</a></span><span class="op">(</span><span class="va">temp</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>  <span class="co"># relevel the factor variable</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span>    demo_grp <span class="op">=</span> <span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_relevel.html" class="external-link">fct_relevel</a></span><span class="op">(</span></span>
+<span>      <span class="va">demo_grp</span>,</span>
+<span>      <span class="va">contact_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>        <span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html" class="external-link">pluck</a></span><span class="op">(</span><span class="st">"demography"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span>        <span class="fu"><a href="https://purrr.tidyverse.org/reference/pluck.html" class="external-link">pluck</a></span><span class="op">(</span><span class="st">"age.group"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">final_size_data</span>, <span class="fl">15</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 6</span></span></span>
+<span><span class="co">#&gt;    rowname    r0 demo_grp susc_grp   susceptibility p_infected</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1        1.65 [0,5)    susc_grp_1              1      0.497</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1        1.65 [5,18)   susc_grp_1              1      0.767</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1        1.65 [18,40)  susc_grp_1              1      0.627</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1        1.65 [40,65)  susc_grp_1              1      0.551</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1        1.65 65+      susc_grp_1              1      0.374</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2        1.51 [0,5)    susc_grp_1              1      0.419</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2        1.51 [5,18)   susc_grp_1              1      0.692</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2        1.51 [18,40)  susc_grp_1              1      0.542</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2        1.51 [40,65)  susc_grp_1              1      0.467</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 2        1.51 65+      susc_grp_1              1      0.307</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 3        1.25 [0,5)    susc_grp_1              1      0.236</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> 3        1.25 [5,18)   susc_grp_1              1      0.462</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> 3        1.25 [18,40)  susc_grp_1              1      0.320</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> 3        1.25 [40,65)  susc_grp_1              1      0.265</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> 3        1.25 65+      susc_grp_1              1      0.162</span></span></code></pre></div>
+</details>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="visualise-uncertainty-in-final-size">Visualise uncertainty in final size<a class="anchor" aria-label="anchor" href="#visualise-uncertainty-in-final-size"></a>
+</h3>
+<details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">final_size_data</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/stat_summary.html" class="external-link">stat_summary</a></span><span class="op">(</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span></span>

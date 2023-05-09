@@ -15,7 +15,7 @@
     
     <a class="navbar-brand me-2" href="index.html">finalsize</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,10 @@
     <a class="dropdown-item" href="articles/varying_contacts.html">Modelling heterogeneous social contacts</a>
     <a class="dropdown-item" href="articles/varying_susceptibility.html">Modelling heterogeneous susceptibility</a>
     <a class="dropdown-item" href="articles/uncertainty_params.html">Modelling uncertainty in R₀</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Modelling guides and background</h6>
+    <a class="dropdown-item" href="articles/compare_sir_model.html">Comparison with a compartmental model</a>
+    <a class="dropdown-item" href="articles/susceptibility_matrices.html">Guide to constructing susceptibility matrices</a>
   </div>
 </li>
 <li class="nav-item">
@@ -66,10 +70,10 @@
 <p>This outlines how to propose a change to finalsize.</p>
 <div class="section level2">
 <h2 id="making-changes">Making changes<a class="anchor" aria-label="anchor" href="#making-changes"></a></h2>
-<p>If you want to make a change, it’s a good idea to first file an issue and make sure someone from the team agrees that it’s needed. If you’ve found a bug, please file an issue that illustrates the bug with a minimal <a href="https://www.tidyverse.org/help/#reprex" class="external-link">reprex</a> (this will also help you write a unit test, if needed). See <a href="../ISSUE_TEMPLATE/bug_report.html">bug report template</a>. If you have a feature request see <a href="../ISSUE_TEMPLATE/feature_request.html">feature request</a>.</p>
+<p>If you want to make a change, it’s a good idea to first file an issue and make sure someone from the team agrees that it’s needed. If you’ve found a bug, please file an issue that illustrates the bug with a minimal <a href="https://www.tidyverse.org/help/#reprex" class="external-link">reprex</a> (this will also help you write a unit test, if needed). See <a href="https://github.com/epiverse-trace/finalsize/issues/new?assignees=&amp;labels=&amp;template=bug_report.md&amp;title=" class="external-link">bug report template</a>. If you have a feature request see <a href="https://github.com/epiverse-trace/finalsize/issues/new?assignees=&amp;labels=&amp;template=feature_request.md&amp;title=" class="external-link">feature request</a>.</p>
 <div class="section level3">
 <h3 id="pull-request-process">Pull request process<a class="anchor" aria-label="anchor" href="#pull-request-process"></a></h3>
-<p>See <a href="../PULL_REQUEST_TEMPLATE/pull_request_template.html">pull request template</a></p>
+<p>See <a href="https://github.com/epiverse-trace/finalsize/blob/main/.github/PULL_REQUEST_TEMPLATE/pull_request_template.md" class="external-link">pull request template</a></p>
 <ul><li><p>Fork the package and clone onto your computer. If you haven’t done this before, we recommend using <code>usethis::create_from_github("epiverse-trace/finalsize", fork = TRUE)</code>.</p></li>
 <li><p>Install all development dependencies with <code>devtools::install_dev_deps()</code>, and then make sure the package passes R CMD check by running <code>devtools::check()</code>. If R CMD check doesn’t pass cleanly, it’s a good idea to ask for help before continuing.</p></li>
 <li><p>Create a Git branch for your pull request (PR). We recommend using <code>usethis::pr_init("brief-description-of-change")</code>.</p></li>

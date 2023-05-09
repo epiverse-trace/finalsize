@@ -38,7 +38,7 @@
     
     <a class="navbar-brand me-2" href="index.html">finalsize</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,6 +60,10 @@
     <a class="dropdown-item" href="articles/varying_contacts.html">Modelling heterogeneous social contacts</a>
     <a class="dropdown-item" href="articles/varying_susceptibility.html">Modelling heterogeneous susceptibility</a>
     <a class="dropdown-item" href="articles/uncertainty_params.html">Modelling uncertainty in R₀</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Modelling guides and background</h6>
+    <a class="dropdown-item" href="articles/compare_sir_model.html">Comparison with a compartmental model</a>
+    <a class="dropdown-item" href="articles/susceptibility_matrices.html">Guide to constructing susceptibility matrices</a>
   </div>
 </li>
 <li class="nav-item">
@@ -96,23 +100,26 @@
 <p><em>finalsize</em> provides estimates for the total proportion of a population infected over the course of an epidemic, and can account for a demographic distribution (such as age groups) and demography-specific contact patterns, as well as for heterogeneous susceptibility to infection between groups (such as due to age-group specific immune responses) and within groups (such as due to immunisation programs).</p>
 <p><em>finalsize</em> implements methods outlined in Andreasen (<a href="#ref-andreasen2011">2011</a>), Miller (<a href="#ref-miller2012">2012</a>), Kucharski et al. (<a href="#ref-kucharski2014">2014</a>), and Bidari et al. (<a href="#ref-bidari2016">2016</a>).</p>
 <p><em>finalsize</em> can help provide rough estimates of the effectiveness of pharmaceutical interventions in the form of immunisation programmes, or the effect of naturally acquired immunity through previous infection (see the vignette).</p>
-<p><em>finalsize</em> relies on <a href="https://gitlab.com/libeigen/eigen" class="external-link">Eigen</a> via <a href="https://github.com/RcppCore/RcppEigen" class="external-link">RcppEigen</a> for fast matrix algebra, and is developed at the <a href="https://www.lshtm.ac.uk/research/centres/centre-mathematical-modelling-infectious-diseases" class="external-link">Centre for the Mathematical Modelling of Infectious Diseases</a> at the London School of Hygiene and Tropical Medicine as part of the <a href="https://data.org/initiatives/epiverse/" class="external-link">Epiverse Initiative</a>.</p>
+<p><em>finalsize</em> relies on <a href="https://gitlab.com/libeigen/eigen" class="external-link">Eigen</a> via <a href="https://github.com/RcppCore/RcppEigen" class="external-link">RcppEigen</a> for fast matrix algebra, and is developed at the <a href="https://www.lshtm.ac.uk/research/centres/centre-mathematical-modelling-infectious-diseases" class="external-link">Centre for the Mathematical Modelling of Infectious Diseases</a> at the London School of Hygiene and Tropical Medicine as part of the <a href="https://data.org/initiatives/epiverse/" class="external-link">Epiverse-TRACE</a>.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>The package can be installed using</p>
+<p>The package can be installed from CRAN using</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"finalsize"</span><span class="op">)</span></span></code></pre></div>
-<p>The current development version of <em>finalsize</em> can be installed from <a href="https://github.com/epiverse-trace/finalsize" class="external-link">Github</a> using the <code>remotes</code> package.</p>
+<div class="section level3">
+<h3 id="development-version">Development version<a class="anchor" aria-label="anchor" href="#development-version"></a>
+</h3>
+<p>The current development version of <em>finalsize</em> can be installed from <a href="https://github.com/epiverse-trace/finalsize" class="external-link">Github</a> using the <code>remotes</code> package. The development version documentation can be found <a href="https://epiverse-trace.github.io/finalsize/dev/">here</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># check whether {remotes} is installed</span></span>
-<span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://remotes.r-lib.org" class="external-link">"remotes"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"epiverse-trace/finalsize"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://pak.r-lib.org/" class="external-link">"pak"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="http://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"epiverse-trace/finalsize"</span><span class="op">)</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<p><em>finalsize</em> provides the single function <code><a href="reference/final_size.html">final_size()</a></code>, to calculate the final size of an epidemic.</p>
+<p>The main function in <em>finalsize</em> is <code><a href="reference/final_size.html">final_size()</a></code>, which calculates the final size of an epidemic. Helper functions included in <em>finalsize</em> are provided to calculate the effective <span class="math inline"><em>R</em><sub>0</sub></span>, called <span class="math inline"><em>R</em><sub><em>e</em><em>f</em><em>f</em></sub></span>, from demographic and susceptibility distribution data, while other helpers can convert between <span class="math inline"><em>R</em><sub>0</sub></span> and the transmission rate <span class="math inline"><em>λ</em></span>.</p>
 <p>Here, an example using social contact data from the <em>socialmixr</em> package investigates the final size of an epidemic when the disease has an R<sub>0</sub> of 1.5, and given three age groups of interest — 0-19, 20-39 and 40+. The under-20 age group is assumed to be fully susceptible to the disease, whereas individuals aged over 20 are only half as susceptible as those under 20.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load finalsize</span></span>
@@ -144,7 +151,17 @@
 <span><span class="co"># R0 of the disease</span></span>
 <span><span class="va">r0</span> <span class="op">&lt;-</span> <span class="fl">1.5</span> <span class="co"># assumed for pandemic influenza</span></span>
 <span></span>
-<span><span class="co"># Calculate the proportion of individuals infected</span></span>
+<span><span class="co"># calculate the effective R0 using `r_eff()`</span></span>
+<span><span class="fu"><a href="reference/r_eff.html">r_eff</a></span><span class="op">(</span></span>
+<span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
+<span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
+<span>  susceptibility <span class="op">=</span> <span class="va">susceptibility</span>,</span>
+<span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.171758</span></span>
+<span></span>
+<span><span class="co"># Calculate the proportion of individuals infected in each age group</span></span>
 <span><span class="fu"><a href="reference/final_size.html">final_size</a></span><span class="op">(</span></span>
 <span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
 <span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
@@ -182,7 +199,6 @@
 </h2>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"finalsize"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; To cite package 'finalsize' in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Gupte P, Van Leeuwen E, Kucharski A (2023). _finalsize: Calculate the</span></span>
@@ -211,7 +227,7 @@ Andreasen, Viggo. 2011. “The Final Size of an Epidemic and Its Relation to th
 Bidari, Subekshya, Xinying Chen, Daniel Peters, Dylanger Pittman, and Péter L. Simon. 2016. “Solvability of Implicit Final Size Equations for SIR Epidemic Models.” <em>Mathematical Biosciences</em> 282 (December): 181–90. <a href="https://doi.org/10.1016/j.mbs.2016.10.012" class="external-link uri">https://doi.org/10.1016/j.mbs.2016.10.012</a>.
 </div>
 <div id="ref-kucharski2014" class="csl-entry">
-Kucharski, Adam J., Kin O. Kwok, Vivian W. I. Wei, Benjamin J. Cowling, Jonathan M. Read, Justin Lessler, Derek A. Cummings, and Steven Riley. 2014. “The Contribution of Social Behaviour to the Transmission of Influenza A in a Human Population.” <em>PLoS Pathogens</em> 10 (6): e1004206. <a href="https://doi.org/10.1371/journal.ppat.1004206" class="external-link uri">https://doi.org/10.1371/journal.ppat.1004206</a>.
+Kucharski, Adam J., Kin O. Kwok, Vivian W. I. Wei, Benjamin J. Cowling, Jonathan M. Read, Justin Lessler, Derek A. Cummings, and Steven Riley. 2014. “The contribution of social behaviour to the transmission of influenza A in a human population.” <em>PLoS pathogens</em> 10 (6): e1004206. <a href="https://doi.org/10.1371/journal.ppat.1004206" class="external-link uri">https://doi.org/10.1371/journal.ppat.1004206</a>.
 </div>
 <div id="ref-miller2012" class="csl-entry">
 Miller, Joel C. 2012. “A Note on the Derivation of Epidemic Final Sizes.” <em>Bulletin of Mathematical Biology</em> 74 (9): 2125–41. <a href="https://doi.org/10.1007/s11538-012-9749-6" class="external-link uri">https://doi.org/10.1007/s11538-012-9749-6</a>.
@@ -260,15 +276,7 @@ Miller, Joel C. 2012. “A Note on the Derivation of Epidemic Final Sizes.” <e
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://opensource.org/licenses/MIT" class="external-link"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a></li>
-<li><a href="https://github.com/epiverse-trace/finalsize/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/epiverse-trace/finalsize/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.codecov.io/gh/epiverse-trace/finalsize?branch=main" class="external-link"><img src="https://codecov.io/gh/epiverse-trace/finalsize/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://CRAN.R-project.org/package=finalsize" class="external-link"><img src="https://www.r-pkg.org/badges/version/finalsize" alt="CRAN status"></a></li>
-</ul>
-</div>
+
 
   </aside>
 </div>

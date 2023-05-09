@@ -2,11 +2,13 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
+  compare_sir_model: compare_sir_model.html
   finalsize: finalsize.html
+  susceptibility_matrices: susceptibility_matrices.html
   uncertainty_params: uncertainty_params.html
   varying_contacts: varying_contacts.html
   varying_susceptibility: varying_susceptibility.html
-last_built: 2023-02-16T13:09Z
+last_built: 2023-05-09T10:14Z
 urls:
   reference: https://epiverse-trace.github.io/finalsize/reference
   article: https://epiverse-trace.github.io/finalsize/articles

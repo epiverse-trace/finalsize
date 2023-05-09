@@ -13,10 +13,16 @@
     <loc>https://epiverse-trace.github.io/finalsize/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://epiverse-trace.github.io/finalsize/articles/compare_sir_model.html</loc>
+  </url>
+  <url>
     <loc>https://epiverse-trace.github.io/finalsize/articles/finalsize.html</loc>
   </url>
   <url>
     <loc>https://epiverse-trace.github.io/finalsize/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/articles/susceptibility_matrices.html</loc>
   </url>
   <url>
     <loc>https://epiverse-trace.github.io/finalsize/articles/uncertainty_params.html</loc>
@@ -37,10 +43,7 @@
     <loc>https://epiverse-trace.github.io/finalsize/news/index.html</loc>
   </url>
   <url>
-    <loc>https://epiverse-trace.github.io/finalsize/reference/dot-solve_iterative.html</loc>
-  </url>
-  <url>
-    <loc>https://epiverse-trace.github.io/finalsize/reference/dot-solve_newton.html</loc>
+    <loc>https://epiverse-trace.github.io/finalsize/reference/dot-final_size.html</loc>
   </url>
   <url>
     <loc>https://epiverse-trace.github.io/finalsize/reference/final_size.html</loc>
@@ -49,6 +52,15 @@
     <loc>https://epiverse-trace.github.io/finalsize/reference/index.html</loc>
   </url>
   <url>
+    <loc>https://epiverse-trace.github.io/finalsize/reference/lambda_to_r0.html</loc>
+  </url>
+  <url>
     <loc>https://epiverse-trace.github.io/finalsize/reference/polymod_uk.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/reference/r0_to_lambda.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/reference/r_eff.html</loc>
   </url>
 </urlset>

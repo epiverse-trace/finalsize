@@ -21,7 +21,7 @@ programme."><meta property="og:image" content="https://epiverse-trace.github.io/
     
     <a class="navbar-brand me-2" href="../index.html">finalsize</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,6 +42,10 @@ programme."><meta property="og:image" content="https://epiverse-trace.github.io/
     <a class="dropdown-item" href="../articles/varying_contacts.html">Modelling heterogeneous social contacts</a>
     <a class="dropdown-item" href="../articles/varying_susceptibility.html">Modelling heterogeneous susceptibility</a>
     <a class="dropdown-item" href="../articles/uncertainty_params.html">Modelling uncertainty in R₀</a>
+    <div class="dropdown-divider"></div>
+    <h6 class="dropdown-header" data-toc-skip>Modelling guides and background</h6>
+    <a class="dropdown-item" href="../articles/compare_sir_model.html">Comparison with a compartmental model</a>
+    <a class="dropdown-item" href="../articles/susceptibility_matrices.html">Guide to constructing susceptibility matrices</a>
   </div>
 </li>
 <li class="nav-item">
@@ -107,12 +111,12 @@ if needed).</p></dd>
 
 <dt>susceptibility</dt>
 <dd><p>A matrix giving the susceptibility of individuals in
-demographic group \(i\) and risk group \(j\).</p></dd>
+demographic group \(i\) and risk group \(k\).</p></dd>
 
 
 <dt>p_susceptibility</dt>
 <dd><p>A matrix giving the probability that an individual
-in demography group \(i\) is in risk (or susceptibility) group \(j\).
+in demography group \(i\) is in risk (or susceptibility) group \(k\).
 Each row represents the overall distribution of individuals in demographic
 group \(i\) across risk groups, and each row <em>must sum to 1.0</em>.</p></dd>
 
@@ -136,7 +140,8 @@ argument.</p></dd>
 demography group and susceptibility group combination.
 If the demography groups and susceptibility groups are named, these
 names are added to relevant columns. If the groups are not named, synthetic
-names are added (e.g. <code>demo_grp_1</code>, <code>susc_grp_1</code>).</p>
+names are added of the form <code>demo_grp_&lt;i&gt;</code>, for each demographic group
+\(i\).</p>
     </div>
     <div class="section level2">
     <h2 id="solver-options">Solver options<a class="anchor" aria-label="anchor" href="#solver-options"></a></h2>
