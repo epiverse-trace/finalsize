@@ -15,7 +15,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">finalsize</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,6 +65,28 @@
       <small>Source: <a href="https://github.com/epiverse-trace/finalsize/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2" id="finalsize-02">finalsize 0.2<a class="anchor" aria-label="anchor" href="#finalsize-02"></a></h2>
+<p>This is the second release of <em>finalsize</em>, and includes:</p>
+<ol style="list-style-type: decimal"><li>The package’s C++ code for the solver algorithms has been moved from source files under <code>src/</code> into headers under <code>inst/include/</code>
+</li>
+<li>The package includes a package header under <code>inst/include</code> called <code>finalsize.h</code>, which allows other Rcpp packages to link to <em>finalsize</em> and reuse the solver algorithms provided here.</li>
+<li>Three helper functions have been added to:
+<ul><li>Calculate the effective basic reproductive number <span class="math inline"><em>R</em><sub><em>e</em><em>f</em><em>f</em></sub></span> in a population with heterogeneous social contacts and susceptibility to infection</li>
+<li>Convert from the basic reproductive number provided by the user <span class="math inline"><em>R</em><sub>0</sub></span> to the transmission rate (denoted by <span class="math inline"><em>λ</em></span>), given the population’s social contacts and susceptibility structure</li>
+<li>Convert from a user-provided transmission rate to the basic reproductive number given the population’s social contacts and susceptibility structure</li>
+</ul></li>
+<li>Two new vignettes have been added which are intended to serve as contextual background information for users:
+<ul><li>A guide to constructing susceptibility matrices</li>
+<li>A comparison with a simple susceptible-infectious-recovered epidemic model</li>
+</ul></li>
+<li>Package infrastructure has been modified:
+<ul><li>The package now specifies C++17 as standard</li>
+<li>The <code>Readme.Rmd</code> uses auto-rendering of the package and repository name to <code>Readme.md</code> via an updated <code>render-readme</code> Github Actions workflow</li>
+<li>The Cpplint workflow now includes linting and checking using Cppcheck for header files</li>
+</ul></li>
+<li>Updated <code>NEWS.md</code> file to track changes to the package.</li>
+</ol></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.0.9000" id="finalsize-0109000">finalsize 0.1.0.9000<a class="anchor" aria-label="anchor" href="#finalsize-0109000"></a></h2>
 <ul><li>Added a <code>NEWS.md</code> file to track changes to the package.</li>

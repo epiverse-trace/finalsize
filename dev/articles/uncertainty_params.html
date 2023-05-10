@@ -39,7 +39,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">finalsize</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.2.0.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -139,7 +139,7 @@
 </details><div class="section level2">
 <h2 id="getting-r_0-contact-and-demography-data-and-susceptibility">Getting <span class="math inline">\(R_0\)</span>, contact and demography data, and susceptibility<a class="anchor" aria-label="anchor" href="#getting-r_0-contact-and-demography-data-and-susceptibility"></a>
 </h2>
-<p>This example uses social contact data from the <a href="https://cordis.europa.eu/project/id/502084" class="external-link">POLYMOD</a> project to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
+<p>This example uses social contact data from the POLYMOD project <span class="citation">(<a href="#ref-mossong2008" role="doc-biblioref">Mossong et al. 2008</a>)</span> to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
 <p>These data are handled just as in the <a href="finalsize.html">“Get started”</a> vignette. This example also considers an infection with an <span class="math inline">\(R_0\)</span> of 1.5.</p>
 <details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get UK polymod data</span></span>
@@ -232,21 +232,21 @@
 <span><span class="co"># examine some replicates in the data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">final_size_data</span>, <span class="fl">15</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    demo_grp   susc_grp susceptibility p_infected replicate r0_estimate</span></span>
-<span><span class="co">#&gt; 1     [0,5) susc_grp_1              1  0.3493238         1    1.396887</span></span>
-<span><span class="co">#&gt; 2    [5,18) susc_grp_1              1  0.6140854         1    1.396887</span></span>
-<span><span class="co">#&gt; 3   [18,40) susc_grp_1              1  0.4601117         1    1.396887</span></span>
-<span><span class="co">#&gt; 4   [40,65) susc_grp_1              1  0.3909692         1    1.396887</span></span>
-<span><span class="co">#&gt; 5       65+ susc_grp_1              1  0.2494141         1    1.396887</span></span>
-<span><span class="co">#&gt; 6     [0,5) susc_grp_1              1  0.3757763         2    1.436178</span></span>
-<span><span class="co">#&gt; 7    [5,18) susc_grp_1              1  0.6449236         2    1.436178</span></span>
-<span><span class="co">#&gt; 8   [18,40) susc_grp_1              1  0.4914006         2    1.436178</span></span>
-<span><span class="co">#&gt; 9   [40,65) susc_grp_1              1  0.4200129         2    1.436178</span></span>
-<span><span class="co">#&gt; 10      65+ susc_grp_1              1  0.2708453         2    1.436178</span></span>
-<span><span class="co">#&gt; 11    [0,5) susc_grp_1              1  0.4991438         3    1.650091</span></span>
-<span><span class="co">#&gt; 12   [5,18) susc_grp_1              1  0.7688681         3    1.650091</span></span>
-<span><span class="co">#&gt; 13  [18,40) susc_grp_1              1  0.6293874         3    1.650091</span></span>
-<span><span class="co">#&gt; 14  [40,65) susc_grp_1              1  0.5531684         3    1.650091</span></span>
-<span><span class="co">#&gt; 15      65+ susc_grp_1              1  0.3763120         3    1.650091</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     [0,5) susc_grp_1              1  0.4447443         1    1.548728</span></span>
+<span><span class="co">#&gt; 2    [5,18) susc_grp_1              1  0.7180413         1    1.548728</span></span>
+<span><span class="co">#&gt; 3   [18,40) susc_grp_1              1  0.5702070         1    1.548728</span></span>
+<span><span class="co">#&gt; 4   [40,65) susc_grp_1              1  0.4949711         1    1.548728</span></span>
+<span><span class="co">#&gt; 5       65+ susc_grp_1              1  0.3286378         1    1.548728</span></span>
+<span><span class="co">#&gt; 6     [0,5) susc_grp_1              1  0.4294959         2    1.522450</span></span>
+<span><span class="co">#&gt; 7    [5,18) susc_grp_1              1  0.7027414         2    1.522450</span></span>
+<span><span class="co">#&gt; 8   [18,40) susc_grp_1              1  0.5531380         2    1.522450</span></span>
+<span><span class="co">#&gt; 9   [40,65) susc_grp_1              1  0.4785029         2    1.522450</span></span>
+<span><span class="co">#&gt; 10      65+ susc_grp_1              1  0.3156134         2    1.522450</span></span>
+<span><span class="co">#&gt; 11    [0,5) susc_grp_1              1  0.5526565         3    1.763696</span></span>
+<span><span class="co">#&gt; 12   [5,18) susc_grp_1              1  0.8134543         3    1.763696</span></span>
+<span><span class="co">#&gt; 13  [18,40) susc_grp_1              1  0.6848698         3    1.763696</span></span>
+<span><span class="co">#&gt; 14  [40,65) susc_grp_1              1  0.6094554         3    1.763696</span></span>
+<span><span class="co">#&gt; 15      65+ susc_grp_1              1  0.4251776         3    1.763696</span></span></code></pre></div>
 </details>
 </div>
 <div class="tab-pane" id="with-tidyverse" role="tabpanel" aria-labelledby="with-tidyverse-tab">
@@ -291,21 +291,21 @@
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 15 × 6</span></span></span>
 <span><span class="co">#&gt;    rowname    r0 demo_grp susc_grp   susceptibility p_infected</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1        1.40 [0,5)    susc_grp_1              1      0.349</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1        1.40 [5,18)   susc_grp_1              1      0.614</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1        1.40 [18,40)  susc_grp_1              1      0.460</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1        1.40 [40,65)  susc_grp_1              1      0.391</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1        1.40 65+      susc_grp_1              1      0.249</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2        1.44 [0,5)    susc_grp_1              1      0.376</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2        1.44 [5,18)   susc_grp_1              1      0.645</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2        1.44 [18,40)  susc_grp_1              1      0.491</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2        1.44 [40,65)  susc_grp_1              1      0.420</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 2        1.44 65+      susc_grp_1              1      0.271</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 3        1.65 [0,5)    susc_grp_1              1      0.499</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> 3        1.65 [5,18)   susc_grp_1              1      0.769</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> 3        1.65 [18,40)  susc_grp_1              1      0.629</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> 3        1.65 [40,65)  susc_grp_1              1      0.553</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> 3        1.65 65+      susc_grp_1              1      0.376</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 1        1.55 [0,5)    susc_grp_1              1      0.445</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> 1        1.55 [5,18)   susc_grp_1              1      0.718</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 1        1.55 [18,40)  susc_grp_1              1      0.570</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 1        1.55 [40,65)  susc_grp_1              1      0.495</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 1        1.55 65+      susc_grp_1              1      0.329</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 2        1.52 [0,5)    susc_grp_1              1      0.429</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 2        1.52 [5,18)   susc_grp_1              1      0.703</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 2        1.52 [18,40)  susc_grp_1              1      0.553</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 2        1.52 [40,65)  susc_grp_1              1      0.479</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 2        1.52 65+      susc_grp_1              1      0.316</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> 3        1.76 [0,5)    susc_grp_1              1      0.553</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> 3        1.76 [5,18)   susc_grp_1              1      0.813</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span> 3        1.76 [18,40)  susc_grp_1              1      0.685</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> 3        1.76 [40,65)  susc_grp_1              1      0.609</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span> 3        1.76 65+      susc_grp_1              1      0.425</span></span></code></pre></div>
 </details>
 </div>
 </div>
@@ -351,6 +351,11 @@
 <img src="uncertainty_params_files/figure-html/unnamed-chunk-8-1.png" alt="Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the $R_0$ is estimated to be 1.5, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in $R_0$ estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles."><p class="caption">
 Figure 1: Estimated ranges of the final size of a hypothetical SIR epidemic in age groups of the U.K. population, when the <span class="math inline">\(R_0\)</span> is estimated to be 1.5, with a standard deviation around this estimate of 0.1. In this example, relatively low uncertainty in <span class="math inline">\(R_0\)</span> estimates can also lead to uncertainty in the estimated final size of the epidemic. Points represent means, while ranges extend between the 5th and 95th percentiles.
 </p>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-mossong2008" class="csl-entry">
+Mossong, Joël, Niel Hens, Mark Jit, Philippe Beutels, Kari Auranen, Rafael Mikolajczyk, Marco Massari, et al. 2008. <span>“Social Contacts and Mixing Patterns Relevant to the Spread of Infectious Diseases.”</span> <em>PLOS Medicine</em> 5 (3): e74. <a href="https://doi.org/10.1371/journal.pmed.0050074" class="external-link">https://doi.org/10.1371/journal.pmed.0050074</a>.
+</div>
 </div>
 </div>
 </div>
