@@ -22,6 +22,7 @@ This is the second release of _finalsize_, and includes:
 Initial release of _finalsize_, an R package to calculate the final size of an epidemic in a population with demographic variation in social contacts and in susceptibility to infection.
 
 This release includes:
+
 1. A choice of equation solver functions.
 2. 100% code coverage,
 3. A basic usage vignette, and two advanced vignettes,
