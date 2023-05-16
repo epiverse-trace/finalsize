@@ -1,4 +1,4 @@
-# finalsize 0.2
+# finalsize 0.2.0
 
 This is the second release of _finalsize_, and includes:
 
