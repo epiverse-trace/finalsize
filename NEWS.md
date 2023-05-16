@@ -17,10 +17,6 @@ This is the second release of _finalsize_, and includes:
     - The Cpplint workflow now includes linting and checking using Cppcheck for header files
 6. Updated `NEWS.md` file to track changes to the package.
 
-# finalsize 0.1.0.9000
-
-* Added a `NEWS.md` file to track changes to the package.
-
 # finalsize 0.1
 
 Initial release of _finalsize_, an R package to calculate the final size of an epidemic in a population with demographic variation in social contacts and in susceptibility to infection.
