@@ -3,6 +3,7 @@
 
 <!-- badges: start -->
 
+<a href="https://app.digitalpublicgoods.net/a/10557"><img src="https://digitalpublicgoods.net/registry/dpgicon.svg" alt="Digital Public Good" height="25">
 [![License:
 MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit/)
 [![Project Status: Active – The project has reached a stable, usable
