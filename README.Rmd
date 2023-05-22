@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # _{{ packagename }}_: Calculate the final size of an epidemic <img src="man/figures/logo.png" align="right" width="130"/>
 
 <!-- badges: start -->
+<a href="https://app.digitalpublicgoods.net/a/10557"><img src="https://digitalpublicgoods.net/registry/dpgicon.svg" alt="Digital Public Good" height="25">
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit/)
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/{{ gh_repo }}/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/{{ gh_repo }}/actions/workflows/R-CMD-check.yaml)
