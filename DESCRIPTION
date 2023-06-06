@@ -72,7 +72,6 @@ LinkingTo:
     RcppEigen
 Suggests: 
     colorspace,
-    covr,
     dplyr,
     knitr,
     bookdown,
@@ -84,7 +83,6 @@ Suggests:
     ggplot2,
     ggtext,
     rmarkdown,
-    usethis,
     forcats,
     purrr,
     tidyr
