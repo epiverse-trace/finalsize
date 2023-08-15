@@ -37,28 +37,27 @@ $$
 $$
 where $\beta$ is the transmission rate and $\gamma$ is the rate of recovery.
 
-To calculate the proportion infected, we need to derive an expression for the proportion of susceptibles who got infected during the epidemic, i.e. $\phi = 1- S(\infty)/S(0)$. Rather than simulating the model over a very long time period (i.e. $t \rightarrow \infty $), we can instead calculate $dI/dS$ and integrate:
+To calculate the proportion infected, we need to derive an expression for the proportion of susceptibles who got infected during the epidemic, i.e. $\phi = 1- S(\infty)/S(0)$. Rather than simulating the model over a very long time period (i.e. $t \rightarrow \infty$), we can instead calculate $dI/dS$ and integrate:
 
 $$
 \frac{d I}{d S} = - 1 + \frac{\gamma}{\beta S} \\
 I(t) = - S(t) + \frac{\gamma}{\beta} \log S(t) + c
 $$
-where $c$ depends on initial conditions. Under the assumption the population is fully susceptible initially (i.e. $S(0)=1$), and $I(t) \rightarrow 0 $ as $t \rightarrow \infty $, we obtain the following:
+where $c$ depends on initial conditions. Under the assumption the population is fully susceptible initially (i.e. $S(0)=1$), and $I(t) \rightarrow 0$ as $t \rightarrow \infty$, we obtain the following:
 $$
 \log S(\infty) = - R_0 [1-S(\infty) ] \\
 \mathrm{log}~\phi  -R_0 (1-\phi) = 0 = F(\phi)
 $$
-Perron-Frobenius XX
+This equation doesn't have an analytical solution, but can be solved numerically with Newton’s method to find the final epidemic size, i.e. the unique solution in (0,1]:
 
-This equation doesn't have an analytical solution, but can be solved numerically with Newton’s method:
-1. Select an arbitrary initial estimate $\x_0$ and tolerance $T$ ;
+1. Select an arbitrary initial estimate $x_0$ and tolerance $T$ ;
 2. Solve $\frac{dF}{d \phi} (x_0) \Delta x = −F(x_0) ~ \text{for } ~ \Delta x$ ;
 3. Set $x_{i+1} = x_i + \Delta x$;
 4. Repeat until $x_i$ converges sufficiently (i.e. difference in each step is less than $T$)
 
 ## Varying susceptibility
 
-XX Add methods from [Miller (2012)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/) XX
+We can extend the above formulation to account for variable susceptibility among individuals, following the methods outlined in [Miller (2012)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/). First, we define $p(x)$ to be the probability density for a randomly chosen individual to be of suceptibility type $x$. If we define the probability an individual of type $x$ to be ultimately infected as $\phi(x)$, then the overall proportion of the population to be infected is defined as follows, depending on whether $p(x)$ is a continuous or discrete distribution:
 
 $$
 \hat\phi = \int_0^\infty \phi(x) p(x) dx \\
@@ -66,10 +65,17 @@ $$
 \hat\phi = \sum_x \phi(x) p(x) dx \\
 $$
 
+We therefore obtain the following relationship between $\phi$ and $\hat\phi$, under the assumption that $S(x,0)$ is near 1 initially:
 
 $$
-1-\phi = S(x,0) e^{-R_0 (1-\hat\phi) } \\
-1-\phi = S(x,0) e^{-R_0 (1-\hat\phi) } 
+1-\phi(x) = S(x,0) e^{-R_0 \hat\phi } \\
+\hat\phi = 1- \sum_x p(x) e^{-R_0 \hat\phi }  
+$$
+
+$$
+\hat\phi = \int_0^\infty \phi(x) p(x) dx \\
+\text{or} \\
+\hat\phi = \sum_x \phi(x) p(x) dx \\
 $$
 
 ## Final size equation with heterogenous mixing
@@ -98,5 +104,5 @@ If we define $\underline\phi = (\phi_1, ... \phi_n)$ to be a vector of final siz
 $$
 \mathrm{log}~\underline\phi  -\mathbf{R} (1-\underline\phi) = 0 = F(\underline\phi)
 $$
-where $\mathbf{R}$ is a matrix with entries $R_{i,j}$. Once again, we can use Newton's method, this time with $\phi$ as a vector, and hence we need to a set of linear equations in step 2.
+where $\mathbf{R}$ is a matrix with entries $R_{i,j}$. Once again, we can use Newton's method, this time with $\underline\phi$ as a vector, and hence we need to a set of linear equations in step 2.
 
