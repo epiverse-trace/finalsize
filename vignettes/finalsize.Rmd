@@ -104,7 +104,7 @@ p_susceptibility <- matrix(1.0)
 ::: {.alert .alert-secondary}
 Susceptibility to infection is well known to vary due to a number of factors, including age, prior exposure to the pathogen, or immunisation due to a vaccination campaign.
 
-The ["Modelling heterogeneous susceptibility"](varying_susceptibility.Rmd) vignette explores how variation in susceptibility within and between demographic groups can be incorporated into final epidemic size calculations using _finalsize_.
+The ["Modelling heterogeneous susceptibility"](varying_susceptibility.html) vignette explores how variation in susceptibility within and between demographic groups can be incorporated into final epidemic size calculations using _finalsize_.
 :::
 
 ## Running `final_size`
