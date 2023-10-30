@@ -86,8 +86,7 @@ r_eff <- function(r0,
         abs(max(Re(eigen(
           contact_matrix * demography_vector,
           only.values = TRUE
-        )$values) - 1.0)) <
-          1e-6
+        )$values) - 1.0)) < 1e-6
       )
   )
 
