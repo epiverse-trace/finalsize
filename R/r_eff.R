@@ -1,8 +1,8 @@
-#' @title Calculate \eqn{R_eff} in a heterogeneous population
+#' @title Calculate \eqn{R_\text{eff}} in a heterogeneous population
 #'
-#' @description `r_eff` calculates the effective reproductive number \eqn{R_eff}
-#' in a population with heterogeneous mixing, and with heterogeneous
-#' susceptibility to infection such as due to immunisation.
+#' @description `r_eff` calculates the effective reproductive number
+#' \eqn{R_\text{eff}} in a population with heterogeneous mixing, and with
+#' heterogeneous susceptibility to infection such as due to immunisation.
 #'
 #'
 #' @param r0 The basic reproductive number \eqn{R_0} of the infection.

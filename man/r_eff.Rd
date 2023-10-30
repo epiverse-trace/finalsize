@@ -2,7 +2,7 @@
 % Please edit documentation in R/r_eff.R
 \name{r_eff}
 \alias{r_eff}
-\title{Calculate \eqn{R_eff} in a heterogeneous population}
+\title{Calculate \eqn{R_\text{eff}} in a heterogeneous population}
 \usage{
 r_eff(r0, contact_matrix, demography_vector, susceptibility, p_susceptibility)
 }
@@ -29,9 +29,9 @@ A single number of the effective reproductive number of the infection
 in the population.
 }
 \description{
-\code{r_eff} calculates the effective reproductive number \eqn{R_eff}
-in a population with heterogeneous mixing, and with heterogeneous
-susceptibility to infection such as due to immunisation.
+\code{r_eff} calculates the effective reproductive number
+\eqn{R_\text{eff}} in a population with heterogeneous mixing, and with
+heterogeneous susceptibility to infection such as due to immunisation.
 }
 \examples{
 # load example POLYMOD data included in the package
