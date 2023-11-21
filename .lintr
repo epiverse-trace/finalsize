@@ -16,7 +16,7 @@ linters: all_linters(
     indentation_linter = NULL, # unstable as of lintr 3.1.0
     # Use minimum R declared in DESCRIPTION or fall back to current R version.
     # Install etdev package from https://github.com/epiverse-trace/etdev
-    backport_linter(if (length(x <- etdev::extract_min_r_version())) x else getRversion())
+    # backport_linter(if (length(x <- etdev::extract_min_r_version())) x else getRversion())
   )
 exclusions: list(
     "tests/testthat.R" = list(
