@@ -22,7 +22,6 @@ susceptibility <- matrix(1, ncol = 1, 3)
 
 #### Check for demography vector length mismatch ####
 test_that("Contact_matrix -- demography vector mismatch errors", {
-
   # wrong demography vector
   demography_vector <- c(demography_vector, 100)
 

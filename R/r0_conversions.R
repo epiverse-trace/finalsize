@@ -114,7 +114,7 @@ lambda_to_r0 <- function(lambda, contact_matrix, demography_vector,
 
 #' @title Calculate transmission rate (\eqn{\lambda}) from \eqn{R_0}
 #'
-#' @description Uses the R0 (\eqn{R0}), contact matrix (\eqn{C}),
+#' @description Uses the R0 (\eqn{R_0}), contact matrix (\eqn{C}),
 #' population (\eqn{N}), and infectious period (\eqn{\gamma})
 #' to calculate the transmission rate using the following equation.
 #' \deqn{\lambda = R_0 / ({Max}(EV(C)) \gamma)}
