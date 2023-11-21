@@ -86,7 +86,6 @@ Suggests:
     forcats,
     purrr,
     tidyr
-Remotes: r-lib/lintr
 Config/testthat/edition: 3
 Config/Needs/website: epiverse-trace/epiversetheme
 Encoding: UTF-8
