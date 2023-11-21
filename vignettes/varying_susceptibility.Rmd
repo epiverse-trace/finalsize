@@ -63,11 +63,7 @@ For example, for SARS-CoV-2, children are less susceptible to it than adults. De
 # load finalsize
 library(finalsize)
 
-# load necessary packages
-if (!require("socialmixr")) install.packages("socialmixr")
-if (!require("ggplot2")) install.packages("ggplot2")
-if (!require("colorspace")) install.packages("colorspace")
-
+library(socialmixr)
 library(ggplot2)
 library(colorspace)
 ```
