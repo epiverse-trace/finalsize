@@ -14,3 +14,4 @@
 ^data-raw$
 ^revdep$
 ^CRAN-SUBMISSION$
+^CITATION\.cff$
