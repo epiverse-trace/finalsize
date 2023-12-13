@@ -15,3 +15,12 @@ articles:
   contents:
   - compare_sir_model
   - susceptibility_matrices
+reference:
+- title: Package functions
+- contents:
+  - contains("final_size")
+  - contains("r0")
+- title: Data
+- contents:
+  - contains("polymod")
+
