@@ -1,97 +1,64 @@
 Package: finalsize
 Title: Calculate the Final Size of an Epidemic
 Version: 0.2.0.9000
-Authors@R: 
-    c(
-        person(
-            given = "Pratik",
-            family = "Gupte",
-            role = c("aut", "cre", "cph"),
-            email = "pratik.gupte@lshtm.ac.uk",
-            comment = c(ORCID = "https://orcid.org/0000-0001-5294-7819")
-        ),
-        person(
-            given = "Edwin",
-            family = "Van Leeuwen",
-            role = c("aut", "cph"),
-            email = "edwin.vanleeuwen@ukhsa.gov.uk",
-            comment = c(ORCID = "https://orcid.org/0000-0002-2383-5305")
-        ),
-        person(
-            given = "Adam",
-            family = "Kucharski",
-            role = c("aut", "cph"),
-            email = "adam.kucharski@lshtm.ac.uk",
-            comment = c(ORCID = "https://orcid.org/0000-0001-8814-9421")
-        ),
-        person(
-            given = "Rosalind",
-            family = "Eggo",
-            role = c("ctb"),
-            email = "r.eggo@lshtm.ac.uk",
-            comment = c(ORCID = "https://orcid.org/0000-0002-0362-6717")
-        ),
-        person(
-            given = "Hugo",
-            family = "Gruson",
-            role = c("ctb"),
-            email = "hugo.gruson@data.org",
-            comment = c(ORCID = "https://orcid.org/0000-0002-4094-1476")
-        ),
-        person(
-            given = "Thibaut",
-            family = "Jombart",
-            role = c("ctb"),
-            email = "thibaut@data.org",
-            comment = c(ORCID = "https://orcid.org/0000-0003-3796-2097")
-        ),
-        person(
-            given = "Andree",
-            family = "Valle-Campos",
-            role = c("ctb"),
-            email = "andree.valle-campos@lshtm.ac.uk",
-            comment = c(ORCID = "https://orcid.org/0000-0002-7779-481X")
-        ),
-        person(
-            given = "Joshua W.",
-            family = "Lambert",
-            role = c("rev"),
-            email = "joshua.lambert@lshtm.ac.uk",
-            comment = c(ORCID = "https://orcid.org/0000-0001-5218-3046")
-        )
-    )
-Description: Calculate the final size of a susceptible-infectious-recovered epidemic in a population with demographic variation in contact patterns and susceptibility to disease, as discussed in Miller (2012) <doi:10.1007/s11538-012-9749-6>.
+Authors@R: c(
+    person("Pratik", "Gupte", , "pratik.gupte@lshtm.ac.uk", role = c("aut", "cre", "cph"),
+           comment = c(ORCID = "https://orcid.org/0000-0001-5294-7819")),
+    person("Edwin", "Van Leeuwen", , "edwin.vanleeuwen@ukhsa.gov.uk", role = c("aut", "cph"),
+           comment = c(ORCID = "https://orcid.org/0000-0002-2383-5305")),
+    person("Adam", "Kucharski", , "adam.kucharski@lshtm.ac.uk", role = c("aut", "cph"),
+           comment = c(ORCID = "https://orcid.org/0000-0001-8814-9421")),
+    person("Rosalind", "Eggo", , "r.eggo@lshtm.ac.uk", role = "ctb",
+           comment = c(ORCID = "https://orcid.org/0000-0002-0362-6717")),
+    person("Hugo", "Gruson", , "hugo.gruson@data.org", role = "ctb",
+           comment = c(ORCID = "https://orcid.org/0000-0002-4094-1476")),
+    person("Thibaut", "Jombart", , "thibaut@data.org", role = "ctb",
+           comment = c(ORCID = "https://orcid.org/0000-0003-3796-2097")),
+    person("Andree", "Valle-Campos", , "andree.valle-campos@lshtm.ac.uk", role = "ctb",
+           comment = c(ORCID = "https://orcid.org/0000-0002-7779-481X")),
+    person("Joshua W.", "Lambert", , "joshua.lambert@lshtm.ac.uk", role = "rev",
+           comment = c(ORCID = "https://orcid.org/0000-0001-5218-3046"))
+  )
+Description: Calculate the final size of a
+    susceptible-infectious-recovered epidemic in a population with
+    demographic variation in contact patterns and susceptibility to
+    disease, as discussed in Miller (2012)
+    <doi:10.1007/s11538-012-9749-6>.
 License: MIT + file LICENSE
-URL: https://github.com/epiverse-trace/finalsize, https://epiverse-trace.github.io/finalsize/
+URL: https://github.com/epiverse-trace/finalsize,
+    https://epiverse-trace.github.io/finalsize/
 BugReports: https://github.com/epiverse-trace/finalsize/issues
+Depends: 
+    R (>= 2.10)
 Imports:
     checkmate,
     Rcpp
+Suggests: 
+    bookdown,
+    colorspace,
+    dplyr,
+    forcats,
+    ggplot2,
+    ggtext,
+    knitr,
+    purrr,
+    rmarkdown,
+    scales,
+    socialmixr,
+    spelling,
+    testthat (>= 3.0.0),
+    tibble,
+    tidyr,
+    xml2
 LinkingTo: 
     Rcpp,
     RcppEigen
-Suggests: 
-    colorspace,
-    dplyr,
-    knitr,
-    bookdown,
-    scales,
-    socialmixr,
-    testthat (>= 3.0.0),
-    tibble,
-    xml2,
-    ggplot2,
-    ggtext,
-    rmarkdown,
-    forcats,
-    purrr,
-    tidyr
-Config/testthat/edition: 3
+VignetteBuilder: 
+    knitr
 Config/Needs/website: epiverse-trace/epiversetheme
+Config/testthat/edition: 3
 Encoding: UTF-8
+Language: en-GB
+LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
-VignetteBuilder: knitr
-Depends: 
-    R (>= 2.10)
-LazyData: true
