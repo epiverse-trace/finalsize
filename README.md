@@ -1,5 +1,5 @@
 
-# *finalsize*: Calculate the final size of an epidemic <img src="man/figures/logo.png" align="right" width="130"/>
+# finalsize: Calculate the final size of an epidemic <img src="man/figures/logo.svg" align="right" width="130"/>
 
 <!-- badges: start -->
 
@@ -166,9 +166,9 @@ citation("finalsize")
 #> To cite package 'finalsize' in publications use:
 #> 
 #>   Gupte P, Van Leeuwen E, Kucharski A (2023). _finalsize: Calculate the
-#>   Final Size of an Epidemic_.
-#>   https://github.com/epiverse-trace/finalsize,
-#>   https://epiverse-trace.github.io/finalsize/.
+#>   Final Size of an Epidemic_. R package version 0.2.0.9000,
+#>   https://epiverse-trace.github.io/finalsize/,
+#>   <https://github.com/epiverse-trace/finalsize>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
@@ -176,8 +176,9 @@ citation("finalsize")
 #>     title = {finalsize: Calculate the Final Size of an Epidemic},
 #>     author = {Pratik Gupte and Edwin {Van Leeuwen} and Adam Kucharski},
 #>     year = {2023},
-#>     note = {https://github.com/epiverse-trace/finalsize,
+#>     note = {R package version 0.2.0.9000, 
 #> https://epiverse-trace.github.io/finalsize/},
+#>     url = {https://github.com/epiverse-trace/finalsize},
 #>   }
 ```
 
