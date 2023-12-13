@@ -54,7 +54,7 @@
 #' Here, \eqn{EV(C)} denotes the eigenvalues of the matrix \eqn{C} which is
 #' calculated from the social contacts matrix scaled by the number of
 #' individuals in each demographic and susceptibility group in the population.
-#' 
+#'
 #' @export
 #' @return Returns a single number for the calculated value.
 #' @examples
@@ -77,7 +77,7 @@
 #' susceptibility <- matrix(
 #'   data = c(0.5, 0.7, 1.0), nrow = n_demo_grps, ncol = n_risk_grps
 #' )
-#' 
+#'
 #' # risk does not vary within groups
 #' p_susceptibility <- matrix(
 #'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
@@ -165,7 +165,7 @@ lambda_to_r0 <- function(lambda, contact_matrix, demography_vector,
 #'
 #' @name r0_conversions
 #' @rdname r0_conversions
-#' 
+#'
 #' @export
 r0_to_lambda <- function(r0, contact_matrix, demography_vector,
                          susceptibility, p_susceptibility,
@@ -223,7 +223,7 @@ r0_to_lambda <- function(r0, contact_matrix, demography_vector,
 #'
 #' @name r0_conversions
 #' @rdname r0_conversions
-#' 
+#'
 #' @export
 r_eff <- function(r0,
                   contact_matrix,
