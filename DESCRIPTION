@@ -96,3 +96,4 @@ VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)
 LazyData: true
+Config/Needs/website: epiverse-trace/epiversetheme
