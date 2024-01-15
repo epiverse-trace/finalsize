@@ -25,7 +25,11 @@ infected over the course of an epidemic, and can account for a
 demographic distribution (such as age groups) and demography-specific
 contact patterns, as well as for heterogeneous susceptibility to
 infection between groups (such as due to age-group specific immune
-responses) and within groups (such as due to immunisation programs).
+responses) and within groups (such as due to immunisation programs). An
+advantage of this approach is that it requires fewer parameters to be
+defined compared to a model that simulates the full transmission
+dynamics over time, such as models in the [*epidemics*
+package](https://epiverse-trace.github.io/epidemics/articles/epidemics.html).
 
 *finalsize* implements methods outlined in Andreasen
 ([2011](#ref-andreasen2011)), Miller ([2012](#ref-miller2012)),
@@ -165,7 +169,7 @@ By contributing to this project, you agree to abide by its terms.
 citation("finalsize")
 #> To cite package 'finalsize' in publications use:
 #> 
-#>   Gupte P, Van Leeuwen E, Kucharski A (2023). _finalsize: Calculate the
+#>   Gupte P, Van Leeuwen E, Kucharski A (2024). _finalsize: Calculate the
 #>   Final Size of an Epidemic_. R package version 0.2.0.9000,
 #>   https://epiverse-trace.github.io/finalsize/,
 #>   <https://github.com/epiverse-trace/finalsize>.
@@ -175,7 +179,7 @@ citation("finalsize")
 #>   @Manual{,
 #>     title = {finalsize: Calculate the Final Size of an Epidemic},
 #>     author = {Pratik Gupte and Edwin {Van Leeuwen} and Adam Kucharski},
-#>     year = {2023},
+#>     year = {2024},
 #>     note = {R package version 0.2.0.9000, 
 #> https://epiverse-trace.github.io/finalsize/},
 #>     url = {https://github.com/epiverse-trace/finalsize},
