@@ -26,9 +26,9 @@ knitr::opts_chunk$set(
 
 _{{ packagename }}_ is an R package to calculate the final size of a SIR epidemic in populations with heterogeneity in social contacts and infection susceptibility.
 
-_{{ packagename }}_ provides estimates for the total proportion of a population infected over the course of an epidemic, and can account for a demographic distribution (such as age groups) and demography-specific contact patterns, as well as for heterogeneous susceptibility to infection between groups (such as due to age-group specific immune responses) and within groups (such as due to immunisation programs).
+_{{ packagename }}_ provides estimates for the total proportion of a population infected over the course of an epidemic, and can account for a demographic distribution (such as age groups) and demography-specific contact patterns, as well as for heterogeneous susceptibility to infection between groups (such as due to age-group specific immune responses) and within groups (such as due to immunisation programs). An advantage of this approach is that it requires fewer parameters to be defined compared to a model that simulates the full transmission dynamics over time, such as models in the [_epidemics_ package](https://epiverse-trace.github.io/epidemics/articles/epidemics.html).
 
-_{{ packagename }}_ implements methods outlined in @andreasen2011, @miller2012, @kucharski2014, and @bidari2016.
+_{{ packagename }}_ implements methods outlined in @andreasen2011, @miller2012, @kucharski2014, and @bidari2016. 
 
 _{{ packagename }}_ can help provide rough estimates of the effectiveness of pharmaceutical interventions in the form of immunisation programmes, or the effect of naturally acquired immunity through previous infection (see the vignette).
 
