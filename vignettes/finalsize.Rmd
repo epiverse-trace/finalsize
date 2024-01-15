@@ -17,6 +17,8 @@ vignette: >
 When analysing an epidemic-prone infection, such as pandemic influenza, it is important to understand how many infections there could be in total. The overall number of infections that occur during such an epidemic, is called the 'final epidemic size'.
 The expected final size of an epidemic can be calculated using methods detailed in @andreasen2011, @miller2012, @kucharski2014, and @bidari2016, and which are implemented in the _finalsize_ package.
 
+An advantage of the final size approach is that it is only necessary to define pathogen transmissibility and population susceptibility to calculate the epidemic size, rather than requiring estimates of additional time-dependent processes like the duration of infectiousness or delay from infection to onset of symptoms. So _finalsize_ will be particularly relevant for questions where understanding the overall size of an epidemic is more important than estimating its shape.
+
 ::: {.alert .alert-primary}
 ## Use case {-}
 
