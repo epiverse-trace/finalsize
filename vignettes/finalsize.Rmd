@@ -131,4 +131,16 @@ This is the final epidemic size without accounting for heterogeneity in social c
 
 This value, of about `r scales::percent(round(final_size_data$p_infected, 2))` of the population infected, is easily converted to a count, and suggests that about `r scales::comma(final_size_data$p_infected * uk_pop, scale = 1e-6, suffix = " million")` people would be infected over the course of this epidemic.
 
+## A short-cut for homogeneous populations
+
+The example above explains the steps that go into final size calculation.
+For one very specific use-case, wherein the population is assumed to have homogeneous mixing (i.e., groups do not differ in their social contacts), and homogeneous and full susceptibility to infection, the final size calculation only depends on the $R_0$ of the epidemic.
+
+In this case, the final size calculation can be simplified to `final_size(r0)`, with all other parameters taking their default values, which assume homogeneous social contacts and susceptibility.
+
+```{r}
+final_size(r0)
+```
+
+
 ## References
