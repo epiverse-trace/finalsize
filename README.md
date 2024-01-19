@@ -72,23 +72,30 @@ pak::pak("epiverse-trace/finalsize")
 ## Quick start
 
 The main function in *finalsize* is `final_size()`, which calculates the
-final size of an epidemic. Helper functions included in *finalsize* are
-provided to calculate the effective $R_0$, called $R_{eff}$, from
-demographic and susceptibility distribution data, while other helpers
-can convert between $R_0$ and the transmission rate $\lambda$.
+final size of an epidemic given the $R_0$.
 
-Here, an example using social contact data from the *socialmixr* package
-investigates the final size of an epidemic when the disease has an
+``` r
+# load finalsize
+library(finalsize)
+
+final_size(1.5)
+#>     demo_grp   susc_grp susceptibility p_infected
+#> 1 demo_grp_1 susc_grp_1              1  0.5828132
+```
+
+Optionally, `final_size()` can estimate the epidemic size for
+populations with differences among demographic groups in their social
+contact patterns, in their susceptibility to infection.
+
+We can use social contact data (here, from the *socialmixr* package) to
+estimate the final size of an epidemic when the disease has an
 R<sub>0</sub> of 1.5, and given three age groups of interest — 0-19,
 20-39 and 40+. The under-20 age group is assumed to be fully susceptible
 to the disease, whereas individuals aged over 20 are only half as
 susceptible as those under 20.
 
 ``` r
-# load finalsize
-library(finalsize)
-
-# Load example POLYMOD data included with the package
+# Load example POLYMOD social contacts data included with the package
 data(polymod_uk)
 
 # Define contact matrix (entry {ij} is contacts in group i reported by group j)
@@ -114,16 +121,6 @@ p_susceptibility <- matrix(
 # R0 of the disease
 r0 <- 1.5 # assumed for pandemic influenza
 
-# calculate the effective R0 using `r_eff()`
-r_eff(
-  r0 = r0,
-  contact_matrix = contact_matrix,
-  demography_vector = demography_vector,
-  susceptibility = susceptibility,
-  p_susceptibility = p_susceptibility
-)
-#> [1] 1.171758
-
 # Calculate the proportion of individuals infected in each age group
 final_size(
   r0 = r0,
@@ -136,6 +133,23 @@ final_size(
 #> 1   [0,20) susc_grp_1            1.0 0.32849966
 #> 2  [20,40) susc_grp_1            0.5 0.10532481
 #> 3      40+ susc_grp_1            0.5 0.06995193
+```
+
+Helper functions included in *finalsize* are provided to calculate the
+effective $R_0$, called $R_{eff}$, from demographic and susceptibility
+distribution data, while other helpers can convert between $R_0$ and the
+transmission rate $\lambda$.
+
+``` r
+# calculate the effective R0 using `r_eff()`
+r_eff(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
+)
+#> [1] 1.171758
 ```
 
 ## Package vignettes
