@@ -104,5 +104,5 @@ If we define $\underline\phi = (\phi_1, ... \phi_n)$ to be a vector of final siz
 $$
 \mathrm{log}~\underline\phi  -\mathbf{R} (1-\underline\phi) = 0 = F(\underline\phi)
 $$
-where $\mathbf{R}$ is a matrix with entries $R_{i,j}$. Once again, we can use Newton's method, this time with $\underline\phi$ as a vector, and hence we need to a set of linear equations in step 2.
+where $\mathbf{R}$ is a matrix with entries $R_{i,j}$. Once again, we can use Newton's method, this time with $\underline\phi$ as a vector, and hence we need to solve a set of linear equations in step 2.
 
