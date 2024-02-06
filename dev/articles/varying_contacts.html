@@ -182,12 +182,13 @@ The <code>symmetric = TRUE</code> argument to <code><a href="https://epiforecast
 <span></span>
 <span><span class="co"># the demography data</span></span>
 <span><span class="va">contact_data</span><span class="op">$</span><span class="va">demography</span></span>
-<span><span class="co">#&gt;    age.group population proportion year</span></span>
-<span><span class="co">#&gt; 1:     [0,5)    3453670 0.05728738 2005</span></span>
-<span><span class="co">#&gt; 2:    [5,18)    9761554 0.16191873 2005</span></span>
-<span><span class="co">#&gt; 3:   [18,40)   18110368 0.30040378 2005</span></span>
-<span><span class="co">#&gt; 4:   [40,65)   19288101 0.31993930 2005</span></span>
-<span><span class="co">#&gt; 5:       65+    9673058 0.16045081 2005</span></span>
+<span><span class="co">#&gt;    age.group population proportion  year</span></span>
+<span><span class="co">#&gt;       &lt;char&gt;      &lt;num&gt;      &lt;num&gt; &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1:     [0,5)    3453670 0.05728738  2005</span></span>
+<span><span class="co">#&gt; 2:    [5,18)    9761554 0.16191873  2005</span></span>
+<span><span class="co">#&gt; 3:   [18,40)   18110368 0.30040378  2005</span></span>
+<span><span class="co">#&gt; 4:   [40,65)   19288101 0.31993930  2005</span></span>
+<span><span class="co">#&gt; 5:       65+    9673058 0.16045081  2005</span></span>
 <span></span>
 <span><span class="co"># get the contact matrix and demography data</span></span>
 <span><span class="va">contact_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="va">contact_data</span><span class="op">$</span><span class="va">matrix</span><span class="op">)</span></span>

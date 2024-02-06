@@ -197,6 +197,18 @@ Here, we use an estimate for the U.K. population size of about 67 million.</p>
 </details><p>This is the final epidemic size without accounting for heterogeneity in social contacts by age or other factors, and without accounting for variation in susceptibility to infection between or within demographic groups.</p>
 <p>This value, of about 58% of the population infected, is easily converted to a count, and suggests that about 39 million people would be infected over the course of this epidemic.</p>
 </div>
+<div class="section level2">
+<h2 id="a-short-cut-for-homogeneous-populations">A short-cut for homogeneous populations<a class="anchor" aria-label="anchor" href="#a-short-cut-for-homogeneous-populations"></a>
+</h2>
+<p>The example above explains the steps that go into final size calculation.
+For one very specific use-case, wherein the population is assumed to have homogeneous mixing (i.e., groups do not differ in their social contacts), and homogeneous and full susceptibility to infection, the final size calculation only depends on the <span class="math inline">\(R_0\)</span> of the epidemic.</p>
+<p>In this case, the final size calculation can be simplified to <code>final_size(r0)</code>, with all other parameters taking their default values, which assume homogeneous social contacts and susceptibility.</p>
+<details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/final_size.html">final_size</a></span><span class="op">(</span><span class="va">r0</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     demo_grp   susc_grp susceptibility p_infected</span></span>
+<span><span class="co">#&gt; 1 demo_grp_1 susc_grp_1              1  0.5828132</span></span></code></pre></div>
+</details>
+</div>
 <div class="section level2 unnumbered">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>

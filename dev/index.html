@@ -129,13 +129,18 @@
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<p>The main function in <em>finalsize</em> is <code><a href="reference/final_size.html">final_size()</a></code>, which calculates the final size of an epidemic. Helper functions included in <em>finalsize</em> are provided to calculate the effective <span class="math inline"><em>R</em><sub>0</sub></span>, called <span class="math inline"><em>R</em><sub><em>e</em><em>f</em><em>f</em></sub></span>, from demographic and susceptibility distribution data, while other helpers can convert between <span class="math inline"><em>R</em><sub>0</sub></span> and the transmission rate <span class="math inline"><em>λ</em></span>.</p>
-<p>Here, an example using social contact data from the <em>socialmixr</em> package investigates the final size of an epidemic when the disease has an R<sub>0</sub> of 1.5, and given three age groups of interest — 0-19, 20-39 and 40+. The under-20 age group is assumed to be fully susceptible to the disease, whereas individuals aged over 20 are only half as susceptible as those under 20.</p>
+<p>The main function in <em>finalsize</em> is <code><a href="reference/final_size.html">final_size()</a></code>, which calculates the final size of an epidemic given the <span class="math inline"><em>R</em><sub>0</sub></span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load finalsize</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/epiverse-trace/finalsize" class="external-link">finalsize</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Load example POLYMOD data included with the package</span></span>
+<span><span class="fu"><a href="reference/final_size.html">final_size</a></span><span class="op">(</span><span class="fl">1.5</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     demo_grp   susc_grp susceptibility p_infected</span></span>
+<span><span class="co">#&gt; 1 demo_grp_1 susc_grp_1              1  0.5828132</span></span></code></pre></div>
+<p>Optionally, <code><a href="reference/final_size.html">final_size()</a></code> can estimate the epidemic size for populations with differences among demographic groups in their social contact patterns, in their susceptibility to infection.</p>
+<p>We can use social contact data (here, from the <em>socialmixr</em> package) to estimate the final size of an epidemic when the disease has an R<sub>0</sub> of 1.5, and given three age groups of interest — 0-19, 20-39 and 40+. The under-20 age group is assumed to be fully susceptible to the disease, whereas individuals aged over 20 are only half as susceptible as those under 20.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load example POLYMOD social contacts data included with the package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">polymod_uk</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Define contact matrix (entry {ij} is contacts in group i reported by group j)</span></span>
@@ -161,16 +166,6 @@
 <span><span class="co"># R0 of the disease</span></span>
 <span><span class="va">r0</span> <span class="op">&lt;-</span> <span class="fl">1.5</span> <span class="co"># assumed for pandemic influenza</span></span>
 <span></span>
-<span><span class="co"># calculate the effective R0 using `r_eff()`</span></span>
-<span><span class="fu"><a href="reference/r0_conversions.html">r_eff</a></span><span class="op">(</span></span>
-<span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
-<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
-<span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
-<span>  susceptibility <span class="op">=</span> <span class="va">susceptibility</span>,</span>
-<span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.171758</span></span>
-<span></span>
 <span><span class="co"># Calculate the proportion of individuals infected in each age group</span></span>
 <span><span class="fu"><a href="reference/final_size.html">final_size</a></span><span class="op">(</span></span>
 <span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
@@ -183,6 +178,17 @@
 <span><span class="co">#&gt; 1   [0,20) susc_grp_1            1.0 0.32849966</span></span>
 <span><span class="co">#&gt; 2  [20,40) susc_grp_1            0.5 0.10532481</span></span>
 <span><span class="co">#&gt; 3      40+ susc_grp_1            0.5 0.06995193</span></span></code></pre></div>
+<p>Helper functions included in <em>finalsize</em> are provided to calculate the effective <span class="math inline"><em>R</em><sub>0</sub></span>, called <span class="math inline"><em>R</em><sub><em>e</em><em>f</em><em>f</em></sub></span>, from demographic and susceptibility distribution data, while other helpers can convert between <span class="math inline"><em>R</em><sub>0</sub></span> and the transmission rate <span class="math inline"><em>λ</em></span>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># calculate the effective R0 using `r_eff()`</span></span>
+<span><span class="fu"><a href="reference/r0_conversions.html">r_eff</a></span><span class="op">(</span></span>
+<span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
+<span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
+<span>  susceptibility <span class="op">=</span> <span class="va">susceptibility</span>,</span>
+<span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.171758</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="package-vignettes">Package vignettes<a class="anchor" aria-label="anchor" href="#package-vignettes"></a>
@@ -207,7 +213,7 @@
 <div class="section level2">
 <h2 id="citing-this-package">Citing this package<a class="anchor" aria-label="anchor" href="#citing-this-package"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"finalsize"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; To cite package 'finalsize' in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
