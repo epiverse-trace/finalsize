@@ -72,12 +72,6 @@ $$
 \hat\phi = 1- \sum_x p(x) e^{-R_0 \hat\phi }  
 $$
 
-$$
-\hat\phi = \int_0^\infty \phi(x) p(x) dx \\
-\text{or} \\
-\hat\phi = \sum_x \phi(x) p(x) dx \\
-$$
-
 ## Final size equation with heterogenous mixing
 
 We can extend the same derivation for the above homogenous model for populations with multiple age groups, following [Andreasen et al](about:blank). The age-dependent ODEs are defined as follows:
