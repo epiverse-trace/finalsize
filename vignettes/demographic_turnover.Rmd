@@ -1,0 +1,135 @@
+---
+title: "Modelling uncertainty in R₀"
+output:
+  bookdown::html_vignette2:
+    fig_caption: yes
+    code_folding: show
+pkgdown:
+  as_is: true
+bibliography: references.json
+link-citations: true
+vignette: >
+  %\VignetteIndexEntry{Modelling uncertainty in R₀}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+Epidemic final size calculations are sensitive to input data such as the $R_0$ of the infection. Such values can often be uncertain in the early stages of an outbreak. This uncertainty can be included in final size calculations by running `final_size()` for values drawn from a distribution, and summarising the outcomes.
+
+READ uncertainty_params FIRST
+
+::: {.alert .alert-warning}
+**New to _finalsize_?** It may help to read the ["Get started"](finalsize.html), ["Modelling heterogeneous contacts"](varying_contacts.html), or ["Modelling heterogeneous susceptibility"](varying_susceptibility.Rmd) vignettes first!
+:::
+
+::: {.alert .alert-primary}
+## Use case {-}
+
+The infection **parameter ($R_0$) is uncertain**. We want to know how much variation this could cause in the estimated final size of the epidemic.
+:::
+
+::: {.alert .alert-secondary}
+### What we have {-}
+
+  1. In addition to the $R_0$, demography data, social contact data, and data on the distribution of susceptibility among age groups;
+  2. A measure of the error in the estimated $R_0$ of the infection.
+
+### What we assume {-}
+
+  1. An SIR epidemic, and the complete partitioning of individuals into different demographic and infection risk groups.
+:::
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  message = FALSE,
+  warning = FALSE,
+  dpi = 300
+)
+```
+
+```{r setup, message=FALSE, warning=FALSE, class.source = 'fold-hide'}
+# load finalsize
+library(finalsize)
+library(socialmixr)
+library(ggplot2)
+```
+
+### Future resurgence following waning and demographic turnover
+
+```{r}
+years_range <- 0:20
+
+annual_wane <- 0.05 # proportion losing immunity per year
+birth_rate <-  14/1000 # proportion newly susceptible per year
+
+r0_mean <- 2
+r0_samples <- rnorm(n = 100, mean = r0_mean, sd = 0.1) # for first outbreak
+r0_samples2 <- rnorm(n = 100, mean = r0_mean, sd = 0.1) # for second outbreak
+
+# run final size for each value and collate estimates
+final_size_est <- Map(
+  function(r0, i) {
+    fs <- final_size(r0)$p_infected # run final size model
+    data.frame(fs = fs, i = i, r0 = r0) # data.frame for each value considered
+  }, 
+  r0 = r0_samples, 
+  i = seq_along(r0_samples)
+)
+
+# use Reduce to combine the list of data.frames into a single data.frame
+final_size_df <- Reduce(rbind, final_size_est)
+
+# define changes in susceptibility over time from waning 
+# and population turnover (assuming) rectangular age distribution
+relative_immunity <- (1-annual_wane)^(years_range)*pmax(1-birth_rate*years_range,0)
+
+# calculate effective R for each value and collate estimates
+r_eff_est <- Map(
+  function(r0, fs) {
+    r_eff <- (1-fs*relative_immunity)*r0
+    data.frame(r_eff = r_eff,yr = years_range) # data.frame for each value considered
+  }, 
+  r0 = r0_samples2, 
+  fs = final_size_df$fs
+)
+
+# use Reduce to combine the list of data.frames into a single data.frame
+r_eff_df <- Reduce(rbind, r_eff_est)
+
+
+# plot results
+
+ggplot(r_eff_df) +
+  geom_hline(yintercept = 1, linetype = "dashed", color = "gray") +
+  stat_summary(
+    aes(
+      yr, r_eff
+    ),
+    fun = mean,
+    fun.min = function(x) {
+      quantile(x, 0.025)
+    },
+    fun.max = function(x) {
+      quantile(x, 0.975)
+    }
+  ) +
+  scale_y_continuous(
+    limits = c(0,3)
+  ) +
+  theme_classic() +
+  coord_cartesian(
+    expand = TRUE
+  ) +
+  labs(
+    x = "years",
+    y = "Effective R"
+  )
+```
+
+
+
+
