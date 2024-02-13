@@ -48,7 +48,7 @@ $$
 \log S(\infty) = - R_0 [1-S(\infty) ] \\
 \mathrm{log}~\phi  -R_0 (1-\phi) = 0 = F(\phi)
 $$
-This equation doesn't have an analytical solution, but can be solved numerically with Newton’s method to find the final epidemic size, i.e. the unique solution in (0,1]:
+This equation doesn't have an analytical solution, but there are various methods available to allow it to be solved numerically to find the unique solution in (0,1]. For example, we can use Newton’s method (`solver = "newton"` in the `final_size()` function) to find the final epidemic size:
 
 1. Select an arbitrary initial estimate $x_0$ and tolerance $T$ ;
 2. Solve $\frac{dF}{d \phi} (x_0) \Delta x = −F(x_0) ~ \text{for } ~ \Delta x$ ;
@@ -57,7 +57,7 @@ This equation doesn't have an analytical solution, but can be solved numerically
 
 ## Varying susceptibility
 
-We can extend the above formulation to account for variable susceptibility among individuals, following the methods outlined in [Miller (2012)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/). First, we define $p(x)$ to be the probability density for a randomly chosen individual to be of suceptibility type $x$. If we define the probability an individual of type $x$ to be ultimately infected as $\phi(x)$, then the overall proportion of the population to be infected is defined as follows, depending on whether $p(x)$ is a continuous or discrete distribution:
+We can extend the above formulation to account for variable susceptibility among individuals, following the methods outlined in [Miller (2012)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/). First, we define $p(x)$ to be the probability density for a randomly chosen individual to be of susceptibility type $x$. If we define the probability an individual of type $x$ to be ultimately infected as $\phi(x)$, then the overall proportion of the population to be infected is defined as follows, depending on whether $p(x)$ is a continuous or discrete distribution:
 
 $$
 \hat\phi = \int_0^\infty \phi(x) p(x) dx \\
@@ -65,11 +65,20 @@ $$
 \hat\phi = \sum_x \phi(x) p(x) dx \\
 $$
 
-We therefore obtain the following relationship between $\phi$ and $\hat\phi$, under the assumption that $S(x,0)$ is near 1 initially:
+If we define $\hat\phi$ to be the expected number of transmissions to a given individual of type $x$, we can therefore calculate the probability that this individual remains susceptible. This gives the following relationship between $\phi$ and $\hat\phi$:
 
 $$
-1-\phi(x) = S(x,0) e^{-R_0 \hat\phi } \\
-\hat\phi = 1- \sum_x p(x) e^{-R_0 \hat\phi }  
+1-\phi(x) = S(x,0) e^{-x \hat\phi } \\
+$$
+And hence we can combine the above to give:
+$$
+\hat\phi = \int_0^\infty (1-   S(x,0) e^{-x \hat\phi }) p(x) dx \\
+\hat\phi = 1- \int_0^\infty  S(x,0) e^{-x \hat\phi } p(x) dx
+$$
+
+Under the assumption that $S(x,0)$ is near 1 initially (i.e. f), we therefore obtain:
+$$
+\hat\phi = 1- \int_0^\infty p(x) e^{-x \hat\phi } dx
 $$
 
 ## Final size equation with heterogenous mixing
