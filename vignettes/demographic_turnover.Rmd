@@ -1,5 +1,5 @@
 ---
-title: "Modelling uncertainty in R₀"
+title: "Projecting future risk following waning or new births"
 output:
   bookdown::html_vignette2:
     fig_caption: yes
@@ -16,29 +16,31 @@ editor_options:
   chunk_output_type: console
 ---
 
-Epidemic final size calculations are sensitive to input data such as the $R_0$ of the infection. Such values can often be uncertain in the early stages of an outbreak. This uncertainty can be included in final size calculations by running `final_size()` for values drawn from a distribution, and summarising the outcomes.
-
-READ uncertainty_params FIRST
+If population immunity accumulates during an epidemic, then the peak of the epidemic is the point at which there is a sufficient reduction in susceptibility to bring the effective reproduction number $R$ below the critical value of 1. However, because infections continue as the epidemic declines, more immunity can accumulate, and hence $R$ can be substantially below 1 at the end of the epidemic.
 
 ::: {.alert .alert-warning}
-**New to _finalsize_?** It may help to read the ["Get started"](finalsize.html), ["Modelling heterogeneous contacts"](varying_contacts.html), or ["Modelling heterogeneous susceptibility"](varying_susceptibility.Rmd) vignettes first!
+**New to _finalsize_?** We'd recommend the ["Get started"](finalsize.html) and ["Modelling uncertainty in R₀"](uncertainty_params.Rmd) vignettes first!
 :::
 
 ::: {.alert .alert-primary}
 ## Use case {-}
 
-The infection **parameter ($R_0$) is uncertain**. We want to know how much variation this could cause in the estimated final size of the epidemic.
+We want to know long it might take for a (partially) immunising infection to re-emerge following an initial large epidemic. This question has been common for [emerging vector-borne infections](https://journals.plos.org/plosntds/article?id=10.1371/journal.pntd.0004726) like Zika and Chikungunya.
 :::
 
 ::: {.alert .alert-secondary}
 ### What we have {-}
 
-  1. In addition to the $R_0$, demography data, social contact data, and data on the distribution of susceptibility among age groups;
+  1. In addition to the $R_0$, data on waning of immunity and population birth rates.
   2. A measure of the error in the estimated $R_0$ of the infection.
 
 ### What we assume {-}
 
-  1. An SIR epidemic, and the complete partitioning of individuals into different demographic and infection risk groups.
+  1. An SIR epidemic, assuming everyone fully susceptible initially and mixing is random. This simplifying assumption has previously been used for modelling emerging vector-borne infections like [Zika](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5860153/).
+  
+  2. Gradual waning of immunity, with a certain proportion of immune individuals becoming susceptible again each year. (Note: we can set this proportion equal to zero for a no-waning scenario).
+  
+  3. Gradual influx of new susceptibles via an annual birth rate (which is equal to the death rate so the population size remains constant).
 :::
 
 ```{r, include = FALSE}
@@ -54,22 +56,34 @@ knitr::opts_chunk$set(
 ```{r setup, message=FALSE, warning=FALSE, class.source = 'fold-hide'}
 # load finalsize
 library(finalsize)
-library(socialmixr)
 library(ggplot2)
 ```
 
 ### Future resurgence following waning and demographic turnover
 
+We follow the approach described in the ["Modelling uncertainty in R₀"](uncertainty_params.Rmd) vignette, which includes uncertainty in final size calculations by running `final_size()` for values drawn from a distribution, and summarising the outcomes. For simplicity, here we use a model that assumes a uniformly mixing population. A similar approach could be used for multiple age groups, although this would require more assumptions about waning of age specific susceptibility and population turnover to ensure consistent demographic patterns.
+
+First we define the future window of time we are considering, as well as the rate of waning (assumed to be 5\% per year) and influx of new susceptibles (assuming 14 births per 1000 per year). We also define a distribution of $R_0$ values for the initial epidemic and the second later re-emerging outbreak, both following a normal distribution $N(\mu = 2, \sigma = 0.3)$.
+
 ```{r}
+# future time period considered
 years_range <- 0:20
 
-annual_wane <- 0.05 # proportion losing immunity per year
-birth_rate <-  14/1000 # proportion newly susceptible per year
+# proportion losing immunity per year
+annual_wane <- 0.05 
 
+# proportion newly susceptible per year
+birth_rate <-  14/1000 
+
+# define r0 values
 r0_mean <- 2
-r0_samples <- rnorm(n = 100, mean = r0_mean, sd = 0.1) # for first outbreak
-r0_samples2 <- rnorm(n = 100, mean = r0_mean, sd = 0.1) # for second outbreak
+r0_samples <- rnorm(n = 100, mean = r0_mean, sd = 0.3) # for first outbreak
+r0_samples2 <- rnorm(n = 100, mean = r0_mean, sd = 0.3) # for second outbreak
+```
 
+Next we simulate initial epidemics using the `final_size()` size function, running the model multiple times with the `Map()` function while sampling $R_0$ values from the distribution defined above.
+
+```{r}
 # run final size for each value and collate estimates
 final_size_est <- Map(
   function(r0, i) {
@@ -82,7 +96,13 @@ final_size_est <- Map(
 
 # use Reduce to combine the list of data.frames into a single data.frame
 final_size_df <- Reduce(rbind, final_size_est)
+```
 
+Having simulated the distribution of initial epidemic sizes based on the distribution of $R_0$, we next implement waning and influx of new susceptibles to calculate the level of immunity over coming years, relative to the level of immunity at the end of the epidemic. Because the effective reproduction number (i.e. $R$ is partially susceptible population) is equal to $R = R_0 \times S$, we can use our prediction about relative immunity to calculate relative susceptibility, i.e. $susceptibility = 1-immunity$, then in turn predict $R$ over the coming years as population susceptibility increases. When $R$ rises above the critical value of 1, there is potential for sustained transmission in the population and hence another large epidemic.
+
+Again, we use the `Map()` function to calculate the level of susceptibility - and hence $R$ - over the distribution of $R_0$ values we have assumed for a re-emerging epidemic. In this example, the distribution is the same as the original epidemic (which is plausible if it is the same pathogen and setting), but we could alter this assumption if we think factors like population density or climate change might change the transmissiblity of the infection in future.
+
+```{r}
 # define changes in susceptibility over time from waning 
 # and population turnover (assuming) rectangular age distribution
 relative_immunity <- (1-annual_wane)^(years_range)*pmax(1-birth_rate*years_range,0)
@@ -99,10 +119,12 @@ r_eff_est <- Map(
 
 # use Reduce to combine the list of data.frames into a single data.frame
 r_eff_df <- Reduce(rbind, r_eff_est)
+```
 
+### Plot projection of future R value
 
+```{r class.source = 'fold-hide', class.source = 'fold-hide', fig.cap="Predicted value of the effective reproduction number $R$ following an initial epidemic of an emerging infection in year 0. We assume 5% of the immune population becomes susceptible again each year following the epidemic, and there is an influx of new susceptibles via a birth rate of 14/1000 per year. We also assume $R_0$ has a mean of 2, with a standard deviation around this estimate of 0.3.", fig.width=2, fig.height=2}
 # plot results
-
 ggplot(r_eff_df) +
   geom_hline(yintercept = 1, linetype = "dashed", color = "gray") +
   stat_summary(
@@ -129,7 +151,3 @@ ggplot(r_eff_df) +
     y = "Effective R"
   )
 ```
-
-
-
-
