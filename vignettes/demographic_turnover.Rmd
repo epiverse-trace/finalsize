@@ -123,6 +123,8 @@ r_eff_df <- Reduce(rbind, r_eff_est)
 
 ### Plot projection of future R value
 
+In this scenario, the majority of new susceptibility comes from waning, rather than influx of new births (i.e. 5\% vs 1.4\% per year).  As a result, the predicted value of $R$ rises substantially in the years following the initial epidemic, suggesting potential for re-emergence within 5-10 years.
+
 ```{r class.source = 'fold-hide', class.source = 'fold-hide', fig.cap="Predicted value of the effective reproduction number $R$ following an initial epidemic of an emerging infection in year 0. We assume 5% of the immune population becomes susceptible again each year following the epidemic, and there is an influx of new susceptibles via a birth rate of 14/1000 per year. We also assume $R_0$ has a mean of 2, with a standard deviation around this estimate of 0.3.", fig.width=2, fig.height=2}
 # plot results
 ggplot(r_eff_df) +
