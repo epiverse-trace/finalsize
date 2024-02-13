@@ -1,19 +1,31 @@
 #' @title Final size of an epidemic
 #'
 #' @description `final_size` calculates the final size of an epidemic outbreak
-#' in a population with heterogeneous mixing, and with heterogeneous
-#' susceptibility to infection such as that conferred by an immunisation
-#' programme.
+#' with a given \eqn{R_0}, with options for specifying a population with
+#' heterogeneous mixing, and with heterogeneous susceptibility to infection
+#' such as that conferred by an immunisation programme.
 #'
 #' @details
-#' # Solver options
+#' ## Specifying heterogeneous mixing and susceptibility
+#' `final_size()` allows for heterogeneous population mixing and susceptibility,
+#' and this is described in the dedicated vignettes:
+#'
+#' 1. Heterogeneous population mixing: See vignette on
+#' "Modelling heterogeneous social contacts"
+#' (\code{vignette("varying_contacts", package = "finalsize")});
+#'
+#' 2. Heterogeneous susceptibility to infection: See vignette on
+#' "Modelling heterogeneous susceptibility"
+#' (\code{vignette("varying_susceptibility", package = "finalsize")}).
+#'
+#' ## Solver options
 #'
 #' The `control` argument accepts a list of solver options, with the iterative
 #' solver taking two extra arguments than the Newton solver. This is an optional
 #' argument, and default options are used within the solver functions if an
 #' argument is missing. Arguments provided override the solver defaults.
 #'
-#' ## Common options
+#' ### Common options
 #'
 #' 1. `iterations`: The number of iterations over which to solve for the final
 #' size, unless the error is below the solver tolerance. Default = 10000.
@@ -30,15 +42,24 @@
 #' @param r0 The basic reproductive number \eqn{R_0} of the disease.
 #' @param contact_matrix Social contact matrix. Entry \eqn{m_{ij}} gives average
 #' number of contacts in group \eqn{i} reported by participants in group \eqn{j}
+#' . Defaults to the singleton matrix \eqn{[1]}, representing a homogeneously
+#' mixing population.
 #' @param demography_vector Demography vector. Entry \eqn{v_{i}} gives
 #' proportion of total population in group \eqn{i} (model will normalise
 #' if needed).
+#' Defaults to `1`, representing a population where demographic structure is not
+#' important (or not known), and where all individuals are assumed to belong to
+#' the same demographic group.
 #' @param susceptibility A matrix giving the susceptibility of individuals in
 #' demographic group \eqn{i} and risk group \eqn{k}.
+#' Defaults to the singleton matrix \eqn{[1]}, representing a population where
+#' all individuals are fully susceptible to infection.
 #' @param p_susceptibility A matrix giving the probability that an individual
 #' in demography group \eqn{i} is in risk (or susceptibility) group \eqn{k}.
 #' Each row represents the overall distribution of individuals in demographic
 #' group \eqn{i} across risk groups, and each row *must sum to 1.0*.
+#' Defaults to the singleton matrix \eqn{[1]}, representing a population where
+#' all individuals are fully susceptible.
 #' @param solver Which solver to use. Options are "iterative" (default) or
 #' "newton", for the iterative solver, or the Newton solver, respectively.
 #' Special conditions apply when using the Newton solver, see the `control`
@@ -54,9 +75,13 @@
 #' \eqn{i}.
 #' @export
 #' @examples
+#' ## For a given R_0
+#' r0 <- 2.0
+#' final_size(r0)
+#'
+#' ## For a population with multiple demographic groups
 #' # load example POLYMOD data included in the package
 #' data(polymod_uk)
-#' r0 <- 2.0
 #' contact_matrix <- polymod_uk$contact_matrix
 #' demography_vector <- polymod_uk$demography_vector
 #'
@@ -65,7 +90,8 @@
 #' n_risk_grps <- 3
 #'
 #' # In this example, all risk groups from all age groups are fully
-#' # susceptible
+#' # susceptible, and the final size in each group is influenced only by
+#' # differences in social contacts
 #' susceptibility <- matrix(
 #'   data = 1, nrow = n_demo_grps, ncol = n_risk_grps
 #' )
@@ -85,7 +111,7 @@
 #'   p_susceptibility = p_susceptibility
 #' )
 #'
-#' # using manually specified solver settings for the iterative solver
+#' ## Using manually specified solver settings for the iterative solver
 #' control <- list(
 #'   iterations = 100,
 #'   tolerance = 1e-3,
@@ -103,7 +129,7 @@
 #'   control = control
 #' )
 #'
-#' # manual settings for the newton solver
+#' ## Using manually specified solver settings for the newton solver
 #' control <- list(
 #'   iterations = 100,
 #'   tolerance = 1e-3
@@ -119,10 +145,10 @@
 #'   control = control
 #' )
 final_size <- function(r0,
-                       contact_matrix,
-                       demography_vector,
-                       susceptibility,
-                       p_susceptibility,
+                       contact_matrix = matrix(1),
+                       demography_vector = 1,
+                       susceptibility = matrix(1),
+                       p_susceptibility = matrix(1),
                        solver = c("iterative", "newton"),
                        control = list()) {
   # check arguments input

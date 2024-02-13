@@ -1,5 +1,30 @@
 #### Tests for basic finalsize functionality ####
 
+#### Test that a homogeneous population is handled by defaults ####
+
+test_that("final_size with default arguments", {
+  r0 <- 1.7
+  popsize <- 67e7
+  finalsize_shortcut <- final_size(r0)
+  finalsize_detailed <- final_size(
+    r0 = r0,
+    contact_matrix = matrix(1) / popsize,
+    demography_vector = popsize,
+    susceptibility = matrix(1),
+    p_susceptibility = matrix(1)
+  )
+
+  expect_identical(
+    finalsize_shortcut,
+    finalsize_detailed
+  )
+
+  expect_gt(
+    final_size(1.5)[, "p_infected"],
+    final_size(1.49)[, "p_infected"]
+  )
+})
+
 #### Prepare data ####
 r0 <- 2.0
 polymod <- socialmixr::polymod
