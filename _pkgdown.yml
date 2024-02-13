@@ -10,6 +10,7 @@ articles:
   - varying_contacts
   - varying_susceptibility
   - uncertainty_params
+  - demographic_turnover
 - title: Modelling guides and background
   navbar: Modelling guides and background
   contents:
