@@ -16,6 +16,7 @@ articles:
   contents:
   - compare_sir_model
   - susceptibility_matrices
+  - theoretical_background
 reference:
 - title: Package functions
 - contents:
@@ -24,4 +25,3 @@ reference:
 - title: Data
 - contents:
   - contains("polymod")
-

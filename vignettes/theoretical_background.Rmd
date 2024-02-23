@@ -1,0 +1,111 @@
+---
+title: "Theoretical background"
+author: "Adam Kucharski"
+output:
+  bookdown::html_vignette2:
+    fig_caption: yes
+    code_folding: show
+pkgdown:
+  as_is: true
+link-citations: true
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Theoretical background}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+_finalsize_ provides methods to calculate the final proportion of individuals in different age groups infected during an epidemic, as predicted by an age-stratified SIR model. In this vignette we lay out the mathematical concepts behind the functionality available in the package.
+
+## From SIR to final size with homogeous mixing
+
+The dynamics of the proportion of susceptible and infectious individuals over time in the standard susceptible-infectious-recovered (SIR) epidemic model are given by the following ordinary differential equations:
+$$
+\frac{d S(t)}{d t} = -\beta S(t) I(t) \\
+\frac{d I(t)}{d t}  =  \beta S(t) I(t) -\gamma I(t)
+$$
+where $\beta$ is the transmission rate and $\gamma$ is the rate of recovery.
+
+To calculate the proportion infected, we need to derive an expression for the proportion of susceptibles who got infected during the epidemic, i.e. $\phi = 1- S(\infty)/S(0)$. Rather than simulating the model over a very long time period (i.e. $t \rightarrow \infty$), we can instead calculate $dI/dS$ and integrate:
+
+$$
+\frac{d I}{d S} = - 1 + \frac{\gamma}{\beta S} \\
+I(t) = - S(t) + \frac{\gamma}{\beta} \log S(t) + c
+$$
+where $c$ depends on initial conditions. Under the assumption the population is fully susceptible initially (i.e. $S(0)=1$), and $I(t) \rightarrow 0$ as $t \rightarrow \infty$, we obtain the following:
+$$
+\log S(\infty) = - R_0 [1-S(\infty) ] \\
+\mathrm{log}~\phi  -R_0 (1-\phi) = 0 = F(\phi)
+$$
+This equation doesn't have an analytical solution, but there are various methods available to allow it to be solved numerically to find the unique solution in (0,1]. For example, we can use Newton’s method (`solver = "newton"` in the `final_size()` function) to find the final epidemic size:
+
+1. Select an arbitrary initial estimate $x_0$ and tolerance $T$ ;
+2. Solve $\frac{dF}{d \phi} (x_0) \Delta x = −F(x_0) ~ \text{for } ~ \Delta x$ ;
+3. Set $x_{i+1} = x_i + \Delta x$;
+4. Repeat until $x_i$ converges sufficiently (i.e. difference in each step is less than $T$)
+
+## Varying susceptibility
+
+We can extend the above formulation to account for variable susceptibility among individuals, following the methods outlined in [Miller (2012)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/). First, we define $p(x)$ to be the probability density for a randomly chosen individual to be of susceptibility type $x$. If we define the probability an individual of type $x$ to be ultimately infected as $\phi(x)$, then the overall proportion of the population to be infected is defined as follows, depending on whether $p(x)$ is a continuous or discrete distribution:
+
+$$
+\hat\phi = \int_0^\infty \phi(x) p(x) dx \\
+\text{or} \\
+\hat\phi = \sum_x \phi(x) p(x) dx \\
+$$
+
+If we define $\hat\phi$ to be the expected number of transmissions to a given individual of type $x$, we can therefore calculate the probability that this individual remains susceptible. This gives the following relationship between $\phi$ and $\hat\phi$:
+
+$$
+1-\phi(x) = S(x,0) e^{-x \hat\phi } \\
+$$
+And hence we can combine the above to give:
+$$
+\hat\phi = \int_0^\infty (1-   S(x,0) e^{-x \hat\phi }) p(x) dx \\
+\hat\phi = 1- \int_0^\infty  S(x,0) e^{-x \hat\phi } p(x) dx
+$$
+
+Under the assumption that $S(x,0)$ is near 1 initially (i.e. f), we therefore obtain:
+$$
+\hat\phi = 1- \int_0^\infty p(x) e^{-x \hat\phi } dx
+$$
+
+## Final size equation with heterogenous mixing
+
+We can extend the same derivation for the above homogenous model for populations with multiple age groups, following [Andreasen et al](about:blank). The age-dependent ODEs are defined as follows:
+
+$$
+\frac{d S(a,t)}{d t} = -S(a,t) \sum_b \beta_{ab} I(b,t) \\
+\frac{d I(a,t)}{d t}  =  S(a,t) \sum_b \beta_{ab} I(b,t) -\gamma I(a,t)
+$$
+Where $\beta_{a,b}$ is the transmission rate from group $b$ to group $a$. If we define $R_{a,b} =\beta_{a,b}/\gamma$ to be group specific reproduction number, we can rearrange the above and integrate to derive an expression for the final size in each age group:
+
+$$
+- \gamma \sum_b R_{a,b} I(b,t)   = \frac{d S(a,t)}{d t} \frac{1}{S(a,t)} \\
+- \gamma \sum_b R_{a,b}  \int_0^\infty I(b,t)  ~dt  = \int_0^\infty \frac{d S(a,t)}{d t} \frac{1}{S(a,t)} ~dt = \mathrm{log}~S(a,\infty) -\mathrm{log}~S(a,0) = \mathrm{log}~\frac{S(a,\infty)}{S(a,0)}  \\
+ -\gamma \int_0^\infty I(a,t)  ~dt = \int_0^\infty \frac{d S(a,t)}{d t} +\frac{dI(a,t)}{dt} ~dt = S(a,\infty) -S(a,0)  ~.
+$$
+and hence:
+
+$$
+\mathrm{log}~\frac{S(a,\infty)}{S(a,0)}  = - \sum_b R_{a,b} [ S(b,\infty) -S(b,0)]
+$$
+
+If we define $\underline\phi = (\phi_1, ... \phi_n)$ to be a vector of final sizes in each of $n$ age group, we can rewrite the above as
+
+$$
+\mathrm{log}~\underline\phi  -\mathbf{R} (1-\underline\phi) = 0 = F(\underline\phi)
+$$
+where $\mathbf{R}$ is a matrix with entries $R_{i,j}$. Once again, we can use Newton's method, this time with $\underline\phi$ as a vector, and hence we need to solve a set of linear equations in step 2.
+
