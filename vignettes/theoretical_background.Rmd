@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 
 _finalsize_ provides methods to calculate the final proportion of individuals in different age groups infected during an epidemic, as predicted by an age-stratified SIR model. In this vignette we lay out the mathematical concepts behind the functionality available in the package.
 
-## From SIR to final size with homogeous mixing
+## From SIR to final size with homogeneous mixing
 
 The dynamics of the proportion of susceptible and infectious individuals over time in the standard susceptible-infectious-recovered (SIR) epidemic model are given by the following ordinary differential equations:
 $$
@@ -81,7 +81,7 @@ $$
 \hat\phi = 1- \int_0^\infty p(x) e^{-x \hat\phi } dx
 $$
 
-## Final size equation with heterogenous mixing
+## Final size equation with heterogeneous mixing
 
 We can extend the same derivation for the above homogenous model for populations with multiple age groups, following [Andreasen et al](about:blank). The age-dependent ODEs are defined as follows:
 
