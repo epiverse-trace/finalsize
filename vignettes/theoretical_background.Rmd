@@ -7,6 +7,7 @@ output:
     code_folding: show
 pkgdown:
   as_is: true
+bibliography: references.json
 link-citations: true
 vignette: >
   %\VignetteEncoding{UTF-8}
@@ -57,7 +58,7 @@ This equation doesn't have an analytical solution, but there are various methods
 
 ## Varying susceptibility
 
-We can extend the above formulation to account for variable susceptibility among individuals, following the methods outlined in [Miller (2012)](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3506030/). First, we define $p(x)$ to be the probability density for a randomly chosen individual to be of susceptibility type $x$. If we define the probability an individual of type $x$ to be ultimately infected as $\phi(x)$, then the overall proportion of the population to be infected is defined as follows, depending on whether $p(x)$ is a continuous or discrete distribution:
+We can extend the above formulation to account for variable susceptibility among individuals, following the methods outlined in @miller2012. First, we define $p(x)$ to be the probability density for a randomly chosen individual to be of susceptibility type $x$. If we define the probability an individual of type $x$ to be ultimately infected as $\phi(x)$, then the overall proportion of the population to be infected is defined as follows, depending on whether $p(x)$ is a continuous or discrete distribution:
 
 $$
 \hat\phi = \int_0^\infty \phi(x) p(x) dx \\
@@ -83,7 +84,7 @@ $$
 
 ## Final size equation with heterogeneous mixing
 
-We can extend the same derivation for the above homogenous model for populations with multiple age groups, following [Andreasen et al](about:blank). The age-dependent ODEs are defined as follows:
+We can extend the same derivation for the above homogenous model for populations with multiple age groups, following @andreasen2011. The age-dependent ODEs are defined as follows:
 
 $$
 \frac{d S(a,t)}{d t} = -S(a,t) \sum_b \beta_{ab} I(b,t) \\
@@ -109,3 +110,4 @@ $$
 $$
 where $\mathbf{R}$ is a matrix with entries $R_{i,j}$. Once again, we can use Newton's method, this time with $\underline\phi$ as a vector, and hence we need to solve a set of linear equations in step 2.
 
+## References
