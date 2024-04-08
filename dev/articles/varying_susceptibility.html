@@ -66,6 +66,7 @@
     <a class="dropdown-item" href="../articles/demographic_turnover.html">Projecting re-emergence risk after waning or new births</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Modelling guides and background</h6>
+    <a class="dropdown-item" href="../articles/theoretical_background.html">Theoretical background</a>
     <a class="dropdown-item" href="../articles/compare_sir_model.html">Comparison with a compartmental model</a>
     <a class="dropdown-item" href="../articles/susceptibility_matrices.html">Guide to constructing susceptibility matrices</a>
   </div>
@@ -104,7 +105,7 @@
 
     
     
-<p>Populations are often heterogeneous in their susceptibility to infection following exposure, independent of the exposure risk that comes from different social contact patterns. Such heterogeneity may be age-dependent and vary between age groups. It may also vary within age groups due to prior infection resulting in immunity or due to immunisation. Combinations of within- and between-group variation in susceptibility may also occur, and can be incorporated into final size calculations <span class="citation">(<a href="#ref-miller2012" role="doc-biblioref">Miller 2012</a>)</span>.</p>
+<p>Populations are often heterogeneous in their susceptibility to infection following exposure, independent of the exposure risk that comes from different social contact patterns. Such heterogeneity may be age-dependent and vary between age groups. It may also vary within age groups due to prior infection resulting in immunity or due to immunisation. Combinations of within- and between-group variation in susceptibility may also occur, and can be incorporated into final size calculations <span class="citation">(<a href="#ref-miller2012">Miller 2012</a>)</span>.</p>
 <div class="alert alert-warning">
 <p><strong>New to <em>finalsize</em>?</strong> It may help to read the <a href="finalsize.html">“Get started”</a> and <a href="varying_contacts.html">“Modelling heterogeneous contacts”</a> vignettes first!</p>
 </div>
@@ -136,8 +137,8 @@
 <h2 id="primer-on-heterogeneous-susceptibility">Primer on heterogeneous susceptibility<a class="anchor" aria-label="anchor" href="#primer-on-heterogeneous-susceptibility"></a>
 </h2>
 <p>A working definition of susceptibility is the probability of becoming infected on contact with an infectious person.</p>
-<p>Age-specific factors influencing the susceptibility of individuals include, but are not limited to, direct (immunological) susceptibility to infection upon exposure (e.g., due to natural susceptibility from previous infections, differences in vaccination status), and age-specific heterogeneous risk behaviour <span class="citation">(<a href="#ref-franco2022" role="doc-biblioref">Franco et al. 2022</a>)</span>.</p>
-<p>For example, for SARS-CoV-2, children are less susceptible to it than adults. Decreased susceptibility could result from immune cross-protection from other coronaviruses <span class="citation">(<a href="#ref-huang2020" role="doc-biblioref">Huang et al. 2020</a>)</span>, or from non-specific protection resulting from recent infection by other respiratory viruses <span class="citation">(<a href="#ref-cowling2012" role="doc-biblioref">Cowling et al. 2012</a>)</span>, which children experience more frequently than adults <span class="citation">(<a href="#ref-tsagarakis2018" role="doc-biblioref">Tsagarakis et al. 2018</a>; <a href="#ref-davies2020" role="doc-biblioref">Davies et al. 2020</a>)</span>.</p>
+<p>Age-specific factors influencing the susceptibility of individuals include, but are not limited to, direct (immunological) susceptibility to infection upon exposure (e.g., due to natural susceptibility from previous infections, differences in vaccination status), and age-specific heterogeneous risk behaviour <span class="citation">(<a href="#ref-franco2022">Franco et al. 2022</a>)</span>.</p>
+<p>For example, for SARS-CoV-2, children are less susceptible to it than adults. Decreased susceptibility could result from immune cross-protection from other coronaviruses <span class="citation">(<a href="#ref-huang2020">Huang et al. 2020</a>)</span>, or from non-specific protection resulting from recent infection by other respiratory viruses <span class="citation">(<a href="#ref-cowling2012">Cowling et al. 2012</a>)</span>, which children experience more frequently than adults <span class="citation">(<a href="#ref-tsagarakis2018">Tsagarakis et al. 2018</a>; <a href="#ref-davies2020">Davies et al. 2020</a>)</span>.</p>
 <details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load finalsize</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/epiverse-trace/finalsize" class="external-link">finalsize</a></span><span class="op">)</span></span>
@@ -150,7 +151,7 @@
 <div class="section level2">
 <h2 id="getting-r_0-and-contact-and-demography-data">Getting <span class="math inline">\(R_0\)</span> and contact and demography data<a class="anchor" aria-label="anchor" href="#getting-r_0-and-contact-and-demography-data"></a>
 </h2>
-<p>This example uses social contact data from the POLYMOD project <span class="citation">(<a href="#ref-mossong2008" role="doc-biblioref">Mossong et al. 2008</a>)</span> to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
+<p>This example uses social contact data from the POLYMOD project <span class="citation">(<a href="#ref-mossong2008">Mossong et al. 2008</a>)</span> to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
 <p>These data are handled just as in the <a href="finalsize.html">“Get started”</a> vignette, and the code is not displayed here. This example also considers a disease with an <span class="math inline">\(R_0\)</span> of 1.5.</p>
 <details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get UK polymod data</span></span>
@@ -356,7 +357,7 @@ Immunisation against infection through an intervention campaign is a common caus
 <h3 id="getting-data-on-within-group-susceptibility-differences">Getting data on within-group susceptibility differences<a class="anchor" aria-label="anchor" href="#getting-data-on-within-group-susceptibility-differences"></a>
 </h3>
 <p>For within-group differences in susceptibility, such as due to immunisation, users could obtain this information from <a href="https://coronavirus.data.gov.uk/details/vaccinations?areaType=nation%26areaName=England#card-vaccination_uptake_by_vaccination_date_age_demographics" class="external-link">age-specific vaccination uptake statistics from national governments (here, the UK)</a>.
-When antibody response decays are known for an immunisation course <span class="citation">(<a href="#ref-iyer2020" role="doc-biblioref">Iyer et al. 2020</a>)</span>, more detailed statistics on the <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/articles/coronaviruscovid19latestinsights/vaccines" class="external-link">percentage of people vaccinated in the preceding few months only (here, in the UK)</a>, may be more informative.</p>
+When antibody response decays are known for an immunisation course <span class="citation">(<a href="#ref-iyer2020">Iyer et al. 2020</a>)</span>, more detailed statistics on the <a href="https://www.ons.gov.uk/peoplepopulationandcommunity/healthandsocialcare/conditionsanddiseases/articles/coronaviruscovid19latestinsights/vaccines" class="external-link">percentage of people vaccinated in the preceding few months only (here, in the UK)</a>, may be more informative.</p>
 </div>
 <details class="chunk-details" open><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># immunisation rate is uniform across age groups</span></span>
@@ -534,7 +535,7 @@ Figure 2: Final size of an SIR epidemic with <span class="math inline">\(R_0\)</
 <div class="section level2 unnumbered">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-cowling2012" class="csl-entry">
 Cowling, Benjamin J., Vicky J. Fang, Hiroshi Nishiura, Kwok-Hung Chan, Sophia Ng, Dennis K. M. Ip, Susan S. Chiu, Gabriel M. Leung, and J. S. Malik Peiris. 2012. <span>“Increased Risk of Noninfluenza Respiratory Virus Infections Associated With Receipt of Inactivated Influenza Vaccine.”</span> <em>Clinical Infectious Diseases</em> 54 (12): 1778–83. <a href="https://doi.org/10.1093/cid/cis307" class="external-link">https://doi.org/10.1093/cid/cis307</a>.
 </div>

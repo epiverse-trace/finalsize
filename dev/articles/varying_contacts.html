@@ -66,6 +66,7 @@
     <a class="dropdown-item" href="../articles/demographic_turnover.html">Projecting re-emergence risk after waning or new births</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Modelling guides and background</h6>
+    <a class="dropdown-item" href="../articles/theoretical_background.html">Theoretical background</a>
     <a class="dropdown-item" href="../articles/compare_sir_model.html">Comparison with a compartmental model</a>
     <a class="dropdown-item" href="../articles/susceptibility_matrices.html">Guide to constructing susceptibility matrices</a>
   </div>
@@ -104,7 +105,7 @@
 
     
     
-<p>Populations are often heterogeneous in their social contact patterns. Such heterogeneity is often age-dependent and varies between age groups, and can strongly influence epidemic dynamics if the outbreak primarily circulates in a particular age group. This heterogeneity can be incorporated into final size calculations <span class="citation">(<a href="#ref-miller2012" role="doc-biblioref">Miller 2012</a>)</span>, and is implemented in <em>finalsize</em>.</p>
+<p>Populations are often heterogeneous in their social contact patterns. Such heterogeneity is often age-dependent and varies between age groups, and can strongly influence epidemic dynamics if the outbreak primarily circulates in a particular age group. This heterogeneity can be incorporated into final size calculations <span class="citation">(<a href="#ref-miller2012">Miller 2012</a>)</span>, and is implemented in <em>finalsize</em>.</p>
 <div class="alert alert-warning">
 <p><strong>New to <em>finalsize</em>?</strong> It may help to read the <a href="finalsize.html">“Get started”</a> vignette first!</p>
 </div>
@@ -156,7 +157,7 @@
 <div class="section level2">
 <h2 id="getting-and-preparing-contact-and-demography-data">Getting and preparing contact and demography data<a class="anchor" aria-label="anchor" href="#getting-and-preparing-contact-and-demography-data"></a>
 </h2>
-<p>This example uses social contact data from the POLYMOD project <span class="citation">(<a href="#ref-mossong2008" role="doc-biblioref">Mossong et al. 2008</a>)</span> to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
+<p>This example uses social contact data from the POLYMOD project <span class="citation">(<a href="#ref-mossong2008">Mossong et al. 2008</a>)</span> to estimate the final size of an epidemic in the U.K. These data are provided with the <code>socialmixr</code> package.</p>
 <p>The contact data are divided into five age groups: 0 – 4, 5 – 17, 18 – 39, 40 – 64, and 65 and over, specified using the <code>age.limits</code> argument in <code><a href="https://epiforecasts.io/socialmixr/reference/contact_matrix.html" class="external-link">socialmixr::contact_matrix()</a></code>.
 The <code>symmetric = TRUE</code> argument to <code><a href="https://epiforecasts.io/socialmixr/reference/contact_matrix.html" class="external-link">socialmixr::contact_matrix()</a></code> returns a symmetric contact matrix, so that the contacts reported by group <span class="math inline">\(\{i\}\)</span> of individuals from group <span class="math inline">\(\{j\}\)</span> are the same as those reported by group <span class="math inline">\(\{j\}\)</span> of group <span class="math inline">\(\{i\}\)</span>.</p>
 <p>The demographic data — the number of individuals in each age group — is also available through <code><a href="https://epiforecasts.io/socialmixr/reference/contact_matrix.html" class="external-link">socialmixr::contact_matrix()</a></code>.</p>
@@ -368,7 +369,7 @@ Figure 2: Final size of an epidemic outbreak in a population, for different valu
 <div class="section level2 unnumbered">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-miller2012" class="csl-entry">
 Miller, Joel C. 2012. <span>“A Note on the Derivation of Epidemic Final Sizes.”</span> <em>Bulletin of Mathematical Biology</em> 74 (9): 2125–41. <a href="https://doi.org/10.1007/s11538-012-9749-6" class="external-link">https://doi.org/10.1007/s11538-012-9749-6</a>.
 </div>

@@ -66,6 +66,7 @@
     <a class="dropdown-item" href="../articles/demographic_turnover.html">Projecting re-emergence risk after waning or new births</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Modelling guides and background</h6>
+    <a class="dropdown-item" href="../articles/theoretical_background.html">Theoretical background</a>
     <a class="dropdown-item" href="../articles/compare_sir_model.html">Comparison with a compartmental model</a>
     <a class="dropdown-item" href="../articles/susceptibility_matrices.html">Guide to constructing susceptibility matrices</a>
   </div>
@@ -111,7 +112,7 @@
 <div class="section level2 unnumbered alert alert-primary">
 <h2 id="use-case">Use case<a class="anchor" aria-label="anchor" href="#use-case"></a>
 </h2>
-<p>We want to know long it might take for a (partially) immunising infection to re-emerge following an initial large epidemic. This question has been common for emerging vector-borne infections like Zika and Chikungunya <span class="citation">(<a href="#ref-kucharski2016" role="doc-biblioref">Kucharski et al. 2016</a>)</span>.</p>
+<p>We want to know long it might take for a (partially) immunising infection to re-emerge following an initial large epidemic. This question has been common for emerging vector-borne infections like Zika and Chikungunya <span class="citation">(<a href="#ref-kucharski2016">Kucharski et al. 2016</a>)</span>.</p>
 </div>
 <div class="alert alert-secondary">
 <div class="section level3 unnumbered">
@@ -126,7 +127,7 @@
 <h3 id="what-we-assume">What we assume<a class="anchor" aria-label="anchor" href="#what-we-assume"></a>
 </h3>
 <ol style="list-style-type: decimal">
-<li><p>An SIR epidemic, assuming everyone fully susceptible initially and mixing is random. This simplifying assumption has previously been used for modelling emerging vector-borne infections like Zika <span class="citation">(<a href="#ref-andronico2017" role="doc-biblioref">Andronico et al. 2017</a>)</span>.</p></li>
+<li><p>An SIR epidemic, assuming everyone fully susceptible initially and mixing is random. This simplifying assumption has previously been used for modelling emerging vector-borne infections like Zika <span class="citation">(<a href="#ref-andronico2017">Andronico et al. 2017</a>)</span>.</p></li>
 <li><p>Gradual waning of immunity, with a certain proportion of immune individuals becoming susceptible again each year. <strong>Note:</strong> we can set this proportion equal to zero for a no-waning scenario.</p></li>
 <li><p>Gradual influx of new susceptibles via an annual birth rate (which is equal to the death rate so the population size remains constant).</p></li>
 </ol>
@@ -260,7 +261,7 @@ This is a step-wise process:</p>
 Figure 1: Predicted value of the effective reproduction number <span class="math inline">\(R\)</span> following an initial epidemic of an emerging infection in year 0. We assume 5% of the immune population becomes susceptible again each year following the epidemic, and there is an influx of new susceptibles via a birth rate of 14/1000 per year. We also assume <span class="math inline">\(R_0\)</span> has a mean of 2, with a standard deviation around this estimate of 0.3.
 </p>
 </div>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-andronico2017" class="csl-entry">
 Andronico, Alessio, Frédérique Dorléans, Jean-Louis Fergé, Henrik Salje, Frédéric Ghawché, Aissatou Signate, Elise Daudens-Vaysse, et al. 2017. <span>“Real-Time Assessment of Health-Care Requirements During the Zika Virus Epidemic in Martinique.”</span> <em>American Journal of Epidemiology</em> 186 (10): 1194–1203. <a href="https://doi.org/10.1093/aje/kwx008" class="external-link">https://doi.org/10.1093/aje/kwx008</a>.
 </div>

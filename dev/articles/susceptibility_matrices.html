@@ -66,6 +66,7 @@
     <a class="dropdown-item" href="../articles/demographic_turnover.html">Projecting re-emergence risk after waning or new births</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Modelling guides and background</h6>
+    <a class="dropdown-item" href="../articles/theoretical_background.html">Theoretical background</a>
     <a class="dropdown-item" href="../articles/compare_sir_model.html">Comparison with a compartmental model</a>
     <a class="dropdown-item" href="../articles/susceptibility_matrices.html">Guide to constructing susceptibility matrices</a>
   </div>
@@ -104,7 +105,7 @@
 
     
     
-<p>Modelling the final size of an epidemic using <em>finalsize</em> requires us to represent the susceptibility status of multiple demographic groups, as well as the proportions of each demographic group in potentially many susceptibility groups. This is done in final size calculations by representing the relevant system of differential equations <span class="citation">(<a href="#ref-miller2012" role="doc-biblioref">Miller 2012</a>)</span> in matrix form. R’s matrix class allows us to easily represent <em>multiple</em> demographic groups with <em>multiple</em> susceptibility groups.</p>
+<p>Modelling the final size of an epidemic using <em>finalsize</em> requires us to represent the susceptibility status of multiple demographic groups, as well as the proportions of each demographic group in potentially many susceptibility groups. This is done in final size calculations by representing the relevant system of differential equations <span class="citation">(<a href="#ref-miller2012">Miller 2012</a>)</span> in matrix form. R’s matrix class allows us to easily represent <em>multiple</em> demographic groups with <em>multiple</em> susceptibility groups.</p>
 <p>This guide explains how to construct susceptibility (<code>susceptibility</code>) and demography-in-susceptibility (<code>p_susceptibility</code>) matrices to represent various scenarios that we might wish to model when estimating epidemic final sizes.</p>
 <div class="alert alert-warning">
 <p><strong>New to <em>finalsize</em>?</strong> It may help to read the <a href="finalsize.html">“Get started”</a> vignette first!</p>
@@ -490,7 +491,7 @@ p_{4,1} &amp; p_{4,2}
 <div class="section level2 unnumbered">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-miller2012" class="csl-entry">
 Miller, Joel C. 2012. <span>“A Note on the Derivation of Epidemic Final Sizes.”</span> <em>Bulletin of Mathematical Biology</em> 74 (9): 2125–41. <a href="https://doi.org/10.1007/s11538-012-9749-6" class="external-link">https://doi.org/10.1007/s11538-012-9749-6</a>.
 </div>
