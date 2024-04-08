@@ -195,3 +195,5 @@ ggplot(r_eff_df) +
     y = "Effective R (mean and 95% CI)"
   )
 ```
+
+## References
