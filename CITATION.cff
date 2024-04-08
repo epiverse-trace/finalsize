@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.5.0
+# CITATION file created with {cffr} R package, v1.0.0
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -11,7 +11,7 @@ title: 'finalsize: Calculate the Final Size of an Epidemic'
 version: 0.2.0.9000
 abstract: Calculate the final size of a susceptible-infectious-recovered epidemic
   in a population with demographic variation in contact patterns and susceptibility
-  to disease, as discussed in Miller (2012) <doi:10.1007/s11538-012-9749-6>.
+  to disease, as discussed in Miller (2012) <https://doi.org/10.1007/s11538-012-9749-6>.
 authors:
 - family-names: Gupte
   given-names: Pratik
@@ -49,11 +49,10 @@ references:
   url: https://www.R-project.org/
   authors:
   - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2024'
   institution:
     name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2024'
   version: '>= 2.10'
 - type: software
   title: checkmate
@@ -213,6 +212,10 @@ references:
   - family-names: Dunnington
     given-names: Dewey
     orcid: https://orcid.org/0000-0002-9415-4582
+  - family-names: Brand
+    given-names: Teun
+    name-particle: van den
+    orcid: https://orcid.org/0000-0002-9335-7468
   year: '2024'
 - type: software
   title: ggtext
@@ -336,7 +339,7 @@ references:
   title: spelling
   abstract: 'spelling: Tools for Spell Checking in R'
   notes: Suggests
-  url: https://docs.ropensci.org/spelling/
+  url: https://ropensci.r-universe.dev/spelling
   repository: https://CRAN.R-project.org/package=spelling
   authors:
   - family-names: Ooms
