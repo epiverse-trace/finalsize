@@ -65,7 +65,7 @@ $$
 \hat\phi = \sum_x \phi(x) p(x) dx \\
 $$
 
-If we define $\hat\phi$ to be the expected number of transmissions to a given individual of type $x$, we can therefore calculate the probability that this individual remains susceptible. This gives the following relationship between $\phi$ and $\hat\phi$:
+If we define $x\hat\phi$ to be the expected number of transmissions to a given individual of type $x$, we can therefore calculate the probability that this individual remains susceptible. This gives the following relationship between $\phi$ and $\hat\phi$:
 
 $$
 1-\phi(x) = S(x,0) e^{-x \hat\phi } \\
