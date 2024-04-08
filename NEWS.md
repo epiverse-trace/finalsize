@@ -1,3 +1,29 @@
+# finalsize 0.2.1
+
+This patch adds:
+
+1. Default values for the contact matrix, susceptibility matrix, and susceptibility distribution matrix to allow quick estimates of final size for a given $R_0$ in a population with homogeneous mixing and full susceptibility (#180);
+
+2. Combines the documentation for the functions `r_eff()`, `r0_to_lambda()`, and `lambda_to_r0()` under the name 'r0_conversions';
+
+3. Adds vignettes on the theoretical background and on projecting re-emergence of a disease due to demographic turnover;
+
+4. Streamlines the examples in the Readme;
+
+5. Replaces the PNG logo in the Readme with an SVG version;
+
+6. Updates the GitHub Actions workflow YAMLs, the `.lintr` config file, `_pkgdown.yml`, `.Rbuildignore`, `CITATION.cff` and `CRAN-SUBMISSION`; workflows and configuration files bring the package in line with {packagetemplate} (#181, #186, #188).
+
+7. Standardises the `DESCRIPTION` file.
+
+8. Adds package-level documentation.
+
+9. Adds spellchecking and the `WORDLIST` file.
+
+10. Adds tools to check that the package does not modify the global state, code to flag any partial matching of function arguments,.
+
+11. Updates references cited in the vignettes.
+
 # finalsize 0.2.0
 
 This is the second release of _finalsize_, and includes:
