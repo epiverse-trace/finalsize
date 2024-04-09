@@ -2,11 +2,12 @@
 # https://github.com/cpplint/GitHub-Action-for-cpplint
 
 on:
+  workflow_dispatch:
   push:
-    paths: "src/**"
-  pull_request:
-    branches:
-      - "*"
+    paths:
+     - "src/**"
+     - "inst/include/**"
+     - '.github/workflows/Cpp-lint-check.yaml'
 
 name: Cpp-lint-check
 
