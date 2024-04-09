@@ -40,7 +40,7 @@
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="../logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">finalsize</a>
 
-    <small class="nav-text text-muted me-auto version-number" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
+    <small class="nav-text text-muted me-auto version-number" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,8 +62,10 @@
     <a class="dropdown-item" href="../articles/varying_contacts.html">Modelling heterogeneous social contacts</a>
     <a class="dropdown-item" href="../articles/varying_susceptibility.html">Modelling heterogeneous susceptibility</a>
     <a class="dropdown-item" href="../articles/uncertainty_params.html">Modelling uncertainty in R₀</a>
+    <a class="dropdown-item" href="../articles/demographic_turnover.html">Projecting re-emergence risk after waning or new births</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Modelling guides and background</h6>
+    <a class="dropdown-item" href="../articles/theoretical_background.html">Theoretical background</a>
     <a class="dropdown-item" href="../articles/compare_sir_model.html">Comparison with a compartmental model</a>
     <a class="dropdown-item" href="../articles/susceptibility_matrices.html">Guide to constructing susceptibility matrices</a>
   </div>
@@ -102,7 +104,7 @@
 
     
     
-<p>Modelling the final size of an epidemic using <em>finalsize</em> requires us to represent the susceptibility status of multiple demographic groups, as well as the proportions of each demographic group in potentially many susceptibility groups. This is done in final size calculations by representing the relevant system of differential equations <span class="citation">(<a href="#ref-miller2012" role="doc-biblioref">Miller 2012</a>)</span> in matrix form. R’s matrix class allows us to easily represent <em>multiple</em> demographic groups with <em>multiple</em> susceptibility groups.</p>
+<p>Modelling the final size of an epidemic using <em>finalsize</em> requires us to represent the susceptibility status of multiple demographic groups, as well as the proportions of each demographic group in potentially many susceptibility groups. This is done in final size calculations by representing the relevant system of differential equations <span class="citation">(<a href="#ref-miller2012">Miller 2012</a>)</span> in matrix form. R’s matrix class allows us to easily represent <em>multiple</em> demographic groups with <em>multiple</em> susceptibility groups.</p>
 <p>This guide explains how to construct susceptibility (<code>susceptibility</code>) and demography-in-susceptibility (<code>p_susceptibility</code>) matrices to represent various scenarios that we might wish to model when estimating epidemic final sizes.</p>
 <div class="alert alert-warning">
 <p><strong>New to <em>finalsize</em>?</strong> It may help to read the <a href="finalsize.html">“Get started”</a> vignette first!</p>
@@ -193,11 +195,7 @@ p: probability
 <h2 id="homogeneous-susceptibility">Homogeneous susceptibility<a class="anchor" aria-label="anchor" href="#homogeneous-susceptibility"></a>
 </h2>
 <details class="chunk-details"><summary class="chunk-summary"><span class="chunk-summary-text">Code</span></summary><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># load necessary packages</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://dplyr.tidyverse.org" class="external-link">"dplyr"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://tibble.tidyverse.org/" class="external-link">"tibble"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"tibble"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span></code></pre></div>
 </details><div class="section level3">
 <h3 id="case-1-uniform-susceptibility">Case 1: Uniform susceptibility<a class="anchor" aria-label="anchor" href="#case-1-uniform-susceptibility"></a>
@@ -492,7 +490,7 @@ p_{4,1} &amp; p_{4,2}
 <div class="section level2 unnumbered">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-miller2012" class="csl-entry">
 Miller, Joel C. 2012. <span>“A Note on the Derivation of Epidemic Final Sizes.”</span> <em>Bulletin of Mathematical Biology</em> 74 (9): 2125–41. <a href="https://doi.org/10.1007/s11538-012-9749-6" class="external-link">https://doi.org/10.1007/s11538-012-9749-6</a>.
 </div>

@@ -5,7 +5,11 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Calculate the final size of a susceptible-infectious-recovered epidemic in a population with demographic variation in contact patterns and susceptibility to disease, as discussed in Miller (2012) &lt;doi:10.1007/s11538-012-9749-6&gt;.">
+<meta name="description" content="Calculate the final size of a
+    susceptible-infectious-recovered epidemic in a population with
+    demographic variation in contact patterns and susceptibility to
+    disease, as discussed in Miller (2012)
+    &lt;doi:10.1007/s11538-012-9749-6&gt;.">
 <title>Calculate the Final Size of an Epidemic • finalsize</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -18,7 +22,11 @@
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Calculate the Final Size of an Epidemic">
-<meta property="og:description" content="Calculate the final size of a susceptible-infectious-recovered epidemic in a population with demographic variation in contact patterns and susceptibility to disease, as discussed in Miller (2012) &lt;doi:10.1007/s11538-012-9749-6&gt;.">
+<meta property="og:description" content="Calculate the final size of a
+    susceptible-infectious-recovered epidemic in a population with
+    demographic variation in contact patterns and susceptibility to
+    disease, as discussed in Miller (2012)
+    &lt;doi:10.1007/s11538-012-9749-6&gt;.">
 <meta property="og:image" content="https://epiverse-trace.github.io/finalsize/logo.svg">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -40,7 +48,7 @@
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="index.html">finalsize</a>
 
-    <small class="nav-text text-muted me-auto version-number" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
+    <small class="nav-text text-muted me-auto version-number" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -62,8 +70,10 @@
     <a class="dropdown-item" href="articles/varying_contacts.html">Modelling heterogeneous social contacts</a>
     <a class="dropdown-item" href="articles/varying_susceptibility.html">Modelling heterogeneous susceptibility</a>
     <a class="dropdown-item" href="articles/uncertainty_params.html">Modelling uncertainty in R₀</a>
+    <a class="dropdown-item" href="articles/demographic_turnover.html">Projecting re-emergence risk after waning or new births</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Modelling guides and background</h6>
+    <a class="dropdown-item" href="articles/theoretical_background.html">Theoretical background</a>
     <a class="dropdown-item" href="articles/compare_sir_model.html">Comparison with a compartmental model</a>
     <a class="dropdown-item" href="articles/susceptibility_matrices.html">Guide to constructing susceptibility matrices</a>
   </div>
@@ -98,7 +108,7 @@
 <!-- badges: start -->
 
 <p><em>finalsize</em> is an R package to calculate the final size of a SIR epidemic in populations with heterogeneity in social contacts and infection susceptibility.</p>
-<p><em>finalsize</em> provides estimates for the total proportion of a population infected over the course of an epidemic, and can account for a demographic distribution (such as age groups) and demography-specific contact patterns, as well as for heterogeneous susceptibility to infection between groups (such as due to age-group specific immune responses) and within groups (such as due to immunisation programs).</p>
+<p><em>finalsize</em> provides estimates for the total proportion of a population infected over the course of an epidemic, and can account for a demographic distribution (such as age groups) and demography-specific contact patterns, as well as for heterogeneous susceptibility to infection between groups (such as due to age-group specific immune responses) and within groups (such as due to immunisation programs). An advantage of this approach is that it requires fewer parameters to be defined compared to a model that simulates the full transmission dynamics over time, such as models in the <a href="https://epiverse-trace.github.io/epidemics/articles/epidemics.html" class="external-link"><em>epidemics</em> package</a>.</p>
 <p><em>finalsize</em> implements methods outlined in Andreasen (<a href="#ref-andreasen2011">2011</a>), Miller (<a href="#ref-miller2012">2012</a>), Kucharski et al. (<a href="#ref-kucharski2014">2014</a>), and Bidari et al. (<a href="#ref-bidari2016">2016</a>).</p>
 <p><em>finalsize</em> can help provide rough estimates of the effectiveness of pharmaceutical interventions in the form of immunisation programmes, or the effect of naturally acquired immunity through previous infection (see the vignette).</p>
 <p><em>finalsize</em> relies on <a href="https://gitlab.com/libeigen/eigen" class="external-link">Eigen</a> via <a href="https://github.com/RcppCore/RcppEigen" class="external-link">RcppEigen</a> for fast matrix algebra, and is developed at the <a href="https://www.lshtm.ac.uk/research/centres/centre-mathematical-modelling-infectious-diseases" class="external-link">Centre for the Mathematical Modelling of Infectious Diseases</a> at the London School of Hygiene and Tropical Medicine as part of the <a href="https://data.org/initiatives/epiverse/" class="external-link">Epiverse-TRACE</a>.</p>
@@ -120,13 +130,18 @@
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<p>The main function in <em>finalsize</em> is <code><a href="reference/final_size.html">final_size()</a></code>, which calculates the final size of an epidemic. Helper functions included in <em>finalsize</em> are provided to calculate the effective <span class="math inline"><em>R</em><sub>0</sub></span>, called <span class="math inline"><em>R</em><sub><em>e</em><em>f</em><em>f</em></sub></span>, from demographic and susceptibility distribution data, while other helpers can convert between <span class="math inline"><em>R</em><sub>0</sub></span> and the transmission rate <span class="math inline"><em>λ</em></span>.</p>
-<p>Here, an example using social contact data from the <em>socialmixr</em> package investigates the final size of an epidemic when the disease has an R<sub>0</sub> of 1.5, and given three age groups of interest — 0-19, 20-39 and 40+. The under-20 age group is assumed to be fully susceptible to the disease, whereas individuals aged over 20 are only half as susceptible as those under 20.</p>
+<p>The main function in <em>finalsize</em> is <code><a href="reference/final_size.html">final_size()</a></code>, which calculates the final size of an epidemic given the <span class="math inline"><em>R</em><sub>0</sub></span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load finalsize</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/epiverse-trace/finalsize" class="external-link">finalsize</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Load example POLYMOD data included with the package</span></span>
+<span><span class="fu"><a href="reference/final_size.html">final_size</a></span><span class="op">(</span><span class="fl">1.5</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     demo_grp   susc_grp susceptibility p_infected</span></span>
+<span><span class="co">#&gt; 1 demo_grp_1 susc_grp_1              1  0.5828132</span></span></code></pre></div>
+<p>Optionally, <code><a href="reference/final_size.html">final_size()</a></code> can estimate the epidemic size for populations with differences among demographic groups in their social contact patterns, in their susceptibility to infection.</p>
+<p>We can use social contact data (here, from the <em>socialmixr</em> package) to estimate the final size of an epidemic when the disease has an R<sub>0</sub> of 1.5, and given three age groups of interest — 0-19, 20-39 and 40+. The under-20 age group is assumed to be fully susceptible to the disease, whereas individuals aged over 20 are only half as susceptible as those under 20.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load example POLYMOD social contacts data included with the package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">polymod_uk</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Define contact matrix (entry {ij} is contacts in group i reported by group j)</span></span>
@@ -152,16 +167,6 @@
 <span><span class="co"># R0 of the disease</span></span>
 <span><span class="va">r0</span> <span class="op">&lt;-</span> <span class="fl">1.5</span> <span class="co"># assumed for pandemic influenza</span></span>
 <span></span>
-<span><span class="co"># calculate the effective R0 using `r_eff()`</span></span>
-<span><span class="fu"><a href="reference/r_eff.html">r_eff</a></span><span class="op">(</span></span>
-<span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
-<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
-<span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
-<span>  susceptibility <span class="op">=</span> <span class="va">susceptibility</span>,</span>
-<span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span></span>
-<span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 1.171758</span></span>
-<span></span>
 <span><span class="co"># Calculate the proportion of individuals infected in each age group</span></span>
 <span><span class="fu"><a href="reference/final_size.html">final_size</a></span><span class="op">(</span></span>
 <span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
@@ -174,6 +179,17 @@
 <span><span class="co">#&gt; 1   [0,20) susc_grp_1            1.0 0.32849966</span></span>
 <span><span class="co">#&gt; 2  [20,40) susc_grp_1            0.5 0.10532481</span></span>
 <span><span class="co">#&gt; 3      40+ susc_grp_1            0.5 0.06995193</span></span></code></pre></div>
+<p>Helper functions included in <em>finalsize</em> are provided to calculate the effective <span class="math inline"><em>R</em><sub>0</sub></span>, called <span class="math inline"><em>R</em><sub><em>e</em><em>f</em><em>f</em></sub></span>, from demographic and susceptibility distribution data, while other helpers can convert between <span class="math inline"><em>R</em><sub>0</sub></span> and the transmission rate <span class="math inline"><em>λ</em></span>.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># calculate the effective R0 using `r_eff()`</span></span>
+<span><span class="fu"><a href="reference/r0_conversions.html">r_eff</a></span><span class="op">(</span></span>
+<span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span>
+<span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span>
+<span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span>
+<span>  susceptibility <span class="op">=</span> <span class="va">susceptibility</span>,</span>
+<span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1.171758</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="package-vignettes">Package vignettes<a class="anchor" aria-label="anchor" href="#package-vignettes"></a>
@@ -198,12 +214,12 @@
 <div class="section level2">
 <h2 id="citing-this-package">Citing this package<a class="anchor" aria-label="anchor" href="#citing-this-package"></a>
 </h2>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"finalsize"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; To cite package 'finalsize' in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   Gupte P, Van Leeuwen E, Kucharski A (2023). _finalsize: Calculate the</span></span>
-<span><span class="co">#&gt;   Final Size of an Epidemic_. R package version 0.2.0,</span></span>
+<span><span class="co">#&gt;   Gupte P, Van Leeuwen E, Kucharski A (2024). _finalsize: Calculate the</span></span>
+<span><span class="co">#&gt;   Final Size of an Epidemic_. R package version 0.2.0.9000,</span></span>
 <span><span class="co">#&gt;   https://epiverse-trace.github.io/finalsize/,</span></span>
 <span><span class="co">#&gt;   &lt;https://github.com/epiverse-trace/finalsize&gt;.</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -212,8 +228,8 @@
 <span><span class="co">#&gt;   @Manual{,</span></span>
 <span><span class="co">#&gt;     title = {finalsize: Calculate the Final Size of an Epidemic},</span></span>
 <span><span class="co">#&gt;     author = {Pratik Gupte and Edwin {Van Leeuwen} and Adam Kucharski},</span></span>
-<span><span class="co">#&gt;     year = {2023},</span></span>
-<span><span class="co">#&gt;     note = {R package version 0.2.0, </span></span>
+<span><span class="co">#&gt;     year = {2024},</span></span>
+<span><span class="co">#&gt;     note = {R package version 0.2.0.9000, </span></span>
 <span><span class="co">#&gt; https://epiverse-trace.github.io/finalsize/},</span></span>
 <span><span class="co">#&gt;     url = {https://github.com/epiverse-trace/finalsize},</span></span>
 <span><span class="co">#&gt;   }</span></span></code></pre></div>
@@ -258,8 +274,8 @@ Miller, Joel C. 2012. “A Note on the Derivation of Epidemic Final Sizes.” <e
 <h2 data-toc-skip>Code of Conduct</h2>
 <ul class="list-unstyled">
 <li>
-<p><a href="https://docs.google.com/document/d/e/2PACX-1vSi9qlNRvh6nSSlHEcM8mpB9XQHDQyo2I12VG--r5SwciJ5UdRzhUp3sYXJhXoyYg/pub" class="external-link">Código de Conducta</a></p>
-<p><a href="https://docs.google.com/document/u/1/d/e/2PACX-1vRcwl2uaKdEQT5iS-9MroDMKsd81oR8v1gdlY1kHTTjgGEbLKfcWxtdrkvVRhJJGQalsgC1A4K4YiDe/pub" class="external-link">Code of Conduct</a></p>
+<p><a href="https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT_es.md" class="external-link">Código de Conducta</a></p>
+<p><a href="https://github.com/epiverse-trace/.github/blob/main/CODE_OF_CONDUCT_en.md" class="external-link">Code of Conduct</a></p>
 </li>
 </ul>
 </div>
@@ -281,9 +297,9 @@ Miller, Joel C. 2012. “A Note on the Derivation of Epidemic Final Sizes.” <e
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Pratik Gupte <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/https://orcid.org/0000-0001-5294-7819" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Edwin Van Leeuwen <br><small class="roles"> Author, copyright holder </small> <a href="https://orcid.org/https://orcid.org/0000-0002-2383-5305" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Adam Kucharski <br><small class="roles"> Author, copyright holder </small> <a href="https://orcid.org/https://orcid.org/0000-0001-8814-9421" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Pratik Gupte <br><small class="roles"> Author, maintainer, copyright holder </small> <a href="https://orcid.org/0000-0001-5294-7819" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Edwin Van Leeuwen <br><small class="roles"> Author, copyright holder </small> <a href="https://orcid.org/0000-0002-2383-5305" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Adam Kucharski <br><small class="roles"> Author, copyright holder </small> <a href="https://orcid.org/0000-0001-8814-9421" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>

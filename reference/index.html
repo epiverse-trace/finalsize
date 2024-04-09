@@ -17,7 +17,7 @@
     <a href="https://epiverse-trace.github.io/" class="external-link"><img src="../logo_white.svg" id="logo" alt="Epiverse-TRACE"></a>
     <a class="navbar-brand me-2" href="../index.html">finalsize</a>
 
-    <small class="nav-text text-muted me-auto version-number" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.0</small>
+    <small class="nav-text text-muted me-auto version-number" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.2.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,8 +38,10 @@
     <a class="dropdown-item" href="../articles/varying_contacts.html">Modelling heterogeneous social contacts</a>
     <a class="dropdown-item" href="../articles/varying_susceptibility.html">Modelling heterogeneous susceptibility</a>
     <a class="dropdown-item" href="../articles/uncertainty_params.html">Modelling uncertainty in R₀</a>
+    <a class="dropdown-item" href="../articles/demographic_turnover.html">Projecting re-emergence risk after waning or new births</a>
     <div class="dropdown-divider"></div>
     <h6 class="dropdown-header" data-toc-skip>Modelling guides and background</h6>
+    <a class="dropdown-item" href="../articles/theoretical_background.html">Theoretical background</a>
     <a class="dropdown-item" href="../articles/compare_sir_model.html">Comparison with a compartmental model</a>
     <a class="dropdown-item" href="../articles/susceptibility_matrices.html">Guide to constructing susceptibility matrices</a>
   </div>
@@ -67,7 +69,7 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="package-functions">Package functions<a class="anchor" aria-label="anchor" href="#package-functions"></a></h2>
       
       
 
@@ -89,26 +91,28 @@
         <dd>Final size of an epidemic</dd>
       </dl><dl><dt>
           
-          <code><a href="lambda_to_r0.html">lambda_to_r0()</a></code> 
+          <code><a href="r0_conversions.html">lambda_to_r0()</a></code> <code><a href="r0_conversions.html">r0_to_lambda()</a></code> <code><a href="r0_conversions.html">r_eff()</a></code> 
         </dt>
-        <dd>Calculate \(R_0\) from transmission rate (\(\lambda\))</dd>
-      </dl><dl><dt>
+        <dd>Converts between epidemiological parameters related to \(R_0\)</dd>
+      </dl></div><div class="section level2">
+      <h2 id="data">Data<a class="anchor" aria-label="anchor" href="#data"></a></h2>
+      
+      
+
+      
+    </div><div id="" class="section level2">
+      
+      
+      
+
+      <dl><dt>
           
           <code><a href="polymod_uk.html">polymod_uk</a></code> 
         </dt>
         <dd>Example POLYMOD social contact data for the U.K.</dd>
-      </dl><dl><dt>
-          
-          <code><a href="r0_to_lambda.html">r0_to_lambda()</a></code> 
-        </dt>
-        <dd>Calculate transmission rate (\(\lambda\)) from \(R_0\)</dd>
-      </dl><dl><dt>
-          
-          <code><a href="r_eff.html">r_eff()</a></code> 
-        </dt>
-        <dd>Calculate \(R_eff\) in a heterogeneous population</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
