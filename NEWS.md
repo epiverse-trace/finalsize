@@ -6,7 +6,7 @@ This patch adds:
 
 2. Combines the documentation for the functions `r_eff()`, `r0_to_lambda()`, and `lambda_to_r0()` under the name 'r0_conversions';
 
-3. Adds vignettes on the theoretical background and on projecting re-emergence of a disease due to demographic turnover;
+3. Adds vignettes on the theoretical background and on projecting re-emergence of a disease due to demographic turnover (#193, #194 by @adamkucharski);
 
 4. Streamlines the examples in the Readme;
 
