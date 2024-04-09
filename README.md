@@ -5,7 +5,7 @@
 
 <a href="https://app.digitalpublicgoods.net/a/10557"><img src="https://digitalpublicgoods.net/registry/dpgicon.svg" alt="Digital Public Good" height="25">
 [![License:
-MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit/)
+MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/license/mit)
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -184,7 +184,7 @@ citation("finalsize")
 #> To cite package 'finalsize' in publications use:
 #> 
 #>   Gupte P, Van Leeuwen E, Kucharski A (2024). _finalsize: Calculate the
-#>   Final Size of an Epidemic_. R package version 0.2.0.9000,
+#>   Final Size of an Epidemic_. R package version 0.2.1,
 #>   https://epiverse-trace.github.io/finalsize/,
 #>   <https://github.com/epiverse-trace/finalsize>.
 #> 
@@ -194,7 +194,7 @@ citation("finalsize")
 #>     title = {finalsize: Calculate the Final Size of an Epidemic},
 #>     author = {Pratik Gupte and Edwin {Van Leeuwen} and Adam Kucharski},
 #>     year = {2024},
-#>     note = {R package version 0.2.0.9000, 
+#>     note = {R package version 0.2.1, 
 #> https://epiverse-trace.github.io/finalsize/},
 #>     url = {https://github.com/epiverse-trace/finalsize},
 #>   }
@@ -202,7 +202,8 @@ citation("finalsize")
 
 ## References
 
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
 
 <div id="ref-andreasen2011" class="csl-entry">
 
