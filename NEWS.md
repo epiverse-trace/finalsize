@@ -1,3 +1,5 @@
+# finalsize (development version)
+
 # finalsize 0.2.1
 
 This patch adds:
