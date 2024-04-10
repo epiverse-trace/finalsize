@@ -1,14 +1,14 @@
-# -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v1.0.0
+# --------------------------------------------
+# CITATION file created with {cffr} R package
 # See also: https://docs.ropensci.org/cffr/
-# -----------------------------------------------------------
+# --------------------------------------------
  
 cff-version: 1.2.0
 message: 'To cite package "finalsize" in publications use:'
 type: software
 license: MIT
 title: 'finalsize: Calculate the Final Size of an Epidemic'
-version: 0.2.1
+version: 0.2.1.9000
 abstract: Calculate the final size of a susceptible-infectious-recovered epidemic
   in a population with demographic variation in contact patterns and susceptibility
   to disease, as discussed in Miller (2012) <https://doi.org/10.1007/s11538-012-9749-6>.
@@ -425,3 +425,4 @@ references:
   - family-names: Eigen
     given-names: Yixuan Qiu; the authors of Eigen for the included version of
   year: '2024'
+
