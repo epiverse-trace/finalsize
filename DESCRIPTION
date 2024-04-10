@@ -1,6 +1,6 @@
 Package: finalsize
 Title: Calculate the Final Size of an Epidemic
-Version: 0.2.1
+Version: 0.2.1.9000
 Authors@R: c(
     person("Pratik", "Gupte", , "pratik.gupte@lshtm.ac.uk", role = c("aut", "cre", "cph"),
            comment = c(ORCID = "0000-0001-5294-7819")),
