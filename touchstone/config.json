@@ -1,0 +1,5 @@
+{
+    "os": "ubuntu-22.04",
+    "r": "4.4.0",
+    "https://packagemanager.rstudio.com/all/__linux__/jammy/latest"
+}
