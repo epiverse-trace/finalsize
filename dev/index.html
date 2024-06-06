@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="Calculate the final size of a susceptible-infectious-recovered epidemic in a population with demographic variation in contact patterns and susceptibility to disease, as discussed in Miller (2012) &lt;doi:10.1007/s11538-012-9749-6&gt;.">
 <title>Calculate the Final Size of an Epidemic • finalsize</title>
 <script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.4.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><script src="deps/MathJax-2.7.5/MathJax.js"></script><script src="deps/MathJax-2.7.5/TeX-AMS-MML_HTMLorMML.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Calculate the Final Size of an Epidemic">
+<script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Calculate the Final Size of an Epidemic">
+<meta name="description" content="Calculate the final size of a susceptible-infectious-recovered epidemic in a population with demographic variation in contact patterns and susceptibility to disease, as discussed in Miller (2012) &lt;doi:10.1007/s11538-012-9749-6&gt;.">
 <meta property="og:description" content="Calculate the final size of a susceptible-infectious-recovered epidemic in a population with demographic variation in contact patterns and susceptibility to disease, as discussed in Miller (2012) &lt;doi:10.1007/s11538-012-9749-6&gt;.">
 <meta property="og:image" content="https://epiverse-trace.github.io/finalsize/logo.svg">
 <meta name="robots" content="noindex">
@@ -93,7 +93,7 @@
 <div class="section level2">
 <h2 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h2>
-<p>The main function in <em>finalsize</em> is <code><a href="reference/final_size.html">final_size()</a></code>, which calculates the final size of an epidemic given the <span class="math inline">\(R_0\)</span>.</p>
+<p>The main function in <em>finalsize</em> is <code><a href="reference/final_size.html">final_size()</a></code>, which calculates the final size of an epidemic given the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>0</mn></msub><annotation encoding="application/x-tex">R_0</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load finalsize</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/epiverse-trace/finalsize" class="external-link">finalsize</a></span><span class="op">)</span></span>
@@ -142,7 +142,7 @@
 <span><span class="co">#&gt; 1   [0,20) susc_grp_1            1.0 0.32849966</span></span>
 <span><span class="co">#&gt; 2  [20,40) susc_grp_1            0.5 0.10532481</span></span>
 <span><span class="co">#&gt; 3      40+ susc_grp_1            0.5 0.06995193</span></span></code></pre></div>
-<p>Helper functions included in <em>finalsize</em> are provided to calculate the effective <span class="math inline">\(R_0\)</span>, called <span class="math inline">\(R_{eff}\)</span>, from demographic and susceptibility distribution data, while other helpers can convert between <span class="math inline">\(R_0\)</span> and the transmission rate <span class="math inline">\(\lambda\)</span>.</p>
+<p>Helper functions included in <em>finalsize</em> are provided to calculate the effective <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>0</mn></msub><annotation encoding="application/x-tex">R_0</annotation></semantics></math>, called <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mrow><mi>e</mi><mi>f</mi><mi>f</mi></mrow></msub><annotation encoding="application/x-tex">R_{eff}</annotation></semantics></math>, from demographic and susceptibility distribution data, while other helpers can convert between <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>0</mn></msub><annotation encoding="application/x-tex">R_0</annotation></semantics></math> and the transmission rate <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># calculate the effective R0 using `r_eff()`</span></span>
 <span><span class="fu"><a href="reference/r0_conversions.html">r_eff</a></span><span class="op">(</span></span>
