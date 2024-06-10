@@ -18,17 +18,17 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Pratik Gupte \email{pratik.gupte@lshtm.ac.uk} (\href{https://orcid.org/0000-0001-5294-7819}{ORCID}) [copyright holder]
+\strong{Maintainer}: Rosalind Eggo \email{r.eggo@lshtm.ac.uk} (\href{https://orcid.org/0000-0002-0362-6717}{ORCID}) [contributor]
 
 Authors:
 \itemize{
+  \item Pratik Gupte \email{pratik.gupte@lshtm.ac.uk} (\href{https://orcid.org/0000-0001-5294-7819}{ORCID}) [copyright holder]
   \item Edwin Van Leeuwen \email{edwin.vanleeuwen@ukhsa.gov.uk} (\href{https://orcid.org/0000-0002-2383-5305}{ORCID}) [copyright holder]
   \item Adam Kucharski \email{adam.kucharski@lshtm.ac.uk} (\href{https://orcid.org/0000-0001-8814-9421}{ORCID}) [copyright holder]
 }
 
 Other contributors:
 \itemize{
-  \item Rosalind Eggo \email{r.eggo@lshtm.ac.uk} (\href{https://orcid.org/0000-0002-0362-6717}{ORCID}) [contributor]
   \item Hugo Gruson \email{hugo.gruson@data.org} (\href{https://orcid.org/0000-0002-4094-1476}{ORCID}) [contributor]
   \item Thibaut Jombart \email{thibaut@data.org} (\href{https://orcid.org/0000-0003-3796-2097}{ORCID}) [contributor]
   \item Andree Valle-Campos \email{andree.valle-campos@lshtm.ac.uk} (\href{https://orcid.org/0000-0002-7779-481X}{ORCID}) [contributor]

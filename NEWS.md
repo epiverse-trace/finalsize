@@ -1,5 +1,7 @@
 # finalsize (development version)
 
+Maintainer is changing to @rozeggo.
+
 # finalsize 0.2.1
 
 This patch adds:
