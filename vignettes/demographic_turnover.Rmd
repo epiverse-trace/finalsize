@@ -19,7 +19,7 @@ editor_options:
 If population immunity accumulates during an epidemic, then the peak of the epidemic is the point at which there is a sufficient reduction in susceptibility to bring the effective reproduction number $R$ below the critical value of 1. However, because infections continue as the epidemic declines, more immunity can accumulate, and hence $R$ can be substantially below 1 at the end of the epidemic.
 
 ::: {.alert .alert-warning}
-**New to _finalsize_?** We'd recommend the ["Get started"](finalsize.html) and ["Modelling uncertainty in R₀"](uncertainty_params.Rmd) vignettes first!
+**New to _finalsize_?** We'd recommend the ["Get started"](finalsize.html) and ["Modelling uncertainty in R₀"](uncertainty_params.html) vignettes first!
 :::
 
 ::: {.alert .alert-primary}
