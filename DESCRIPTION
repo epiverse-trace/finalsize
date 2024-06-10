@@ -2,13 +2,13 @@ Package: finalsize
 Title: Calculate the Final Size of an Epidemic
 Version: 0.2.1.9000
 Authors@R: c(
-    person("Pratik", "Gupte", , "pratik.gupte@lshtm.ac.uk", role = c("aut", "cre", "cph"),
+    person("Pratik", "Gupte", , "pratik.gupte@lshtm.ac.uk", role = c("aut", "cph"),
            comment = c(ORCID = "0000-0001-5294-7819")),
     person("Edwin", "Van Leeuwen", , "edwin.vanleeuwen@ukhsa.gov.uk", role = c("aut", "cph"),
            comment = c(ORCID = "0000-0002-2383-5305")),
     person("Adam", "Kucharski", , "adam.kucharski@lshtm.ac.uk", role = c("aut", "cph"),
            comment = c(ORCID = "0000-0001-8814-9421")),
-    person("Rosalind", "Eggo", , "r.eggo@lshtm.ac.uk", role = "ctb",
+    person("Rosalind", "Eggo", , "r.eggo@lshtm.ac.uk", role = c("ctb", "cre"),
            comment = c(ORCID = "0000-0002-0362-6717")),
     person("Hugo", "Gruson", , "hugo.gruson@data.org", role = "ctb",
            comment = c(ORCID = "0000-0002-4094-1476")),
