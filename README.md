@@ -184,7 +184,7 @@ citation("finalsize")
 #> To cite package 'finalsize' in publications use:
 #> 
 #>   Gupte P, Van Leeuwen E, Kucharski A (2024). _finalsize: Calculate the
-#>   Final Size of an Epidemic_. R package version 0.2.1,
+#>   Final Size of an Epidemic_. R package version 0.2.1.9000,
 #>   https://epiverse-trace.github.io/finalsize/,
 #>   <https://github.com/epiverse-trace/finalsize>.
 #> 
@@ -194,7 +194,7 @@ citation("finalsize")
 #>     title = {finalsize: Calculate the Final Size of an Epidemic},
 #>     author = {Pratik Gupte and Edwin {Van Leeuwen} and Adam Kucharski},
 #>     year = {2024},
-#>     note = {R package version 0.2.1, 
+#>     note = {R package version 0.2.1.9000, 
 #> https://epiverse-trace.github.io/finalsize/},
 #>     url = {https://github.com/epiverse-trace/finalsize},
 #>   }
