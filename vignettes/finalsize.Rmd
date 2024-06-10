@@ -84,7 +84,7 @@ contact_matrix <- matrix(1.0) / uk_pop
 ::: {.alert .alert-secondary}
 Social contacts are well known to be non-uniform, with age being a strong influence on how many contacts a person has and, moreover, on the ages of their contacts. A relatively simple example is that of children of school-going age, who typically have more social contacts than the elderly, and most of whose social contacts are with other schoolchildren.
 
-The ["Modelling heterogeneous contacts"](varying_contacts.Rmd) vignette explores how this can be incorporated into final epidemic size calculations using _finalsize_.
+The ["Modelling heterogeneous contacts"](varying_contacts.html) vignette explores how this can be incorporated into final epidemic size calculations using _finalsize_.
 :::
 
 ## Modelling population susceptibility

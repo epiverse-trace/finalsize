@@ -19,7 +19,7 @@ editor_options:
 Epidemic final size calculations are sensitive to input data such as the $R_0$ of the infection. Such values can often be uncertain in the early stages of an outbreak. This uncertainty can be included in final size calculations by running `final_size()` for values drawn from a distribution, and summarising the outcomes.
 
 ::: {.alert .alert-warning}
-**New to _finalsize_?** It may help to read the ["Get started"](finalsize.html), ["Modelling heterogeneous contacts"](varying_contacts.html), or ["Modelling heterogeneous susceptibility"](varying_susceptibility.Rmd) vignettes first!
+**New to _finalsize_?** It may help to read the ["Get started"](finalsize.html), ["Modelling heterogeneous contacts"](varying_contacts.html), or ["Modelling heterogeneous susceptibility"](varying_susceptibility.html) vignettes first!
 :::
 
 ::: {.alert .alert-primary}
