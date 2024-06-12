@@ -70,5 +70,5 @@ touchstone::benchmark_run(
   n = 100
 )
 
-# generate benchmark
+# create artifacts used downstream in the GitHub Action
 touchstone::benchmark_analyze()
