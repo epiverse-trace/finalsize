@@ -69,3 +69,6 @@ touchstone::benchmark_run(
   },
   n = 100
 )
+
+# generate benchmark
+touchstone::benchmark_analyze()
