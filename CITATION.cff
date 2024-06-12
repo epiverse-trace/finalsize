@@ -25,14 +25,18 @@ authors:
   given-names: Adam
   email: adam.kucharski@lshtm.ac.uk
   orcid: https://orcid.org/0000-0001-8814-9421
+- family-names: Eggo
+  given-names: Rosalind
+  email: r.eggo@lshtm.ac.uk
+  orcid: https://orcid.org/0000-0002-0362-6717
 repository: https://CRAN.R-project.org/package=finalsize
 repository-code: https://github.com/epiverse-trace/finalsize
 url: https://epiverse-trace.github.io/finalsize/
 contact:
-- family-names: Gupte
-  given-names: Pratik
-  email: pratik.gupte@lshtm.ac.uk
-  orcid: https://orcid.org/0000-0001-5294-7819
+- family-names: Eggo
+  given-names: Rosalind
+  email: r.eggo@lshtm.ac.uk
+  orcid: https://orcid.org/0000-0002-0362-6717
 keywords:
 - epidemic-modelling
 - epidemiology
