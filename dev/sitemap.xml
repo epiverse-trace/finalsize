@@ -1,24 +1,66 @@
-<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/CONTRIBUTING.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/LICENSE-text.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/LICENSE.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/articles/compare_sir_model.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/articles/demographic_turnover.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/articles/finalsize.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/articles/index.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/articles/susceptibility_matrices.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/articles/theoretical_background.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/articles/uncertainty_params.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/articles/varying_contacts.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/articles/varying_susceptibility.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/authors.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/index.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/news/index.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/reference/dot-final_size.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/reference/final_size.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/reference/finalsize-package.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/reference/index.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/reference/polymod_uk.html</loc></url>
-<url><loc>https://epiverse-trace.github.io/finalsize/dev/reference/r0_conversions.html</loc></url>
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/CONTRIBUTING.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/LICENSE.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/articles/compare_sir_model.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/articles/demographic_turnover.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/articles/finalsize.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/articles/susceptibility_matrices.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/articles/theoretical_background.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/articles/uncertainty_params.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/articles/varying_contacts.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/articles/varying_susceptibility.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/authors.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/index.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/news/index.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/reference/dot-final_size.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/reference/final_size.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/reference/finalsize-package.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/reference/polymod_uk.html</loc>
+  </url>
+  <url>
+    <loc>https://epiverse-trace.github.io/finalsize/dev/reference/r0_conversions.html</loc>
+  </url>
 </urlset>
-

@@ -1,6 +1,6 @@
 pandoc: 3.1.11
-pkgdown: 2.0.9.9000
-pkgdown_sha: 2020696487b9c82f03fe6de7e00034d90b70ec21
+pkgdown: 2.0.9
+pkgdown_sha: ~
 articles:
   compare_sir_model: compare_sir_model.html
   demographic_turnover: demographic_turnover.html
@@ -10,7 +10,7 @@ articles:
   uncertainty_params: uncertainty_params.html
   varying_contacts: varying_contacts.html
   varying_susceptibility: varying_susceptibility.html
-last_built: 2024-06-06T10:06Z
+last_built: 2024-06-12T14:47Z
 urls:
   reference: https://epiverse-trace.github.io/finalsize/reference
   article: https://epiverse-trace.github.io/finalsize/articles
