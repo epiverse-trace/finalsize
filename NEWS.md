@@ -1,6 +1,16 @@
 # finalsize (development version)
 
-Maintainer is changing to @rozeggo.
+Maintainer is changing to @rozeggo (#212).
+
+1. Updated all GitHub Actions workflows in line with {epiverse-trace/packagetemplate} (#212).
+
+2. Updated DESCRIPTION and license files with new maintainer and new copyright year (#212).
+
+3. Added `R/dev-utils.R` for extra release issue bullet points, and added `tools/check.env` for global environment checks (#212).
+
+4. Corrected internal article links in vignettes (#212).
+
+5. Added continuous benchmarking workflows using {touchstone} following the pattern of {epiforecasts/EpiNow2} (#212).
 
 # finalsize 0.2.1
 

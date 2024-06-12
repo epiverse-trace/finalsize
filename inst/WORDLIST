@@ -7,6 +7,7 @@ Cppcheck
 Cpplint
 Dylanger
 Eigen
+EpiNow
 Epiverse
 Github
 Kwok
@@ -41,7 +42,9 @@ doi
 dt
 dx
 eff
+epiforecasts
 episoap
+epiverse
 frac
 gh
 github
