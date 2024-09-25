@@ -1,0 +1,243 @@
+---
+title: "Comparing vaccination strategies"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Comparing vaccination strategies}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(finalsize)
+library(ggplot2)
+library(tidyr)
+```
+
+```{r}
+# Country characteristics
+country <- "Senegal"
+
+contacts <- t(contactdata::contact_matrix(country))
+ 
+population <- contactdata::age_df_countries(country)
+
+contacts <- contacts / max(Re(eigen(contacts)$values))
+contacts <- contacts / population$population
+
+ggplot(population, aes(x = population, y = age)) +
+  geom_col() +
+  labs(
+    x = "Age group",
+    y = "Population",
+    title = "Population by age group"
+  )
+
+contacts |>
+  as.data.frame() |>
+  tibble::rownames_to_column("age1") |>
+  tidyr::pivot_longer(-age1, names_to = "age2", values_to = "contact_rate") |>
+  ggplot(aes(x = age1, y = age2, fill = contact_rate)) +
+    geom_tile() +
+    scale_fill_viridis_c() +
+    labs(title = "Contact matrix")
+```
+
+```{r}
+# Pathogen characteristics
+r0 <- 1.5
+base_susc <- rep_len(0.7, length(population$population))
+
+# Vaccine characteristics
+v_eff <- 0.8
+doses <- 5e5
+```
+
+```{r}
+vaccinate <- function(priority_order, population, doses) {
+
+  res <- data.frame(
+    susc = population,
+    vacc = 0
+  )
+  i <- 1
+  
+  while (doses > 0) {
+    pop_this_group <- population[priority_order[i]]
+    if (pop_this_group > doses) {
+      res[priority_order[i], "vacc"] <- res[priority_order[i], "vacc"] + doses
+      res[priority_order[i], "susc"] <- res[priority_order[i], "susc"] - doses
+      doses <- 0
+    } else {
+      res[priority_order[i], "vacc"] <- res[priority_order[i], "vacc"] + pop_this_group
+      res[priority_order[i], "susc"] <- res[priority_order[i], "susc"] - pop_this_group
+      doses <- doses - pop_this_group
+    }
+    i <- i + 1
+  }
+
+  return(res)
+}
+```
+
+## Scenario A: Doses distributed to the youngest first
+
+```{r}
+susc_A <- matrix(
+  c(base_susc, base_susc), ncol = 2
+)
+susc_A[, 2] <- susc_A[, 2] * (1 - v_eff)
+
+p_susc_A <- vaccinate(1:16, population$population, doses)
+
+p_susc_A |> 
+  dplyr::mutate(age_grp = population$age) |> 
+  pivot_longer(-age_grp) |> 
+  ggplot(aes(x = age_grp, y = value, fill = name)) +
+    geom_col() +
+    labs(
+      x = "Age group",
+      y = "Population size",
+      title = "Vaccines distribution"
+    )
+
+p_susc_A <- as.matrix(p_susc_A) / population$population
+
+scenario_A <- final_size(
+  r0 = r0,
+  contact_matrix = contacts,
+  demography_vector = population$population,
+  susceptibility = susc_A,
+  p_susceptibility = p_susc_A
+) |> 
+  dplyr::mutate(
+    population_prop = c(p_susc_A)
+  ) |> 
+  dplyr::group_by(demo_grp) |> 
+  dplyr::summarise(
+    p_infected = sum(p_infected * population_prop)
+  ) |> 
+  dplyr::mutate(
+    infected = round(p_infected * population$population),
+    scenario = "Priority to younger"
+  )
+```
+
+# Scenario B: Doses distributed to the oldest first
+
+```{r}
+susc_B <- matrix(
+  c(base_susc, base_susc), ncol = 2
+)
+susc_B[, 2] <- susc_B[, 2] * (1 - v_eff)
+
+p_susc_B <- vaccinate(rev(1:16), population$population, doses)
+
+p_susc_B |> 
+  dplyr::mutate(age_grp = population$age) |> 
+  pivot_longer(-age_grp) |> 
+  ggplot(aes(x = age_grp, y = value, fill = name)) +
+    geom_col() +
+    labs(
+      x = "Age group",
+      y = "Population size",
+      title = "Vaccines distribution"
+    )
+
+p_susc_B <- as.matrix(p_susc_B) / population$population
+
+scenario_B <- final_size(
+  r0 = r0,
+  contact_matrix = contacts,
+  demography_vector = population$population,
+  susceptibility = susc_B,
+  p_susceptibility = p_susc_B
+) |> 
+  dplyr::mutate(
+    population_prop = c(p_susc_B)
+  ) |> 
+  dplyr::group_by(demo_grp) |> 
+  dplyr::summarise(
+    p_infected = sum(p_infected * population_prop)
+  ) |> 
+  dplyr::mutate(
+    infected = round(p_infected * population$population),
+    scenario = "Priority to older"
+  )
+```
+
+# Scenario C: Uniform distribution in all age groups
+
+```{r}
+susc_C <- matrix(
+  c(base_susc, base_susc), ncol = 2
+)
+susc_C[, 2] <- susc_C[, 2] * (1 - v_eff)
+
+p_susc_C <- data.frame(
+  vacc = doses * population$population / sum(population$population)
+) |> 
+  dplyr::mutate(
+    susc = population$population - vacc, .before = 1
+  ) 
+
+p_susc_C |> 
+  dplyr::mutate(age_grp = population$age) |>
+  pivot_longer(-age_grp) |> 
+  ggplot(aes(x = age_grp, y = value, fill = name)) +
+    geom_col() +
+    labs(
+      x = "Age group",
+      y = "Population size",
+      title = "Vaccines distribution"
+    )
+
+p_susc_C <- p_susc_C |>
+  dplyr::mutate(across(everything(), ~ . / population$population)) |> 
+  as.matrix()
+
+scenario_C <- final_size(
+  r0 = r0,
+  contact_matrix = contacts,
+  demography_vector = population$population,
+  susceptibility = susc_C,
+  p_susceptibility = p_susc_C
+) |> 
+  dplyr::mutate(
+    population_prop = c(p_susc_C)
+  ) |> 
+  dplyr::group_by(demo_grp) |> 
+  dplyr::summarise(
+    p_infected = sum(p_infected * population_prop)
+  ) |> 
+  dplyr::mutate(
+    infected = round(p_infected * population$population),
+    scenario = "No priority"
+  )
+```
+
+# Outcome
+
+```{r}
+scenarios <- dplyr::bind_rows(scenario_A, scenario_B, scenario_C)
+
+sum(scenario_A$infected)
+sum(scenario_B$infected)
+sum(scenario_C$infected)
+
+library(ggplot2)
+ggplot(scenarios, aes(x = demo_grp, y = infected, fill = scenario)) +
+  geom_col(position = "dodge") +
+  theme_minimal() +
+  labs(
+    x = "Age group",
+    y = "Number of infected",
+    title = "Number of infected by age group and scenario"
+  )
+```
