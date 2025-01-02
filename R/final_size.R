@@ -67,8 +67,10 @@
 #' @param control A list of named solver options, see *Solver options*.
 #'
 #' @keywords epidemic model
-#' @return A data.frame of the proportion of infected individuals, within each
-#' demography group and susceptibility group combination.
+#' @return A data.frame of the proportion and number of infected individuals,
+#' within each demography group and susceptibility group combination.
+#' The sizes of each demography-susceptibility combination are also returned in
+#' a column.
 #' If the demography groups and susceptibility groups are named, these
 #' names are added to relevant columns. If the groups are not named, synthetic
 #' names are added of the form `demo_grp_<i>`, for each demographic group
