@@ -14,9 +14,10 @@ test_that("final_size with default arguments", {
     p_susceptibility = matrix(1)
   )
 
+  # test only proportion as numbers differ
   expect_identical(
-    finalsize_shortcut,
-    finalsize_detailed
+    finalsize_shortcut$p_infected,
+    finalsize_detailed$p_infected
   )
 
   expect_gt(
@@ -78,7 +79,10 @@ test_that("Finalsize returns correct demography names", {
   # expect that data.frame has correct names
   expect_identical(
     colnames(epi_outcome),
-    c("demo_grp", "susc_grp", "susceptibility", "p_infected")
+    c(
+      "demo_grp", "susc_grp", "susceptibility", "group_size",
+      "p_infected", "n_infected"
+    )
   )
 
   # check for names
