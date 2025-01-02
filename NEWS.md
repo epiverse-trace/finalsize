@@ -12,6 +12,8 @@ Maintainer is changing to @rozeggo (#212).
 
 5. Added continuous benchmarking workflows using {touchstone} following the pattern of {epiforecasts/EpiNow2} (#212).
 
+6. Updated `final_size()` to return the demography-susceptibility group sizes and the absolute value of individuals infected as columns.
+
 # finalsize 0.2.1
 
 This patch adds:
