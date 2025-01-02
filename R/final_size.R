@@ -277,7 +277,9 @@ final_size <- function(r0,
       each = nrow(susceptibility)
     ),
     susceptibility = as.vector(susceptibility),
-    p_infected = epi_final_size
+    group_size = demography_vector_spread,
+    p_infected = epi_final_size,
+    n_infected = demography_vector_spread * epi_final_size
   )
   epi_final_size
 }
