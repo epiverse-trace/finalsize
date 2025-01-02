@@ -64,6 +64,10 @@
 #' "newton", for the iterative solver, or the Newton solver, respectively.
 #' Special conditions apply when using the Newton solver, see the `control`
 #' argument.
+#' @param contact_scaling For `r_eff()`, either a single number or a numeric
+#' vector of the same length as `demography_vector`, giving the proportional
+#' scaling of contacts of each demographic group. Values must be in the range
+#' \eqn{[0, 1]}. Defaults to 1.0 for no scaling.
 #' @param control A list of named solver options, see *Solver options*.
 #'
 #' @keywords epidemic model
@@ -113,6 +117,20 @@
 #'   p_susceptibility = p_susceptibility
 #' )
 #'
+#' ## Examining the effect of contact reductions
+#' # In this example, contacts are reduced by 5%
+#' final_size(r0, contact_scaling = 0.95)
+#'
+#' # Demography-sepcific reduction in contacts
+#' final_size(
+#'   r0 = r0,
+#'   contact_matrix = contact_matrix,
+#'   demography_vector = demography_vector,
+#'   susceptibility = susceptibility,
+#'   p_susceptibility = p_susceptibility,
+#'   contact_scaling = c(0.95, 0.9, 0.85)
+#' )
+#'
 #' ## Using manually specified solver settings for the iterative solver
 #' control <- list(
 #'   iterations = 100,
@@ -151,6 +169,7 @@ final_size <- function(r0,
                        demography_vector = 1,
                        susceptibility = matrix(1),
                        p_susceptibility = matrix(1),
+                       contact_scaling = 1.0,
                        solver = c("iterative", "newton"),
                        control = list()) {
   # check arguments input
@@ -176,6 +195,9 @@ final_size <- function(r0,
       (
         all(abs(rowSums(p_susceptibility) - 1) < 1e-6)
       ),
+    "Error: contact_scaling must be a number or length of demography vector" =
+      is.numeric(contact_scaling) && (length(contact_scaling) == 1 ||
+        length(contact_scaling) == length(demography_vector)),
     "Error: contact matrix must have a maximum real eigenvalue of 1.0" =
       (
         abs(
@@ -217,6 +239,15 @@ final_size <- function(r0,
   # replicate the demography vector and multiply by p_susceptibility
   demography_vector_spread <- rep(demography_vector, n_susc_groups)
   demography_vector_spread <- demography_vector_spread * lps
+
+  # scale both incoming and outgoing contacts, but prevent squared scaling
+  n_demo_grps <- length(demography_vector)
+  contact_scaling_incoming <- matrix(contact_scaling, n_demo_grps, n_demo_grps)
+  contact_scaling_outgoing <- t(contact_scaling_incoming)
+  diag(contact_scaling_outgoing) <- 1.0
+
+  contact_matrix <- contact_matrix *
+    contact_scaling_incoming * contact_scaling_outgoing
 
   # replicate contact matrix
   contact_matrix_spread <- kronecker(
