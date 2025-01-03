@@ -14,6 +14,8 @@ Maintainer is changing to @rozeggo (#212).
 
 6. Updated `final_size()` to return the demography-susceptibility group sizes and the absolute value of individuals infected as columns.
 
+7. Added the `contact_scaling` argument to `final_size()` and `r_eff()` that allows scaling contact matrices; added tests and a brief vignette to show this functionality.
+
 # finalsize 0.2.1
 
 This patch adds:
