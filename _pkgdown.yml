@@ -12,6 +12,7 @@ articles:
   - varying_susceptibility
   - uncertainty_params
   - demographic_turnover
+  - r_eff_reckoner
 - title: Modelling guides and background
   navbar: Modelling guides and background
   contents:
