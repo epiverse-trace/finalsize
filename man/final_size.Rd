@@ -10,6 +10,7 @@ final_size(
   demography_vector = 1,
   susceptibility = matrix(1),
   p_susceptibility = matrix(1),
+  contact_scaling = 1,
   solver = c("iterative", "newton"),
   control = list()
 )
@@ -40,6 +41,11 @@ Each row represents the overall distribution of individuals in demographic
 group \eqn{i} across risk groups, and each row \emph{must sum to 1.0}.
 Defaults to the singleton matrix \eqn{[1]}, representing a population where
 all individuals are fully susceptible.}
+
+\item{contact_scaling}{For \code{r_eff()}, either a single number or a numeric
+vector of the same length as \code{demography_vector}, giving the proportional
+scaling of contacts of each demographic group. Values must be in the range
+\eqn{[0, 1]}. Defaults to 1.0 for no scaling.}
 
 \item{solver}{Which solver to use. Options are "iterative" (default) or
 "newton", for the iterative solver, or the Newton solver, respectively.
@@ -141,6 +147,20 @@ final_size(
   demography_vector = demography_vector,
   susceptibility = susceptibility,
   p_susceptibility = p_susceptibility
+)
+
+## Examining the effect of contact reductions
+# In this example, contacts are reduced by 5\%
+final_size(r0, contact_scaling = 0.95)
+
+# Demography-sepcific reduction in contacts
+final_size(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility,
+  contact_scaling = c(0.95, 0.9, 0.85)
 )
 
 ## Using manually specified solver settings for the iterative solver

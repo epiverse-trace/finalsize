@@ -198,6 +198,8 @@ final_size <- function(r0,
     "Error: contact_scaling must be a number or length of demography vector" =
       is.numeric(contact_scaling) && (length(contact_scaling) == 1 ||
         length(contact_scaling) == length(demography_vector)),
+    "Error: contact_scaling must be in the range 0.0 -- 1.0" =
+      all(contact_scaling >= 0.0 & contact_scaling <= 1.0),
     "Error: contact matrix must have a maximum real eigenvalue of 1.0" =
       (
         abs(

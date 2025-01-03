@@ -25,7 +25,14 @@ r0_to_lambda(
   infectious_period = 1.8
 )
 
-r_eff(r0, contact_matrix, demography_vector, susceptibility, p_susceptibility)
+r_eff(
+  r0,
+  contact_matrix,
+  demography_vector,
+  susceptibility,
+  p_susceptibility,
+  contact_scaling = 1
+)
 }
 \arguments{
 \item{lambda}{The transmission rate of the disease, also called the 'force of
@@ -50,6 +57,11 @@ group \eqn{i} across risk groups, and each row \emph{must sum to 1.0}.}
 Default value is 1.8 days.}
 
 \item{r0}{The basic reproductive number \eqn{R_0} of the infection.}
+
+\item{contact_scaling}{For \code{r_eff()}, either a single number or a numeric
+vector of the same length as \code{demography_vector}, giving the proportional
+scaling of contacts of each demographic group. Values must be in the range
+\eqn{[0, 1]}. Defaults to 1.0 for no scaling.}
 }
 \value{
 Returns a single number for the calculated value.
@@ -125,6 +137,16 @@ r_eff(
   demography_vector = demography_vector,
   susceptibility = susceptibility,
   p_susceptibility = p_susceptibility
+)
+
+# With a 5\% reduction in contacts
+r_eff(
+  r0 = r0,
+  contact_matrix = contact_matrix,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility,
+  contact_scaling = 0.95
 )
 
 #### Transmission rate to R0 ####
