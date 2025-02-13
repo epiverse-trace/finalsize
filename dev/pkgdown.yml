@@ -5,12 +5,13 @@ articles:
   compare_sir_model: compare_sir_model.html
   demographic_turnover: demographic_turnover.html
   finalsize: finalsize.html
+  r_eff_reckoner: r_eff_reckoner.html
   susceptibility_matrices: susceptibility_matrices.html
   theoretical_background: theoretical_background.html
   uncertainty_params: uncertainty_params.html
   varying_contacts: varying_contacts.html
   varying_susceptibility: varying_susceptibility.html
-last_built: 2025-01-13T11:52Z
+last_built: 2025-02-13T10:14Z
 urls:
   reference: https://epiverse-trace.github.io/finalsize/reference
   article: https://epiverse-trace.github.io/finalsize/articles

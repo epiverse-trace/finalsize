@@ -37,6 +37,7 @@ such as that conferred by an immunisation programme."><meta property="og:image" 
     <li><a class="dropdown-item" href="../articles/varying_susceptibility.html">Modelling heterogeneous susceptibility</a></li>
     <li><a class="dropdown-item" href="../articles/uncertainty_params.html">Modelling uncertainty in R₀</a></li>
     <li><a class="dropdown-item" href="../articles/demographic_turnover.html">Projecting re-emergence risk after waning or new births</a></li>
+    <li><a class="dropdown-item" href="../articles/r_eff_reckoner.html">Ready reckoner for R&lt;sub&gt;eff&lt;/sub&gt;</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Modelling guides and background</h6></li>
     <li><a class="dropdown-item" href="../articles/theoretical_background.html">Theoretical background</a></li>
@@ -80,6 +81,7 @@ such as that conferred by an immunisation programme.</p>
 <span>  demography_vector <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  susceptibility <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>,</span>
 <span>  p_susceptibility <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>,</span>
+<span>  contact_scaling <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  solver <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"iterative"</span>, <span class="st">"newton"</span><span class="op">)</span>,</span>
 <span>  control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -123,6 +125,13 @@ Each row represents the overall distribution of individuals in demographic
 group \(i\) across risk groups, and each row <em>must sum to 1.0</em>.
 Defaults to the singleton matrix \([1]\), representing a population where
 all individuals are fully susceptible.</p></dd>
+
+
+<dt id="arg-contact-scaling">contact_scaling<a class="anchor" aria-label="anchor" href="#arg-contact-scaling"></a></dt>
+<dd><p>For <code><a href="r0_conversions.html">r_eff()</a></code>, either a single number or a numeric
+vector of the same length as <code>demography_vector</code>, giving the proportional
+scaling of contacts of each demographic group. Values must be in the range
+\([0, 1]\). Defaults to 1.0 for no scaling.</p></dd>
 
 
 <dt id="arg-solver">solver<a class="anchor" aria-label="anchor" href="#arg-solver"></a></dt>
@@ -243,6 +252,32 @@ based on the solver error. Defaults to TRUE.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 7   [0,20) susc_grp_3              1    4933097  0.8532885    4209355</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 8  [20,40) susc_grp_3              1    5508767  0.7974557    4392998</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 9      40+ susc_grp_3              1    9653720  0.6880834    6642564</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Examining the effect of contact reductions</span></span></span>
+<span class="r-in"><span><span class="co"># In this example, contacts are reduced by 5%</span></span></span>
+<span class="r-in"><span><span class="fu">final_size</span><span class="op">(</span><span class="va">r0</span>, contact_scaling <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     demo_grp   susc_grp susceptibility group_size p_infected n_infected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 demo_grp_1 susc_grp_1              1          1  0.7672429  0.7672429</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Demography-sepcific reduction in contacts</span></span></span>
+<span class="r-in"><span><span class="fu">final_size</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span></span>
+<span class="r-in"><span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span></span>
+<span class="r-in"><span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span></span>
+<span class="r-in"><span>  susceptibility <span class="op">=</span> <span class="va">susceptibility</span>,</span></span>
+<span class="r-in"><span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span>,</span></span>
+<span class="r-in"><span>  contact_scaling <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.95</span>, <span class="fl">0.9</span>, <span class="fl">0.85</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   demo_grp   susc_grp susceptibility group_size p_infected n_infected</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   [0,20) susc_grp_1              1    4933097  0.7847237    3871118</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  [20,40) susc_grp_1              1    5508767  0.6839940    3767964</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3      40+ susc_grp_1              1    9653720  0.5493917    5303673</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   [0,20) susc_grp_2              1    4933097  0.7847237    3871118</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  [20,40) susc_grp_2              1    5508767  0.6839940    3767964</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6      40+ susc_grp_2              1    9653720  0.5493917    5303673</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   [0,20) susc_grp_3              1    4933097  0.7847237    3871118</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  [20,40) susc_grp_3              1    5508767  0.6839940    3767964</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9      40+ susc_grp_3              1    9653720  0.5493917    5303673</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Using manually specified solver settings for the iterative solver</span></span></span>
 <span class="r-in"><span><span class="va">control</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span></span>

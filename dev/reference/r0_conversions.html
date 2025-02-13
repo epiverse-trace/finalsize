@@ -55,6 +55,7 @@ individuals in each demographic and susceptibility group in the population."><me
     <li><a class="dropdown-item" href="../articles/varying_susceptibility.html">Modelling heterogeneous susceptibility</a></li>
     <li><a class="dropdown-item" href="../articles/uncertainty_params.html">Modelling uncertainty in R₀</a></li>
     <li><a class="dropdown-item" href="../articles/demographic_turnover.html">Projecting re-emergence risk after waning or new births</a></li>
+    <li><a class="dropdown-item" href="../articles/r_eff_reckoner.html">Ready reckoner for R&lt;sub&gt;eff&lt;/sub&gt;</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Modelling guides and background</h6></li>
     <li><a class="dropdown-item" href="../articles/theoretical_background.html">Theoretical background</a></li>
@@ -119,7 +120,14 @@ individuals in each demographic and susceptibility group in the population.</p>
 <span>  infectious_period <span class="op">=</span> <span class="fl">1.8</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">r_eff</span><span class="op">(</span><span class="va">r0</span>, <span class="va">contact_matrix</span>, <span class="va">demography_vector</span>, <span class="va">susceptibility</span>, <span class="va">p_susceptibility</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">r_eff</span><span class="op">(</span></span>
+<span>  <span class="va">r0</span>,</span>
+<span>  <span class="va">contact_matrix</span>,</span>
+<span>  <span class="va">demography_vector</span>,</span>
+<span>  <span class="va">susceptibility</span>,</span>
+<span>  <span class="va">p_susceptibility</span>,</span>
+<span>  contact_scaling <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -161,6 +169,13 @@ Default value is 1.8 days.</p></dd>
 
 <dt id="arg-r-">r0<a class="anchor" aria-label="anchor" href="#arg-r-"></a></dt>
 <dd><p>The basic reproductive number \(R_0\) of the infection.</p></dd>
+
+
+<dt id="arg-contact-scaling">contact_scaling<a class="anchor" aria-label="anchor" href="#arg-contact-scaling"></a></dt>
+<dd><p>For <code>r_eff()</code>, either a single number or a numeric
+vector of the same length as <code>demography_vector</code>, giving the proportional
+scaling of contacts of each demographic group. Values must be in the range
+\([0, 1]\). Defaults to 1.0 for no scaling.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -223,6 +238,17 @@ individuals in each demographic and susceptibility group in the population.</p>
 <span class="r-in"><span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.424081</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># With a 5% reduction in contacts</span></span></span>
+<span class="r-in"><span><span class="fu">r_eff</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  r0 <span class="op">=</span> <span class="va">r0</span>,</span></span>
+<span class="r-in"><span>  contact_matrix <span class="op">=</span> <span class="va">contact_matrix</span>,</span></span>
+<span class="r-in"><span>  demography_vector <span class="op">=</span> <span class="va">demography_vector</span>,</span></span>
+<span class="r-in"><span>  susceptibility <span class="op">=</span> <span class="va">susceptibility</span>,</span></span>
+<span class="r-in"><span>  p_susceptibility <span class="op">=</span> <span class="va">p_susceptibility</span>,</span></span>
+<span class="r-in"><span>  contact_scaling <span class="op">=</span> <span class="fl">0.95</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.319694</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#### Transmission rate to R0 ####</span></span></span>
 <span class="r-in"><span><span class="fu">lambda_to_r0</span><span class="op">(</span></span></span>
