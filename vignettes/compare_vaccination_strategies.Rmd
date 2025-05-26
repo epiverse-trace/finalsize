@@ -25,19 +25,22 @@ library(tidyr)
 country <- "Senegal"
 
 contacts <- t(contactdata::contact_matrix(country))
- 
-population <- contactdata::age_df_countries(country)
+
+population <- contactdata::age_df_countries(country) |>
+  dplyr::filter(age %in% rownames(contacts))
 
 contacts <- contacts / max(Re(eigen(contacts)$values))
 contacts <- contacts / population$population
 
-ggplot(population, aes(x = population, y = age)) +
-  geom_col() +
-  labs(
-    x = "Age group",
-    y = "Population",
-    title = "Population by age group"
-  )
+population |>
+  ggplot(aes(x = population, y = age)) +
+    geom_col() +
+    labs(
+      x = "Age group",
+      y = "Population",
+      title = "Population by age group"
+    ) +
+    theme_minimal()
 
 contacts |>
   as.data.frame() |>
@@ -46,7 +49,10 @@ contacts |>
   ggplot(aes(x = age1, y = age2, fill = contact_rate)) +
     geom_tile() +
     scale_fill_viridis_c() +
-    labs(title = "Contact matrix")
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+    coord_equal() +
+    labs(title = "Contact matrix") +
+    theme_minimal()
 ```
 
 ```{r}
@@ -63,20 +69,20 @@ doses <- 5e5
 vaccinate <- function(priority_order, population, doses) {
 
   res <- data.frame(
-    susc = population,
-    vacc = 0
+    unvaccinated = population,
+    vaccinated = 0
   )
   i <- 1
-  
+
   while (doses > 0) {
     pop_this_group <- population[priority_order[i]]
     if (pop_this_group > doses) {
-      res[priority_order[i], "vacc"] <- res[priority_order[i], "vacc"] + doses
-      res[priority_order[i], "susc"] <- res[priority_order[i], "susc"] - doses
+      res[priority_order[i], "vaccinated"] <- res[priority_order[i], "vaccinated"] + doses
+      res[priority_order[i], "unvaccinated"] <- res[priority_order[i], "unvaccinated"] - doses
       doses <- 0
     } else {
-      res[priority_order[i], "vacc"] <- res[priority_order[i], "vacc"] + pop_this_group
-      res[priority_order[i], "susc"] <- res[priority_order[i], "susc"] - pop_this_group
+      res[priority_order[i], "vaccinated"] <- res[priority_order[i], "vaccinated"] + pop_this_group
+      res[priority_order[i], "unvaccinated"] <- res[priority_order[i], "unvaccinated"] - pop_this_group
       doses <- doses - pop_this_group
     }
     i <- i + 1
@@ -96,11 +102,13 @@ susc_A[, 2] <- susc_A[, 2] * (1 - v_eff)
 
 p_susc_A <- vaccinate(1:16, population$population, doses)
 
-p_susc_A |> 
-  dplyr::mutate(age_grp = population$age) |> 
-  pivot_longer(-age_grp) |> 
+p_susc_A |>
+  dplyr::mutate(age_grp = population$age) |>
+  pivot_longer(-age_grp) |>
   ggplot(aes(x = age_grp, y = value, fill = name)) +
     geom_col() +
+    scale_fill_brewer(palette = "Set1") +
+    theme_minimal() +
     labs(
       x = "Age group",
       y = "Population size",
@@ -115,14 +123,14 @@ scenario_A <- final_size(
   demography_vector = population$population,
   susceptibility = susc_A,
   p_susceptibility = p_susc_A
-) |> 
+) |>
   dplyr::mutate(
     population_prop = c(p_susc_A)
-  ) |> 
-  dplyr::group_by(demo_grp) |> 
+  ) |>
+  dplyr::group_by(demo_grp) |>
   dplyr::summarise(
     p_infected = sum(p_infected * population_prop)
-  ) |> 
+  ) |>
   dplyr::mutate(
     infected = round(p_infected * population$population),
     scenario = "Priority to younger"
@@ -139,16 +147,20 @@ susc_B[, 2] <- susc_B[, 2] * (1 - v_eff)
 
 p_susc_B <- vaccinate(rev(1:16), population$population, doses)
 
-p_susc_B |> 
-  dplyr::mutate(age_grp = population$age) |> 
-  pivot_longer(-age_grp) |> 
+p_susc_B |>
+  dplyr::mutate(age_grp = population$age) |>
+  pivot_longer(-age_grp) |>
   ggplot(aes(x = age_grp, y = value, fill = name)) +
     geom_col() +
     labs(
       x = "Age group",
       y = "Population size",
-      title = "Vaccines distribution"
-    )
+      title = "Vaccines distribution",
+
+    ) +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set1") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
 p_susc_B <- as.matrix(p_susc_B) / population$population
 
@@ -158,19 +170,31 @@ scenario_B <- final_size(
   demography_vector = population$population,
   susceptibility = susc_B,
   p_susceptibility = p_susc_B
-) |> 
+) |>
   dplyr::mutate(
     population_prop = c(p_susc_B)
-  ) |> 
-  dplyr::group_by(demo_grp) |> 
+  ) |>
+  dplyr::group_by(demo_grp) |>
   dplyr::summarise(
     p_infected = sum(p_infected * population_prop)
-  ) |> 
+  ) |>
   dplyr::mutate(
     infected = round(p_infected * population$population),
     scenario = "Priority to older"
   )
 ```
+```{r}
+final_size(
+  r0 = r0,
+  contact_matrix = contacts,
+  demography_vector = population$population,
+  susceptibility = susc_B,
+  p_susceptibility = p_susc_B
+) |>
+  head(n = 20) |>
+  knitr::kable()
+```
+
 
 # Scenario C: Uniform distribution in all age groups
 
@@ -182,16 +206,18 @@ susc_C[, 2] <- susc_C[, 2] * (1 - v_eff)
 
 p_susc_C <- data.frame(
   vacc = doses * population$population / sum(population$population)
-) |> 
+) |>
   dplyr::mutate(
     susc = population$population - vacc, .before = 1
-  ) 
+  )
 
-p_susc_C |> 
+p_susc_C |>
   dplyr::mutate(age_grp = population$age) |>
-  pivot_longer(-age_grp) |> 
+  pivot_longer(-age_grp) |>
   ggplot(aes(x = age_grp, y = value, fill = name)) +
     geom_col() +
+    scale_fill_brewer(palette = "Set1") +
+    theme_minimal() +
     labs(
       x = "Age group",
       y = "Population size",
@@ -199,7 +225,7 @@ p_susc_C |>
     )
 
 p_susc_C <- p_susc_C |>
-  dplyr::mutate(across(everything(), ~ . / population$population)) |> 
+  dplyr::mutate(across(everything(), ~ . / population$population)) |>
   as.matrix()
 
 scenario_C <- final_size(
@@ -208,14 +234,14 @@ scenario_C <- final_size(
   demography_vector = population$population,
   susceptibility = susc_C,
   p_susceptibility = p_susc_C
-) |> 
+) |>
   dplyr::mutate(
     population_prop = c(p_susc_C)
-  ) |> 
-  dplyr::group_by(demo_grp) |> 
+  ) |>
+  dplyr::group_by(demo_grp) |>
   dplyr::summarise(
     p_infected = sum(p_infected * population_prop)
-  ) |> 
+  ) |>
   dplyr::mutate(
     infected = round(p_infected * population$population),
     scenario = "No priority"
@@ -239,5 +265,21 @@ ggplot(scenarios, aes(x = demo_grp, y = infected, fill = scenario)) +
     x = "Age group",
     y = "Number of infected",
     title = "Number of infected by age group and scenario"
-  )
+  ) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
+
+library(ggplot2)
+scenarios |>
+  dplyr::group_by(scenario) |>
+  dplyr::summarise(
+    infected = sum(infected)
+  ) |>
+  ggplot(aes(x = scenario, y = infected, fill = scenario)) +
+    geom_col(position = "dodge") +
+    theme_minimal() +
+    labs(
+      x = "Age group",
+      y = "Number of infected",
+      title = "Number of infected by age group and scenario"
+    )
 ```
