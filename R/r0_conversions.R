@@ -34,6 +34,10 @@
 #' group \eqn{i} across risk groups, and each row *must sum to 1.0*.
 #' @param infectious_period Duration of the infectious period in days.
 #' Default value is 1.8 days.
+#' @param contact_scaling For `r_eff()`, either a single number or a numeric
+#' vector of the same length as `demography_vector`, giving the proportional
+#' scaling of contacts of each demographic group. Values must be in the range
+#' \eqn{[0, 1]}. Defaults to 1.0 for no scaling.
 #'
 #' @details
 #' Given the transmission rate (\eqn{\lambda}),
@@ -93,6 +97,16 @@
 #'   demography_vector = demography_vector,
 #'   susceptibility = susceptibility,
 #'   p_susceptibility = p_susceptibility
+#' )
+#'
+#' # With a 5% reduction in contacts
+#' r_eff(
+#'   r0 = r0,
+#'   contact_matrix = contact_matrix,
+#'   demography_vector = demography_vector,
+#'   susceptibility = susceptibility,
+#'   p_susceptibility = p_susceptibility,
+#'   contact_scaling = 0.95
 #' )
 #'
 #' #### Transmission rate to R0 ####
@@ -229,7 +243,8 @@ r_eff <- function(r0,
                   contact_matrix,
                   demography_vector,
                   susceptibility,
-                  p_susceptibility) {
+                  p_susceptibility,
+                  contact_scaling = 1.0) {
   # check arguments input
   checkmate::assert_number(r0, lower = 0, finite = TRUE)
   stopifnot(
@@ -253,6 +268,11 @@ r_eff <- function(r0,
       (
         all(abs(rowSums(p_susceptibility) - 1) < 1e-6)
       ),
+    "Error: contact_scaling must be a number or length of demography vector" =
+      is.numeric(contact_scaling) && (length(contact_scaling) == 1 ||
+        length(contact_scaling) == length(demography_vector)),
+    "Error: contact_scaling must be in the range 0.0 -- 1.0" =
+      all(contact_scaling >= 0.0 & contact_scaling <= 1.0),
     "Error: contact matrix must have a maximum real eigenvalue of 1.0" =
       (
         abs(max(Re(eigen(
@@ -270,6 +290,15 @@ r_eff <- function(r0,
   # replicate the demography vector and multiply by p_susceptibility
   demography_vector_spread <- rep(demography_vector, n_susc_groups)
   demography_vector_spread <- demography_vector_spread * lps
+
+  # scale both incoming and outgoing contacts, but prevent squared scaling
+  n_demo_grps <- length(demography_vector)
+  contact_scaling_incoming <- matrix(contact_scaling, n_demo_grps, n_demo_grps)
+  contact_scaling_outgoing <- t(contact_scaling_incoming)
+  diag(contact_scaling_outgoing) <- 1.0
+
+  contact_matrix <- contact_matrix *
+    contact_scaling_incoming * contact_scaling_outgoing
 
   # replicate contact matrix
   contact_matrix_spread <- kronecker(

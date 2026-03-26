@@ -453,3 +453,69 @@ test_that("Iterative solver is correct in complex case", {
   expect_gt(ratio, 0.3)
   expect_lt(ratio, 0.45)
 })
+
+#### Check on calculation of infected population size ####
+test_that("Infected population size is correctly calculated", {
+  r0 <- 1.5
+  epi_outcome <- final_size(r0)
+
+  # for an R0-only calculation, n_infected and p_infected are identical
+  # as 'pop. size' is assumed 1.0
+  expect_identical(epi_outcome$n_infected, epi_outcome$n_infected)
+
+  # for a specified population size, n_infected is popsize * p_infected
+  popsize <- 1e3
+  epi_outcome <- final_size(
+    r0 = r0,
+    contact_matrix = matrix(1) / popsize,
+    demography_vector = popsize,
+    susceptibility = matrix(1),
+    p_susceptibility = matrix(1)
+  )
+
+  expect_identical(
+    epi_outcome$n_infected,
+    popsize * epi_outcome$p_infected
+  )
+
+  # for more than one demography group
+  popsize <- c(500, 500)
+  epi_outcome <- final_size(
+    r0 = r0,
+    contact_matrix = (matrix(1, 2, 2) / 2) / popsize, # eigenvalue division
+    demography_vector = popsize,
+    susceptibility = matrix(1, 2, 1),
+    p_susceptibility = matrix(1, 2, 1)
+  )
+
+  expect_identical(epi_outcome$group_size, popsize)
+
+  expect_length(
+    unique(epi_outcome$n_infected),
+    1L
+  )
+
+  # for more complex grouping of susceptibility
+  n_susc_groups <- 2
+  n_demo_grps <- 2
+  p_susceptibility <- matrix(0.5, n_susc_groups, n_susc_groups)
+  susceptibility <- matrix(
+    c(0.5, 1.0), n_susc_groups, n_susc_groups,
+    byrow = TRUE
+  )
+  cm <- (matrix(1, n_demo_grps, n_demo_grps) / 2) / popsize
+
+  epi_outcome <- final_size(
+    r0, cm, popsize,
+    susceptibility, p_susceptibility
+  )
+
+  expect_identical(
+    epi_outcome$group_size,
+    rep(popsize / n_susc_groups, n_demo_grps)
+  )
+  expect_identical(
+    epi_outcome$n_infected,
+    epi_outcome$group_size * epi_outcome$p_infected
+  )
+})

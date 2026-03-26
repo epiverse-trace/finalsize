@@ -127,9 +127,9 @@ final_size_data <- final_size(
 final_size_data
 ```
 
-This is the final epidemic size without accounting for heterogeneity in social contacts by age or other factors, and without accounting for variation in susceptibility to infection between or within demographic groups.
+This is the final epidemic size -- in proportional as well as absolute terms -- without accounting for heterogeneity in social contacts by age or other factors, and without accounting for variation in susceptibility to infection between or within demographic groups.
 
-This value, of about `r scales::percent(round(final_size_data$p_infected, 2))` of the population infected, is easily converted to a count, and suggests that about `r scales::comma(final_size_data$p_infected * uk_pop, scale = 1e-6, suffix = " million")` people would be infected over the course of this epidemic.
+This value, of about `r scales::percent(round(final_size_data$p_infected, 2))` of the population or about `r scales::comma(final_size_data$n_infected, scale = 1e-6, suffix = " million")` people, is the expected proportion and number of individuals that would be infected over the course of this epidemic.
 
 ## A short-cut for homogeneous populations
 
